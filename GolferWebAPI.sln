@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GolferWebAPI", "GolferWebAPI\GolferWebAPI.csproj", "{A915CF3F-5340-4878-B1C0-3A410906DFD3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CourseWebApi", "CourseWebApi\CourseWebApi.csproj", "{68290E0B-B2DD-46A8-BB43-E47E1327C695}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Golfler", "Golfler\Golfler.csproj", "{00C0F90B-2668-48C9-8FC4-5047799B8929}"
+EndProject
+Global
+	GlobalSection(SourceCodeControl) = preSolution
+		SccNumberOfProjects = 4
+		SccLocalPath0 = .
+		CanCheckoutShared = false
+		SccProjectUniqueName1 = GolferWebAPI\\GolferWebAPI.csproj
+		SccLocalPath1 = .
+		SccProjectFilePathRelativizedFromConnection1 = GolferWebAPI\\
+		SccProjectUniqueName2 = CourseWebApi\\CourseWebApi.csproj
+		SccLocalPath2 = .
+		SccProjectFilePathRelativizedFromConnection2 = CourseWebApi\\
+		SccProjectUniqueName3 = Golfler\\Golfler.csproj
+		SccLocalPath3 = .
+		SccProjectFilePathRelativizedFromConnection3 = Golfler\\
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A915CF3F-5340-4878-B1C0-3A410906DFD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A915CF3F-5340-4878-B1C0-3A410906DFD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A915CF3F-5340-4878-B1C0-3A410906DFD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A915CF3F-5340-4878-B1C0-3A410906DFD3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68290E0B-B2DD-46A8-BB43-E47E1327C695}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68290E0B-B2DD-46A8-BB43-E47E1327C695}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68290E0B-B2DD-46A8-BB43-E47E1327C695}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68290E0B-B2DD-46A8-BB43-E47E1327C695}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00C0F90B-2668-48C9-8FC4-5047799B8929}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00C0F90B-2668-48C9-8FC4-5047799B8929}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00C0F90B-2668-48C9-8FC4-5047799B8929}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00C0F90B-2668-48C9-8FC4-5047799B8929}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

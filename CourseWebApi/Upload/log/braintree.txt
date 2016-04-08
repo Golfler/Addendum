@@ -1,0 +1,857 @@
+---------------------------------------------------------------------
+7/22/2015 10:11:14 AM
+---------------------------------------------------------------------
+UpdateOrderDeliveryStatus start
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+7/22/2015 10:11:23 AM
+---------------------------------------------------------------------
+UpdateOrderDeliveryStatus start
+Payment start
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+7/22/2015 10:11:33 AM
+---------------------------------------------------------------------
+UpdateOrderDeliveryStatus start
+Payment start
+before charge
+test
+ProcessorResponseCode: 1000
+Result String: fsbtvt
+ProcessorResponseCode: Approved
+after charge: fsbtvt
+Payment result: True
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+7/22/2015 10:11:35 AM
+---------------------------------------------------------------------
+UpdateOrderDeliveryStatus start
+Payment start
+before charge
+test
+ProcessorResponseCode: 1000
+Result String: fsbtvt
+ProcessorResponseCode: Approved
+after charge: fsbtvt
+Payment result: True
+transaction id before save: fsbtvt
+msg before save: Payment successful.
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+7/22/2015 10:11:48 AM
+---------------------------------------------------------------------
+UpdateOrderDeliveryStatus start
+Payment start
+before charge
+test
+ProcessorResponseCode: 1000
+Result String: fsbtvt
+ProcessorResponseCode: Approved
+after charge: fsbtvt
+Payment result: True
+transaction id before save: fsbtvt
+msg before save: Payment successful.
+transaction id after save: fsbtvt
+msg after save: Approved
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+7/22/2015 10:11:55 AM
+---------------------------------------------------------------------
+UpdateOrderDeliveryStatus start
+Payment start
+before charge
+test
+ProcessorResponseCode: 1000
+Result String: fsbtvt
+ProcessorResponseCode: Approved
+after charge: fsbtvt
+Payment result: True
+transaction id before save: fsbtvt
+msg before save: Payment successful.
+transaction id after save: fsbtvt
+msg after save: Approved
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+7/22/2015 10:13:53 AM
+---------------------------------------------------------------------
+UpdateOrderDeliveryStatus start
+Payment start
+before charge
+test
+ProcessorResponseCode: 1000
+Result String: fsbtvt
+ProcessorResponseCode: Approved
+after charge: fsbtvt
+Payment result: True
+transaction id before save: fsbtvt
+msg before save: Payment successful.
+transaction id after save: fsbtvt
+msg after save: Approved
+Main Exception: Object reference not set to an instance of an object.
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+7/22/2015 10:20:32 AM
+---------------------------------------------------------------------
+UpdateOrderDeliveryStatus start
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+7/22/2015 10:20:44 AM
+---------------------------------------------------------------------
+UpdateOrderDeliveryStatus start
+Payment start
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+7/22/2015 10:20:49 AM
+---------------------------------------------------------------------
+UpdateOrderDeliveryStatus start
+Payment start
+before charge
+test
+ProcessorResponseCode: 1000
+Result String: 9p6kpp
+ProcessorResponseCode: Approved
+after charge: 9p6kpp
+Payment result: True
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+7/22/2015 10:20:50 AM
+---------------------------------------------------------------------
+UpdateOrderDeliveryStatus start
+Payment start
+before charge
+test
+ProcessorResponseCode: 1000
+Result String: 9p6kpp
+ProcessorResponseCode: Approved
+after charge: 9p6kpp
+Payment result: True
+transaction id before save: 9p6kpp
+msg before save: Payment successful.
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+7/22/2015 10:20:56 AM
+---------------------------------------------------------------------
+UpdateOrderDeliveryStatus start
+Payment start
+before charge
+test
+ProcessorResponseCode: 1000
+Result String: 9p6kpp
+ProcessorResponseCode: Approved
+after charge: 9p6kpp
+Payment result: True
+transaction id before save: 9p6kpp
+msg before save: Payment successful.
+transaction id after save: 9p6kpp
+msg after save: Approved
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+7/22/2015 10:20:57 AM
+---------------------------------------------------------------------
+UpdateOrderDeliveryStatus start
+Payment start
+before charge
+test
+ProcessorResponseCode: 1000
+Result String: 9p6kpp
+ProcessorResponseCode: Approved
+after charge: 9p6kpp
+Payment result: True
+transaction id before save: 9p6kpp
+msg before save: Payment successful.
+transaction id after save: 9p6kpp
+msg after save: Approved
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+7/22/2015 10:27:11 AM
+---------------------------------------------------------------------
+UpdateOrderDeliveryStatus start
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+7/22/2015 10:27:17 AM
+---------------------------------------------------------------------
+UpdateOrderDeliveryStatus start
+Payment start
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+7/22/2015 10:27:23 AM
+---------------------------------------------------------------------
+UpdateOrderDeliveryStatus start
+Payment start
+before charge
+test
+ProcessorResponseCode: 1000
+Result String: 5dbygd
+ProcessorResponseCode: Approved
+after charge: 5dbygd
+Payment result: True
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+7/22/2015 10:27:24 AM
+---------------------------------------------------------------------
+UpdateOrderDeliveryStatus start
+Payment start
+before charge
+test
+ProcessorResponseCode: 1000
+Result String: 5dbygd
+ProcessorResponseCode: Approved
+after charge: 5dbygd
+Payment result: True
+transaction id before save: 5dbygd
+msg before save: Payment successful.
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+7/22/2015 10:27:30 AM
+---------------------------------------------------------------------
+UpdateOrderDeliveryStatus start
+Payment start
+before charge
+test
+ProcessorResponseCode: 1000
+Result String: 5dbygd
+ProcessorResponseCode: Approved
+after charge: 5dbygd
+Payment result: True
+transaction id before save: 5dbygd
+msg before save: Payment successful.
+transaction id after save: 5dbygd
+msg after save: Approved
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+7/22/2015 10:27:31 AM
+---------------------------------------------------------------------
+UpdateOrderDeliveryStatus start
+Payment start
+before charge
+test
+ProcessorResponseCode: 1000
+Result String: 5dbygd
+ProcessorResponseCode: Approved
+after charge: 5dbygd
+Payment result: True
+transaction id before save: 5dbygd
+msg before save: Payment successful.
+transaction id after save: 5dbygd
+msg after save: Approved
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+7/22/2015 10:51:11 AM
+---------------------------------------------------------------------
+Payment start
+Payment result: False
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+7/22/2015 10:51:12 AM
+---------------------------------------------------------------------
+Payment start
+Payment result: False
+transaction id before save: 
+msg before save: Payment has already been successful.
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+7/22/2015 10:51:27 AM
+---------------------------------------------------------------------
+Payment start
+Payment result: False
+transaction id before save: 
+msg before save: Payment has already been successful.
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+7/22/2015 10:54:13 AM
+---------------------------------------------------------------------
+Payment start
+Payment result: False
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+7/22/2015 10:54:14 AM
+---------------------------------------------------------------------
+Payment start
+Payment result: False
+transaction id before save: 
+msg before save: Payment has already been successful.
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+7/22/2015 10:54:21 AM
+---------------------------------------------------------------------
+Payment start
+Payment result: False
+transaction id before save: 
+msg before save: Payment has already been successful.
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+7/22/2015 10:55:40 AM
+---------------------------------------------------------------------
+UpdateOrderDeliveryStatus start
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+7/22/2015 10:58:33 AM
+---------------------------------------------------------------------
+UpdateOrderDeliveryStatus start
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+7/22/2015 10:58:38 AM
+---------------------------------------------------------------------
+UpdateOrderDeliveryStatus start
+Payment start
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+7/22/2015 10:58:45 AM
+---------------------------------------------------------------------
+UpdateOrderDeliveryStatus start
+Payment start
+before charge
+test
+ProcessorResponseCode: 1000
+Result String: 2z65md
+ProcessorResponseCode: Approved
+after charge: 2z65md
+Payment result: True
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+7/22/2015 10:58:46 AM
+---------------------------------------------------------------------
+UpdateOrderDeliveryStatus start
+Payment start
+before charge
+test
+ProcessorResponseCode: 1000
+Result String: 2z65md
+ProcessorResponseCode: Approved
+after charge: 2z65md
+Payment result: True
+transaction id before save: 2z65md
+msg before save: Payment successful.
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+7/22/2015 10:58:51 AM
+---------------------------------------------------------------------
+UpdateOrderDeliveryStatus start
+Payment start
+before charge
+test
+ProcessorResponseCode: 1000
+Result String: 2z65md
+ProcessorResponseCode: Approved
+after charge: 2z65md
+Payment result: True
+transaction id before save: 2z65md
+msg before save: Payment successful.
+transaction id after save: 2z65md
+msg after save: Approved
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+7/22/2015 10:58:53 AM
+---------------------------------------------------------------------
+UpdateOrderDeliveryStatus start
+Payment start
+before charge
+test
+ProcessorResponseCode: 1000
+Result String: 2z65md
+ProcessorResponseCode: Approved
+after charge: 2z65md
+Payment result: True
+transaction id before save: 2z65md
+msg before save: Payment successful.
+transaction id after save: 2z65md
+msg after save: Approved
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+7/22/2015 11:20:20 AM
+---------------------------------------------------------------------
+UpdateOrderDeliveryStatus start
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+7/22/2015 11:20:26 AM
+---------------------------------------------------------------------
+UpdateOrderDeliveryStatus start
+Payment start
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+7/22/2015 11:20:36 AM
+---------------------------------------------------------------------
+UpdateOrderDeliveryStatus start
+Payment start
+before charge
+test
+ProcessorResponseCode: 1000
+Result String: ftsw8p
+ProcessorResponseCode: Approved
+after charge: ftsw8p
+Payment result: True
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+7/22/2015 11:20:39 AM
+---------------------------------------------------------------------
+UpdateOrderDeliveryStatus start
+Payment start
+before charge
+test
+ProcessorResponseCode: 1000
+Result String: ftsw8p
+ProcessorResponseCode: Approved
+after charge: ftsw8p
+Payment result: True
+transaction id before save: ftsw8p
+msg before save: Payment successful.
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+7/22/2015 11:20:44 AM
+---------------------------------------------------------------------
+UpdateOrderDeliveryStatus start
+Payment start
+before charge
+test
+ProcessorResponseCode: 1000
+Result String: ftsw8p
+ProcessorResponseCode: Approved
+after charge: ftsw8p
+Payment result: True
+transaction id before save: ftsw8p
+msg before save: Payment successful.
+transaction id after save: ftsw8p
+msg after save: Approved
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+7/22/2015 11:20:44 AM
+---------------------------------------------------------------------
+UpdateOrderDeliveryStatus start
+Payment start
+before charge
+test
+ProcessorResponseCode: 1000
+Result String: ftsw8p
+ProcessorResponseCode: Approved
+after charge: ftsw8p
+Payment result: True
+transaction id before save: ftsw8p
+msg before save: Payment successful.
+transaction id after save: ftsw8p
+msg after save: Approved
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+8/12/2015 8:17:30 PM
+---------------------------------------------------------------------
+UpdateOrderDeliveryStatus start
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+8/12/2015 8:17:33 PM
+---------------------------------------------------------------------
+UpdateOrderDeliveryStatus start
+Payment start
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+8/12/2015 8:29:51 PM
+---------------------------------------------------------------------
+UpdateOrderDeliveryStatus start
+Payment start
+before charge
+test
+ProcessorResponseCode: 1000
+Result String: 5ww66t
+ProcessorResponseCode: Approved
+after charge: 5ww66t
+Payment result: True
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+8/12/2015 8:29:51 PM
+---------------------------------------------------------------------
+UpdateOrderDeliveryStatus start
+Payment start
+before charge
+test
+ProcessorResponseCode: 1000
+Result String: 5ww66t
+ProcessorResponseCode: Approved
+after charge: 5ww66t
+Payment result: True
+transaction id before save: 5ww66t
+msg before save: Payment successful.
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+8/12/2015 8:29:51 PM
+---------------------------------------------------------------------
+UpdateOrderDeliveryStatus start
+Payment start
+before charge
+test
+ProcessorResponseCode: 1000
+Result String: 5ww66t
+ProcessorResponseCode: Approved
+after charge: 5ww66t
+Payment result: True
+transaction id before save: 5ww66t
+msg before save: Payment successful.
+transaction id after save: 5ww66t
+msg after save: Approved
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+8/12/2015 8:29:51 PM
+---------------------------------------------------------------------
+UpdateOrderDeliveryStatus start
+Payment start
+before charge
+test
+ProcessorResponseCode: 1000
+Result String: 5ww66t
+ProcessorResponseCode: Approved
+after charge: 5ww66t
+Payment result: True
+transaction id before save: 5ww66t
+msg before save: Payment successful.
+transaction id after save: 5ww66t
+msg after save: Approved
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/25/2015 10:34:22 PM
+---------------------------------------------------------------------
+Payment start
+before charge
+test
+after charge: 
+Payment result: False
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/25/2015 10:34:22 PM
+---------------------------------------------------------------------
+Payment start
+before charge
+test
+after charge: 
+Payment result: False
+transaction id before save: 
+msg before save: Payment fail.
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/25/2015 10:34:23 PM
+---------------------------------------------------------------------
+Payment start
+before charge
+test
+after charge: 
+Payment result: False
+transaction id before save: 
+msg before save: Payment fail.
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/25/2015 10:35:43 PM
+---------------------------------------------------------------------
+Payment start
+before charge
+test
+after charge: 
+Payment result: False
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/25/2015 10:35:43 PM
+---------------------------------------------------------------------
+Payment start
+before charge
+test
+after charge: 
+Payment result: False
+transaction id before save: 
+msg before save: Payment fail.
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/25/2015 10:35:43 PM
+---------------------------------------------------------------------
+Payment start
+before charge
+test
+after charge: 
+Payment result: False
+transaction id before save: 
+msg before save: Payment fail.
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/25/2015 10:39:38 PM
+---------------------------------------------------------------------
+Payment start
+before charge
+test
+after charge: 
+Payment result: False
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/25/2015 10:39:38 PM
+---------------------------------------------------------------------
+Payment start
+before charge
+test
+after charge: 
+Payment result: False
+transaction id before save: 
+msg before save: Payment fail.
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/25/2015 10:39:38 PM
+---------------------------------------------------------------------
+Payment start
+before charge
+test
+after charge: 
+Payment result: False
+transaction id before save: 
+msg before save: Payment fail.
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/25/2015 11:10:21 PM
+---------------------------------------------------------------------
+Payment start
+before charge
+test
+ProcessorResponseCode: 1000
+Result String: jn42g8
+ProcessorResponseCode: Approved
+after charge: jn42g8
+Payment result: True
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/25/2015 11:10:21 PM
+---------------------------------------------------------------------
+Payment start
+before charge
+test
+ProcessorResponseCode: 1000
+Result String: jn42g8
+ProcessorResponseCode: Approved
+after charge: jn42g8
+Payment result: True
+transaction id before save: jn42g8
+msg before save: Payment successful.
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/25/2015 11:10:21 PM
+---------------------------------------------------------------------
+Payment start
+before charge
+test
+ProcessorResponseCode: 1000
+Result String: jn42g8
+ProcessorResponseCode: Approved
+after charge: jn42g8
+Payment result: True
+transaction id before save: jn42g8
+msg before save: Payment successful.
+transaction id after save: jn42g8
+msg after save: Approved
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/25/2015 11:10:21 PM
+---------------------------------------------------------------------
+Payment start
+before charge
+test
+ProcessorResponseCode: 1000
+Result String: jn42g8
+ProcessorResponseCode: Approved
+after charge: jn42g8
+Payment result: True
+transaction id before save: jn42g8
+msg before save: Payment successful.
+transaction id after save: jn42g8
+msg after save: Approved
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/25/2015 11:11:18 PM
+---------------------------------------------------------------------
+Payment start
+Payment result: False
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/25/2015 11:11:18 PM
+---------------------------------------------------------------------
+Payment start
+Payment result: False
+transaction id before save: 
+msg before save: Payment has already been successful.
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/25/2015 11:11:18 PM
+---------------------------------------------------------------------
+Payment start
+Payment result: False
+transaction id before save: 
+msg before save: Payment has already been successful.
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/25/2015 11:12:01 PM
+---------------------------------------------------------------------
+Payment start
+Payment result: False
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/25/2015 11:12:01 PM
+---------------------------------------------------------------------
+Payment start
+Payment result: False
+transaction id before save: 
+msg before save: Payment has already been successful.
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/25/2015 11:12:02 PM
+---------------------------------------------------------------------
+Payment start
+Payment result: False
+transaction id before save: 
+msg before save: Payment has already been successful.
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/25/2015 11:12:48 PM
+---------------------------------------------------------------------
+Payment start
+Payment result: False
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/25/2015 11:12:48 PM
+---------------------------------------------------------------------
+Payment start
+Payment result: False
+transaction id before save: 
+msg before save: Payment has already been successful.
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/25/2015 11:12:48 PM
+---------------------------------------------------------------------
+Payment start
+Payment result: False
+transaction id before save: 
+msg before save: Payment has already been successful.
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/25/2015 11:14:34 PM
+---------------------------------------------------------------------
+Payment start
+before charge
+test
+ProcessorResponseCode: 1000
+Result String: f7c4z4
+ProcessorResponseCode: Approved
+after charge: f7c4z4
+Payment result: True
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/25/2015 11:14:34 PM
+---------------------------------------------------------------------
+Payment start
+before charge
+test
+ProcessorResponseCode: 1000
+Result String: f7c4z4
+ProcessorResponseCode: Approved
+after charge: f7c4z4
+Payment result: True
+transaction id before save: f7c4z4
+msg before save: Payment successful.
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/25/2015 11:14:34 PM
+---------------------------------------------------------------------
+Payment start
+before charge
+test
+ProcessorResponseCode: 1000
+Result String: f7c4z4
+ProcessorResponseCode: Approved
+after charge: f7c4z4
+Payment result: True
+transaction id before save: f7c4z4
+msg before save: Payment successful.
+transaction id after save: f7c4z4
+msg after save: Approved
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/25/2015 11:14:34 PM
+---------------------------------------------------------------------
+Payment start
+before charge
+test
+ProcessorResponseCode: 1000
+Result String: f7c4z4
+ProcessorResponseCode: Approved
+after charge: f7c4z4
+Payment result: True
+transaction id before save: f7c4z4
+msg before save: Payment successful.
+transaction id after save: f7c4z4
+msg after save: Approved
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/25/2015 11:16:53 PM
+---------------------------------------------------------------------
+Payment start
+before charge
+test
+after charge: 
+Payment result: False
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/25/2015 11:16:53 PM
+---------------------------------------------------------------------
+Payment start
+before charge
+test
+after charge: 
+Payment result: False
+transaction id before save: 
+msg before save: Payment fail.
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/25/2015 11:16:53 PM
+---------------------------------------------------------------------
+Payment start
+before charge
+test
+after charge: 
+Payment result: False
+transaction id before save: 
+msg before save: Payment fail.
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/25/2015 11:23:23 PM
+---------------------------------------------------------------------
+Payment start
+before charge
+test
+after charge: Object reference not set to an instance of an object.
+Payment result: True
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/25/2015 11:23:23 PM
+---------------------------------------------------------------------
+Payment start
+before charge
+test
+after charge: Object reference not set to an instance of an object.
+Payment result: True
+transaction id before save: Object reference not set to an instance of an object.
+msg before save: Payment successful.
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/25/2015 11:23:23 PM
+---------------------------------------------------------------------
+Payment start
+before charge
+test
+after charge: Object reference not set to an instance of an object.
+Payment result: True
+transaction id before save: Object reference not set to an instance of an object.
+msg before save: Payment successful.
+transaction id after save: Object reference not set to an instance of an object.
+msg after save: 
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/25/2015 11:23:23 PM
+---------------------------------------------------------------------
+Payment start
+before charge
+test
+after charge: Object reference not set to an instance of an object.
+Payment result: True
+transaction id before save: Object reference not set to an instance of an object.
+msg before save: Payment successful.
+transaction id after save: Object reference not set to an instance of an object.
+msg after save: 
+---------------------------------------------------------------------

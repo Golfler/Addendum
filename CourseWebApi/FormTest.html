@@ -1,0 +1,296 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Course Web Service</title>
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+    <h3>Course Web Service</h3>
+
+    <br />
+    <b>Course Login Web Service</b>
+    <form action="/api/Course/LoginService" method="post">
+        UserName:
+        <input type="text" id="Text1" name="UserName" />
+        Password:
+        <input type="text" id="Text2" name="Password" />
+        DeviceId:
+        <input type="text" name="DeviceId" id="Text4" />
+        Device Type:
+        <input type="text" name="DeviceType" id="Text3" />
+        Latitude:
+        <input type="text" name="Latitude" id="Latitude" />
+        Longitude:
+        <input type="text" name="Longitude" id="Longitude" />
+        <!--    Image
+        <input type="text" id="Text28" name="Image" />-->
+        AppVersion
+        <input type="text" id="Text176" name="AppVersion" />
+          Device Serial Number
+        <input type="text" id="Text172" name="DeviceSerialNo" />
+        <input type="submit" value="Course Login Service" />
+
+    </form>
+
+    <br />
+    <br />
+    <b>Get List of those orders accepted by cartie Web Service</b>
+    <form action="/api/Course/ListOfOrders" method="post">
+        Cartie ID:<input type="text" id="CartieId" name="CartieId" />
+        <input type="submit" value="Get list of order" />
+    </form>
+
+    <br />
+    <br />
+    <b>Accept/Reject Orders by Cartie/Kitchen Web Service</b>
+    <form action="/api/Course/OrderAcceptReject" method="post">
+        Order ID:<input type="text" id="OrderID" name="OrderID" />
+        Reference ID:<input type="text" id="ReferenceID" name="ReferenceID" />
+        Reference Type:<input type="text" id="ReferenceType" name="ReferenceType" />
+        Status:<input type="text" id="Status" name="Status" />
+        <input type="submit" value="Accept/Reject Order" />
+    </form>
+    <br />
+    <br />
+    <b>Forgot Password</b>
+    <form action="/api/Course/ForgotPasswordService" method="post">
+        UserName
+        <input type="text" id="Text13" name="UserName" />
+
+        <input type="submit" value="Forgot Password" />
+
+    </form>
+
+    <br />
+    <br />
+    <b>Get List of those orders accepted by kitchen Web Service</b>
+    <form action="/api/Course/ListOfKitchenOrders" method="post">
+        Kitchen ID:<input type="text" id="KitchenId" name="KitchenId" />
+        <input type="submit" value="Get list of order" />
+    </form>
+
+    <br />
+    <br />
+    <b>Get List of those orders accepted by ProShop Web Service</b>
+    <form action="/api/Course/ListOfProshopOrders" method="post">
+        ProShop ID:<input type="text" id="Text33" name="ProShopID" />
+        <input type="submit" value="Get list of order" />
+    </form>
+
+    <br />
+    <br />
+    <b>Get List of those orders accepted by Power Admin Web Service</b>
+    <form action="/api/Course/ListOfProshopOrders" method="post">
+        ProShop ID:<input type="text" id="Text35" name="ProShopID" />
+        <input type="submit" value="Get list of order" />
+    </form>
+
+    <br />
+    <br />
+    <b>Get List of all orders which is placed in particular course Web Service</b>
+    <form action="/api/Course/ListOfCourseOrders" method="post">
+        Course ID:<input type="text" id="CourseID" name="CourseID" />
+        Reference ID:<input type="text" id="Text31" name="referenceID" />
+        Reference Type:<input type="text" id="Text32" name="referenceType" />
+        Page Index:<input type="text" id="Text37" name="pageIndex" />
+        Page Size:<input type="text" id="Text38" name="pageSize" />
+        <input type="submit" value="Get list of order" />
+    </form>
+
+    <br />
+    <br />
+    <b>Update the order delivery status Web Service</b>
+    <form action="/api/Course/OrderDeliveryStatus" method="post">
+        Order ID:<input type="text" id="Text5" name="OrderID" />
+        Reference ID:<input type="text" id="Text6" name="ReferenceID" />
+        Reference Type:<input type="text" id="Text7" name="ReferenceType" />
+        <input type="submit" value="Accept/Reject Order" />
+    </form>
+    <br />
+    <br />
+
+    <b>Deliever N Payment Order Web Service</b>
+    <form action="/api/DelieverNPayment/Payment" method="post">
+        <!--Token:<input type="text" id="Text8" name="Token" />-->
+       <!-- MemberShipId:<input type="text" id="Text35" name="MemberShipId" />-->
+        OrderId:<input type="text" id="Text9" name="OrderId" />
+        GolferId:<input type="text" id="Text10" name="GolferId" />
+        Amount:<input type="text" id="Text11" name="Amount" />
+        Type(0 or 1- 1 for Card or 0 for membership Id):<input type="text" id="Text36" name="type" />
+        <input type="submit" value="Deliever" />
+    </form>
+
+
+    <br />
+    <br />
+    <b>Order History/Search Order History</b>
+    <form action="/api/Course/ListOfOrdersHistory" method="post">
+        Order ID:<input type="text" id="Text30" name="OrderId" />
+        Reference ID:<input type="text" id="Text12" name="referenceID" />
+        Reference Type:<input type="text" id="Text14" name="referenceType" />
+        Name:<input type="text" id="Text15" name="name" />
+        Order Date:<input type="text" id="Text16" name="orderDate" />
+        Page Index:<input type="text" id="Text17" name="pageIndex" />
+        Page Size:<input type="text" id="Text18" name="pageSize" />
+        <input type="submit" value="Get Order History" />
+    </form>
+
+    <br />
+    <br />
+    <b>Order delivery by cartie status Web Service</b>
+    <form action="/api/Course/OrderDeliveryStatusByCartie" method="post">
+        Order Id:<input type="text" id="Text19" name="OrderId" />
+        Cartie Id:<input type="text" id="Text20" name="CartieId" />
+        <input type="submit" value="Update Delivery Status" />
+    </form>
+    <br />
+    <br />
+
+    <b>Order pickup status Web Service</b>
+    <form action="/api/Course/OrderPickupStatus" method="post">
+        Order Id:<input type="text" id="Text21" name="OrderId" />
+        <input type="submit" value="Update Pickup Status" />
+    </form>
+    <br />
+    <br />
+
+    <b>Order ready status Web Service</b>
+    <form action="/api/Course/OrderReadyStatus" method="post">
+        Order Id:<input type="text" id="Text22" name="OrderId" />
+        Reference Id:<input type="text" id="Text23" name="referenceID" />
+        Reference Type:<input type="text" id="Text27" name="referenceType" />
+        <input type="submit" value="Update Ready Status" />
+    </form>
+    <br />
+    <br />
+
+    <b>WeatherApi Web Service</b>
+    <form action="/api/Course/WeatherApi" method="post">
+        OrderId:<input type="text" id="Text34" name="OrderId" />
+        GolferId:<input type="text" id="Text39" name="GolferId" />
+        Latitude:<input type="text" id="Text40" name="Latitude" />
+        Longitude:<input type="text" id="Text41" name="Longitude" />
+        <input type="submit" value="Submit" />
+    </form>
+    <br />
+    <br />
+    <b>User current position web service</b>
+    <form action="/api/Course/UserCurrentPosition" method="post">
+        Course ID:<input type="text" id="Text24" name="CourseID" />
+        Reference ID:<input type="text" id="Text25" name="ReferenceID" />
+        Reference Type:<input type="text" id="Text26" name="ReferenceType" />
+        Latitude:<input type="text" id="Text29" name="Latitude" />
+        Longitude:<input type="text" id="Text42" name="Longitude" />
+          Device Serial Number
+        <input type="text" id="Text8" name="DeviceSerialNo" />
+        <input type="submit" value="Submit" />
+    </form>
+    <br />
+    <br />
+
+    <b>Get User/Menu list of course</b>
+    <form action="/api/Course/CourseUserAndMenuList" method="post">
+        User ID:<input type="text" id="Text28" name="ID" />
+        Course ID:<input type="text" id="Text43" name="CourseId" />
+        <input type="submit" value="Submit" />
+    </form>
+    <br />
+    <br />
+
+    <b>Get Campered menu list</b>
+    <form action="/api/Course/CampareMenu" method="post">
+        searchText:<input type="text" id="Text44" name="searchText" />
+        Course ID:<input type="text" id="Text45" name="courseID" />
+        <input type="submit" value="Submit" />
+    </form>
+    <br />
+    <br />
+    <b>Add / Edit Admin User Service</b>
+    <form action="/api/Course/AddAdminUser" method="post">
+        ID:
+        <input type="text" id="Text49" name="ID" value="0" />
+        First Name:
+        <input type="text" id="Text46" name="FirstName" />
+        LastName:
+        <input type="text" id="Text47" name="LastName" />
+        Email:
+        <input type="text" name="Email" id="Text48" />
+        Type:
+        <input type="text" name="Type" id="Text50" />
+        User Name:
+        <input type="text" name="UserName" id="Text51" />
+        Password:
+        <input type="text" name="Password" id="Text52" />
+        CourseId:
+        <input type="text" name="CourseId" id="Text53" />
+        CreatedBy / ModifiedBy:
+         <input type="text" name="CreatedBy" id="Text54" />
+        Phone:
+         <input type="text" name="Phone" id="Text55" />
+        <input type="submit" value="Add / Edit User" />
+
+    </form>
+
+    <br />
+    <br />
+    <b>Delete Admin User Service</b>
+    <form action="/api/Course/DeleteAdminUser" method="post">
+        ID:
+        <input type="text" name="ID" id="Text56" />
+        <input type="submit" value="Delete User" />
+    </form>
+    <br />
+    <br />
+    <b>Activate Sub Category Web Service</b>
+    <form action="/api/Course/ActivateSubCategory" method="post">
+        CourseID: <input type="text" name="CourseID" />
+        SubCategoryID: <input type="text" name="SubCategoryID" />
+        UserID: <input type="text" name="UserID" id="UserID" />
+        IsAllow: <input type="text" name="IsAllow" />
+        <input type="submit" value="Activate Sub Category" />
+    </form>
+
+    <br />
+    <br />
+
+    <b>Save Food Item Web Service</b>
+    <form action="/api/Course/SaveCourseFoodItem" method="post">
+        MenuItemID: <input type="text" name="MenuItemID" />
+        CourseFoodItemID: <input type="text" name="CourseFoodItemID" />
+        Price: <input type="text" name="Price" />
+        UserID: <input type="text" name="UserID" id="Text58" />
+        CourseID: <input type="text" name="CourseID" id="Text59" />
+        IsAllow: <input type="text" name="IsAllow" />
+        <input type="submit" value="Save Food Item" />
+    </form>
+    <br />
+    <br />
+
+    <b>Get Order Statistics Report</b>
+    <form action="/api/Course/GetOrderStatisticsReport" method="post">
+        CourseID: <input type="text" name="CourseID" />
+        ReportType: <input type="text" name="ReportType" />
+        ReportValue: <input type="text" name="ReportValue" />
+        <input type="submit" value="Get Report" />
+    </form>
+    <br />
+    <br />
+
+    <b>Push Notification Test</b>
+    <form action="/api/Course/PushNotificationTest" method="post">
+        SenderId: <input type="text" name="SenderId" />
+        SenderName: <input type="text" name="SenderName" />
+        ReceiverId: <input type="text" name="ReceiverId" />
+        ReceiverName: <input type="text" name="ReceiverName" />
+        pushMsgFrom (C - Course or G - Golfer): <input type="text" name="pushMsgFrom" />
+        DeviceType (ios or android): <input type="text" name="DeviceType" />
+        Message: <input type="text" name="Message" />
+        IsMessageToGolfer (true/false): <input type="text" name="IsMessageToGolfer" />
+        iosMessageJson: <input type="text" name="iosMessageJson" />
+        <input type="submit" value="Send Push Notification" />
+    </form>
+    <br />
+    <br />
+</body>
+</html>

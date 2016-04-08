@@ -1,0 +1,11 @@
+D:\Amit\Golfler\CourseWebApi\bin\Golfler.pdb
+D:\Amit\Golfler\CourseWebApi\bin\Newtonsoft.Json.xml
+D:\Amit\Golfler\CourseWebApi\bin\CourseWebApi.dll
+D:\Amit\Golfler\CourseWebApi\bin\CourseWebApi.pdb
+D:\Amit\Golfler\CourseWebApi\bin\ErrorLibrary.dll
+D:\Amit\Golfler\CourseWebApi\bin\PushSharp.Android.dll
+D:\Amit\Golfler\CourseWebApi\bin\PushSharp.Apple.dll
+D:\Amit\Golfler\CourseWebApi\bin\PushSharp.Core.dll
+D:\Amit\Golfler\CourseWebApi\obj\Debug\CourseWebApi.csprojResolveAssemblyReference.cache
+D:\Amit\Golfler\CourseWebApi\obj\Debug\CourseWebApi.dll
+D:\Amit\Golfler\CourseWebApi\obj\Debug\CourseWebApi.pdb
