@@ -1,0 +1,15 @@
+D:\Amit\Golfler\GolferWebAPI\bin\Newtonsoft.Json.xml
+D:\Amit\Golfler\GolferWebAPI\bin\Golfler.pdb
+D:\Amit\Golfler\GolferWebAPI\bin\EntityFramework.xml
+D:\Amit\Golfler\GolferWebAPI\bin\System.Web.Helpers.xml
+D:\Amit\Golfler\GolferWebAPI\bin\System.Web.Mvc.xml
+D:\Amit\Golfler\GolferWebAPI\bin\System.Web.Razor.xml
+D:\Amit\Golfler\GolferWebAPI\bin\System.Web.WebPages.xml
+D:\Amit\Golfler\GolferWebAPI\bin\System.Web.WebPages.Deployment.xml
+D:\Amit\Golfler\GolferWebAPI\bin\System.Web.WebPages.Razor.xml
+D:\Amit\Golfler\GolferWebAPI\bin\GolferWebAPI.dll
+D:\Amit\Golfler\GolferWebAPI\bin\GolferWebAPI.pdb
+D:\Amit\Golfler\GolferWebAPI\bin\Braintree-2.41.0.dll
+D:\Amit\Golfler\GolferWebAPI\obj\Debug\GolferWebAPI.dll
+D:\Amit\Golfler\GolferWebAPI\obj\Debug\GolferWebAPI.pdb
+D:\Amit\Golfler\GolferWebAPI\obj\Debug\GolferWebAPI.csprojResolveAssemblyReference.cache

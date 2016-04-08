@@ -1,0 +1,847 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="GolflerModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="GolflerModelStoreContainer">
+    <EntitySet Name="GF_AdminUsers" EntityType="GolflerModel.Store.GF_AdminUsers" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="GF_Category" EntityType="GolflerModel.Store.GF_Category" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="GF_ContactList" EntityType="GolflerModel.Store.GF_ContactList" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="GF_CourseInfo" EntityType="GolflerModel.Store.GF_CourseInfo" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="GF_CourseMenu" EntityType="GolflerModel.Store.GF_CourseMenu" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="GF_Courses" EntityType="GolflerModel.Store.GF_Courses" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="GF_CourseSuggest" EntityType="GolflerModel.Store.GF_CourseSuggest" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="GF_CourseUsers" EntityType="GolflerModel.Store.GF_CourseUsers" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="GF_EmailTemplates" EntityType="GolflerModel.Store.GF_EmailTemplates" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="GF_EmailTemplatesFields" EntityType="GolflerModel.Store.GF_EmailTemplatesFields" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="GF_Golfer" EntityType="GolflerModel.Store.GF_Golfer" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="GF_GolferChangingLocation" EntityType="GolflerModel.Store.GF_GolferChangingLocation" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="GF_GolferRating" EntityType="GolflerModel.Store.GF_GolferRating" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="GF_GolferUser" EntityType="GolflerModel.Store.GF_GolferUser" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="GF_GolferWallet" EntityType="GolflerModel.Store.GF_GolferWallet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="GF_MenuItems" EntityType="GolflerModel.Store.GF_MenuItems" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="GF_Messages" EntityType="GolflerModel.Store.GF_Messages" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="GF_Order" EntityType="GolflerModel.Store.GF_Order" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="GF_OrderDetails" EntityType="GolflerModel.Store.GF_OrderDetails" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="GF_PromoCode" EntityType="GolflerModel.Store.GF_PromoCode" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="GF_ResolutionCenter" EntityType="GolflerModel.Store.GF_ResolutionCenter" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="GF_Settings" EntityType="GolflerModel.Store.GF_Settings" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="GF_SubCategory" EntityType="GolflerModel.Store.GF_SubCategory" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="GF_UserCurrentPosition" EntityType="GolflerModel.Store.GF_UserCurrentPosition" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="GF_WeatherDetails" EntityType="GolflerModel.Store.GF_WeatherDetails" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_GF_CourseMenu_GF_Category" Association="GolflerModel.Store.FK_GF_CourseMenu_GF_Category">
+      <End Role="GF_Category" EntitySet="GF_Category" />
+      <End Role="GF_CourseMenu" EntitySet="GF_CourseMenu" />
+    </AssociationSet>
+    <AssociationSet Name="FK_GF_CourseMenu_GF_CourseInfo" Association="GolflerModel.Store.FK_GF_CourseMenu_GF_CourseInfo">
+      <End Role="GF_CourseInfo" EntitySet="GF_CourseInfo" />
+      <End Role="GF_CourseMenu" EntitySet="GF_CourseMenu" />
+    </AssociationSet>
+    <AssociationSet Name="FK_GF_CourseUsers_GF_AdminUsers" Association="GolflerModel.Store.FK_GF_CourseUsers_GF_AdminUsers">
+      <End Role="GF_AdminUsers" EntitySet="GF_AdminUsers" />
+      <End Role="GF_CourseUsers" EntitySet="GF_CourseUsers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_GF_CourseUsers_GF_CourseInfo" Association="GolflerModel.Store.FK_GF_CourseUsers_GF_CourseInfo">
+      <End Role="GF_CourseInfo" EntitySet="GF_CourseInfo" />
+      <End Role="GF_CourseUsers" EntitySet="GF_CourseUsers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_GF_GolferRating_GF_Golfer" Association="GolflerModel.Store.FK_GF_GolferRating_GF_Golfer">
+      <End Role="GF_Golfer" EntitySet="GF_Golfer" />
+      <End Role="GF_GolferRating" EntitySet="GF_GolferRating" />
+    </AssociationSet>
+    <AssociationSet Name="FK_GF_GolferUser_GF_CourseInfo" Association="GolflerModel.Store.FK_GF_GolferUser_GF_CourseInfo">
+      <End Role="GF_CourseInfo" EntitySet="GF_CourseInfo" />
+      <End Role="GF_GolferUser" EntitySet="GF_GolferUser" />
+    </AssociationSet>
+    <AssociationSet Name="FK_GF_GolferUser_GF_Golfer" Association="GolflerModel.Store.FK_GF_GolferUser_GF_Golfer">
+      <End Role="GF_Golfer" EntitySet="GF_Golfer" />
+      <End Role="GF_GolferUser" EntitySet="GF_GolferUser" />
+    </AssociationSet>
+    <AssociationSet Name="FK_GF_GolferWallet_GF_Golfer" Association="GolflerModel.Store.FK_GF_GolferWallet_GF_Golfer">
+      <End Role="GF_Golfer" EntitySet="GF_Golfer" />
+      <End Role="GF_GolferWallet" EntitySet="GF_GolferWallet" />
+    </AssociationSet>
+    <AssociationSet Name="FK_GF_MenuItems_GF_SubCategory" Association="GolflerModel.Store.FK_GF_MenuItems_GF_SubCategory">
+      <End Role="GF_SubCategory" EntitySet="GF_SubCategory" />
+      <End Role="GF_MenuItems" EntitySet="GF_MenuItems" />
+    </AssociationSet>
+    <AssociationSet Name="FK_GF_Order_GF_CourseInfo" Association="GolflerModel.Store.FK_GF_Order_GF_CourseInfo">
+      <End Role="GF_CourseInfo" EntitySet="GF_CourseInfo" />
+      <End Role="GF_Order" EntitySet="GF_Order" />
+    </AssociationSet>
+    <AssociationSet Name="FK_GF_Order_GF_Golfer" Association="GolflerModel.Store.FK_GF_Order_GF_Golfer">
+      <End Role="GF_Golfer" EntitySet="GF_Golfer" />
+      <End Role="GF_Order" EntitySet="GF_Order" />
+    </AssociationSet>
+    <AssociationSet Name="FK_GF_Order_GF_PromoCode" Association="GolflerModel.Store.FK_GF_Order_GF_PromoCode">
+      <End Role="GF_PromoCode" EntitySet="GF_PromoCode" />
+      <End Role="GF_Order" EntitySet="GF_Order" />
+    </AssociationSet>
+    <AssociationSet Name="FK_GF_OrderDetails_GF_MenuItems" Association="GolflerModel.Store.FK_GF_OrderDetails_GF_MenuItems">
+      <End Role="GF_MenuItems" EntitySet="GF_MenuItems" />
+      <End Role="GF_OrderDetails" EntitySet="GF_OrderDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_GF_OrderDetails_GF_Order" Association="GolflerModel.Store.FK_GF_OrderDetails_GF_Order">
+      <End Role="GF_Order" EntitySet="GF_Order" />
+      <End Role="GF_OrderDetails" EntitySet="GF_OrderDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_GF_PromoCode_GF_CourseInfo" Association="GolflerModel.Store.FK_GF_PromoCode_GF_CourseInfo">
+      <End Role="GF_CourseInfo" EntitySet="GF_CourseInfo" />
+      <End Role="GF_PromoCode" EntitySet="GF_PromoCode" />
+    </AssociationSet>
+    <AssociationSet Name="FK_GF_ResolutionCenter_GF_CourseInfo" Association="GolflerModel.Store.FK_GF_ResolutionCenter_GF_CourseInfo">
+      <End Role="GF_CourseInfo" EntitySet="GF_CourseInfo" />
+      <End Role="GF_ResolutionCenter" EntitySet="GF_ResolutionCenter" />
+    </AssociationSet>
+    <AssociationSet Name="FK_GF_ResolutionCenter_GF_Golfer" Association="GolflerModel.Store.FK_GF_ResolutionCenter_GF_Golfer">
+      <End Role="GF_Golfer" EntitySet="GF_Golfer" />
+      <End Role="GF_ResolutionCenter" EntitySet="GF_ResolutionCenter" />
+    </AssociationSet>
+    <AssociationSet Name="FK_GF_SubCategory_GF_Category" Association="GolflerModel.Store.FK_GF_SubCategory_GF_Category">
+      <End Role="GF_Category" EntitySet="GF_Category" />
+      <End Role="GF_SubCategory" EntitySet="GF_SubCategory" />
+    </AssociationSet>
+    <AssociationSet Name="FK_GF_UserCurrentPosition_GF_CourseInfo" Association="GolflerModel.Store.FK_GF_UserCurrentPosition_GF_CourseInfo">
+      <End Role="GF_CourseInfo" EntitySet="GF_CourseInfo" />
+      <End Role="GF_UserCurrentPosition" EntitySet="GF_UserCurrentPosition" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="GF_AdminUsers">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="RoleId" Type="bigint" />
+    <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="Password" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="Email" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="FirstName" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="LastName" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="Phone" Type="nvarchar" Nullable="false" MaxLength="20" />
+    <Property Name="Type" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="LastLogin" Type="datetime" />
+    <Property Name="LastLoginIP" Type="nvarchar" MaxLength="50" />
+    <Property Name="CreatedBy" Type="bigint" Nullable="false" />
+    <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+    <Property Name="ModifiedBy" Type="bigint" />
+    <Property Name="ModifiedOn" Type="datetime" />
+    <Property Name="Status" Type="varchar" Nullable="false" MaxLength="1" />
+    <Property Name="SALT" Type="nvarchar" MaxLength="5" />
+    <Property Name="CourseId" Type="bigint" />
+    <Property Name="DeviceType" Type="nvarchar" MaxLength="50" />
+    <Property Name="APNID" Type="nvarchar(max)" />
+    <Property Name="GCMID" Type="nvarchar(max)" />
+    <Property Name="IsOnline" Type="bit" />
+    <Property Name="Image" Type="nvarchar" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="GF_Category">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Status" Type="char" MaxLength="1" />
+    <Property Name="Type" Type="nvarchar" MaxLength="15" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
+    <Property Name="ModifyDate" Type="datetime" />
+    <Property Name="ModifyBy" Type="nvarchar" MaxLength="50" />
+    <Property Name="DisplayOrder" Type="int" />
+  </EntityType>
+  <EntityType Name="GF_ContactList">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="bigint" />
+    <Property Name="FriendId" Type="bigint" />
+    <Property Name="UserType" Type="nvarchar" MaxLength="50" />
+    <Property Name="FriendType" Type="nvarchar" MaxLength="50" />
+    <Property Name="IsConnected" Type="bit" />
+    <Property Name="CreatedDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="GF_CourseInfo">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="CAT" Type="varchar" MaxLength="100" />
+    <Property Name="COURSE_NAME" Type="varchar" MaxLength="100" />
+    <Property Name="TYPE" Type="varchar" MaxLength="100" />
+    <Property Name="ADDRESS" Type="varchar" MaxLength="100" />
+    <Property Name="CITY" Type="varchar" MaxLength="100" />
+    <Property Name="COUNTY" Type="varchar" MaxLength="100" />
+    <Property Name="STATE" Type="varchar" MaxLength="100" />
+    <Property Name="ZIPCODE" Type="varchar" MaxLength="100" />
+    <Property Name="PHONE" Type="varchar" MaxLength="100" />
+    <Property Name="YEARBUILT" Type="varchar" MaxLength="100" />
+    <Property Name="GREENGRASSTYPE" Type="varchar" MaxLength="100" />
+    <Property Name="FAIRWAYSGRASSTYPE" Type="varchar" MaxLength="100" />
+    <Property Name="WATERHAZARDS" Type="varchar" MaxLength="100" />
+    <Property Name="SANDBUNKERS" Type="varchar" MaxLength="100" />
+    <Property Name="NUMBEROFHOLES" Type="varchar" MaxLength="100" />
+    <Property Name="YARDAGEMARKERS" Type="varchar" MaxLength="100" />
+    <Property Name="ACCEPTTEATIMES" Type="varchar" MaxLength="100" />
+    <Property Name="EARLIESCALLTEATIME" Type="varchar" MaxLength="100" />
+    <Property Name="TRAININGFACILITIES" Type="varchar" MaxLength="100" />
+    <Property Name="ONSITE_GOLFPRO" Type="varchar" MaxLength="100" />
+    <Property Name="SPIKES" Type="varchar" MaxLength="100" />
+    <Property Name="GUESTS" Type="varchar" MaxLength="100" />
+    <Property Name="ACCESS" Type="varchar" MaxLength="100" />
+    <Property Name="DISCOUNTS" Type="varchar" MaxLength="100" />
+    <Property Name="RENTALCLUBS" Type="varchar" MaxLength="100" />
+    <Property Name="PULLCARTS" Type="varchar" MaxLength="100" />
+    <Property Name="WALKING" Type="varchar" MaxLength="100" />
+    <Property Name="RESTAURANT" Type="varchar" MaxLength="100" />
+    <Property Name="BAR" Type="varchar" MaxLength="100" />
+    <Property Name="HOURS" Type="varchar" MaxLength="100" />
+    <Property Name="Food" Type="varchar" MaxLength="100" />
+    <Property Name="AVAILABLEPRODUCTS" Type="varchar" MaxLength="100" />
+    <Property Name="HOMESONCOURSE" Type="varchar" MaxLength="100" />
+    <Property Name="LATITUDE" Type="varchar" MaxLength="100" />
+    <Property Name="LONGITUDE" Type="varchar" MaxLength="100" />
+    <Property Name="Status" Type="char" MaxLength="1" />
+    <Property Name="IsPlateformFeeActive" Type="bit" />
+    <Property Name="PlateformFee" Type="decimal" Scale="2" />
+    <Property Name="PartnershipStatus" Type="char" MaxLength="1" />
+    <Property Name="Tax" Type="decimal" Scale="2" />
+    <Property Name="Description" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="GF_CourseMenu">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="CourseID" Type="bigint" Nullable="false" />
+    <Property Name="CategoryID" Type="bigint" />
+    <Property Name="Status" Type="char" MaxLength="1" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
+    <Property Name="ModifyDate" Type="datetime" />
+    <Property Name="ModifyBy" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="GF_Courses">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="varchar" Nullable="false" MaxLength="100" />
+    <Property Name="TemplateID" Type="bigint" />
+    <Property Name="TemplateLogo" Type="varchar" MaxLength="50" />
+    <Property Name="MembershipLevel" Type="bigint" />
+    <Property Name="ParentOrganization" Type="bigint" />
+    <Property Name="ContactName" Type="varchar" MaxLength="50" />
+    <Property Name="ConatctNameLast" Type="varchar" MaxLength="50" />
+    <Property Name="ContactDesignation" Type="varchar" MaxLength="50" />
+    <Property Name="ContactPhone" Type="varchar" MaxLength="50" />
+    <Property Name="ContactMail" Type="varchar" MaxLength="50" />
+    <Property Name="Address1" Type="varchar" MaxLength="50" />
+    <Property Name="Address2" Type="varchar" MaxLength="50" />
+    <Property Name="Country" Type="varchar" MaxLength="50" />
+    <Property Name="State" Type="varchar" MaxLength="50" />
+    <Property Name="City" Type="varchar" MaxLength="50" />
+    <Property Name="Zipcode" Type="varchar" MaxLength="50" />
+    <Property Name="Description" Type="nvarchar(max)" />
+    <Property Name="EndUserRegistration" Type="bit" />
+    <Property Name="AppPurchase" Type="bit" />
+    <Property Name="Review" Type="bit" />
+    <Property Name="CreateChild" Type="bit" />
+    <Property Name="ApproveEndUser" Type="bit" />
+    <Property Name="EnrollDecvice" Type="bit" />
+    <Property Name="GlobalAds" Type="bit" />
+    <Property Name="AciveDirectory" Type="varchar" MaxLength="3000" />
+    <Property Name="AppStoreLink" Type="varchar" MaxLength="50" />
+    <Property Name="IsMdMEnabled" Type="bit" />
+    <Property Name="MDMUrl" Type="varchar" MaxLength="500" />
+    <Property Name="UserAuthencation" Type="varchar" MaxLength="1" />
+    <Property Name="CreatedBy" Type="bigint" />
+    <Property Name="CreatedOn" Type="datetime" />
+    <Property Name="ModifiedBy" Type="bigint" />
+    <Property Name="ModifiedOn" Type="datetime" />
+    <Property Name="Status" Type="varchar" MaxLength="1" />
+    <Property Name="BannerImage" Type="varchar" MaxLength="50" />
+    <Property Name="TenantId" Type="nvarchar" MaxLength="50" />
+    <Property Name="showLogo" Type="bit" />
+    <Property Name="ADSyncDate" Type="datetime" />
+    <Property Name="CopyMenus" Type="bit" />
+    <Property Name="CopyEmail" Type="bit" />
+    <Property Name="CopyCategories" Type="bit" />
+    <Property Name="CopyApps" Type="bit" />
+    <Property Name="CopyAppCategories" Type="bit" />
+    <Property Name="ADUsername" Type="nvarchar" MaxLength="3000" />
+    <Property Name="ADPassword" Type="nvarchar" MaxLength="3000" />
+  </EntityType>
+  <EntityType Name="GF_CourseSuggest">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="nvarchar" MaxLength="200" />
+    <Property Name="Latitude" Type="nvarchar" MaxLength="100" />
+    <Property Name="Longitude" Type="nvarchar" MaxLength="100" />
+    <Property Name="UserId" Type="bigint" />
+    <Property Name="Date" Type="datetime" />
+    <Property Name="CreatedBy" Type="bigint" />
+    <Property Name="CreatedOn" Type="datetime" />
+    <Property Name="Status" Type="char" MaxLength="1" />
+    <Property Name="ModifiedBy" Type="bigint" />
+    <Property Name="ModifiedOn" Type="datetime" />
+    <Property Name="NearByCourseId" Type="bigint" />
+  </EntityType>
+  <EntityType Name="GF_CourseUsers">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="CourseID" Type="bigint" />
+    <Property Name="UserID" Type="bigint" />
+  </EntityType>
+  <EntityType Name="GF_EmailTemplates">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="TemplateName" Type="nvarchar" Nullable="false" MaxLength="100" />
+    <Property Name="MessageBody" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ModifiedBy" Type="bigint" />
+    <Property Name="ModifiedOn" Type="datetime" />
+  </EntityType>
+  <EntityType Name="GF_EmailTemplatesFields">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="EmailTemplateId" Type="bigint" />
+    <Property Name="FieldName" Type="varchar" MaxLength="50" />
+    <Property Name="FieldDescription" Type="varchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="GF_Golfer">
+    <Key>
+      <PropertyRef Name="GF_ID" />
+    </Key>
+    <Property Name="GF_ID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
+    <Property Name="LastName" Type="nvarchar" MaxLength="50" />
+    <Property Name="Email" Type="nvarchar" MaxLength="50" />
+    <Property Name="Password" Type="nvarchar" MaxLength="50" />
+    <Property Name="MobileNo" Type="nvarchar" MaxLength="50" />
+    <Property Name="Latitude" Type="nvarchar" MaxLength="50" />
+    <Property Name="Longitude" Type="nvarchar" MaxLength="50" />
+    <Property Name="CreatedOn" Type="datetime" />
+    <Property Name="Status" Type="char" MaxLength="10" />
+    <Property Name="APNID" Type="nvarchar(max)" />
+    <Property Name="DeviceType" Type="nvarchar" MaxLength="50" />
+    <Property Name="GCMID" Type="nvarchar(max)" />
+    <Property Name="Salt" Type="nvarchar" MaxLength="50" />
+    <Property Name="Image" Type="nvarchar" MaxLength="500" />
+    <Property Name="IsOnline" Type="bit" />
+    <Property Name="LastLogin" Type="datetime" />
+    <Property Name="LastLoginIP" Type="nvarchar" MaxLength="50" />
+    <Property Name="Address" Type="nvarchar" MaxLength="500" />
+    <Property Name="City" Type="nvarchar" MaxLength="50" />
+    <Property Name="State" Type="nvarchar" MaxLength="50" />
+    <Property Name="Country" Type="nvarchar" MaxLength="50" />
+    <Property Name="ZipCode" Type="nvarchar" MaxLength="20" />
+    <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+    <Property Name="DateOfBirth" Type="date" />
+    <Property Name="Gender" Type="nchar" MaxLength="1" />
+    <Property Name="IncomeID" Type="bigint" />
+    <Property Name="IsReceiveEmail" Type="bit" />
+    <Property Name="IsReceivePushNotification" Type="bit" />
+  </EntityType>
+  <EntityType Name="GF_GolferChangingLocation">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="GolferId" Type="bigint" />
+    <Property Name="Latitude" Type="nvarchar" MaxLength="100" />
+    <Property Name="Longitude" Type="nvarchar" MaxLength="100" />
+    <Property Name="TimeOfChange" Type="datetime" />
+  </EntityType>
+  <EntityType Name="GF_GolferRating">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Rating" Type="int" />
+    <Property Name="ReferenceID" Type="bigint" />
+    <Property Name="ReferenceType" Type="char" MaxLength="2" />
+    <Property Name="GolferID" Type="bigint" />
+    <Property Name="CreatedDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="GF_GolferUser">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="GolferID" Type="bigint" />
+    <Property Name="CourseID" Type="bigint" />
+  </EntityType>
+  <EntityType Name="GF_GolferWallet">
+    <Key>
+      <PropertyRef Name="Wlt_ID" />
+    </Key>
+    <Property Name="Wlt_ID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="CCName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ExpMonth" Type="int" />
+    <Property Name="ExpYear" Type="int" />
+    <Property Name="CCNumber" Type="nvarchar" MaxLength="50" />
+    <Property Name="IsDefault" Type="bit" />
+    <Property Name="CreatedOn" Type="datetime" />
+    <Property Name="Status" Type="bit" />
+    <Property Name="StatusText" Type="char" MaxLength="1" />
+    <Property Name="Golfer_ID" Type="bigint" />
+    <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
+    <Property Name="LastName" Type="nvarchar" MaxLength="50" />
+    <Property Name="Address1" Type="nvarchar" MaxLength="100" />
+    <Property Name="Address2" Type="nvarchar" MaxLength="100" />
+    <Property Name="Country" Type="nvarchar" MaxLength="50" />
+    <Property Name="State" Type="nvarchar" MaxLength="50" />
+    <Property Name="City" Type="nvarchar" MaxLength="50" />
+    <Property Name="Zipcode" Type="nvarchar" MaxLength="50" />
+    <Property Name="MembershipID" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="GF_MenuItems">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="SubCategoryID" Type="bigint" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Amount" Type="decimal" Scale="2" />
+    <Property Name="Status" Type="char" MaxLength="1" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
+    <Property Name="ModifyDate" Type="datetime" />
+    <Property Name="ModifyBy" Type="nvarchar" MaxLength="50" />
+    <Property Name="Commission" Type="decimal" Precision="16" Scale="2" />
+  </EntityType>
+  <EntityType Name="GF_Messages">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="MsgFrom" Type="bigint" />
+    <Property Name="MsgTo" Type="bigint" />
+    <Property Name="Message" Type="nvarchar(max)" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="Status" Type="bit" />
+    <Property Name="Image" Type="ntext" />
+    <Property Name="ImagePath" Type="nvarchar" MaxLength="500" />
+    <Property Name="Type" Type="nvarchar" MaxLength="50" />
+    <Property Name="IsMessagesFromGolfer" Type="nvarchar" MaxLength="5" />
+    <Property Name="IsMessagesToGolfer" Type="nvarchar" MaxLength="5" />
+  </EntityType>
+  <EntityType Name="GF_Order">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="GolferID" Type="bigint" />
+    <Property Name="Longitude" Type="nvarchar" MaxLength="50" />
+    <Property Name="Latitude" Type="nvarchar" MaxLength="50" />
+    <Property Name="OrderDate" Type="datetime" />
+    <Property Name="TaxAmount" Type="decimal" Scale="2" />
+    <Property Name="GolferPlatformFee" Type="decimal" Scale="2" />
+    <Property Name="CourseID" Type="bigint" />
+    <Property Name="CartieId" Type="bigint" />
+    <Property Name="PaymentStatus" Type="char" MaxLength="1" />
+    <Property Name="KitchenId" Type="bigint" />
+    <Property Name="ProShopID" Type="bigint" />
+    <Property Name="IsDelivered" Type="bit" />
+    <Property Name="IsPickup" Type="bit" />
+    <Property Name="OrderType" Type="char" MaxLength="2" />
+    <Property Name="Status" Type="char" MaxLength="1" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
+    <Property Name="ModifyDate" Type="datetime" />
+    <Property Name="ModifyBy" Type="nvarchar" MaxLength="50" />
+    <Property Name="Stripe_ChargeId" Type="nvarchar" MaxLength="100" />
+    <Property Name="Stripe_CustomerId" Type="nvarchar" MaxLength="100" />
+    <Property Name="HEXColor" Type="nvarchar" MaxLength="50" />
+    <Property Name="RGBColor" Type="nvarchar" MaxLength="50" />
+    <Property Name="HUEColor" Type="nvarchar" MaxLength="50" />
+    <Property Name="GolferWalletId" Type="bigint" />
+    <Property Name="IsReadyByKitchen" Type="bit" />
+    <Property Name="IsReadyByProshop" Type="bit" />
+    <Property Name="OrderStatus" Type="nvarchar" MaxLength="20" />
+    <Property Name="StripeToken" Type="nvarchar" MaxLength="500" />
+    <Property Name="MemberShipID" Type="nvarchar" MaxLength="50" />
+    <Property Name="PaymentType" Type="char" MaxLength="1" />
+    <Property Name="PromoCodeID" Type="bigint" />
+    <Property Name="GrandTotal" Type="decimal" />
+    <Property Name="DiscountAmt" Type="decimal" />
+  </EntityType>
+  <EntityType Name="GF_OrderDetails">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="OrderID" Type="bigint" />
+    <Property Name="MenuItemID" Type="bigint" />
+    <Property Name="Quantity" Type="int" />
+    <Property Name="UnitPrice" Type="decimal" Scale="2" />
+  </EntityType>
+  <EntityType Name="GF_PromoCode">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="CourseID" Type="bigint" />
+    <Property Name="PromoCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="Discount" Type="decimal" Scale="2" />
+    <Property Name="ExpiryDate" Type="date" />
+    <Property Name="ReferenceID" Type="bigint" />
+    <Property Name="ReferenceType" Type="char" MaxLength="1" />
+    <Property Name="Status" Type="char" MaxLength="1" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
+    <Property Name="ModifyDate" Type="datetime" />
+    <Property Name="ModifyBy" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="GF_ResolutionCenter">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="CourseID" Type="bigint" />
+    <Property Name="GolferID" Type="bigint" />
+    <Property Name="FeedbackTest" Type="varchar" MaxLength="1000" />
+    <Property Name="SendTo" Type="char" MaxLength="2" />
+    <Property Name="IsRead" Type="bit" />
+    <Property Name="Status" Type="char" MaxLength="1" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedBy" Type="bigint" />
+    <Property Name="ModifyDate" Type="datetime" />
+    <Property Name="ModifyBy" Type="bigint" />
+  </EntityType>
+  <EntityType Name="GF_Settings">
+    <Key>
+      <PropertyRef Name="ST_ID" />
+    </Key>
+    <Property Name="ST_ID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Value" Type="nvarchar" MaxLength="50" />
+    <Property Name="Status" Type="char" MaxLength="1" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
+    <Property Name="ModifyDate" Type="datetime" />
+    <Property Name="ModifyBy" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="GF_SubCategory">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="CategoryID" Type="bigint" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Status" Type="char" MaxLength="1" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
+    <Property Name="ModifyDate" Type="datetime" />
+    <Property Name="ModifyBy" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="GF_UserCurrentPosition">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="CourseID" Type="bigint" />
+    <Property Name="ReferenceID" Type="bigint" />
+    <Property Name="ReferenceType" Type="char" MaxLength="2" />
+    <Property Name="Longitude" Type="nvarchar" MaxLength="50" />
+    <Property Name="Latitude" Type="nvarchar" MaxLength="50" />
+    <Property Name="CreatedBy" Type="bigint" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="ModifyBy" Type="bigint" />
+    <Property Name="ModifyDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="GF_WeatherDetails">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="GolferID" Type="bigint" />
+    <Property Name="OrderID" Type="bigint" />
+    <Property Name="Latitude" Type="nvarchar" MaxLength="200" />
+    <Property Name="Longitude" Type="nvarchar" MaxLength="200" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
+    <Property Name="Status" Type="char" MaxLength="1" />
+    <Property Name="WeatherDescription" Type="nvarchar" MaxLength="500" />
+    <Property Name="Temp" Type="nvarchar" MaxLength="100" />
+    <Property Name="Pressure" Type="nvarchar" MaxLength="100" />
+    <Property Name="Humidity" Type="nvarchar" MaxLength="100" />
+    <Property Name="TempMin" Type="nvarchar" MaxLength="100" />
+    <Property Name="TempMax" Type="nvarchar" MaxLength="100" />
+    <Property Name="WindSpeed" Type="nvarchar" MaxLength="100" />
+  </EntityType>
+  <Association Name="FK_GF_CourseMenu_GF_Category">
+    <End Role="GF_Category" Type="GolflerModel.Store.GF_Category" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="GF_CourseMenu" Type="GolflerModel.Store.GF_CourseMenu" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GF_Category">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="GF_CourseMenu">
+        <PropertyRef Name="CategoryID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_GF_CourseMenu_GF_CourseInfo">
+    <End Role="GF_CourseInfo" Type="GolflerModel.Store.GF_CourseInfo" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="GF_CourseMenu" Type="GolflerModel.Store.GF_CourseMenu" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GF_CourseInfo">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="GF_CourseMenu">
+        <PropertyRef Name="CourseID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_GF_CourseUsers_GF_AdminUsers">
+    <End Role="GF_AdminUsers" Type="GolflerModel.Store.GF_AdminUsers" Multiplicity="0..1" />
+    <End Role="GF_CourseUsers" Type="GolflerModel.Store.GF_CourseUsers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GF_AdminUsers">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="GF_CourseUsers">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_GF_CourseUsers_GF_CourseInfo">
+    <End Role="GF_CourseInfo" Type="GolflerModel.Store.GF_CourseInfo" Multiplicity="0..1" />
+    <End Role="GF_CourseUsers" Type="GolflerModel.Store.GF_CourseUsers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GF_CourseInfo">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="GF_CourseUsers">
+        <PropertyRef Name="CourseID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_GF_GolferRating_GF_Golfer">
+    <End Role="GF_Golfer" Type="GolflerModel.Store.GF_Golfer" Multiplicity="0..1" />
+    <End Role="GF_GolferRating" Type="GolflerModel.Store.GF_GolferRating" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GF_Golfer">
+        <PropertyRef Name="GF_ID" />
+      </Principal>
+      <Dependent Role="GF_GolferRating">
+        <PropertyRef Name="GolferID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_GF_GolferUser_GF_CourseInfo">
+    <End Role="GF_CourseInfo" Type="GolflerModel.Store.GF_CourseInfo" Multiplicity="0..1" />
+    <End Role="GF_GolferUser" Type="GolflerModel.Store.GF_GolferUser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GF_CourseInfo">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="GF_GolferUser">
+        <PropertyRef Name="CourseID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_GF_GolferUser_GF_Golfer">
+    <End Role="GF_Golfer" Type="GolflerModel.Store.GF_Golfer" Multiplicity="0..1" />
+    <End Role="GF_GolferUser" Type="GolflerModel.Store.GF_GolferUser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GF_Golfer">
+        <PropertyRef Name="GF_ID" />
+      </Principal>
+      <Dependent Role="GF_GolferUser">
+        <PropertyRef Name="GolferID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_GF_GolferWallet_GF_Golfer">
+    <End Role="GF_Golfer" Type="GolflerModel.Store.GF_Golfer" Multiplicity="0..1" />
+    <End Role="GF_GolferWallet" Type="GolflerModel.Store.GF_GolferWallet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GF_Golfer">
+        <PropertyRef Name="GF_ID" />
+      </Principal>
+      <Dependent Role="GF_GolferWallet">
+        <PropertyRef Name="Golfer_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_GF_MenuItems_GF_SubCategory">
+    <End Role="GF_SubCategory" Type="GolflerModel.Store.GF_SubCategory" Multiplicity="0..1" />
+    <End Role="GF_MenuItems" Type="GolflerModel.Store.GF_MenuItems" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GF_SubCategory">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="GF_MenuItems">
+        <PropertyRef Name="SubCategoryID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_GF_Order_GF_CourseInfo">
+    <End Role="GF_CourseInfo" Type="GolflerModel.Store.GF_CourseInfo" Multiplicity="0..1" />
+    <End Role="GF_Order" Type="GolflerModel.Store.GF_Order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GF_CourseInfo">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="GF_Order">
+        <PropertyRef Name="CourseID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_GF_Order_GF_Golfer">
+    <End Role="GF_Golfer" Type="GolflerModel.Store.GF_Golfer" Multiplicity="0..1" />
+    <End Role="GF_Order" Type="GolflerModel.Store.GF_Order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GF_Golfer">
+        <PropertyRef Name="GF_ID" />
+      </Principal>
+      <Dependent Role="GF_Order">
+        <PropertyRef Name="GolferID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_GF_Order_GF_PromoCode">
+    <End Role="GF_PromoCode" Type="GolflerModel.Store.GF_PromoCode" Multiplicity="0..1" />
+    <End Role="GF_Order" Type="GolflerModel.Store.GF_Order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GF_PromoCode">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="GF_Order">
+        <PropertyRef Name="PromoCodeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_GF_OrderDetails_GF_MenuItems">
+    <End Role="GF_MenuItems" Type="GolflerModel.Store.GF_MenuItems" Multiplicity="0..1" />
+    <End Role="GF_OrderDetails" Type="GolflerModel.Store.GF_OrderDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GF_MenuItems">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="GF_OrderDetails">
+        <PropertyRef Name="MenuItemID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_GF_OrderDetails_GF_Order">
+    <End Role="GF_Order" Type="GolflerModel.Store.GF_Order" Multiplicity="0..1" />
+    <End Role="GF_OrderDetails" Type="GolflerModel.Store.GF_OrderDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GF_Order">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="GF_OrderDetails">
+        <PropertyRef Name="OrderID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_GF_PromoCode_GF_CourseInfo">
+    <End Role="GF_CourseInfo" Type="GolflerModel.Store.GF_CourseInfo" Multiplicity="0..1" />
+    <End Role="GF_PromoCode" Type="GolflerModel.Store.GF_PromoCode" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GF_CourseInfo">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="GF_PromoCode">
+        <PropertyRef Name="CourseID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_GF_ResolutionCenter_GF_CourseInfo">
+    <End Role="GF_CourseInfo" Type="GolflerModel.Store.GF_CourseInfo" Multiplicity="0..1" />
+    <End Role="GF_ResolutionCenter" Type="GolflerModel.Store.GF_ResolutionCenter" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GF_CourseInfo">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="GF_ResolutionCenter">
+        <PropertyRef Name="CourseID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_GF_ResolutionCenter_GF_Golfer">
+    <End Role="GF_Golfer" Type="GolflerModel.Store.GF_Golfer" Multiplicity="0..1" />
+    <End Role="GF_ResolutionCenter" Type="GolflerModel.Store.GF_ResolutionCenter" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GF_Golfer">
+        <PropertyRef Name="GF_ID" />
+      </Principal>
+      <Dependent Role="GF_ResolutionCenter">
+        <PropertyRef Name="GolferID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_GF_SubCategory_GF_Category">
+    <End Role="GF_Category" Type="GolflerModel.Store.GF_Category" Multiplicity="0..1" />
+    <End Role="GF_SubCategory" Type="GolflerModel.Store.GF_SubCategory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GF_Category">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="GF_SubCategory">
+        <PropertyRef Name="CategoryID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_GF_UserCurrentPosition_GF_CourseInfo">
+    <End Role="GF_CourseInfo" Type="GolflerModel.Store.GF_CourseInfo" Multiplicity="0..1" />
+    <End Role="GF_UserCurrentPosition" Type="GolflerModel.Store.GF_UserCurrentPosition" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GF_CourseInfo">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="GF_UserCurrentPosition">
+        <PropertyRef Name="CourseID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="fnGetGolferMapColor" ReturnType="int" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="GolferId" Type="bigint" Mode="In" />
+  </Function>
+  <Function Name="GF_SP_GetCourseLocation" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="Latitude" Type="nvarchar" Mode="In" />
+    <Parameter Name="Longitude" Type="nvarchar" Mode="In" />
+    <Parameter Name="distance" Type="float" Mode="In" />
+  </Function>
+  <Function Name="GF_SP_GetFriendListing" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="PgNo" Type="bigint" Mode="In" />
+    <Parameter Name="PgSize" Type="decimal" Mode="In" />
+    <Parameter Name="UserId" Type="bigint" Mode="In" />
+    <Parameter Name="FriendType" Type="nvarchar" Mode="In" />
+    <Parameter Name="IsAllFriends" Type="bit" Mode="In" />
+  </Function>
+  <Function Name="GF_SP_GetGolfersListingByCourseId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="CourseId" Type="bigint" Mode="In" />
+  </Function>
+  <Function Name="GF_SP_GetMessageListing" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="PgNo" Type="bigint" Mode="In" />
+    <Parameter Name="PgSize" Type="decimal" Mode="In" />
+    <Parameter Name="MsgFrom" Type="bigint" Mode="In" />
+    <Parameter Name="MsgTo" Type="bigint" Mode="In" />
+    <Parameter Name="IsMessagesFromGolfer" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="GF_SP_SearchFriends" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="SearchStr" Type="nvarchar" Mode="In" />
+    <Parameter Name="CourseId" Type="bigint" Mode="In" />
+    <Parameter Name="SearchType" Type="nvarchar" Mode="In" />
+  </Function>
+</Schema>

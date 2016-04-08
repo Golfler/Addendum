@@ -1,0 +1,614 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+    <b>Login Web Service</b>
+    <form action="/api/Golfer/LoginService" method="post">
+        Email
+        <input type="text" id="Email" name="Email" />
+        Password<input type="text" id="Password" name="Password" />
+
+        DeviceId<input type="text" name="DeviceId" id="Text3" />
+
+        DeviceType<input type="text" name="DeviceType" id="Text7" />
+        Latitude
+        <input type="text" id="Text11" name="Latitude" />
+        Longitude
+        <input type="text" id="Text12" name="Longitude" />
+         Device Serial Number
+        <input type="text" id="Text172" name="DeviceSerialNo" />
+        AppVersion
+        <input type="text" id="Text176" name="AppVersion" />
+        <input type="submit" value="Login Service" />
+
+    </form>
+
+    <br />
+    <br />
+
+    <b>Registration web service</b>
+
+    <form action="/api/Golfer/RegistrationService" method="post">
+        ID
+        <input type="text" id="Id" name="GF_ID" value="0" />
+        FirstName
+        <input type="text" id="FirstName" name="FirstName" />
+        LastName
+        <input type="text" id="LastName" name="LastName" />
+        Email
+        <input type="text" id="Text1" name="Email" />
+        Password
+        <input type="text" id="Text2" name="Password" />
+        MobileNo.
+        <input type="text" name="MobileNo" id="txtMob" />
+        Latitude
+        <input type="text" id="Latitude" name="Latitude" />
+        Longitude
+        <input type="text" id="Longitude" name="Longitude" />
+
+        APNID(in case of Apple)<input type="text" name="APNID" id="APNID" />
+
+        GCMID(in case of Android)<input type="text" name="GCMID" id="GCMID" />
+
+        DeviceType<input type="text" name="DeviceType" id="DeviceType" />
+
+        Image
+        <input type="text" id="Text28" name="Image" />
+        IsReceivePushNotification<input type="text" name="IsReceivePushNotification" id="Text91" />
+        IsReceiveEmail<input type="text" name="IsReceiveEmail" id="Text128" />
+        Tee ( 1: Professional, 2 : Gentleman , 3 : Lady )<input type="text" name="Tee" id="Text163" />
+          Device Serial Number<input type="text" id="Text173" name="DeviceSerialNo" />
+        IsReceivePushNotificationGolfer<input type="text" name="IsReceivePushNotificationGolfer" id="Text177" />
+        IsReceiveEmailGolfer<input type="text" name="IsReceiveEmailGolfer" id="Text178" />
+        <input type="submit" value="Registration of Golfer" />
+
+    </form>
+    <br />
+    <br />
+    <b>Golfer Wallet Info</b>
+    <form action="api/Golfer/GolferWalletService" method="post">
+        ID
+          <input type="text" id="Text10" name="Wlt_ID" />
+        CCName
+        <input type="text" id="Text4" name="CCName" />
+        ExpMonth(integer)<input type="text" id="Text5" name="ExpMonth" />
+
+        ExpYear<input type="text" name="ExpYear" id="Text6" />
+
+        CCNumber<input type="text" name="CCNumber" id="Text8" />
+        Golfer ID<input type="text" name="Golfer_ID" id="Text9" />
+
+        Address1<input type="text" name="Address1" id="Text54" />
+
+        Address2<input type="text" name="Address2" id="Text55" />
+
+        City<input type="text" name="City" id="Text56" />
+
+        State<input type="text" name="State" id="Text57" />
+
+        Country<input type="text" name="Country" id="Text58" />
+
+        Zipcode<input type="text" name="Zipcode" id="Text59" />
+
+        FirstName<input type="text" name="FirstName" id="Text60" />
+
+        LastName<input type="text" name="LastName" id="Text61" />
+
+        MembershipID<input type="text" name="MembershipID" id="Text62" />
+        IsDefault<input type="text" name="IsDefault" id="Text63" />
+        <input type="submit" value="Add Wallet Service" />
+
+    </form>
+    <br />
+    <br />
+    <b>Forgot Password</b>
+    <form action="/api/Golfer/ForgotPasswordService" method="post">
+        Email
+        <input type="text" id="Text13" name="Email" />
+
+        <input type="submit" value="Forgot Password" />
+
+    </form>
+
+    <br />
+    <br />
+    <b>Logout</b>
+    <form action="/api/Golfer/Logout" method="post">
+        ID
+        <input type="text" id="Text14" name="GF_ID" />
+
+        <input type="submit" value="Logout" />
+
+    </form>
+
+    <br />
+    <br />
+    <b>Get Menu Items based on Course ID</b>
+    <form action="/api/Course/GetMenuItems" method="post">
+        Course ID
+        <input type="text" id="Text15" name="CourseID" />
+        Golfer ID
+        <input type="text" id="Text92" name="GolferID" />
+         Time Zone
+        <input type="text" id="Text170" name="strTimeZone" />
+        <input type="submit" value="Get Items" />
+    </form>
+
+    <br />
+    <br />
+    <b>Suggest A Course</b>
+    <form action="/api/Course/CourseSuggestService" method="post">
+        Name<input type="text" id="Text16" name="Name" />
+        UserId
+        <input type="text" id="Text17" name="UserId" />
+        Latitude<input type="text" name="Latitude" id="Text19" />
+        Longitude<input type="text" name="Longitude" id="Text20" />
+        NearByCourseId(Id of course with nonpartner as status)<input type="text" name="NearByCourseId" id="Text64" />
+        <input type="submit" value="Suggest a Course" />
+
+    </form>
+    <br />
+    <br />
+
+    <b>Place golfer Order</b>
+    <form action="/api/order/AddGolferOrder" method="post">
+        GolferID
+        <input type="text" id="Text18" name="GolferID" />
+        Latitude
+        <input type="text" id="Text21" name="Latitude" />
+        Longitude
+        <input type="text" id="Text22" name="Longitude" />
+        CourseID
+        <input type="text" id="Text23" name="CourseID" />
+        OrderType
+        <input type="text" id="Text24" name="OrderType" />
+        StripeToken
+        <input type="text" id="Text76" name="StripeToken" />
+        StripeCourseToken
+        <input type="text" id="Text87" name="StripeCourseToken" />
+        MemberShipID
+        <input type="text" id="Text77" name="MemberShipID" />
+        PaymentType (0 or 1- 1 for Card or 0 for membership Id)
+        <input type="text" id="Text78" name="PaymentType" />
+        Card Number (encrypted)
+        <input type="text" id="Text165" name="CardNumber" />
+        Card Exp Month  (encrypted)
+        <input type="text" id="Text166" name="CardExpMonth" />
+        Card Exp Year (encrypted)
+        <input type="text" id="Text167" name="CardExpYear" />
+        Card CCV (encrypted)
+        <input type="text" id="Text168" name="CardCCV" />
+        PromoCodeID
+        <input type="text" id="Text79" name="PromoCodeID" />
+        DiscountAmt
+        <input type="text" id="Text83" name="DiscountAmt" />
+        TaxAmount
+        <input type="text" id="Text84" name="TaxAmount" />
+        GolferPlatformFee
+        <input type="text" id="Text85" name="GolferPlatformFee" />
+        GrandTotal
+        <input type="text" id="Text80" name="GrandTotal" />
+        <fieldset>
+            <legend>Menu Item List 1</legend>
+            ItemId1
+        <input type="text" name="MenuItems[0].ItemId" id="ItemId" />
+            Quantity1
+        <input type="text" id="Text27" name="MenuItems[0].Quantity" />
+            UnitPrice1
+        <input type="text" id="Text81" name="MenuItems[0].UnitPrice" />
+            <fieldset>
+                <legend>Menu Item Options</legend>
+                MenuOptionID1
+                <input type="text" name="MenuItems[0].MenuItemOption[0].MenuOptionID" id="Text154" />
+                MenuOptionName1
+                <input type="text" id="Text155" name="MenuItems[0].MenuItemOption[0].MenuOptionName" />
+                MenuOptionID2
+                <input type="text" name="MenuItems[0].MenuItemOption[1].MenuOptionID" id="Text156" />
+                MenuOptionName2
+                <input type="text" id="Text157" name="MenuItems[0].MenuItemOption[1].MenuOptionName" />
+            </fieldset>
+        </fieldset>
+        <fieldset>
+            <legend>Menu Item List 2</legend>
+            ItemId2
+        <input type="text" id="Text26" name="MenuItems[1].ItemId" />
+            Quantity2
+        <input type="text" id="Text25" name="MenuItems[1].Quantity" />
+            UnitPrice2
+        <input type="text" id="Text82" name="MenuItems[1].UnitPrice" />
+            <fieldset>
+                <legend>Menu Item Options</legend>
+                MenuOptionID1
+                <input type="text" name="MenuItems[1].MenuItemOption[0].MenuOptionID" id="Text158" />
+                MenuOptionName1
+                <input type="text" id="Text159" name="MenuItems[1].MenuItemOption[0].MenuOptionName" />
+                MenuOptionID2
+                <input type="text" name="MenuItems[1].MenuItemOption[1].MenuOptionID" id="Text160" />
+                MenuOptionName2
+                <input type="text" id="Text161" name="MenuItems[1].MenuItemOption[1].MenuOptionName" />
+            </fieldset>
+        </fieldset>
+        <input type="submit" value="Place Order" />
+
+    </form>
+    <br />
+    <br />
+    <b>Search Golfer N admin Users</b>
+    <form action="api/Friends/SearchGolferService" method="post">
+        Name or Email:
+        <input type="text" id="searchstrtext" name="searchstr" />
+        CourseId:
+        <input type="text" id="Text39" name="SearchCourseId" />
+        SearchType (NU - for Golfer and UserType for other users (CK,CP,CC,CA,CR) ):
+          <input type="text" id="Text41" name="SearchType" />
+        UserId:
+        <input type="text" id="Text129" name="UserId" />
+        UserType (NU - for Golfer and UserType for other users (CK,CP,CC,CA,CR) ):
+        <input type="text" id="Text164" name="UserType" />
+
+        <input type="submit" value="Search" />
+    </form>
+    <br />
+    <br />
+    <b>Add Friends</b>
+    <form action="api/Friends/AddFriendsService" method="post">
+        UserId:
+        <input type="text" id="Text33" name="UserId" />
+        UserType: (NU - for GolferUser)
+        <input type="text" id="Text34" name="UserType" />
+        FriendId:
+        <input type="text" id="Text35" name="FriendId" />
+        FriendType: (NU - for GolferUser)
+        <input type="text" id="Text36" name="FriendType" />
+
+        <input type="submit" value="Add Friends" />
+
+    </form>
+    <br />
+    <br />
+    <b>Get Friends</b>
+    <form action="api/Friends/GetFriendsService" method="post">
+        UserId:
+        <input type="text" id="Text37" name="UserId" />
+        UserType: (NU - for GolferUser)
+        <input type="text" id="Text38" name="UserType" />
+
+        FriendType: (NU - for GolferUser)
+        <input type="text" id="Text40" name="FriendType" />
+
+        CourseId: (Use this in case of Course login to find friend list along with golfer users of that course.)
+        <input type="text" id="Text162" name="CourseId" />
+
+        <input type="submit" value="Get Friends" />
+
+    </form>
+    <br />
+    <br />
+    <b>Send Message</b>
+    <form method="post" action="/api/Messages/SendMessage">
+        MsgFrom:
+        <input type="text" id="MsgFrom" name="MsgFrom" />
+        MsgTo:
+        <input type="text" id="MsgToList" name="MsgToList" />
+        Message:<textarea id="Message" name="Message"></textarea>
+        <!--   <input type="text" name="Type" id="Type" placeholder="0 or 1" value="0" style="display: none;" />-->
+        IsMessagesFromGolfer: (0 or 1)<input type="text" id="IsMessagesFromGolfer" name="IsMessagesFromGolfer" />
+        IsMessagesToGolfer: (0 or 1)<input type="text" id="IsMessagesToGolfer" name="IsMessagesToGolfer" />
+        <input type="submit" value="Send Message" />
+    </form>
+    <br />
+    <br />
+    <b>Get Message Listing</b>
+    <form method="post" action="/api/Messages/GetMessageListing">
+        PgNo<input type="text" id="PgNo" name="PgNo" />
+        Msg From:
+        <input type="text" id="MsgFrom1" name="MsgFrom" />
+        Is Messages From Golfer (0 or 1) :<input type="text" id="Text32" name="IsMessagesFromGolfer" />
+        Msg To:
+        <input type="text" id="MsgTo1" name="MsgTo" />
+        Timezone<input type="text" id="Timezone" name="Timezone" />
+        Offset<input type="text" id="Offset" name="Offset" />
+        <input type="submit" value="Get Message Listing" />
+    </form>
+    <br />
+    <br />
+    <b>Get user's Count for unread messages</b>
+    <form action="api/Messages/GetUnreadMessageCount" method="post">
+        User Id:<input type="text" id="Text29" name="MsgTo" />
+        Is User a Golfer (0 or 1):<input type="text" id="Text31" name="IsMessagesToGolfer" />
+
+        <input type="submit" value="get Count" />
+
+    </form>
+    <br />
+    <br />
+    <b>Update Message unread messages</b>
+    <form action="api/Messages/UpdateMessageStatus" method="post">
+        MsgId:
+        <input type="text" id="Text30" name="ID" />
+        <input type="submit" value="Update Status" />
+
+    </form>
+    <br />
+    <br />
+
+    <b>Order History/Search Order History</b>
+    <form action="/api/Golfer/ListOfOrdersHistory" method="post">
+        Golfer ID:<input type="text" id="Text42" name="golferID" />
+        Order ID:<input type="text" id="Text52" name="orderID" />
+        Course ID:<input type="text" id="Text53" name="courseID" />
+        Order Date:<input type="text" id="Text45" name="orderDate" />
+        Page Index:<input type="text" id="Text46" name="pageIndex" />
+        Page Size:<input type="text" id="Text47" name="pageSize" />
+        <input type="submit" value="Get Order History" />
+    </form>
+
+    <br />
+    <br />
+
+    <b>Get listing of Cards (Wallets) added by user</b>
+    <form action="/api/Golfer/GolferWalletList" method="post">
+        Golfer ID:<input type="text" id="Text43" name="Golfer_ID" />
+        <input type="submit" value="Get Golfer Wallet" />
+    </form>
+    <br />
+    <br />
+    <b>Update Golfer Location after 15 Seconds</b>
+    <form action="/api/Golfer/UpdateGolferLocationService" method="post">
+        LocDetails:<input type="text" id="LocDetails" name="LocDetails" />
+        LocType:<input type="text" id="LocType" name="LocType" />
+        <input type="submit" value="Update" />
+    </form>
+      <br />
+    <br />
+    <b>Update Pace of Play</b>
+    <form action="/api/Golfer/UpdatePaceOfPlay" method="post">
+        Pace Of Play Details:<input type="text" id="Text50" name="PaceOfPlayDetails" />
+        Pace Of Play Type:<input type="text" id="Text169" name="PaceOfPlayType" />
+        <input type="submit" value="Update" />
+    </form>
+    <br />
+    <br />
+    <b>Get listing of Golfers by courseId</b>
+    <form action="/api/Golfer/ListOfGolfersByCourseId" method="post">
+        Course ID:<input type="text" id="Text51" name="ID" />
+        <input type="submit" value="Get Golfers for map" />
+    </form>
+    <br />
+    <br />
+    <b>Get listing of Golfers by courseId with Hole Information</b>
+    <form action="/api/Golfer/GetGolfersPositionByCourseId" method="post">
+        Course ID:<input type="text" id="Text127" name="ID" />
+        <input type="submit" value="Get Golfers for map with Hole Informations" />
+    </form>
+    <br />
+    <br />
+    <b>Delete Golfer Wallet</b>
+    <form action="/api/Golfer/DeleteGolferWallet" method="post">
+        Golfer ID:<input type="text" id="Text65" name="Golfer_ID" />
+        CCNumber:<input type="text" id="Text66" name="CCNumber" />
+        <input type="submit" value="Delete Wallet" />
+    </form>
+    <br />
+    <br />
+    <b>Save golfer rating</b>
+    <form action="/api/Golfer/SaveGolferRating" method="post">
+        Rating:<input type="text" id="Text67" name="Rating" />
+        Reference ID:<input type="text" id="Text68" name="ReferenceID" />
+        Reference Type:<input type="text" id="Text69" name="ReferenceType" />
+        Golfer ID:<input type="text" id="Text70" name="GolferID" />
+        Order No:<input type="text" id="Text130" name="OrderNo" />
+        Course Id:<input type="text" id="Text131" name="CourseId" />
+        <input type="submit" value="Save Rating" />
+    </form>
+    <br />
+    <br />
+    <b>Cartie Status Web Service</b>
+    <form action="/api/Golfer/CourseCartieStatus" method="post">
+        Course ID:<input type="text" id="Text73" name="CourseId" />
+         Golfer ID:<input type="text" id="Text171" name="GolferID" />
+            Device Serial Number
+        <input type="text" id="Text174" name="DeviceSerialNo" />
+        <input type="submit" value="Submit" />
+    </form>
+    <br />
+    <br />
+
+    <b>Resolution centre screen: Message Center Web Service</b>
+    <form action="/api/Golfer/AddGolferFeedback" method="post">
+        Course ID:<input type="text" id="Text71" name="CourseID" />
+        Golfer ID:<input type="text" id="Text72" name="GolferID" />
+        Feedback Test:<input type="text" id="Text74" name="FeedbackTest" />
+        Send To (SA - Super Admin also known as Golfler; and CP - Course Proshop):<input type="text" id="Text75" name="SendTo" />
+        Resolution Type (C - Complaint; P - Praise; O - Others):<input type="text" id="Text49" name="ResolutionType" />
+        <input type="submit" value="Send Feedback" />
+    </form>
+    <br />
+    <br />
+    <b>En-Route Web Service</b>
+    <form action="/api/Golfer/CourseUserPosition" method="post">
+        OrderID:<input type="text" id="Text86" name="OrderID" />
+        CourseID:<input type="text" id="Text89" name="CourseID" />
+        <!--ReferenceID:<input type="text" id="Text87" name="ReferenceID" />-->
+        ReferenceType:<input type="text" id="Text88" name="ReferenceType" />
+        <input type="submit" value="Get Location" />
+    </form>
+    <br />
+    <br />
+    <b>Static Page web service</b>
+    <form action="/api/Golfer/StaticPageDetail" method="post">
+        ID:<input type="text" id="Text90" name="PageCode" value="" />
+        <input type="submit" value="Get Static Page Detail" />
+    </form>
+    <br />
+    <br />
+    <b>Save New Game Play Round</b>
+    <form action="/api/Golfer/SaveGamePlayRound" method="post">
+        CourseID:<input type="text" id="Text93" name="CourseID" />
+        GolferID:<input type="text" id="Text94" name="GolferID" />
+        RoundStartFrom (Send F-Front or B-Back):<input type="text" id="Text132" name="RoundStartFrom" />
+        <input type="submit" value="New Round" />
+    </form>
+    <br />
+    <br />
+    <b>Get Game Play Round List</b>
+    <form action="/api/Golfer/GetGamePlayRoundList" method="post">
+        CourseID:<input type="text" id="Text95" name="CourseID" />
+        GolferID:<input type="text" id="Text96" name="GolferID" />
+        Page Index:<input type="text" id="Text98" name="pageIndex" />
+        Page Size:<input type="text" id="Text99" name="pageSize" />
+        <input type="submit" value="Get Round List" />
+    </form>
+    <!--<br />
+    <br />
+    <b>Quit Game Play Round List</b>
+    <form action="/api/Golfer/QuitGamePlayRound" method="post">
+        RoundID:<input type="text" id="Text97" name="RoundID" />
+        <input type="submit" value="Quit Round" />
+    </form>-->
+    <br />
+    <br />
+    <b>Save Game Play Player Information</b>
+    <form action="/api/Golfer/SaveGamePlayerInfo" method="post">
+        RoundID:<input type="text" id="Text100" name="RoundID" />
+        PlayerNo:<input type="text" id="Text101" name="PlayerNo" />
+        PlayerName:<input type="text" id="Text102" name="PlayerName" />
+        <input type="submit" value="Save Player" />
+    </form>
+    <br />
+    <br />
+    <b>Save Game Play Score Card Information</b>
+    <form action="/api/Golfer/SaveGamePlayScoreCardInfo" method="post">
+        RoundID:<input type="text" id="Text103" name="RoundID" />
+        IsQuit:<input type="text" id="Text104" name="IsQuit" />
+        <fieldset>
+            <legend>Index 0</legend>
+            HoleNo<input type="text" id="Text106" name="GamePlayScoreCard[0].HoleNo" />
+            Distance<input type="text" id="Text107" name="GamePlayScoreCard[0].Distance" />
+            Par<input type="text" id="Text108" name="GamePlayScoreCard[0].Par" />
+            PlayerOneScore<input type="text" id="Text109" name="GamePlayScoreCard[0].PlayerOneScore" />
+            PlayerTwoScore<input type="text" id="Text110" name="GamePlayScoreCard[0].PlayerTwoScore" />
+            PlayerThreeScore<input type="text" id="Text111" name="GamePlayScoreCard[0].PlayerThreeScore" />
+            PlayerFourScore<input type="text" id="Text112" name="GamePlayScoreCard[0].PlayerFourScore" />
+        </fieldset>
+
+        <fieldset>
+            <legend>Index 1</legend>
+            HoleNo<input type="text" id="Text113" name="GamePlayScoreCard[1].HoleNo" />
+            Distance<input type="text" id="Text114" name="GamePlayScoreCard[1].Distance" />
+            Par<input type="text" id="Text115" name="GamePlayScoreCard[1].Par" />
+            PlayerOneScore<input type="text" id="Text116" name="GamePlayScoreCard[1].PlayerOneScore" />
+            PlayerTwoScore<input type="text" id="Text117" name="GamePlayScoreCard[1].PlayerTwoScore" />
+            PlayerThreeScore<input type="text" id="Text118" name="GamePlayScoreCard[1].PlayerThreeScore" />
+            PlayerFourScore<input type="text" id="Text119" name="GamePlayScoreCard[1].PlayerFourScore" />
+        </fieldset>
+
+        <fieldset>
+            <legend>Index 2</legend>
+            HoleNo<input type="text" id="Text120" name="GamePlayScoreCard[2].HoleNo" />
+            Distance<input type="text" id="Text121" name="GamePlayScoreCard[2].Distance" />
+            Par<input type="text" id="Text122" name="GamePlayScoreCard[2].Par" />
+            PlayerOneScore<input type="text" id="Text123" name="GamePlayScoreCard[2].PlayerOneScore" />
+            PlayerTwoScore<input type="text" id="Text124" name="GamePlayScoreCard[2].PlayerTwoScore" />
+            PlayerThreeScore<input type="text" id="Text125" name="GamePlayScoreCard[2].PlayerThreeScore" />
+            PlayerFourScore<input type="text" id="Text126" name="GamePlayScoreCard[2].PlayerFourScore" />
+        </fieldset>
+
+        <input type="submit" value="Save Score Info" />
+    </form>
+    <br />
+    <br />
+    <b>Get Game Play Score Card</b>
+    <form action="/api/Golfer/GetGamePlayScoreCardInfo" method="post">
+        CourseID:<input type="text" id="Text97" name="CourseID" />
+        RoundID:<input type="text" id="Text105" name="RoundID" />
+        <input type="submit" value="Get Score Info" />
+    </form>
+    <br />
+    <br />
+    <b>Get Person Wise Message Listing</b>
+    <form method="post" action="/api/Messages/GetPersonMessageListing">
+        PgNo
+        <input type="text" id="Text133" name="PgNo" />
+        Msg From:
+        <input type="text" id="Text134" name="MsgFrom" />
+        Is Messages From Golfer (0 or 1) :
+        <input type="text" id="Text135" name="IsMessagesFromGolfer" />
+        <input type="submit" value="Get Person Wise Message Listing" />
+    </form>
+    <br />
+    <br />
+    <br />
+    <br />
+
+    <b>Resolution centre screen: Listing Message Center Web Service</b>
+    <form action="/api/Golfer/ResolutionCenterListing" method="post">
+        Course ID:<input type="text" id="Text136" name="CourseID" />
+        User ID:<input type="text" id="Text144" name="UserID" />
+        UserType ( CA ; SA; CK ; CR ; CC ; CP ; "G = Golfer" ):
+        <input type="text" id="Text145" name="Type" />
+        Status ( "A" = Open; "C" = Closed; "R" = "Reply" ) :<input type="text" id="Text137" name="Status" />
+        From Date:<input type="text" id="Text138" name="FromDate" />
+        To Date:<input type="text" id="Text140" name="ToDate" />
+        User Name:<input type="text" id="Text139" name="UserName" />
+        Search By:<input type="text" id="Text141" name="Search" />
+        Page No:<input type="text" id="Text142" name="PageNo" />
+        Row:<input type="text" id="Text143" name="Row" />
+        <input type="submit" value="Show List" />
+    </form>
+    <br />
+    <br />
+
+    <b>Resolution center screen: Send Reply</b>
+    <form action="/api/Golfer/ResolutionCenterSendReply" method="post">
+        Message ID:<input type="text" id="Text147" name="MessageID" />
+        Message:<input type="text" id="Text148" name="Message" />
+        Status ("A" = Open; "C" = Closed; "R" = "Reply" ):<input type="text" id="Text149" name="Status" />
+        LogUserID:<input type="text" id="Text150" name="LogUserID" />
+        UserType(CA ; SA ; CK ; CR ; CC ; CP ; "G = Golfer" ):<input type="text" id="Text151" name="UserType" />
+        <input type="submit" value="Send Reply" />
+
+    </form>
+    <br />
+    <br />
+    <b>Resolution center screen: Get Message History</b>
+    <form action="/api/Golfer/GetMessageHistory" method="post" >
+        Message ID:<input type="text" id="Text146" name="MessageID" />
+        Page No:<input type="text" id="Text152" name="PageNo" />
+        Row:<input type="text" id="Text153" name="Row" />
+        <input type="submit" value="Get List" />
+    </form>
+    <br />
+    <br />
+
+    <b>Promo Code Check</b>
+    <form action="/api/Course/PromoCodeCheck" method="post">
+        CourseID:<input type="text" id="Text44" name="CourseID" />
+        PromoCode:<input type="text" id="Text48" name="PromoCode" />
+        <input type="submit" value="Check" />
+    </form>
+    <br />
+    <br />
+
+    <b>Delete score card information</b>
+    <form action="/api/Golfer/DeleteScoreCard" method="post">
+        RoundID:<input type="text" id="Text175" name="RoundID" />
+        <input type="submit" value="Delete" />
+    </form>
+    <br />
+    <br />
+
+    <b>Save Golfer Preference Setting</b>
+    <form action="/api/Golfer/SaveGolferPreferenceSetting" method="post">
+        GF_ID:<input type="text" id="Text179" name="GF_ID" />
+        measurement (yards or meters):<input type="text" id="Text180" name="measurement" />
+        temperature (fahrenheit or celsius):<input type="text" id="Text181" name="temperature" />
+        speed (mph or kmph):<input type="text" id="Text182" name="speed" />
+        <input type="submit" value="Save" />
+    </form>
+    <br />
+    <br />
+</body>
+</html>

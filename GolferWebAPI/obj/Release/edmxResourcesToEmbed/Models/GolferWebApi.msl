@@ -1,0 +1,591 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="GolflerModelStoreContainer" CdmEntityContainer="GolflerEntities">
+    <EntitySetMapping Name="GF_AdminUsers">
+      <EntityTypeMapping TypeName="GolflerModel.GF_AdminUsers">
+        <MappingFragment StoreEntitySet="GF_AdminUsers">
+          <ScalarProperty Name="Image" ColumnName="Image" />
+          <ScalarProperty Name="IsOnline" ColumnName="IsOnline" />
+          <ScalarProperty Name="GCMID" ColumnName="GCMID" />
+          <ScalarProperty Name="APNID" ColumnName="APNID" />
+          <ScalarProperty Name="DeviceType" ColumnName="DeviceType" />
+          <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
+          <ScalarProperty Name="LastLoginIP" ColumnName="LastLoginIP" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="SALT" ColumnName="SALT" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GF_Category">
+      <EntityTypeMapping TypeName="GolflerModel.GF_Category">
+        <MappingFragment StoreEntitySet="GF_Category">
+          <ScalarProperty Name="DisplayOrder" ColumnName="DisplayOrder" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
+          <ScalarProperty Name="ModifyBy" ColumnName="ModifyBy" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GF_Courses">
+      <EntityTypeMapping TypeName="GolflerModel.GF_Courses">
+        <MappingFragment StoreEntitySet="GF_Courses">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="TemplateID" ColumnName="TemplateID" />
+          <ScalarProperty Name="TemplateLogo" ColumnName="TemplateLogo" />
+          <ScalarProperty Name="MembershipLevel" ColumnName="MembershipLevel" />
+          <ScalarProperty Name="ParentOrganization" ColumnName="ParentOrganization" />
+          <ScalarProperty Name="ContactName" ColumnName="ContactName" />
+          <ScalarProperty Name="ConatctNameLast" ColumnName="ConatctNameLast" />
+          <ScalarProperty Name="ContactDesignation" ColumnName="ContactDesignation" />
+          <ScalarProperty Name="ContactPhone" ColumnName="ContactPhone" />
+          <ScalarProperty Name="ContactMail" ColumnName="ContactMail" />
+          <ScalarProperty Name="Address1" ColumnName="Address1" />
+          <ScalarProperty Name="Address2" ColumnName="Address2" />
+          <ScalarProperty Name="Country" ColumnName="Country" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Zipcode" ColumnName="Zipcode" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="EndUserRegistration" ColumnName="EndUserRegistration" />
+          <ScalarProperty Name="AppPurchase" ColumnName="AppPurchase" />
+          <ScalarProperty Name="Review" ColumnName="Review" />
+          <ScalarProperty Name="CreateChild" ColumnName="CreateChild" />
+          <ScalarProperty Name="ApproveEndUser" ColumnName="ApproveEndUser" />
+          <ScalarProperty Name="EnrollDecvice" ColumnName="EnrollDecvice" />
+          <ScalarProperty Name="GlobalAds" ColumnName="GlobalAds" />
+          <ScalarProperty Name="AciveDirectory" ColumnName="AciveDirectory" />
+          <ScalarProperty Name="AppStoreLink" ColumnName="AppStoreLink" />
+          <ScalarProperty Name="IsMdMEnabled" ColumnName="IsMdMEnabled" />
+          <ScalarProperty Name="MDMUrl" ColumnName="MDMUrl" />
+          <ScalarProperty Name="UserAuthencation" ColumnName="UserAuthencation" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="BannerImage" ColumnName="BannerImage" />
+          <ScalarProperty Name="TenantId" ColumnName="TenantId" />
+          <ScalarProperty Name="showLogo" ColumnName="showLogo" />
+          <ScalarProperty Name="ADSyncDate" ColumnName="ADSyncDate" />
+          <ScalarProperty Name="CopyMenus" ColumnName="CopyMenus" />
+          <ScalarProperty Name="CopyEmail" ColumnName="CopyEmail" />
+          <ScalarProperty Name="CopyCategories" ColumnName="CopyCategories" />
+          <ScalarProperty Name="CopyApps" ColumnName="CopyApps" />
+          <ScalarProperty Name="CopyAppCategories" ColumnName="CopyAppCategories" />
+          <ScalarProperty Name="ADUsername" ColumnName="ADUsername" />
+          <ScalarProperty Name="ADPassword" ColumnName="ADPassword" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GF_CourseSuggest">
+      <EntityTypeMapping TypeName="GolflerModel.GF_CourseSuggest">
+        <MappingFragment StoreEntitySet="GF_CourseSuggest">
+          <ScalarProperty Name="NearByCourseId" ColumnName="NearByCourseId" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+          <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GF_CourseUsers">
+      <EntityTypeMapping TypeName="GolflerModel.GF_CourseUsers">
+        <MappingFragment StoreEntitySet="GF_CourseUsers">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="CourseID" ColumnName="CourseID" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GF_SubCategory">
+      <EntityTypeMapping TypeName="GolflerModel.GF_SubCategory">
+        <MappingFragment StoreEntitySet="GF_SubCategory">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
+          <ScalarProperty Name="ModifyBy" ColumnName="ModifyBy" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GF_Messages">
+      <EntityTypeMapping TypeName="GolflerModel.GF_Messages">
+        <MappingFragment StoreEntitySet="GF_Messages">
+          <ScalarProperty Name="IsMessagesToGolfer" ColumnName="IsMessagesToGolfer" />
+          <ScalarProperty Name="IsMessagesFromGolfer" ColumnName="IsMessagesFromGolfer" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="ImagePath" ColumnName="ImagePath" />
+          <ScalarProperty Name="Image" ColumnName="Image" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="Message" ColumnName="Message" />
+          <ScalarProperty Name="MsgTo" ColumnName="MsgTo" />
+          <ScalarProperty Name="MsgFrom" ColumnName="MsgFrom" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GF_MenuItems">
+      <EntityTypeMapping TypeName="GolflerModel.GF_MenuItems">
+        <MappingFragment StoreEntitySet="GF_MenuItems">
+          <ScalarProperty Name="Commission" ColumnName="Commission" />
+          <ScalarProperty Name="ModifyBy" ColumnName="ModifyBy" />
+          <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="FK_GF_MenuItems_GF_SubCategory" TypeName="GolflerModel.FK_GF_MenuItems_GF_SubCategory" StoreEntitySet="GF_MenuItems">
+      <EndProperty Name="GF_MenuItems">
+        <ScalarProperty Name="ID" ColumnName="ID" />
+      </EndProperty>
+      <EndProperty Name="GF_SubCategory">
+        <ScalarProperty Name="ID" ColumnName="SubCategoryID" />
+      </EndProperty>
+      <Condition ColumnName="SubCategoryID" IsNull="false" />
+    </AssociationSetMapping>
+    <EntitySetMapping Name="GF_Settings">
+      <EntityTypeMapping TypeName="GolflerModel.GF_Settings">
+        <MappingFragment StoreEntitySet="GF_Settings">
+          <ScalarProperty Name="ModifyBy" ColumnName="ModifyBy" />
+          <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ST_ID" ColumnName="ST_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GF_OrderDetails">
+      <EntityTypeMapping TypeName="GolflerModel.GF_OrderDetails">
+        <MappingFragment StoreEntitySet="GF_OrderDetails">
+          <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="MenuItemID" ColumnName="MenuItemID" />
+          <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GF_ContactList">
+      <EntityTypeMapping TypeName="GolflerModel.GF_ContactList">
+        <MappingFragment StoreEntitySet="GF_ContactList">
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="IsConnected" ColumnName="IsConnected" />
+          <ScalarProperty Name="FriendType" ColumnName="FriendType" />
+          <ScalarProperty Name="UserType" ColumnName="UserType" />
+          <ScalarProperty Name="FriendId" ColumnName="FriendId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GF_Golfer">
+      <EntityTypeMapping TypeName="GolflerModel.GF_Golfer">
+        <MappingFragment StoreEntitySet="GF_Golfer">
+          <ScalarProperty Name="IsReceivePushNotification" ColumnName="IsReceivePushNotification" />
+          <ScalarProperty Name="IsReceiveEmail" ColumnName="IsReceiveEmail" />
+          <ScalarProperty Name="IncomeID" ColumnName="IncomeID" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+          <ScalarProperty Name="Country" ColumnName="Country" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="LastLoginIP" ColumnName="LastLoginIP" />
+          <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
+          <ScalarProperty Name="IsOnline" ColumnName="IsOnline" />
+          <ScalarProperty Name="Image" ColumnName="Image" />
+          <ScalarProperty Name="Salt" ColumnName="Salt" />
+          <ScalarProperty Name="GCMID" ColumnName="GCMID" />
+          <ScalarProperty Name="DeviceType" ColumnName="DeviceType" />
+          <ScalarProperty Name="APNID" ColumnName="APNID" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+          <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+          <ScalarProperty Name="MobileNo" ColumnName="MobileNo" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="GF_ID" ColumnName="GF_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GF_CourseInfo">
+      <EntityTypeMapping TypeName="GolflerModel.GF_CourseInfo">
+        <MappingFragment StoreEntitySet="GF_CourseInfo">
+          <ScalarProperty Name="IsPlateformFeeActive" ColumnName="IsPlateformFeeActive" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Tax" ColumnName="Tax" />
+          <ScalarProperty Name="PartnershipStatus" ColumnName="PartnershipStatus" />
+          <ScalarProperty Name="PlateformFee" ColumnName="PlateformFee" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="LONGITUDE" ColumnName="LONGITUDE" />
+          <ScalarProperty Name="LATITUDE" ColumnName="LATITUDE" />
+          <ScalarProperty Name="HOMESONCOURSE" ColumnName="HOMESONCOURSE" />
+          <ScalarProperty Name="AVAILABLEPRODUCTS" ColumnName="AVAILABLEPRODUCTS" />
+          <ScalarProperty Name="Food" ColumnName="Food" />
+          <ScalarProperty Name="HOURS" ColumnName="HOURS" />
+          <ScalarProperty Name="BAR" ColumnName="BAR" />
+          <ScalarProperty Name="RESTAURANT" ColumnName="RESTAURANT" />
+          <ScalarProperty Name="WALKING" ColumnName="WALKING" />
+          <ScalarProperty Name="PULLCARTS" ColumnName="PULLCARTS" />
+          <ScalarProperty Name="RENTALCLUBS" ColumnName="RENTALCLUBS" />
+          <ScalarProperty Name="DISCOUNTS" ColumnName="DISCOUNTS" />
+          <ScalarProperty Name="ACCESS" ColumnName="ACCESS" />
+          <ScalarProperty Name="GUESTS" ColumnName="GUESTS" />
+          <ScalarProperty Name="SPIKES" ColumnName="SPIKES" />
+          <ScalarProperty Name="ONSITE_GOLFPRO" ColumnName="ONSITE_GOLFPRO" />
+          <ScalarProperty Name="TRAININGFACILITIES" ColumnName="TRAININGFACILITIES" />
+          <ScalarProperty Name="EARLIESCALLTEATIME" ColumnName="EARLIESCALLTEATIME" />
+          <ScalarProperty Name="ACCEPTTEATIMES" ColumnName="ACCEPTTEATIMES" />
+          <ScalarProperty Name="YARDAGEMARKERS" ColumnName="YARDAGEMARKERS" />
+          <ScalarProperty Name="NUMBEROFHOLES" ColumnName="NUMBEROFHOLES" />
+          <ScalarProperty Name="SANDBUNKERS" ColumnName="SANDBUNKERS" />
+          <ScalarProperty Name="WATERHAZARDS" ColumnName="WATERHAZARDS" />
+          <ScalarProperty Name="FAIRWAYSGRASSTYPE" ColumnName="FAIRWAYSGRASSTYPE" />
+          <ScalarProperty Name="GREENGRASSTYPE" ColumnName="GREENGRASSTYPE" />
+          <ScalarProperty Name="YEARBUILT" ColumnName="YEARBUILT" />
+          <ScalarProperty Name="PHONE" ColumnName="PHONE" />
+          <ScalarProperty Name="ZIPCODE" ColumnName="ZIPCODE" />
+          <ScalarProperty Name="STATE" ColumnName="STATE" />
+          <ScalarProperty Name="COUNTY" ColumnName="COUNTY" />
+          <ScalarProperty Name="CITY" ColumnName="CITY" />
+          <ScalarProperty Name="ADDRESS" ColumnName="ADDRESS" />
+          <ScalarProperty Name="TYPE" ColumnName="TYPE" />
+          <ScalarProperty Name="COURSE_NAME" ColumnName="COURSE_NAME" />
+          <ScalarProperty Name="CAT" ColumnName="CAT" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GF_CourseMenu">
+      <EntityTypeMapping TypeName="GolflerModel.GF_CourseMenu">
+        <MappingFragment StoreEntitySet="GF_CourseMenu">
+          <ScalarProperty Name="ModifyBy" ColumnName="ModifyBy" />
+          <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+          <ScalarProperty Name="CourseID" ColumnName="CourseID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GF_GolferUser">
+      <EntityTypeMapping TypeName="GolflerModel.GF_GolferUser">
+        <MappingFragment StoreEntitySet="GF_GolferUser">
+          <ScalarProperty Name="CourseID" ColumnName="CourseID" />
+          <ScalarProperty Name="GolferID" ColumnName="GolferID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GF_GolferChangingLocation">
+      <EntityTypeMapping TypeName="GolflerModel.GF_GolferChangingLocation">
+        <MappingFragment StoreEntitySet="GF_GolferChangingLocation">
+          <ScalarProperty Name="TimeOfChange" ColumnName="TimeOfChange" />
+          <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+          <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+          <ScalarProperty Name="GolferId" ColumnName="GolferId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="GF_SP_GetGolfersListingByCourseId" FunctionName="GolflerModel.Store.GF_SP_GetGolfersListingByCourseId">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="GolflerModel.GF_SP_GetGolfersListingByCourseId_Result">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+          <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+          <ScalarProperty Name="type" ColumnName="type" />
+          <ScalarProperty Name="Hexa" ColumnName="Hexa" />
+          <ScalarProperty Name="RGB" ColumnName="RGB" />
+          <ScalarProperty Name="HUE" ColumnName="HUE" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <EntitySetMapping Name="GF_GolferWallet">
+      <EntityTypeMapping TypeName="GolflerModel.GF_GolferWallet">
+        <MappingFragment StoreEntitySet="GF_GolferWallet">
+          <ScalarProperty Name="StatusText" ColumnName="StatusText" />
+          <ScalarProperty Name="MembershipID" ColumnName="MembershipID" />
+          <ScalarProperty Name="Zipcode" ColumnName="Zipcode" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="Country" ColumnName="Country" />
+          <ScalarProperty Name="Address2" ColumnName="Address2" />
+          <ScalarProperty Name="Address1" ColumnName="Address1" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="Golfer_ID" ColumnName="Golfer_ID" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="IsDefault" ColumnName="IsDefault" />
+          <ScalarProperty Name="CCNumber" ColumnName="CCNumber" />
+          <ScalarProperty Name="ExpYear" ColumnName="ExpYear" />
+          <ScalarProperty Name="ExpMonth" ColumnName="ExpMonth" />
+          <ScalarProperty Name="CCName" ColumnName="CCName" />
+          <ScalarProperty Name="Wlt_ID" ColumnName="Wlt_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GF_PromoCode">
+      <EntityTypeMapping TypeName="GolflerModel.GF_PromoCode">
+        <MappingFragment StoreEntitySet="GF_PromoCode">
+          <ScalarProperty Name="ModifyBy" ColumnName="ModifyBy" />
+          <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="ReferenceType" ColumnName="ReferenceType" />
+          <ScalarProperty Name="ReferenceID" ColumnName="ReferenceID" />
+          <ScalarProperty Name="ExpiryDate" ColumnName="ExpiryDate" />
+          <ScalarProperty Name="Discount" ColumnName="Discount" />
+          <ScalarProperty Name="PromoCode" ColumnName="PromoCode" />
+          <ScalarProperty Name="CourseID" ColumnName="CourseID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="GF_SP_GetCourseLocation" FunctionName="GolflerModel.Store.GF_SP_GetCourseLocation">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="GolflerModel.GF_SP_GetCourseLocation_Result">
+          <ScalarProperty Name="COURSE_NAME" ColumnName="COURSE_NAME" />
+          <ScalarProperty Name="LATITUDE" ColumnName="LATITUDE" />
+          <ScalarProperty Name="LONGITUDE" ColumnName="LONGITUDE" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="ADDRESS" ColumnName="ADDRESS" />
+          <ScalarProperty Name="city" ColumnName="city" />
+          <ScalarProperty Name="state" ColumnName="state" />
+          <ScalarProperty Name="COUNTY" ColumnName="COUNTY" />
+          <ScalarProperty Name="zipcode" ColumnName="zipcode" />
+          <ScalarProperty Name="PartnershipStatus" ColumnName="PartnershipStatus" />
+          <ScalarProperty Name="distnace" ColumnName="distnace" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <EntitySetMapping Name="GF_GolferRating">
+      <EntityTypeMapping TypeName="GolflerModel.GF_GolferRating">
+        <MappingFragment StoreEntitySet="GF_GolferRating">
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="GolferID" ColumnName="GolferID" />
+          <ScalarProperty Name="ReferenceType" ColumnName="ReferenceType" />
+          <ScalarProperty Name="ReferenceID" ColumnName="ReferenceID" />
+          <ScalarProperty Name="Rating" ColumnName="Rating" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GF_ResolutionCenter">
+      <EntityTypeMapping TypeName="GolflerModel.GF_ResolutionCenter">
+        <MappingFragment StoreEntitySet="GF_ResolutionCenter">
+          <ScalarProperty Name="ModifyBy" ColumnName="ModifyBy" />
+          <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="IsRead" ColumnName="IsRead" />
+          <ScalarProperty Name="SendTo" ColumnName="SendTo" />
+          <ScalarProperty Name="FeedbackTest" ColumnName="FeedbackTest" />
+          <ScalarProperty Name="GolferID" ColumnName="GolferID" />
+          <ScalarProperty Name="CourseID" ColumnName="CourseID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GF_Order">
+      <EntityTypeMapping TypeName="GolflerModel.GF_Order">
+        <MappingFragment StoreEntitySet="GF_Order">
+          <ScalarProperty Name="DiscountAmt" ColumnName="DiscountAmt" />
+          <ScalarProperty Name="GrandTotal" ColumnName="GrandTotal" />
+          <ScalarProperty Name="PromoCodeID" ColumnName="PromoCodeID" />
+          <ScalarProperty Name="PaymentType" ColumnName="PaymentType" />
+          <ScalarProperty Name="MemberShipID" ColumnName="MemberShipID" />
+          <ScalarProperty Name="StripeToken" ColumnName="StripeToken" />
+          <ScalarProperty Name="OrderStatus" ColumnName="OrderStatus" />
+          <ScalarProperty Name="IsReadyByProshop" ColumnName="IsReadyByProshop" />
+          <ScalarProperty Name="IsReadyByKitchen" ColumnName="IsReadyByKitchen" />
+          <ScalarProperty Name="GolferWalletId" ColumnName="GolferWalletId" />
+          <ScalarProperty Name="HUEColor" ColumnName="HUEColor" />
+          <ScalarProperty Name="RGBColor" ColumnName="RGBColor" />
+          <ScalarProperty Name="HEXColor" ColumnName="HEXColor" />
+          <ScalarProperty Name="Stripe_CustomerId" ColumnName="Stripe_CustomerId" />
+          <ScalarProperty Name="Stripe_ChargeId" ColumnName="Stripe_ChargeId" />
+          <ScalarProperty Name="ModifyBy" ColumnName="ModifyBy" />
+          <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="OrderType" ColumnName="OrderType" />
+          <ScalarProperty Name="IsPickup" ColumnName="IsPickup" />
+          <ScalarProperty Name="IsDelivered" ColumnName="IsDelivered" />
+          <ScalarProperty Name="ProShopID" ColumnName="ProShopID" />
+          <ScalarProperty Name="KitchenId" ColumnName="KitchenId" />
+          <ScalarProperty Name="PaymentStatus" ColumnName="PaymentStatus" />
+          <ScalarProperty Name="CartieId" ColumnName="CartieId" />
+          <ScalarProperty Name="CourseID" ColumnName="CourseID" />
+          <ScalarProperty Name="GolferPlatformFee" ColumnName="GolferPlatformFee" />
+          <ScalarProperty Name="TaxAmount" ColumnName="TaxAmount" />
+          <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+          <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+          <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+          <ScalarProperty Name="GolferID" ColumnName="GolferID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="GF_SP_GetMessageListing" FunctionName="GolflerModel.Store.GF_SP_GetMessageListing">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="GolflerModel.GF_SP_GetMessageListing_Result">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="Message" ColumnName="Message" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="IsSender" ColumnName="IsSender" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="PageNo" ColumnName="PageNo" />
+          <ScalarProperty Name="TotalPages" ColumnName="TotalPages" />
+          <ScalarProperty Name="MsgFrom" ColumnName="MsgFrom" />
+          <ScalarProperty Name="MsgTo" ColumnName="MsgTo" />
+          <ScalarProperty Name="SenderImg" ColumnName="SenderImg" />
+          <ScalarProperty Name="ReceiverImg" ColumnName="ReceiverImg" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GF_SP_GetFriendListing" FunctionName="GolflerModel.Store.GF_SP_GetFriendListing">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="GolflerModel.GF_SP_GetFriendListing_Result">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="FriendName" ColumnName="FriendName" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="PageNo" ColumnName="PageNo" />
+          <ScalarProperty Name="IsOnline" ColumnName="IsOnline" />
+          <ScalarProperty Name="LastMessageSent" ColumnName="LastMessageSent" />
+          <ScalarProperty Name="FriendImage" ColumnName="FriendImage" />
+          <ScalarProperty Name="TotalPages" ColumnName="TotalPages" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <EntitySetMapping Name="GF_WeatherDetails">
+      <EntityTypeMapping TypeName="GolflerModel.GF_WeatherDetails">
+        <MappingFragment StoreEntitySet="GF_WeatherDetails">
+          <ScalarProperty Name="WindSpeed" ColumnName="WindSpeed" />
+          <ScalarProperty Name="TempMax" ColumnName="TempMax" />
+          <ScalarProperty Name="TempMin" ColumnName="TempMin" />
+          <ScalarProperty Name="Humidity" ColumnName="Humidity" />
+          <ScalarProperty Name="Pressure" ColumnName="Pressure" />
+          <ScalarProperty Name="Temp" ColumnName="Temp" />
+          <ScalarProperty Name="WeatherDescription" ColumnName="WeatherDescription" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+          <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+          <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+          <ScalarProperty Name="GolferID" ColumnName="GolferID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GF_UserCurrentPosition">
+      <EntityTypeMapping TypeName="GolflerModel.GF_UserCurrentPosition">
+        <MappingFragment StoreEntitySet="GF_UserCurrentPosition">
+          <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
+          <ScalarProperty Name="ModifyBy" ColumnName="ModifyBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+          <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+          <ScalarProperty Name="ReferenceType" ColumnName="ReferenceType" />
+          <ScalarProperty Name="ReferenceID" ColumnName="ReferenceID" />
+          <ScalarProperty Name="CourseID" ColumnName="CourseID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="GF_SP_SearchFriends" FunctionName="GolflerModel.Store.GF_SP_SearchFriends">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="GolflerModel.GF_SP_SearchFriends_Result">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="image" ColumnName="image" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="isOnline" ColumnName="isOnline" />
+          <ScalarProperty Name="FriendType" ColumnName="FriendType" />
+          <ScalarProperty Name="LastMessageSent" ColumnName="LastMessageSent" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <EntitySetMapping Name="GF_EmailTemplates">
+      <EntityTypeMapping TypeName="GolflerModel.GF_EmailTemplates">
+        <MappingFragment StoreEntitySet="GF_EmailTemplates">
+          <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="MessageBody" ColumnName="MessageBody" />
+          <ScalarProperty Name="TemplateName" ColumnName="TemplateName" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GF_EmailTemplatesFields">
+      <EntityTypeMapping TypeName="GolflerModel.GF_EmailTemplatesFields">
+        <MappingFragment StoreEntitySet="GF_EmailTemplatesFields">
+          <ScalarProperty Name="FieldDescription" ColumnName="FieldDescription" />
+          <ScalarProperty Name="FieldName" ColumnName="FieldName" />
+          <ScalarProperty Name="EmailTemplateId" ColumnName="EmailTemplateId" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
