@@ -1,0 +1,535 @@
+﻿@using Golfler.Models
+
+@{
+    ViewBag.Title = "Analytics Report";
+    ViewBag.Module = "Analytics Report";
+    ViewBag.pageTitle = "Analytics Report";
+}
+@Html.Partial("_jqGrid")
+
+<style>
+    .tempwidth {
+        width: 40% !important;
+    }
+
+    .tempwidthForDdl {
+        width: 96% !important;
+    }
+
+    .courseAutoComplete {
+        width: 50%;
+    }
+
+    #FoodItem {
+        width: 17%;
+        padding: 0.5%;
+    }
+
+    #page-wrap {
+        overflow-x: visible !important;
+        overflow-y: visible !important;
+    }
+
+    #fancybox-wrap {
+         z-index: 999999999 !important;
+    }
+</style>
+<script type="text/javascript">
+
+
+    function ExprotToExcel() {
+
+        var cid = $("#hdnCourseID").val();
+        var fromdt = $("#txtFromDate").val();
+        var todate = $("#txtToDate").val();
+        var email = $("#txtName").val();
+        var cat = $("#FoodItem").val();
+        var subcat = $("#SubFoodItem").val();
+        var url = '@Url.Action("ExportToExcelAnalyticalReport")' + '?courseid=' + cid + '&fromdate=' + fromdt + '&todate=' + todate + '&email=' + email + '&category=' + cat + '&subcategory=' + subcat;
+        window.location = url;
+    }
+
+
+
+    function BindGrid() {
+        bindJqGridNoMultiSelect('list', 'pager', 'ShowAnalyticsReport',
+             //['ID','Sent By', 'Last Reply By', 'Course Name', 'Date-Time', 'Status', 'Action', 'DoActive'],
+             ['Date', 'Order ID', 'Order Amount', 'Course Name', 'Transaction ID', 'AverageAmt', 'PageTotalAmt', 'TotalAmt'],
+             [
+                { name: 'date', index: 'date', width: 50 },
+                //{ name: 'date', index: 'date', width: 50, formatter: 'date', formatoptions: { srcformat: 'U', newformat: 'm/d/Y  h:i A' } },
+                { name: 'OrderID', index: 'OrderID', width: 50, formatter: SetViewLink },
+                { name: 'Amount', index: 'Amount', width: 50, },
+                { name: 'CourseName', index: 'CourseName', width: 50, },
+                { name: 'TransactionID', index: 'TransactionID', width: 50, },
+                { name: 'analyticAverageAmt', index: 'analyticAverageAmt', width: 50, formatter: setAnalyticAverageAmt, hidden: true },
+                { name: 'analyticPageTotalAmt', index: 'analyticPageTotalAmt', width: 50, formatter: setAnalyticPageTotalAmt, hidden: true },
+                { name: 'analyticTotalAmt', index: 'analyticTotalAmt', width: 50, formatter: setAnalyticTotalAmt, hidden: true }
+             ], 'date', 'desc',
+             {
+                 "email": (function () {
+                     return $("#txtName").val();
+                     // return $("#ddlCourse").val();
+                 }),
+                 "fromdate": (function () {
+                     return $("#txtFromDate").val();
+                 }),
+                 "todate": (function () {
+                     return $("#txtToDate").val();
+                 }),
+                 "category": (function () {
+                     return $("#FoodItem").val();
+                 }),
+                 "subcategory": (function () {
+                     return $("#SubFoodItem").val();
+                 }),
+                 "courseid": (function () {
+                     return $("#hdnCourseID").val();
+                 })
+
+             }, '');
+
+
+    }
+
+    function setAnalyticAverageAmt(cellvalue, options, rowObject) {
+        $('#lblAnalyticAverageAmt').html(cellvalue);
+        return;
+
+    }
+
+    function setAnalyticPageTotalAmt(cellvalue, options, rowObject) {
+        $('#lblAnalyticPageTotalAmt').html(cellvalue);
+        return;
+    }
+
+    function setAnalyticTotalAmt(cellvalue, options, rowObject) {
+        $('#lblAnalyticTotalAmt').html(cellvalue);
+        return;
+    }
+
+    function setCommTotal(cellvalue, options, rowObject) {
+        //   return "<input type='text' name='txtCommTotal' id='txtCommTotal' value='" + cellvalue + "'>";
+
+        $('#lblTotalComm').html(cellvalue);
+        return;
+
+    }
+
+    function setPlateformFeeTotal(cellvalue, options, rowObject) {
+        // return "<input type='text' name='txtPlatformFeeTotal' id='txtPlatformFeeTotal'  value='" + cellvalue + "'>";
+        $('#lblTotalPlatfrmFee').html(cellvalue);
+        return;
+    }
+
+    function checkSearch() {
+        if ($("#txtName").val().trim() == "") {
+            alert("Please enter golfer email address.")
+            return false;
+        }
+        else {
+            var emailRegex = new RegExp(/^([\w\.\-]+)@@([\w\-]+)((\.(\w){2,3})+)$/i);
+            var valid = emailRegex.test($("#txtName").val().trim());
+            if (!valid) {
+                alert("Please enter valid golfer email address.")
+                return false;
+            }
+
+        }
+        BindGrid();
+        $("#trGraph").show();
+        GetData();
+        GetData1();
+    }
+
+    function FoodItemChange() {
+        //   alert("FoodItemChange");
+
+
+        $("#SubFoodItem").val("");
+        $("#SubFoodItem").html("");
+
+        $("#SubFoodItem").append($("<option></option>").val("").html("Select Food Sub Category"));
+        //fill city list 
+        $.ajax({
+            type: 'POST',
+            async: false,
+            url: '/Golfler/Golfer/SubFoodItemList',
+            data:
+               {
+                   FoodItem: $("#FoodItem").val()
+               },
+            success: function (data) {
+                $("#SubFoodItem").prop("disabled", false);
+
+                for (var i = 0; i < data.result.length; i++) {
+
+                    $("#SubFoodItem").append($("<option></option>").val(data.result[i].CatID).html(data.result[i].Name));
+                }
+
+
+            }
+        });
+        //
+
+    }
+
+    function SetViewLink(cellvalue, options, rowObject) {
+        try {
+            var orderID = rowObject["OrderID"];
+
+            return "<a href='javascript:void(0)' onclick='javascript:ViewOrder(" + orderID + ")' >" + cellvalue + "</a>";
+        }
+        catch (ex) { alert(ex.message); }
+    }
+
+    function ViewOrder(orderID) {
+        $('#selectedData').empty();
+
+        var itemList = '';
+
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("GetOrderByID", "CourseAdmin")',
+            data: { orderID: orderID },
+            async: false,
+            success: function (data) {
+                console.log(data.msg, data);
+                if (data.msg == "success") {
+                    $('#selectedData').append('<tr><td>Order No.</td><td>' + data.data.orderID + '</td><td align="right">Date</td><td>' + data.data.OrderDate + ' - ' + data.data.time + '</td></tr>');
+                    $('#selectedData').append('<tr><td>Golfer Name.</td><td colspan="3">' + data.data.golferName + '</td></tr>');
+                    $('#selectedData').append('<tr><th>Items</th><th>Qty.</th><th>Price</th><th>Amount</th></tr>');
+
+                    var item = data.data.itemsOrdered;
+                    for (var i = 0; i < item.length; i++) {
+                        //alert(item[i].Name + ' ---- ' + item[i].UnitPrice + ' ---- ' + item[i].Quantity + ' ---- ' + item[i].Amount);
+                        itemList = itemList + '<tr><td>' + item[i].Name;
+                        if (item[i].MenuOptionName != '') {
+                            var option = item[i].MenuOptionName.split(",");
+                            if (option.length > 0) {
+                                itemList = itemList + '<br /><b>Options:</b>';
+                                $.each(option, function (j) {
+                                    itemList = itemList + '<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;' + option[j] + '';
+                                });
+                            }
+                        }
+
+                        itemList = itemList + '</td><td>' + item[i].Quantity + '</td><td>$' + item[i].UnitPrice.toFixed(2) + '</td><td>$' + item[i].Amount.toFixed(2) + '</td></tr>';
+                    }
+                    $('#selectedData').append(itemList);
+                    $('#selectedData').append('<tr><td align="right" colspan="4">Subtotal: $' + data.data.billAmount.toFixed(2) + '</td></tr>');
+                    $('#selectedData').append('<tr><td align="right" colspan="4">Tax: $' + data.data.TaxAmount.toFixed(2) + '</td></tr>');
+                    $('#selectedData').append('<tr><td align="right" colspan="4">Promo Code Discount: $' + data.data.DiscountAmt.toFixed(2) + '</td></tr>');
+                    $('#selectedData').append('<tr><td align="right" colspan="4">Golfler Platform Fee: $' + data.data.GolferPlatformFee.toFixed(2) + '</td></tr>');
+                    $('#selectedData').append('<tr><td align="right" colspan="4">Total: $' + data.data.Total.toFixed(2) + '</td></tr>');
+
+                    $('#popupButton').empty();
+                    var orderID = data.data.orderID;
+
+                    if ('@LoginInfo.LoginUserType' != '@UserType.Admin' && '@LoginInfo.LoginUserType' != '@UserType.SuperAdmin' && '@LoginInfo.LoginUserType' != '@UserType.CourseAdmin') {
+                    if (data.data.OrderType == '@OrderType.TurnOrder') {
+                        if ('@LoginInfo.LoginUserType' != '@UserType.Cartie' && data.data.ReadyStatus == '1') {
+                                $('#popupButton').append('<input type="button" id="pickup" value="Picked Up" class="cancel-btn blu-btn margin_bottom5" onclick="javascript:OrderPickedUp(' + orderID + ')" />');
+                            }
+                        }
+                        else {
+                            if ('@LoginInfo.LoginUserType' == '@UserType.Cartie' && data.data.ReadyStatus == '1') {
+                                $('#popupButton').append('<input type="button" id="pickup" value="Delivered" class="cancel-btn blu-btn margin_bottom5" onclick="javascript:OrderDelivery(' + orderID + ')" />');
+                            }
+                        }
+                    }
+                }
+                else {
+                    showStickMessage(data.msg);
+                }
+        },
+            error: function (data) {
+                console.log(data.msg, data);
+            }
+        });
+
+        $('#popupButton').append('<input type="button" id="close" value="Close" class="cancel-btn blk-btn margin_bottom5" onclick="$.fancybox.close();" />');
+
+        $('#btnShowOrder').click();
+    }
+
+</script>
+<tr>
+    <td class="id_pathway" valign="middle">
+
+        <div class="breadcrumb">
+            <ul>
+                <li><a href='@Url.Action("Dashboard")'>Dashboard</a><img src="/Content/Images/arrow.png"
+                    class="arrow_position" /></li>
+                <li>Manage @ViewBag.Module</li>
+            </ul>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td id="content_center_td2" valign="top" align="center">
+        <div class="form_box">
+            <div class="search-advertiser">
+                <label class="width22 vacdate width19">
+                    Search</label>
+                <div class="courseAutoComplete">
+                    @Html.Partial("~/Views/Tools/CourseOnlyAutoComplete.cshtml")
+                </div>
+                <input type="text" placeholder="Email" name="Name" id="txtName"
+                    class="adname" value="" style="margin-bottom: 2px; width: 20% !important"
+                    size="30" />
+                @Html.DropDownList("FoodItem", (SelectList)(ViewBag.CategoryList), "Select Category", new { @id = "FoodItem", @onchange = "FoodItemChange();" })
+                <select id="SubFoodItem" style="width: 17%; padding: 0.5%;">
+                    <option value="">Select Sub Category</option>
+                </select>
+                <img src="/Content/Images/search_icon.png" border="0" alt="search" class="go-btn floatleft jqGrid_refresh"
+                    id="fbox_jqgAdminUser_search" onclick="javascript: return checkSearch();" />
+                <div class="clr">
+                </div>
+            </div>
+            <div>
+                @Html.Partial("~/Views/Tools/Timespanfilter.cshtml")
+            </div>
+            <div class="clr">
+            </div>
+
+            <div style="padding-top: 0.5%">
+            </div>
+            <input type="submit" id="btnExportExcel" class="submit-btn update-btn" name="btnExportExcel" value="Export to Excel" onclick="ExprotToExcel();" />
+
+            <div id="page-wrap">
+                <table id="list" cellpadding="0" cellspacing="0" style="width: 100%;" class="jqgridTable">
+                </table>
+                <div id="pager" style="width: 100%;">
+                </div>
+                <input type="hidden" id="hdnId" value='@Golfler.Models.LoginInfo.UserId' />
+                Average:<b>&nbsp;$&nbsp;<label id="lblAnalyticAverageAmt">0</label></b>
+                <br />
+                Page Total Amount:<b>&nbsp;$&nbsp;<label id="lblAnalyticPageTotalAmt">0</label></b>
+                <br />
+                Total Amount:<b>&nbsp;$&nbsp;<label id="lblAnalyticTotalAmt">0</label></b>
+            </div>
+            <div class="clr">
+            </div>
+            <div style="padding-top: 1%">
+            </div>
+            <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+            <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+            <script>
+                google.load("jquery", "1.4.4");
+                google.load("jqueryui", "1.8.7");
+            </script>
+            <script>
+                jQuery.noConflict();
+            </script>
+            <script>
+                google.load("visualization", "1", { packages: ["corechart"] });
+            </script>
+            <div id="trGraph" style="display: none;">
+
+                <input type="submit" id="btnExportExcelGameplay" class="submit-btn update-btn" name="btnExportExcel" value="Export to Excel" onclick="ExprotToExcelGameplay();" />
+                <input type="Print" value="Print" name="btnPrint" class="submit-btn update-btn" id="btnPrint">
+                <div class="graph" id="gameplay">
+                    <div id="visualization" style="min-height: 230px; min-width: 900px;"></div>
+                </div>
+                <br />
+                <input type="submit" id="btnExportExcelRating" class="submit-btn update-btn" name="btnExportExcel" value="Export to Excel" onclick="ExprotToExcelRating();" />
+                <input type="Print" value="Print" name="btnPrint1" class="submit-btn update-btn" id="btnPrint1">
+
+                <div class="graph" id="rating">
+                    <div id="visualization1" style="min-height: 230px; min-width: 900px;"></div>
+                </div>
+
+            </div>
+            <script type="text/javascript">
+                function GetData() {
+                    $("#visualization").show();
+                    if ($("#txtFromDate").val() != "")
+                        stdate = $("#txtFromDate").val();
+
+                    if ($("#txtToDate").val() != "") {
+                        eddate = $("#txtToDate").val();
+                    }
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("GetGraphData")',
+                        data: { email: $("#txtName").val(), fromdate: stdate, todate: eddate, courseid: $("#hdnCourseID").val() },
+                        success: function (data) {
+
+                            $("#spnDay").html(data.DayClick);
+                            $("#spnWeek").html(data.Weekclick);
+                            $("#spnMonth").html(data.Monthclick);
+                            $("#spnYear").html(data.Yearclick);
+                            $("#spnTotal").html(data.Total);
+                            if (data.result == "failed") {
+                                $("#visualization").html("No record found.");
+
+                            }
+                            else {
+
+                                drawChart(data);
+
+                            }
+                        },
+                        error: function (data) {
+                        }
+                    });
+                }
+                function drawChart(data) {
+
+                    var obj = $.parseJSON(data.result);
+
+                    var jsondata = google.visualization.arrayToDataTable(obj);
+
+                    var options = {
+                        title: 'Comparative analysis of Game Play and food order',
+                        vAxis: { title: "Number" },
+                        hAxis: { title: data.type },
+                        seriesType: "bars",
+                        series: { 5: { type: "line" } }
+                    };
+                    // Create and draw the visualization.
+                    var ac = new google.visualization.ComboChart(document.getElementById('visualization'));
+                    ac.draw(jsondata, options);
+
+                }
+            </script>
+
+            <script type="text/javascript">
+                function GetData1() {
+                    $("#visualization1").show();
+                    if ($("#txtFromDate").val() != "")
+                        stdate = $("#txtFromDate").val();
+
+                    if ($("#txtToDate").val() != "") {
+                        eddate = $("#txtToDate").val();
+                    }
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("GetRatingGraphData")',
+                        data: { email: $("#txtName").val(), fromdate: stdate, todate: eddate, courseid: $("#hdnCourseID").val() },
+                        success: function (data) {
+
+                            if (data.result == "failed") {
+                                $("#visualization").html("No record found.");
+                                $(".total_detail").hide();
+                            }
+                            else {
+                                drawChart1(data);
+                                $(".total_detail").show();
+                            }
+                        },
+                        error: function (data) {
+                        }
+                    });
+                }
+                function drawChart1(data) {
+
+                    var obj = $.parseJSON(data.result);
+
+                    var jsondata = google.visualization.arrayToDataTable(obj);
+
+                    var options = {
+                        title: 'Rating And Complaints',
+                        vAxis: { title: "Number" },
+                        hAxis: { title: data.type },
+                        seriesType: "bars",
+                        series: { 5: { type: "line" } }
+                    };
+                    // Create and draw the visualization.
+                    var ac = new google.visualization.ComboChart(document.getElementById('visualization1'));
+                    ac.draw(jsondata, options);
+
+                }
+            </script>
+
+
+            <script type="text/javascript">
+                function ExprotToExcelGameplay() {
+
+                    var cid = $("#hdnCourseID").val();
+                    var fromdt = $("#txtFromDate").val();
+                    var todate = $("#txtToDate").val();
+                    var email = $("#txtName").val();
+                    var url = '@Url.Action("ExportToExcelAnalyticalGameplayReport")' + '?courseid=' + cid + '&fromdate=' + fromdt + '&todate=' + todate + '&email=' + email;
+                    window.location = url;
+                }
+
+
+                function ExprotToExcelRating() {
+
+                    var cid = $("#hdnCourseID").val();
+                    var fromdt = $("#txtFromDate").val();
+                    var todate = $("#txtToDate").val();
+                    var email = $("#txtName").val();
+                    var url = '@Url.Action("ExportToExcelAnalyticalRatingReport")' + '?courseid=' + cid + '&fromdate=' + fromdt + '&todate=' + todate + '&email=' + email;
+                    window.location = url;
+                }
+
+
+
+
+                $("#btnPrint").live("click", function () {
+                    var divContents = $("#gameplay").html();
+                    var printWindow = window.open('', '', 'height=400,width=800');
+                    printWindow.document.write('<html><head><title>Employee Graph</title>');
+                    printWindow.document.write('</head><body >');
+                    printWindow.document.write(divContents);
+                    printWindow.document.write('</body></html>');
+                    printWindow.document.close();
+                    printWindow.print();
+                });
+                $("#btnPrint1").live("click", function () {
+                    var divContents = $("#rating").html();
+                    var printWindow = window.open('', '', 'height=400,width=800');
+                    printWindow.document.write('<html><head><title>Employee Graph</title>');
+                    printWindow.document.write('</head><body >');
+                    printWindow.document.write(divContents);
+                    printWindow.document.write('</body></html>');
+                    printWindow.document.close();
+                    printWindow.print();
+                });
+
+            </script>
+
+        </div>
+    </td>
+</tr>
+<input type="hidden" id="hdnConfirm" />
+
+<a href="#myModal" id="btnShowOrder" class="submit-btn update-btn" style="display: none;"></a>
+<div id="myModal" class="reveal-modal" style="display: none; top: 100px; height: 500px;">
+    <div class="pop_detail">
+        <h1>Order Detail</h1>
+        <div id="tableContainer" class="page-wrap" style="height: 490px; overflow-x: scroll; border: 1px solid #EAEAEA;">
+            <table id="selectedData" class="voucher-details-table"></table>
+        </div>
+    </div>
+    <div class="clr"></div>
+    <div class="margin-top15"></div>
+    <div id="popupButton" align="center" class="center-button">
+    </div>
+    <br />
+    <div class="clear"></div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $('a[href="#myModal"]').fancybox({
+            'scrolling': 'no',
+            'onStart': function () {
+                $('#myModal').css('width', '550px');
+                $('#myModal').css('height', '620px');
+                $("#myModal").css("display", "block");
+            },
+            'onClosed': function () {
+                $("#myModal").parent().css('overflow', 'hidden');
+                $("#myModal").hide();
+            }
+        });
+    });
+</script>

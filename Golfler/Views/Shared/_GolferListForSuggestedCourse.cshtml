@@ -1,0 +1,60 @@
+﻿<script type="text/javascript">
+    $(document).ready(function () {
+
+        bindJqGridNoMultiSelect('listGames', 'pagerGames', '@Url.Action("GetGolpherListForSuggestedCourse", "Admin")',
+             ['Golfer Name', 'Email Id', 'Date'],
+             [
+                   { name: 'SubmitedBy', index: 'SubmitedBy', width: 50, sortable: false },
+                    { name: 'Email', index: 'Email', width: 50, sortable: false },
+                  { name: 'Date', index: 'Date', width: 50, formatter: 'date', formatoptions: { srcformat: 'U', newformat: 'm/d/Y' } }
+             ], 'Date', 'desc',
+             {
+                 "searchText": (function () {
+                     return $("#hdnCourseNameForSugestion").val();
+                 })
+             }, '');
+
+
+    });
+
+
+
+</script>
+
+
+<tr>
+    <td id="content_center_td2" valign="top" align="center">
+        <div class="form_box">
+            <div class="search-advertiser">
+
+                <div class="clr">
+                </div>
+                <div>
+                    <label style="width: 15% !important; color: #43b34a;padding-top:1%;">
+                        Course Name
+                    </label>
+                    <span style="display: inline-block; padding: 1%;">@ViewBag.coursename </span>
+                    <input type="hidden" id="hdnCourseNameForSugestion" name="hdnCourseNameForSugestion" value="@ViewBag.coursename" />
+                </div>
+                <div class="clr">
+                </div>
+
+            </div>
+
+            <br />
+        </div>
+        <div class="form_box">
+            <table id="listGames" cellpadding="0" cellspacing="0" style="width: 100%;" class="jqgridTable">
+            </table>
+            <div id="pagerGames" style="width: 100%;">
+            </div>
+
+            <div align="center" class="center-button">
+
+
+
+                <input type="button" value="Close" class="submit-btn cancel-btn" onclick="$.fancybox.close();" />
+            </div>
+        </div>
+    </td>
+</tr>

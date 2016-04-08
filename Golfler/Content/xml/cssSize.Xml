@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<CssSizes>
+  <CssSize>
+    <Code>10</Code>
+    <Size>10</Size>
+  </CssSize>
+  <CssSize>
+    <Code>11</Code>
+    <Size>11</Size>
+  </CssSize>
+  <CssSize>
+    <Code>12</Code>
+    <Size>12</Size>
+  </CssSize>
+  <CssSize>
+    <Code>13</Code>
+    <Size>13</Size>
+  </CssSize>
+
+  <CssSize>
+    <Code>14</Code>
+    <Size>14</Size>
+  </CssSize>
+
+  <CssSize>
+    <Code>15</Code>
+    <Size>15</Size>
+  </CssSize>
+
+  <CssSize>
+    <Code>16</Code>
+    <Size>16</Size>
+  </CssSize>
+
+  <CssSize>
+    <Code>17</Code>
+    <Size>17</Size>
+  </CssSize>
+  
+  <CssSize>
+    <Code>18</Code>
+    <Size>18</Size>
+  </CssSize>
+
+  <CssSize>
+    <Code>19</Code>
+    <Size>19</Size>
+  </CssSize>
+
+
+  <CssSize>
+    <Code>20</Code>
+    <Size>20</Size>
+  </CssSize>
+
+</CssSizes>

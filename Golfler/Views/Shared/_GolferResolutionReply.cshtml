@@ -1,0 +1,200 @@
+﻿
+@using Golfler.Models
+
+<style>
+    .tempwidth
+    {
+        width: 40% !important;
+    }
+       .tempwidthForDdl
+    {
+        width: 96% !important;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        bindJqGridNoMultiSelect('list', 'pager', '@Url.Action("GetResolutionMessagesHistory","golfer")',
+                ['ID', 'Date-Time', 'Reply By', 'Comment', 'Status'],
+                [{ name: 'ID', index: 'ID', width: 10, hidden: true },
+
+                    { name: 'CreatedDate', index: 'CreatedDate', width: 50, formatter: 'date', formatoptions: { srcformat: 'U', newformat: 'm/d/Y h:i A' } },
+                    { name: 'name', index: 'name', width: 50, },
+                      { name: 'Message', index: 'Message', width: 50, },
+                      { name: 'Status', index: 'Status', width: 50, sortable: false, formatter: SetActiveInActive}
+
+                ], 'ID', 'desc',
+                {
+                    "messageID": (function () {
+                        return $("#hdnMessageID").val();
+                    })
+
+                }, '');
+
+
+    });
+
+
+
+
+    function SetActiveInActive(cellvalue, options, rowObject) {
+        try {
+
+
+            if (cellvalue.trim() == "A" || cellvalue == true)
+                return "Open";
+            else if (cellvalue.trim() == "R" || cellvalue == true)
+                return "Reply";
+            else
+                return "Close"
+        }
+        catch (ex) {
+            alert(ex.message);
+        }
+    }
+
+
+    function showMessage(msg) {
+        if (msg != null && msg.length > 0)
+            $().toastmessage('showToast', {
+                text: msg,
+                sticky: false,
+                stayTime: 2000,
+                position: 'top-right',
+                type: 'success'
+            });
+    }
+
+
+
+</script>
+<tr>
+    <td class="id_pathway" valign="middle">
+        <div class="breadcrumb">
+            <ul>
+                <li><a href='@Url.Action("Dashboard")'>Dashboard</a><img src="/Content/Images/arrow.png"
+                    class="arrow_position" /></li>
+                   <li><a href='@Url.Action("ResolutionMessages")'>Manage Resolution Messages</a><img src="/Content/Images/arrow.png"
+                    class="arrow_position" /></li>
+                <li>Manage @ViewBag.Module</li>
+            </ul>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td class="id_pathway" valign="middle">
+        <div class="breadcrumb">
+          
+
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td id="content_center_td2" valign="top" align="center">
+  
+        <div id="page-wrap" class="form_box">
+			<div>Sent By: <strong>@ViewBag.SentByName</strong> <br />
+            Course Name: <strong>@ViewBag.CourseName</strong> <br /> <br /></div>
+		
+            <table id="list" cellpadding="0" cellspacing="0" style="width: 100%;" class="jqgridTable">
+            </table>
+            <div id="pager" style="width: 100%;">
+            </div>
+            <input type="hidden" id="hdnId" value='@Golfler.Models.LoginInfo.UserId' />            
+        </div>
+    </td>
+</tr>
+
+<tr>
+    <td id="content_center_td2" valign="top" align="center">
+      <div id="content_div" class="form_box organization_form">
+            @using (Html.BeginForm("ResolutionMessagereply", "golfer", null, FormMethod.Post, new { id = "fbtnSendEmail" }))
+            {
+            
+                <div>
+                    <div class="organization_left">
+                        <p class="tpspacing">
+
+                            <label>Comment:</label>
+                            @Html.TextArea("txtComment", new { @class = "red-border" })
+
+
+                        </p>
+                    </div>
+                    <div class="organization_left">
+                        <p class="tpspacing">
+                            <label>Status:</label>
+                            <select name="ddlStatus" id="ddlStatus">
+                                <option value='@MessageStatusType.Open'>Open</option>
+                                <option value='@MessageStatusType.Closed'>Close</option>
+                                <option value='@MessageStatusType.Replyed'>Reply</option>
+                            </select>
+                            
+                            <input type="hidden" name="hdnMessageID"  id="hdnMessageID" value='@ViewBag.MessageId' />
+                            <input type="hidden" name="hdnEID"  id="hdnEID" value='@ViewBag.eidReply' />
+                        </p>
+                    </div>
+                    <div class="clr">
+                    </div>
+                </div> 
+            
+                <div align="center" class="center-button">
+
+                    <input type="submit" id="btnSendEmail" class="submit-btn update-btn" name="btnSendEmail" value="Submit" />
+
+                       <a href='@Url.Action("ResolutionMessages")'>
+                        <input type="button" id="btnCancel" class="submit-btn cancel-btn" value="Cancel" /></a>
+
+                </div>
+            
+            }
+        </div>
+    </td>
+</tr>
+<input type="hidden" id="hdnConfirm" />
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnSendEmail").click(function () {
+
+            if ($("#txtComment").val() == "") {
+                showStickMessage("Please enter Comments.");
+                return false;
+            }
+            else {
+                return true;
+            }
+        });
+    });
+</script>
+
+<script>
+  @*  $(document).delegate('#btnSendEmail', 'click', function (e) {
+
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("ResolutionMessagereply", "golfer", new { schoolname = this.ViewContext.RouteData.Values["schoolname"].ToString() })',
+            data: { EmailId: emailId, OrderID: orderID },
+            async: false,
+            success: function (data) {
+                if (data.msg == 'Success') {
+                    $('#innerLoad').hide();
+                    $('#outerLoad').hide();
+                    //alert('Email sent successfully.');
+                }
+                else {
+                    //alert('Failure while sending an email.');
+                }
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    });*@
+
+
+</script>

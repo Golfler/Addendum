@@ -1,0 +1,335 @@
+﻿@{
+    ViewBag.Title = "Manage Courses";
+}
+
+@Html.Partial("_jqGrid")
+<style>
+    .tempwidth {
+        width: 40% !important;
+    }
+
+    .status {
+        width: 100% !important;
+    }
+
+    .adname {
+        width: 25.7% !important;
+    }
+
+    img.floatleft {
+        margin: 0 2px 0 -1px !important;
+    }
+
+    #txtClubHouse {
+        width: 50% !important;
+    }
+
+    .toast-container {
+        z-index: 99999999 !important;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $(".choose_inner_department").addClass("tempwidth");
+
+        bindJqGridMin('list', 'pager', 'GetCourseListing',
+                   ['ID', 'Course Name', 'Club House Name', 'Hole', 'Score Card (9/18)', 'Setup Score Card (9/18)', 'Active'],
+                   [{ name: 'ID', index: 'ID', width: 10, hidden: true },
+                    { name: 'COURSE_NAME', index: 'COURSE_NAME', width: 70, formatter: SetEditLink },
+                    { name: 'CLUB_HOUSE', index: 'CLUB_HOUSE', width: 70 },
+                    { name: 'HOLE', index: 'HOLE', width: 20 },
+                    { name: 'SCORECARD', index: 'SCORECARD', width: 50 },
+                    { name: 'EID', index: 'EID', width: 50, formatter: SetScoreCardSetupLink },
+                    { name: 'STATUS', index: 'STATUS', width: 30, formatter: SetActiveInActive, align: "center" }
+                   ], 'ID', 'desc',
+                {
+                    "searchText": (function () {
+                        return $("#txtSearch").val();
+                    }),
+                    "cityName": (function () {
+                        return $("#txtCityName").val();
+                    })
+
+                }, '');
+
+        $('#btnAddNew').click(function () {
+            $("#addNew").click();
+        });
+
+        $("#addNew").fancybox({
+            'hideOnOverlayClick': true,
+            'scrolling': 'no',
+            'onStart': function () {
+                $("#fancybox-content").addClass("clsfancyboxcontent");
+                $("#fancybox-wrap").addClass("clsfancyboxwrap");
+
+                $("#divProgress").hide();
+                $("#myModalCourse").css("display", "block");
+            },
+            'onClosed': function () {
+                $("#fancybox-content").removeClass("clsfancyboxcontent");
+                $("#fancybox-wrap").removeClass("clsfancyboxwrap");
+                $("#txtClubHouse").val("");
+                $("#txtCourseName").val("");
+                $("#ddlHole").val("");
+                $('#hdnEID').val("");
+                $("#hdnClubHouseID").val("");
+                $("#cmn-toggle-1a").attr("checked", "checked");
+                $("#cmn-toggle-1a").attr("data-value", "1");
+
+                $(".clsCourseAdmin").each(function () {
+                    $(this).hide();
+                });
+            }
+        });
+    });
+
+    function savedata() {
+        var message = "";
+
+        var clubHouseID = parseInt($("#hdnClubHouseID").val());
+        if (clubHouseID <= 0) {
+            message = message + "Please select Club house.\n"
+        }
+
+        if ($("#txtCourseName").val() == "") {
+            message = message + "Please enter Course name.\n"
+        }
+
+        if ($("#ddlHole").val() == "") {
+            message = message + "Please select Hole.\n"
+        }
+
+        if (message == "") {
+            $.ajax({
+                type: 'POST',
+                url: '/Golfler/Admin/AddCourseInfo',
+                data: {
+                    EID: $("#hdnEID").val(),
+                    ClubHouseID: $("#hdnClubHouseID").val(),
+                    CourseName: $("#txtCourseName").val(),
+                    Hole: $("#ddlHole").val(),
+                    Status: $("#Active").val()
+                },
+                success: function (data) {
+                    if (data.status == 1) {
+                        showMessage(data.msg);
+                        $.fancybox.close();
+                        $("#list").trigger("reloadGrid", [{ current: true }]);
+                    }
+                    else {
+                        showStickMessage(data.msg);
+                    }
+                }
+            });
+            return false;
+        }
+        else {
+            alert(message);
+            return false;
+        }
+    }
+
+    function DeleteCourse() {
+        try {
+            DeleteMultiple('list', '@Url.Action("DeleteCoursesInfo")');
+        }
+        catch (ex) { alert(ex.message); }
+    }
+
+    function SetEditLink(cellvalue, options, rowObject) {
+        try {
+            var Eid = rowObject["EID"];
+            var ClubHouseID = rowObject["ClubHouseID"];
+            var ClubHouse = rowObject["CLUB_HOUSE"];
+            var CourseName = rowObject["COURSE_NAME"];
+            var Status = rowObject["STATUS"];
+            var Hole = rowObject["HOLE"];
+
+            if ($('#UpdateFlag').size() != 0 && $('#UpdateFlag').val() != "True")
+                return cellvalue;
+            else
+                return "<a href='javascript:void(0);' data-hole='" + Hole + "' data-eid='" + Eid + "' data-chid='" + ClubHouseID + "' data-chouse='" + ClubHouse + "' data-cname='" + CourseName + "' data-status='" + Status + "' onclick='javascript:editdata(this);' >" + cellvalue + "</a>";
+        }
+        catch (ex) { alert(ex.message); }
+    }
+
+    function editdata(ele) {
+        var Eid = $(ele).attr('data-eid');
+        var ClubHouseID = $(ele).attr('data-chid');
+        var ClubHouse = $(ele).attr('data-chouse');
+        var CourseName = $(ele).attr('data-cname');
+        var Status = $(ele).attr('data-status') == 'A' ? 'True' : 'False';
+        var Hole = $(ele).attr('data-hole');
+
+        $('#hdnEID').val(Eid);
+        $("#hdnClubHouseID").val(ClubHouseID);
+        $("#txtCourseName").val(CourseName);
+        $("#ddlHole").val(Hole);
+        $('#txtClubHouse').val(ClubHouse);
+        $("#Active").val(Status);
+        if (Status == 'False') {
+            $('#cmn-toggle-1a').prop('checked', false);
+            $('#cmn-toggle-1a').attr('data-value', '0');
+        }
+
+        $("#addNew").click();
+    }
+
+    function SetScoreCardSetupLink(cellvalue, options, rowObject) {
+        try {
+            var Eid = rowObject["EID"];
+
+            return "<a href='CourseScoreCard/" + Eid + "'>Click here to setup</a>";
+        }
+        catch (ex) { alert(ex.message); }
+    }
+
+    function SetActiveInActive(cellvalue, options, rowObject) {
+        try {
+            var rowId = rowObject["ID"];
+            var type = rowObject["Type"];
+
+            var onclickCall = "onclick=javascript:UpdateRowStatus(" + rowId + ",&apos;" + cellvalue.trim() + "&apos;);";
+
+            if ($('#UpdateFlag').size() != 0 && $('#UpdateFlag').val() != "True") {
+                if (cellvalue == "A" || cellvalue == true)
+                    return '<div class="selected-row"><div class="switch"><input id="cmn-toggle-' + rowId + '" class="cmn-toggle cmn-toggle-round" type="checkbox" onclick="NonAccessMsg();" checked="checked"><label for="cmn-toggle-' + rowId + '"></label></div></div>';
+                else
+                    return '<div class="selected-row"><div class="switch"><input id="cmn-toggle-' + rowId + '" class="cmn-toggle cmn-toggle-round" type="checkbox" onclick="NonAccessMsg();" ><label for="cmn-toggle-' + rowId + '"></label></div></div>';
+
+            }
+
+            if (cellvalue.trim() == "A" || cellvalue == true)
+                return '<div class="selected-row"><div class="switch"><input id="cmn-toggle-' + rowId + '" class="cmn-toggle cmn-toggle-round" type="checkbox" ' + onclickCall + ' checked="checked"><label for="cmn-toggle-' + rowId + '"></label></div></div>';
+            else
+                return '<div class="selected-row"><div class="switch"><input id="cmn-toggle-' + rowId + '" class="cmn-toggle cmn-toggle-round" type="checkbox" ' + onclickCall + ' ><label for="cmn-toggle-' + rowId + '"></label></div></div>';
+        }
+        catch (ex) {
+            alert(ex.message);
+        }
+    }
+
+    function UpdateRowStatus(id, status) {
+        try {
+            UpdateStatus('UpdateCourseStatus', 'Golfler/Admin', id, status, 'list');
+        }
+        catch (ex) { alert(ex.message); }
+    };
+</script>
+<tr>
+    <td class="id_pathway" valign="middle">
+        <div class="breadcrumb">
+            <ul>
+                <li><a href='@Url.Action("Dashboard")'>Dashboard</a><img src="/Content/Images/arrow.png"
+                    class="arrow_position" /></li>
+                <li>@ViewBag.Title</li>
+            </ul>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td id="content_center_td2" valign="top" align="center">
+        <div class="form_box">
+            <div class="search-advertiser">
+                <div class="search-advertiser_box">
+                    <label>
+                        Search</label>
+                    <input type="text" placeholder="Course Name" name="searchText" id="txtSearch"
+                        class="searchfeild jqGrid_refreshKey adname" value="" style="margin-bottom: 2px;"
+                        size="200" />
+                    <input type="text" placeholder="City Name" name="cityName" id="txtCityName"
+                        class="searchfeild jqGrid_refreshKey adname" value="" style="margin-bottom: 2px;" size="50" />
+                    <img src="/Content/Images/search_icon.png" border="0" alt="search" class="go-btn floatleft jqGrid_refresh"
+                        id="fbox_jqgAdminUser_search" />
+                    <div class="clr">
+                    </div>
+                    <div class="em nop">
+                        <label>
+                        </label>
+                        Use blank search to see all records
+                    </div>
+                    <div class="clr">
+                    </div>
+                    <div style="border-top: 1px solid silver; padding-top: 12px; margin-top: 12px;">
+                        <a href="#myModalCourse" id="addNew" class="blu-btn leftmargin_3" action="add"></a>
+                        <input type="button" id="btnAddNew" value="Add New Courses" class="blu-btn leftmargin_3" action="add" />
+                        <input id="aDeletePopup" type="button" value="Delete" onclick="DeleteCourse();" class="delete blk-btn margin_bottom5" action="delete" />
+                    </div>
+                </div>
+            </div>
+            <div class="clr">
+            </div>
+            <div id="page-wrap">
+                <table id="list" cellpadding="0" cellspacing="0" style="width: 100%;" class="jqgridTable">
+                </table>
+                <div id="pager" style="width: 100%;">
+                </div>
+                <input type="hidden" id="hdnId" value='@Golfler.Models.LoginInfo.UserId' />
+            </div>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+<input type="hidden" id="hdnConfirm" />
+
+<input type="hidden" id="hdnEID" value="" />
+<div id="myModalCourse" class="reveal-modal clsCourseAdmin" style="display: none; top: 100px;">
+    <div id="content_div" class="form_box organization_form">
+        <div style="margin: 0px 0px 0px 0px;">
+            <div class="organization_left">
+                <h2>Add Course</h2>
+            </div>
+            <div class="clr">
+            </div>
+            <div class="organization_left">
+                <label>Select Club House</label>
+                <div class="courseAutoComplete">
+                    @Html.Partial("~/Views/Tools/ClubHouseAutoComplete.cshtml")
+                </div>
+            </div>
+            <div class="organization_left">
+                <label>Course Name</label>
+                <div class="courseAutoComplete">
+                    <input type="text" id="txtCourseName" name="CourseName" class="userfeilder red-border" maxlength="50" />
+                </div>
+            </div>
+            <div class="clr">
+            </div>
+            <div class="organization_left">
+                <p class="tpspacing">
+                    <label>Select Hole</label>
+                    <select id="ddlHole">
+                        <option value="">Select</option>
+                        <option value="9">9 Hole</option>
+                        <option value="18">18 Hole</option>
+                    </select>
+                </p>
+            </div>
+            <div class="organization_left">
+                <p class="tpspacing">
+                    <label>Active</label>
+                    <span class="selected-row">
+                        <span class="switch">
+                            <input id="cmn-toggle-1a" data-result-id="Active" class="cmn-toggle cmn-toggle-round" type="checkbox" data-value="1" checked="checked" />
+                            <label for="cmn-toggle-1a"></label>
+                            <input type="hidden" name="Active" id="Active" value="True" />
+                        </span>
+                    </span>
+                </p>
+            </div>
+            <div class="clr">
+            </div>
+        </div>
+        <div class="clr">
+        </div>
+        <div align="center" class="center-button">
+            <input type="button" id="btnSubmitCourseAdmin" class="submit-btn update-btn" onclick="javascript: savedata();" name="btnSubmit" value="Submit" />
+            <input type="button" id="btnCancelCourseAdmin" class="submit-btn cancel-btn" onclick="$.fancybox.close();" value="Cancel" />
+        </div>
+    </div>
+</div>

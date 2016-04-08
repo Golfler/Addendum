@@ -1,0 +1,36 @@
+﻿@model List<Golfler.Models.GF_EmailTemplatesFields>
+<div class="clr">
+</div>
+<div class="organization_form">
+    <table cellpadding="0" cellspacing="0" class="keaywords_box" id="tbfields">
+        <tr>
+            <td style="border: none;">
+                <table cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                        <th width="30%">
+                            Keyword
+                        </th>
+                        <th>
+                            Description
+                        </th>
+                    </tr>
+                    @{
+                        var fields = Model.AsQueryable().OrderBy(x => x.FieldName).ToList();
+                        for (int i = 0; i <= (fields.Count - 1); ++i)
+                        {
+                            var item = fields[i];         
+                        <tr>
+                            <td>
+                                @(item.FieldName)
+                            </td>
+                            <td>
+                                @(item.FieldDescription)
+                            </td>
+                        </tr>
+                        }
+                    }
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>

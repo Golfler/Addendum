@@ -1,0 +1,37 @@
+﻿@{
+    ViewBag.Title = "SMTPDetails";
+    ViewBag.pageTitle = "Manage SMTP Details";
+    Layout = "~/Views/Shared/_LayoutCourseArea.cshtml";
+}
+
+<style>
+.toast-container
+{
+    z-index:99999999; 
+    }
+</style>
+<tr>
+    <td class="id_pathway">
+        <div class="breadcrumb">
+            <ul>
+                <li><a href='@Url.Action("Dashboard")'>Dashboard</a><img src="/Content/Images/arrow.png"
+                    class="arrow_position" /></li>
+                <li>Manage SMTP Details</li>
+            </ul>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td id="id_td_pageHeading" valign="bottom" align="left">
+        @*<span id="pageTitle">SMTP Details</span>*@
+    </td>
+</tr>
+<tr>
+    <td id="content_center_td2" valign="top" align="center">
+        <div id="content_div">
+            @Html.Partial("~/Views/Shared/_SMTPDetails.cshtml")
+        </div>
+    </td>
+</tr>

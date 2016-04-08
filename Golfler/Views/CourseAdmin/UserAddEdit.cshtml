@@ -1,0 +1,8 @@
+﻿@{
+    ViewBag.Module = "Users";
+    ViewBag.Title = (Model.ID > 0 ? "Edit" : "Add") + " User";
+    ViewBag.pageTitle = (Model.ID > 0 ? "Edit" : "Add") + " User";
+    Layout = "~/Views/Shared/_LayoutCourseArea.cshtml";
+    ViewBag.CallFrom = "CourseAdmin";
+}
+@Html.Partial("~/Views/Shared/_UserAddEditScreen.cshtml")

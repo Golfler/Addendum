@@ -1,0 +1,266 @@
+﻿@model Golfler.Models.GF_SMTPSettings
+@using Golfler.Helper
+@Html.Partial("_jqGrid")
+@{ViewBag.Password = Model.SMTPPassword;}
+@if (false)
+{   
+    <script src="../../../../Scripts/jquery-1.8.3-vsdoc.js" type="text/javascript"></script>   }
+<script src="../../../../Scripts/common.js" type="text/javascript"></script>
+<script src="../../../../Scripts/ajaxfileupload.js" type="text/javascript"></script>
+
+<input type="hidden" id="hdParentId" value=@ViewBag.parentId />
+<script type="text/jscript">
+
+    var controllerName;
+    function validate() {
+
+        var reqHostName = ValidateTxtReq('#txtHostName');
+
+        var reqPort = ValidateTxtReq('#txtPort');
+        if (reqPort)
+            reqPort = validateInt('#txtPort');
+
+
+        var reqUserName = ValidateTxtReq('#txtUsername');
+        
+        var reqPassword = ValidateTxtReq('#txtPassword');
+
+        var reqFromEmail = ValidateTxtReq('#txtFromEmail');
+
+        var reqAdminMail = ValidateTxtReq('#txtAdminMail');
+        
+        var reqReplyEmail = ValidateTxtReq('#txtReplyMail');
+
+        if (!reqHostName || !reqPort || !reqUserName || !reqPassword || !reqFromEmail || !reqAdminMail || !reqReplyEmail)
+        { return false; }
+        else
+        { return true; }
+    }
+
+    $(document).ready(function () {
+        var editId = $("#hdEditId").val();
+
+        $('#EnableSsl,#EnableTls').click(function () {
+            var count = 0;
+            if ($("#EnableSsl").is(':checked'))
+                count++;
+            if ($("#EnableTls").is(':checked'))
+                count++;
+            if (count > 1)
+                return false;
+
+            return true;
+        });
+        $('#btnTestEmail').click(function (e) {
+            debugger;
+
+            if ($('#UpdateFlag').val() != "") {
+                if ($('#UpdateFlag').size() != 0 && $('#UpdateFlag').val() != "True") {
+                    NonAccessMsg();
+                    return false;
+                }
+            }
+
+
+
+            if (!validate()) {
+                return false;
+            }
+
+            $("#divProgress").show();
+            var host = $("#txtHostName").val();
+            var port = 0;
+            if ($("#txtPort").val() != "") {
+                port = $("#txtPort").val();
+            }
+            var username = $("#txtUsername").val();
+            var password = $("#txtPassword").val();
+            var fromemail = $("#txtFromEmail").val();
+            var EnableSsl = false;
+            var EnableTls = false;
+            if ($('#EnableSsl').is(':checked')) {
+                EnableSsl = true;
+            }
+            else if ($('#EnableTls').is(':checked')) {
+                EnableTls = true;
+            }
+
+            if (host != "" && username != "" && password != "" && fromemail != "") {
+
+                var partialView = '~/Views/Shared/_SendEmail.cshtml';
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/Golfler/CourseAdmin/LoadEmail',
+                    data: {
+                        partialView: partialView,
+                        from: fromemail,
+                        host: host,
+                        password: password,
+                        port: port,
+                        username: username,
+                        EnableSsl: EnableSsl,
+                        EnableTls: EnableTls
+                    },
+                    success: function (data) {
+                        $.fancybox(data, { 'scrolling': 'no', 'showCloseButton': true });
+                        $("#divProgress").hide();
+                    }
+                });
+            }
+            else {
+                showStickMessage('Please fill the SMTP details first');
+                $("#divProgress").hide();
+            }
+
+        });
+
+    });
+   
+   
+</script>
+ 
+<div id="divSecond" class="organization_form">
+     
+  
+    @using (Html.BeginForm("SMTPDetails",Url.RequestContext.RouteData.GetRequiredString("Controller"))) 
+  
+    {
+        if (ViewBag.Isedit == "0")
+        { 
+        @Html.Raw("<div class='form_box'>");
+        }
+        <input type="hidden" id="hdEditId" value='@ViewBag.CourseId' />
+        <fieldset>
+            <div class="organization_left">
+                <p>
+                    <label>
+                        Host <a class="ToolTipIcon" message="Outgoing Mail Server (pop3)"></a>
+                    </label>
+                    @Html.TextBoxFor(model => model.SMTPHost, new { id = "txtHostName", @class = "red-border", @maxlength = "50" })
+                    @Html.ValidationMessageFor(model => model.SMTPHost)
+                </p>
+                <p>
+                    <label>
+                        From Email <a class="ToolTipIcon" message="Email address by which Email will sent to users">
+                        </a>
+                    </label>
+                    @Html.TextBoxFor(model => model.FromEmail, new { id = "txtFromEmail", @class = "red-border", @maxlength = "50" })
+                    @Html.ValidationMessageFor(model => model.SMTPHost)
+                </p>
+                <p>
+                    <label>
+                        Reply To Email <a class="ToolTipIcon" message="If users press reply button mail will deliver to this email address">
+                        </a>
+                    </label>
+                    @Html.TextBoxFor(model => model.ReplyEmail, new { id = "txtReplyMail", @maxlength = "50" })
+                    @Html.ValidationMessageFor(model => model.SMTPHost)
+                </p>
+                <p>
+                    <label>
+                        Enable TLS <a class="ToolTipIcon" message="Check this if your mail setting required/Support TLS">
+                        </a>
+                    </label>
+                    @*@Html.CheckBox("EnableTls", Model.EnableTls == true ? true : false, new { @class = "checkbox" })*@
+
+                        <span class="selected-row">
+                            <span class="switch">
+                                <input id="cmn-toggle-2" data-result-id="EnableTls" class="cmn-toggle cmn-toggle-round" type="checkbox" data-value="@(Convert.ToBoolean(Model.EnableTls) ? "1" : "0")" @(Convert.ToBoolean(Model.EnableTls) ? "checked='checked'" : "" ) />
+                                <label for="cmn-toggle-2"></label>
+                                @Html.HiddenFor(x => x.EnableTls)
+                            </span>
+                        </span>
+
+                </p>
+            </div>
+            <div class="organization_left">
+                <p>
+                    <label>
+                        Port <a class="ToolTipIcon" message="Outgoing mail port"></a>
+                    </label>
+                    @Html.TextBoxFor(model => model.SMTPPort, new { id = "txtPort", @class = "red-border", @maxlength = "4" })
+                </p>
+                <p>
+                    <label>
+                        Admin Email <a class="ToolTipIcon" message="Email address of Administrator to whom system related email will be sent">
+                        </a>
+                    </label>
+                    @Html.TextBoxFor(model => model.AdminEmail, new { id = "txtAdminMail", @class = "red-border", @maxlength = "50" })
+                </p>
+                <p>
+                    <label>
+                        Enable SSL <a class="ToolTipIcon" message="Check this if your mail setting required/Support SSL">
+                        </a>
+                    </label>
+                    @*@Html.CheckBox("EnableSsl", Model.EnableSsl == true ? true : false, new { @class = "checkbox" })*@
+
+                     <span class="selected-row">
+                            <span class="switch">
+                                <input id="cmn-toggle-1" data-result-id="EnableSsl" class="cmn-toggle cmn-toggle-round" type="checkbox" data-value="@(Convert.ToBoolean(Model.EnableSsl) ? "1" : "0")" @(Convert.ToBoolean(Model.EnableSsl) ? "checked='checked'" : "" ) />
+                                <label for="cmn-toggle-1"></label>
+                                @Html.HiddenFor(x => x.EnableSsl)
+                            </span>
+                        </span>
+
+
+                </p>
+            </div>
+            <div class="clr">
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Authenticated via</legend>
+            <div class="organization_left">
+                <p>
+                    <label>
+                        Authenticated email id <a class="ToolTipIcon" message="This is an authenticated email address via which email will be sent to user.<br>It ensure that email is authorize and not as spam">
+                        </a>
+                    </label>
+                    @Html.TextBoxFor(model => model.SMTPUserName, new { id = "txtUsername", @class = "red-border", @autocomplete = "off", @maxlength = "50" })
+                    @Html.ValidationMessageFor(model => model.SMTPHost)
+                </p>
+            </div>
+            <div class="organization_left">
+                <p>
+                    <label>
+                        Authenticated password<a class="ToolTipIcon" message="This is a password of an authenticated email address">
+                        </a>
+                    </label>
+                    @Html.PasswordFor(model => model.SMTPPassword, new { id = "txtPassword", @class = "red-border", @autocomplete = "off", value = @ViewBag.Password })
+                    @Html.ValidationMessageFor(model => model.SMTPHost)
+                </p>
+            </div>
+        </fieldset>
+        <div class="clr">
+        </div>
+        <div align="center" class="center-button">
+            <a href="@Url.Action("EmailTemplates")" class="submit-btn" style="display:none;">
+                <input type="button" value="Edit Email Template" class="cancel-btn on" />
+            </a>
+            <input type="button" id="btnTestEmail" value="Send Test Email" class="blk-btn on"  />
+          @*  @if (ViewBag.isSMTPDetails != null)
+            {
+                if (ViewBag.isSMTPDetails)
+                {
+                *@
+                   <input type="submit" id="btnSaveSMTP" value="Save" class="blu-btn on" onclick="return ClickSMTP();" />
+               @* }
+            }*@
+        </div>
+            if (ViewBag.Isedit == "0")
+            { 
+        @Html.Raw("</div>");
+            }
+    }
+    <script>
+        function ClickSMTP() {
+            if ($('#UpdateFlag').val() != "") {
+                if ($('#UpdateFlag').size() != 0 && $('#UpdateFlag').val() != "True") {
+                    NonAccessMsg();
+                    return false;
+                }
+            }
+            
+        }
+    </script>
+</div>

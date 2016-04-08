@@ -1,0 +1,487 @@
+﻿@{
+    ViewBag.Title = "Employee Report";
+    Layout = "~/Views/Shared/_LayoutCourseArea.cshtml";
+    ViewBag.Module = "Employee Report";
+}
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+<script>
+
+    google.load("visualization", "1", { packages: ["corechart"] });
+
+
+</script>
+
+<style>
+    .dropdownCate {
+        border: 1px solid #eaeaea;
+        float: left;
+        padding: 3.5% 2%;
+        width: 90%;
+    }
+
+    .graph {
+        overflow-x: scroll;
+        overflow-y: hidden;
+        width: 100%;
+    }
+
+    .table_header .date_range_bi {
+        padding: 7px 0 6px 10px !important;
+    }
+
+    .DatePopUp {
+        top: 34px !important;
+    }
+
+    .pop_detail {
+        max-width: 100% !important;
+    }
+</style>
+
+<tr>
+    <td class="id_pathway" valign="middle">
+        <div class="breadcrumb">
+            <ul>
+                <li><a href='@Url.Action("Dashboard")'>Dashboard</a><img src="/Content/Images/arrow.png" class="arrow_position" /></li>
+                <li><a>Report</a><img src="/Content/Images/arrow.png" class="arrow_position" /></li>
+                <li>@ViewBag.Module</li>
+            </ul>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td id="content_center_td2" valign="top" align="center">
+        <div class="form_box">
+            <div class="search-advertiser">
+                <label class="width22 vacdate width19">Search:</label>
+                <select id="ddlUserType" style="width: 17%; padding: 0.6%; float: left; margin-right: 5px;">
+                    <option value="">Select User Type</option>
+                    <option value="PA">Admin</option>
+                    <option value="CK">Kitchen</option>
+                    <option value="CP">Proshop</option>
+                    <option value="CC">Gophie</option>
+                </select>
+                @*<label class="width22 vacdate width19">User Name:</label>*@
+                <input type="text" placeholder="User Name" name="searchText" id="txtName" class="searchfeild jqGrid_refreshKey adname"
+                    value="" style="margin-bottom: 2px;" size="30" />
+
+                <img src="/Content/Images/search_icon.png" border="0" alt="search" class="go-btn floatleft jqGrid_refresh"
+                    id="fbox_jqgAdminUser_search" onclick="javascript: return SearchData();" />
+
+                @*<input value="Submit" name="btnSearch" class="submit-btn update-btn" id="btnSearch" onclick="return SearchData();">*@
+            </div>
+            <div>
+                @Html.Partial("~/Views/Tools/TimeSpanFilter.cshtml")
+            </div>
+
+            <div class="clr"></div>
+
+            <div id="dvEmployee" style="display: none">
+                <h1 id="title">Employee Detail</h1>
+                <div>
+                    <img id="empImage" src="/images/noprofile.png" style="border: 1px solid #eaeaea; float: left; margin: -1px 0 10px; padding: 5px; width: 12%; height: 50%" />
+                    <table id="empData" class="voucher-details-table" style="float: left; width: 72.7% !important">
+                        <tr>
+                            <td>Name:</td>
+                            <td id="tdName">--</td>
+                        </tr>
+                        <tr>
+                            <td>Email:</td>
+                            <td id="tdEmail">--</td>
+                        </tr>
+                        <tr>
+                            <td>User Name:</td>
+                            <td id="tdUserName">--</td>
+                        </tr>
+                        <tr>
+                            <td>Phone:</td>
+                            <td id="tdPhone">--</td>
+                        </tr>
+                        <tr>
+                            <td>User Type:</td>
+                            <td id="tdUserType">--</td>
+                        </tr>
+                        <tr>
+                            <td>Status:</td>
+                            <td id="tdStatus">--</td>
+                        </tr>
+                        <tr>
+                            <td>Role:</td>
+                            <td>
+                                <span id="tdRole">--</span>
+                                <a href="javascript:void(0);" id="aViewEmployeeAccess" data-id="" style="display: none">&nbsp;&nbsp;(View Acess)</a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="clr"></div>
+
+            <div id="divGraph" class="analytics-cont graph" style="border: solid 1px grey; display: none;">
+                <br />
+                <div style="width: 43%; float: right;">
+
+                    <input value="Export to Excel" name="btnExport" class="submit-btn update-btn" id="btnExport">
+                    <input type="Print" value="Print" name="btnPrint" class="submit-btn update-btn" id="btnPrint">
+                </div>
+                <div class="clr"></div>
+                <div id="barchart_material"></div>
+            </div>
+            <div class="clr"></div>
+            <br />
+            <br />
+            <div id="divGraphMonth" class="analytics-cont graph" style="border: solid 1px grey; display: none;">
+                <br />
+                <div style="width: 43%; float: right;">
+
+                    <input value="Export to Excel" name="btnExport" class="submit-btn update-btn" id="btnExportMonth">
+                    <input type="Print" value="Print" name="btnPrint" class="submit-btn update-btn" id="btnPrintMonth">
+                </div>
+                <div class="clr"></div>
+
+                <div id="barchart_material_Month"></div>
+            </div>
+        </div>
+
+
+
+    </td>
+</tr>
+<div style="display: none" id="divProgress">
+    <div align="center" style="width: 100%; position: fixed; z-index: 100001; top: 0px; left: 0px; vertical-align: middle; text-align: center; _height: expression(document.body.offsetHeight + 'px');">
+        <div style="margin-top: 250px">
+            <img src="../../images/loading.gif" alt="loading" />
+        </div>
+    </div>
+    <div id="backgroundElement" style="position: fixed; left: 0px; top: 0px; z-index: 10000; width: 100%; height: 1800px; background-color: #666666; opacity: 0.4; filter: alpha(opacity=40);">
+    </div>
+</div>
+<script type="text/javascript">
+
+    function SearchData() {
+
+        var type = "";
+        var name = "";
+        var fromdate = $("#txtFromDate").val()
+        var todate = $("#txtToDate").val()
+
+
+        if ($("#txtName").val() == "") {
+
+            showStickMessage('Please enter User Name.');
+            return false;
+        }
+        //else if ($("#ddlUserType").val() == "") {
+        //    showStickMessage('Please select a User Type.');
+        //    return false;
+        //}
+
+        else {
+
+            name = $("#txtName").val();
+            type = $("#ddlUserType").val();
+            $("#divProgress").show();
+            $("#divGraph").hide();
+            $.ajax({
+                type: 'POST',
+                async: false,
+                url: '/Golfler/CourseAdmin/EmployeeAnalyticsSearch',
+                data: { type: type, Name: name, fromdate: fromdate, todate: todate },
+                success: function (data) {
+                    if (data.result.IsUserExists == false) {
+                        $("#divProgress").hide();
+                        showStickMessage('User does not exists.');
+                    }
+                    else {
+                        $('#aViewEmployeeAccess').attr('data-id', data.result.eUID);
+                        ViewEmployee(data.result.eUID);
+                        CreateChart(data.result.EmployeeSearch);
+                        CreatePersonalChart(data.result.EmployeePersonalSearch);
+                    }
+                }
+            });
+        }
+    }
+
+    function ViewEmployee(eid) {
+        try {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetAdminUserByID", "CourseAdmin")',
+                data: { eid: eid },
+                async: false,
+                success: function (data) {
+                    if (data.status == "1") {
+                        console.log(data.data);
+                        $('#tdName').text(data.data.Name);
+                        $('#tdEmail').text(data.data.Email);
+                        $('#tdUserName').text(data.data.UserName);
+                        $('#tdPhone').text(data.data.Phone);
+                        $('#tdUserType').text(data.data.UserType);
+                        $('#tdStatus').text(data.data.Status);
+                        $('#empImage').attr('src', data.data.Image);
+                        $('#tdRole').text(data.data.RoleName);
+
+                        if (data.data.RoleName == 'No Role') {
+                            $('#aViewEmployeeAccess').hide();
+                        }
+                        else {
+                            $('#aViewEmployeeAccess').show();
+                        }
+
+                        $('#dvEmployee').show();
+                    }
+                    else {
+                        //showStickMessage(data.msg);
+                        $('#dvEmployee').hide();
+                    }
+                },
+                error: function (data) {
+                    console.log(data);
+                    $('#dvEmployee').hide();
+                }
+            });
+        }
+        catch (ex) { console.log(ex.message); }
+    }
+
+    function ViewEmployeeRole(eid) {
+        try {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetRoleUserByID", "CourseAdmin")',
+                data: { eid: eid },
+                async: false,
+                success: function (data) {
+                    if (data.status == "1") {
+                        var roleHtml = '';
+                        roleHtml = roleHtml + '<tr><th>Admin Module</th><th>Edit</th><th>View List</th></tr>';
+                        var result = data.data;
+                        var groupHeader = '';
+                        for (var i = 0; i < result.length; i++) {
+                            //if (groupHeader != result[i].ModuelGroupID) {
+                            //    groupHeader = '';
+                            //}
+
+                            if (groupHeader != result[i].ModuelGroupID) {
+                                roleHtml = roleHtml + '<tr><td colspan="3" style="color:#43b34a !important">' + result[i].ModuleGroup + '</td></tr>';
+                                groupHeader = result[i].ModuelGroupID;
+                            }
+                            
+                            roleHtml = roleHtml + '<tr><td>' + result[i].ModuelName + '</td><td>' + result[i].Edit + '</td><td>' + result[i].Read + '</td></tr>';
+                        }
+                        $('#selectedData').empty();
+                        $('#selectedData').append(roleHtml);
+                    }
+                    else {
+                        console.log(data);
+                    }
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        }
+        catch (ex) { console.log(ex.message); }
+    }
+</script>
+
+<script type="text/javascript">
+
+    function CreateChart(jsondata) {
+        // debugger;
+        var PriceMe = jsondata[0].PriceMe;
+        var PriceCourse = jsondata[0].PriceCourse;
+        var NoOfOrdersMe = jsondata[0].NoOfOrdersMe;
+        var NoOfOrdersCourse = jsondata[0].NoOfOrdersCourse;
+        var RatingMe = jsondata[0].RatingMe;
+        var RatingCourse = jsondata[0].RatingCourse;
+        // var decimalData1 = parseFloat(stringData1);
+        //  courseArr[innerD].push(decimalData1);
+        ////
+
+
+        var data = google.visualization.arrayToDataTable(
+
+            [
+                 ['', 'Me', 'Course'],
+                 ['Price', PriceMe, PriceCourse],
+                 ['Number of Orders', NoOfOrdersMe, NoOfOrdersCourse],
+                 ['Rating', RatingMe, RatingCourse]
+            ]
+        );
+
+        var options = {
+            title: 'Comparative Analysis',
+            // vAxis: {  },
+            hAxis: { title: "" },
+            seriesType: "bars",
+            series: { 5: { type: "line" } },
+            vAxis: { title: "", format: '#.##', baselineColor: "none" }
+        };
+        $("#divGraph").show();
+        var chart = new google.visualization.ComboChart(document.getElementById('barchart_material'));
+        chart.draw(data, options);
+        $("#btnExport").click(function () { ExprotToExcel(0); });
+        $("#divProgress").hide();
+
+    }
+
+    function CreatePersonalChart(jsondata) {
+        //  debugger;
+        var PriceMe = jsondata[0].PriceMe;
+
+        var NoOfOrdersMe = jsondata[0].NoOfOrdersMe;
+
+        var RatingMe = jsondata[0].RatingMe;
+
+
+
+        //
+        var courseArr = new Array();
+
+        // debugger;
+        courseArr[0] = new Array("", "Price", "Number of Orders", "Rating");
+        for (var i = 0; i < jsondata.length; i++) {
+            for (var d = 0; d < 4; d++) {
+                courseArr[i + 1] = new Array();
+                courseArr[i + 1].push(jsondata[i].InnerTitle);
+                courseArr[i + 1].push(jsondata[i].PriceMe);
+                courseArr[i + 1].push(jsondata[i].NoOfOrdersMe);
+                courseArr[i + 1].push(jsondata[i].RatingMe);
+
+            }
+        }
+        var data = google.visualization.arrayToDataTable(courseArr
+
+            //[
+            //     ['', 'Price', 'Number of Orders', 'Rating'],
+            //     [titleText, PriceMe, NoOfOrdersMe, RatingMe],
+
+            //]
+        );
+        var chartTitle = jsondata[0].GetTitle;
+        var options = {
+            title: "Average Price, Number of Orders, Rating",
+
+            hAxis: { title: chartTitle },
+            seriesType: "bars",
+            //  series: { 5: { type: "line" } },
+            vAxis: { title: "", format: '#.##', baselineColor: "none" }
+        };
+        $("#divGraphMonth").show();
+        var chart = new google.visualization.ComboChart(document.getElementById('barchart_material_Month'));
+        chart.draw(data, options);
+
+        $("#btnExportMonth").click(function () { ExprotToExcel(1); });
+        $("#divProgress").hide();
+
+    }
+
+</script>
+
+<script type="text/javascript">
+    $("#btnPrint").live("click", function () {
+        var divContents = $("#barchart_material").html();
+        var printWindow = window.open('', '', 'height=400,width=800');
+        printWindow.document.write('<html><head><title>Employee Graph</title>');
+        printWindow.document.write('</head><body >');
+        printWindow.document.write(divContents);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        printWindow.print();
+    });
+    $("#btnPrintMonth").live("click", function () {
+        var divContents = $("#barchart_material_Month").html();
+        var printWindow = window.open('', '', 'height=400,width=800');
+        printWindow.document.write('<html><head><title>Employee Graph</title>');
+        printWindow.document.write('</head><body >');
+        printWindow.document.write(divContents);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        printWindow.print();
+    });
+    function ExprotToExcel(reportType) {
+
+        var type = "";
+        var name = "";
+        var fromdate = $("#txtFromDate").val();
+        var todate = $("#txtToDate").val();
+
+
+        if ($("#txtName").val() == "") {
+
+            showStickMessage('Please enter User Name.');
+            return false;
+        }
+        else if ($("#ddlUserType").val() == "") {
+            showStickMessage('Please select a User Type.');
+            return false;
+        }
+
+
+        else {
+
+            name = $("#txtName").val();
+            type = $("#ddlUserType").val();
+            $("#divProgress").show();
+            var oldurl = window.locationl
+            var url = '@Url.Action("ExportToExcelEmployeeReport")' + '?type=' + type + '&name=' + name + '&fromdate=' + fromdate + '&todate=' + todate + '&reportType=' + reportType;
+            if (url == "") {
+
+                window.location = oldurl;
+                showStickMessage('Some error occurs while creating excel, Please try again later.');
+                $("#divProgress").hide();
+            }
+            else {
+                $("#divProgress").hide();
+                window.location = url;
+
+            }
+        }
+}
+</script>
+
+@*//open Pop Up*@
+<a href="#myModal" id="btnShowOrder" class="submit-btn update-btn" style="display: none;"></a>
+<div id="myModal" class="reveal-modal" style="display: none; top: 100px; height: 500px;">
+    <div class="pop_detail">
+        <h1 id="titleHeader">Access Level</h1>
+        <div id="tableContainer" class="page-wrap" style="height: 490px; overflow-x: scroll; border: 1px solid #EAEAEA;">
+            <table id="selectedData" class="voucher-details-table">
+            </table>
+        </div>
+    </div>
+    <div align="center" id="pop_close_btn" class="center-button">
+        <input type="button" id="close" value="Close" class="cancel-btn blk-btn margin_bottom5" onclick="$.fancybox.close();" />
+    </div>
+    <div class="clr"></div>
+    <div class="margin-top15"></div>
+    <div class="clear"></div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $('#aViewEmployeeAccess').click(function () {
+            ViewEmployeeRole($(this).attr('data-id'));
+            $('#btnShowOrder').click();
+        });
+
+
+        $('a[href="#myModal"]').fancybox({
+            'scrolling': 'no',
+            'onStart': function () {
+                $('#myModal').css('width', '550px');
+                $('#myModal').css('height', '620px');
+                $("#myModal").css("display", "block");
+            },
+            'onClosed': function () {
+                $("#myModal").parent().css('overflow', 'hidden');
+                $("#myModal").hide();
+            }
+        });
+    });
+</script>
+@*//*@

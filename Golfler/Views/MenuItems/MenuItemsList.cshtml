@@ -1,0 +1,138 @@
+﻿@{
+    ViewBag.Title = "MenuItemsList";
+}
+
+@Html.Partial("_jqGrid")
+<style>
+    .tempwidth {
+        width: 40% !important;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".choose_inner_department").addClass("tempwidth");
+      
+       
+        
+        bindJqGridMin('list', 'pager', 'GetSubCategoryList',
+                ['ID', 'Food Item Name', 'Parent Food Item Name', 'Is Active'],
+                [   { name: 'ID', index: 'ID', width: 10, hidden: true },                  
+                    { name: 'Name', index: 'Name', width: 50, formatter: SetEditLink },
+                    { name: 'Category', index: 'Category', width: 50 },              
+                    { name: 'Status', index: 'Status', width: 50, sortable: false, formatter: SetActiveInActive, align: "center" }                  
+                ], 'ID', 'desc',
+                {
+                    "searchText": (function () {
+                        return $("#txtSearch").val();
+                    })
+
+                }, '');
+    });
+   
+
+    function DeleteUsers() {
+        try {
+            DeleteMultiple('list', '@Url.Action("DeleteMenuItems")');
+        
+            
+        }
+        catch (ex) { alert(ex.message); }
+    }
+
+    
+
+    function SetEditLink(cellvalue, options, rowObject) {
+
+        try {
+            var Eid = rowObject["EID"];
+            var type = rowObject["Type"];
+            var doActive = rowObject["DoActive"];           
+            //if ($('#UpdateFlag').size() != 0 && $('#UpdateFlag').val() != "true")
+            //    return cellvalue;
+            //else
+            return "<a href='MenuItemsAddUpdate/" + Eid + "' >" + cellvalue + "</a>";
+        }
+        catch (ex) { alert(ex.message); }
+    }
+    function SetActiveInActive(cellvalue, options, rowObject) {
+        try {
+
+
+            var rowId = rowObject["ID"];
+            var type = rowObject["Type"];
+
+            var onclickCall = "onclick=javascript:UpdateRowStatus(" + rowId + ",&apos;"+cellvalue.trim()+"&apos;);";
+            //if (($('#UpdateFlag').size() != 0 && $('#UpdateFlag').val() != "True") && !notadminpanel) {
+            //    onclickCall = 'onclick="javascript:showStickMessage(unaccess); return false;"';
+            //}
+
+            if (cellvalue.trim() == "A" || cellvalue == true)
+                return "<a href='#'><img " + onclickCall + " alt='" + cellvalue + "' title='click to deactivate' src='/Content/images/nw_active.png'/></a>";
+            else
+                return "<a href='#'><img " + onclickCall + " alt='" + cellvalue + "' title='click to activate' src='/Content/images/nw_inactive.png'/></a>";
+        }
+        catch (ex) {
+            alert(ex.message);
+        }
+    }
+    function AddNewUser() {
+        window.location = '@Url.Action("MenuItemsAddUpdate")'
+      }
+    function UpdateRowStatus(id, status) {
+        try {
+            UpdateStatus('UpdateSubCateogryStatus', 'Golfler/MenuItems', id, status, 'list');
+        }
+        catch (ex) { alert(ex.message); }
+    };
+</script>
+<tr>
+    <td class="id_pathway" valign="middle">
+        <div class="breadcrumb">
+            <ul>
+                <li><a href='@Url.Action("Dashboard")'>Dashboard</a><img src="/Content/Images/arrow.png"
+                    class="arrow_position" /></li>
+                <li>Manage @ViewBag.Module</li>
+            </ul>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td id="content_center_td2" valign="top" align="center">
+        <div class="form_box">
+            <div class="search-advertiser">
+                <label>
+                    Search</label>
+                <input type="text" placeholder="Name" name="searchText" id="txtSearch"
+                    class="searchfeild jqGrid_refreshKey adname" value="" style="margin-bottom: 2px;"
+                    size="30" />
+                <img src="/Content/Images/search_icon.png" border="0" alt="search" class="go-btn floatleft jqGrid_refresh"
+                    id="fbox_jqgAdminUser_search" />
+                <div class="clr">
+                </div>
+                <div style="border-top: 1px solid silver; padding-top: 12px; margin-top: 12px;">
+                    <input type="button" id="addNew" value="Add New Item" class="blu-btn leftmargin_3" onclick="javascript: AddNewUser();" action="add" />
+                    <input id="aDeletePopup" type="button" value="Delete" onclick="DeleteUsers();" class="delete blk-btn margin_bottom5" />
+                </div>
+            </div>
+            <div class="clr">
+            </div>
+            <div class="em nop" style="display: none;">
+                <label>
+                </label>
+                Use blank search to see all records
+            </div>
+           
+        </div>
+        <div id="page-wrap">
+            <table id="list" cellpadding="0" cellspacing="0" style="width: 100%;" class="jqgridTable">
+            </table>
+            <div id="pager" style="width: 100%;">
+            </div>
+            <input type="hidden" id="hdnId" value='@Golfler.Models.LoginInfo.UserId' />
+        </div>
+    </td>
+</tr>
+<input type="hidden" id="hdnConfirm" />
+

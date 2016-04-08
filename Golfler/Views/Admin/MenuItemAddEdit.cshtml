@@ -1,0 +1,444 @@
+﻿@{
+    ViewBag.Title = "MenuItemAddEdit";
+}
+
+@{
+    ViewBag.Module = "Menu Item";
+    ViewBag.Title = (Model.ID > 0 ? "Edit" : "Add") + " Menu Item";
+    ViewBag.pageTitle = (Model.ID > 0 ? "Edit" : "Add") + " Menu Item";
+}
+@using Golfler.Models
+@model Golfler.Models.GF_SubCategory
+<script language="javascript" type="text/javascript">
+
+    $(document).ready(
+        function () {
+
+            $('fieldset').addClass("bodD5D5D5");
+            $('.width_49 label').addClass("cat");
+            $('.datainner_box input[type="text"]').addClass("txtfelds");
+            $('.datainner_box input[type="password"]').addClass("txtfelds");
+            $('.datainner_box input[type="checkbox"]').addClass("checkbox-spacing5");
+            $('.datainner_box select').addClass("txtfelds");
+            $('.width_49 span:contains("*")').css("color", "Red").css("display", "none");
+            $('.width_49 span:contains("*")').parent().children('label').append('<span>*</span>');
+
+            $("input[id=MenuName]").rules("add", {
+                required: true,
+                messages: { required: "Required" }
+            });
+
+            $('#btnCancel').click(function () {
+                window.location = '@Url.Action("MenuItemList")';
+            });
+
+            $('#btnSubmit').on("click", function () {
+
+                var price = parseFloat($('#Amount').val());
+
+                if (price < 1) {
+                    showStickMessage('Menu price should be greater than $1.');
+                    return false;
+                }
+
+                var empty = false;
+                $.each($('input[name^=ArrMenuItemOption][type=text]'), function (key, value) {
+                    if ($(this).val() == '' && !$(this).hasClass('defaultRow')) {
+                        empty = true;
+                    }
+                })
+
+                if (empty) {
+                    showStickMessage('Please enter empty option(s).');
+                }
+
+                return !empty;
+            });
+
+            //Confirmation Page
+            if ($("#ID").val() == 0) {
+                $('#Active').prop("checked", true);
+                $("#btnConfirm").fancybox({
+                    'scrolling': 'no',
+                    'onStart': function () {
+                        $("#lblCategory").text($('#CategoryID').val() == "0" ? "-" : $('#CategoryID :selected').text());
+                        $("#lblSubCategory").text($('#Name').val());
+                        $("#lblMenuItemName").text($('#MenuName').val());
+                        $("#lblPrice").text($('#Amount').val());
+                        //$("#lblStatus").text($('#Active').is(':checked') ? "Active" : "Inactive");
+                        $("#lblStatus").text($('#Active').val() == 'True' ? "Active" : "Inactive");
+                        $("#myModal").css("display", "block");
+                    },
+                    'onClosed': function () { $("#myModal").css("display", "none"); }
+                });
+                $('#btnSubmit').on("click", function () {
+                    //var price = parseFloat($('#Amount').val());
+
+                    //if (price < 1) {
+                    //    showStickMessage('Menu price should be greater than $1.');
+                    //    return false;
+                    //}
+
+                    if (!$('#btnSubmit').hasClass('unaccess') && $('#frmSubmit').valid()) {
+                        if ($('#hdnConfirm').val() != "1") {
+                            $("#btnConfirm").click();
+                            return false;
+                        }
+                    }
+                });
+            }
+        });
+</script>
+<script type="text/javascript">
+    $(document).ready(
+        function () {
+            $("#frmSubmit").validate();
+        });
+</script>
+
+<style>
+    .widthDatepicker {
+        width: 39% !important;
+    }
+
+    #fancybox-wrap {
+        z-index: 999999999 !important;
+    }
+</style>
+
+<tr>
+    <td class="id_pathway">
+        <div class="breadcrumb">
+            <ul>
+                <li><a href='@Url.Action("Dashboard")'>Dashboard</a><img src="/Content/Images/arrow.png"
+                    class="arrow_position" /></li>
+                <li><a href='@Url.Action("MenuItemList")'>Manage
+                    @ViewBag.Module</a><img src="/Content/Images/arrow.png" class="arrow_position" /></li>
+                <li>@ViewBag.Title</li>
+            </ul>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td id="content_center_td2" valign="top" align="center">
+        <div id="content_div" class="form_box organization_form">
+            @using (Html.BeginForm("MenuItemAddEdit", null, FormMethod.Post, new { id = "frmSubmit" }))
+            {
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(x => x.ID)
+                @Html.Hidden("hdnIsLoginUser", (object)ViewBag.IsLoginUser)
+
+                <div style="margin: 0px 0px 0px 0px;">
+                    <div class="organization_left">
+                        <p class="tpspacing">
+                            @Html.Label("Parent Category")
+                            @if (Model.ID > 0)
+                            {
+                                @Html.HiddenFor(x => x.CategoryID)
+                                @Html.DropDownListFor(x => x.CategoryID, (SelectList)(ViewBag.CategoryList), "Select", new { @id = "CategoryID", @class = "red-border", @disabled = "disabled" })
+                            }
+                            else
+                            {
+                                @Html.DropDownListFor(x => x.CategoryID, (SelectList)(ViewBag.CategoryList), "Select", new { @id = "CategoryID", @class = "red-border" })
+                            }
+                            @Html.ValidationMessageFor(x => x.CategoryID)
+                            @*@Html.DropDownListFor(x => x.GF_SubCategory.GF_Category.ID, (SelectList)(ViewBag.CategoryList), "Select", new { @id = "CategoryID", @class = "red-border" })
+                            @Html.ValidationMessageFor(x => x.GF_SubCategory.GF_Category.ID)*@
+                        </p>
+                    </div>
+                    <div class="organization_left">
+                        <p class="tpspacing">
+                            @Html.Label("Sub Category Name")
+                            @Html.TextBoxFor(x => x.Name, new { @class = "userfeilder red-border", @autocomplete = "off", @maxlength = "50" })
+                            @Html.ValidationMessageFor(x => x.Name)
+                            @*@Html.TextBoxFor(x => x.GF_SubCategory.Name, new { @class = "userfeilder red-border", @autocomplete = "off", @maxlength = "25" })
+                            @Html.ValidationMessageFor(x => x.GF_SubCategory.Name)*@
+                        </p>
+                    </div>
+                    <div class="clr">
+                    </div>
+                </div>
+                <div style="margin: 0px 0px 0px 0px;">
+                    <div class="organization_left">
+                        <p class="tpspacing">
+                            @Html.HiddenFor(x => x.MenuItemID)
+                            @Html.Label("Menu Item Name")
+                            @Html.TextBoxFor(x => x.MenuName, new { @class = "userfeilder red-border", @autocomplete = "off", @maxlength = "50" })
+                            @Html.ValidationMessageFor(x => x.MenuName)
+                        </p>
+                    </div>
+                    <div class="organization_left">
+                        <p class="tpspacing">
+                            @Html.Label("Price")
+                            @Html.TextBoxFor(x => x.Amount, new { @class = "userfeilder red-border", @autocomplete = "off", @maxlength = "10" })
+                            @Html.ValidationMessageFor(x => x.Amount)
+                        </p>
+                    </div>
+                    <div class="clr">
+                    </div>
+                </div>
+                <div style="margin: 0px 0px 0px 0px;">
+                    <div class="organization_left">
+                        <p class="tpspacing">
+                            @Html.Label("Active")
+                            @*@Html.CheckBoxFor(x => x.Active, new { @class = "noleft_space" })*@
+
+
+                            <span class="selected-row">
+                                <span class="switch">
+                                    <input id="cmn-toggle-2" data-result-id="Active" class="cmn-toggle cmn-toggle-round" type="checkbox" data-value="@(Model.Active ? "1" : "0")" @(Model.Active ? "checked='checked'" : "") />
+                                    <label for="cmn-toggle-2"></label>
+                                    @Html.HiddenFor(x => x.Active)
+                                </span>
+                            </span>
+
+
+
+                        </p>
+                    </div>
+                    <div class="clr">
+                    </div>
+                </div>
+                <div class="clr">
+                </div>
+                
+                <div class="form_box input_fields_wrap">
+                    @if (Model.ArrMenuItemOption != null && Model.ArrMenuItemOption.Count() > 0)
+                    {
+                        <div class="search-advertiser">
+                            <label>
+                                Option 1</label>
+                            @Html.TextBoxFor(x => x.ArrMenuItemOption[0].Name, new { @class = "searchfeild adname defaultRow", @autocomplete = "off", @maxlength = "50" })
+                            @if (Model.ArrMenuItemOption[0] != null)
+                            {
+                                @Html.HiddenFor(x => x.ArrMenuItemOption[0].ID)
+                                <input type="button" value="Remove" class="remove_field_main blu-btn margin_bottom5" data-option="@Model.ArrMenuItemOption[0].ID" />
+                            }
+                            <input type="button" id="addMore" value="Add More" class="add_field_button blu-btn margin_bottom5" />
+                        </div>
+                            for (var i = 1; i < Model.ArrMenuItemOption.Count(); i++)
+                            {
+                        <div class="search-advertiser">
+                            <label>
+                                Option @(i + 1)</label>
+                            @Html.HiddenFor(x => x.ArrMenuItemOption[i].ID)
+                            <input type="hidden" name="hdnArrOption" value="@Model.ArrMenuItemOption[i].Name" data-option="@Model.ArrMenuItemOption[i].ID" />
+                            @Html.TextBoxFor(x => x.ArrMenuItemOption[i].Name, new { @class = "searchfeild adname dynamic", @autocomplete = "off", @maxlength = "50" })
+                            <input type="button" value="Remove" class="remove_field blu-btn margin_bottom5" data-option="@Model.ArrMenuItemOption[i].ID" />
+                        </div>
+                            }
+                    }
+                    else
+                    {
+                        <div class="search-advertiser">
+                            <label>
+                                Option 1</label>
+                            @Html.TextBoxFor(x => x.ArrMenuItemOption[0].Name, new { @class = "searchfeild adname defaultRow", @autocomplete = "off", @maxlength = "50" })
+                            <input type="button" id="addMore" value="Add More" class="add_field_button blu-btn margin_bottom5" />
+                        </div>
+                    }
+                </div>
+                <div align="center" class="center-button">
+                    @Html.HiddenFor(x => x.Active)
+                    <a href="#myModal" id="btnConfirm" class="submit-btn update-btn" style="display: none;">Submit</a>
+                    <input type="submit" id="btnSubmit" class="submit-btn update-btn" name="btnSubmit" value="Submit" action="add" />
+                    <input type="button" id="btnCancel" class="submit-btn cancel-btn" value="Cancel" />
+                    <input type="button" id="btnPartial" class="submit-btn update-btn" name="btnPartial" value="Submit" style="display: none;" />
+                </div>
+            }
+        </div>
+    </td>
+</tr>
+<input type="hidden" id="hdnConfirm" />
+<div id="myModal" class="reveal-modal" style="display: none; top: 100px;">
+    <div class="pop_detail">
+        <h1>Confirm Details</h1>
+        <div class="page-wrap">
+            <table class="voucher-details-table">
+                <tr>
+                    <td class="align-left" colspan="2">
+                        <p>
+                            <strong>Dear @Golfler.Models.LoginInfo.FirstName @Golfler.Models.LoginInfo.LastName,</strong><br />
+                            @String.Format("Please confirm Menu Item details to save.")<br />
+                            <strong>Thanks</strong>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>Parent Category</strong>
+                    </td>
+                    <td class="align-left" id="lblCategory"></td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>Sub Category Name</strong>
+                    </td>
+                    <td class="align-left" id="lblSubCategory"></td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>Menu Item Name</strong>
+                    </td>
+                    <td class="align-left" id="lblMenuItemName"></td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>Price</strong>
+                    </td>
+                    <td class="align-left" id="lblPrice"></td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>Status</strong>
+                    </td>
+                    <td class="align-left" id="lblStatus"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="clr">
+    </div>
+    <div class="margin-top15">
+    </div>
+    <div class="clr">
+    </div>
+    <div align="center" class="center-button">
+        <input type="button" id="close" value="Edit" class="submit-btn cancel-btn" onclick="$.fancybox.close();" />
+        <input type="button" id="btnSave" onclick="javascript: showAfterPopup(); $('#hdnConfirm').val('1'); $('#btnSubmit').click(); $('#divProgress').show();"
+            value="Confirm" class="submit-btn update-btn" />
+    </div>
+    <div class="clear">
+    </div>
+</div>
+
+@*<div id="divProgress">
+    <div align="center" style="width: 100%; position: fixed; z-index: 100001; top: 0px; left: 0px; vertical-align: middle; text-align: center; _height: expression(document.body.offsetHeight + 'px');">
+        <div style="margin-top: 250px">
+            <img src="../../../images/loading.gif" alt="loading" />
+        </div>
+    </div>
+    <div id="backgroundElement" style="position: fixed; left: 0px; top: 0px; z-index: 10000; width: 100%; height: 1800px; background-color: #666666; opacity: 0.4; filter: alpha(opacity=40);">
+    </div>
+</div>*@
+
+@Html.Partial("~/Views/Shared/_MenuItemSubCategoryWise.cshtml")
+
+<script language="javascript" type="text/javascript">
+    function showAfterPopup() {
+        $("#fancybox-overlay").css("z-index", "99999999");
+    }
+
+    $(document).ready(function () {
+        var max_fields = 5; //maximum input boxes allowed
+        var wrapper = $(".input_fields_wrap"); //Fields wrapper
+        var add_button = $(".add_field_button"); //Add button ID
+
+        var x = 1; //initlal text box count
+
+        if ('@Model.ArrMenuItemOption' != null) {
+            x = '@Model.ArrMenuItemOption.Count()';
+
+            if (x > 1) {
+                $('.remove_field_main').hide();
+            }
+        }
+
+        $(add_button).click(function (e) { //on add input button click
+            e.preventDefault();
+            if (x < max_fields) { //max input box allowed
+                x++; //text box increment
+                $(wrapper).append('<div class="search-advertiser"><label>Option ' + x + '</label><input type="text" value="" name="ArrMenuItemOption[' + (x - 1) + '].Name" maxlength="50" id="ArrMenuItemOption_' + x + '__Name" class="searchfeild adname dynamic" autocomplete="off" style="background-image: none;"><input type="button" value="Remove" class="remove_field blu-btn margin_bottom5" data-option="0" /></div>'); //add input box
+            }
+            else {
+                showStickMessage('You cannot add more than 5 options.');
+            }
+
+            if (x > 1) {
+                $('.remove_field_main').hide();
+            }
+        });
+
+        $(wrapper).on("click", ".remove_field_main", function (e) { //user click on remove main (i.e. Initial Record) text
+            if (confirm('Are you sure you want remove this menu item option.')) {
+                e.preventDefault();
+                var optionID = $(this).attr('data-option');
+
+                if (optionID > 0) {
+                    removeOption(optionID);
+                }
+
+                $(this).remove();
+                $('#ArrMenuItemOption_0__Name').val('');
+            }
+        })
+
+        $(wrapper).on("click", ".remove_field", function (e) { //user click on remove text
+            if (confirm('Are you sure you want remove this menu item option.')) {
+                $('#divProgress').show();
+                e.preventDefault();
+                var optionID = $(this).attr('data-option');
+
+                $(this).parent('div').remove();
+                x--;
+
+                var optionName = [];
+                var optionData = [];
+                var k = 0;
+                $.each($('input[name^=hdnArrOption]'), function (key, value) {
+                    optionName[k] = $(this).val();
+                    optionData[k] = $(this).attr('data-option');
+                    k++;
+                    //alert($(this).val() + ' -- ' + $(this).attr('data-option'));
+                });
+
+                //Remove all dynamic created div, and then regenerate the array index
+                $('.dynamic').parent('div').remove();
+
+                if (optionData.length > 0) {
+                    for (var i = 1; i < optionData.length + 1; i++) {
+                        var hdnF = ''
+                        var hdn = '';
+                        hdnF = '<input type="hidden" value="' + optionData[i - 1] + '" name="ArrMenuItemOption[' + i + '].ID" id="ArrMenuItemOption_' + i + '__ID" data-val-required="The ID field is required." data-val-number="The field ID must be a number." data-val="true">'
+                        hdn = '<input type="hidden" name="hdnArrOption" value="' + optionName[i - 1] + '" data-option="' + optionData[i - 1] + '" />';
+                        $(wrapper).append('<div class="search-advertiser"><label>Option ' + (i + 1) + '</label>' + hdnF + hdn + '<input type="text" value="' + optionName[i - 1] + '" name="ArrMenuItemOption[' + i + '].Name" maxlength="50" id="ArrMenuItemOption_' + i + '__Name" class="searchfeild adname dynamic" autocomplete="off" style="background-image: none;"><input type="button" value="Remove" class="remove_field add_field_button blu-btn margin_bottom5" data-option="0" /></div>'); //add input box
+                    }
+                    x = optionData.length + 1;
+                }
+                else {
+                    for (var i = 1; i < x; i++) {
+                        $(wrapper).append('<div class="search-advertiser"><label>Option ' + (i + 1) + '</label><input type="text" value="" name="ArrMenuItemOption[' + i + '].Name" maxlength="50" id="ArrMenuItemOption_' + i + '__Name" class="searchfeild adname dynamic" autocomplete="off" style="background-image: none;"><input type="button" value="Remove" class="remove_field blu-btn margin_bottom5" data-option="0" /></div>'); //add input box
+                    }
+                }
+
+                if (optionID > 0) {
+                    removeOption(optionID);
+                }
+
+                if (x == 1) {
+                    $('.remove_field_main').show();
+                }
+                $('#divProgress').hide();
+            }
+        })
+
+        function removeOption(optionID) {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("RemoveMenuItemOption", "Admin")',
+                data: { optionID: optionID },
+                async: false,
+                success: function (data) {
+                    console.log(data);
+                    showMessage(data.message);
+                },
+                error: function (data) {
+                    console.log(data);
+                    showStickMessage(data.message);
+                }
+            });
+        }
+    });
+</script>

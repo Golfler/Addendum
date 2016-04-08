@@ -1,0 +1,16 @@
+﻿@{
+ 
+ //   Layout = "~/Views/Shared/_LayoutCourseArea.cshtml";
+
+    ViewBag.Module = "Course Coordinate Suggestion List";
+    ViewBag.Title = "Manage Course Coordinate Suggestion List";
+    ViewBag.pageTitle = "Manage Coordinate(s)";
+ 
+    ViewBag.BuilderType = "Golfer";
+
+    ViewBag.Status = new SelectList(Golfler.Models.ApproveStatusType.GetStatusTypeList(), "Tag", "Name", "P");
+
+
+    ViewBag.ParDetails = Golfler.Models.CommonFunctions.GetCoursePar(Convert.ToString(ViewBag.CourseId));
+}
+@Html.Partial("~/Views/Shared/_CourseBuilderScreen.cshtml")

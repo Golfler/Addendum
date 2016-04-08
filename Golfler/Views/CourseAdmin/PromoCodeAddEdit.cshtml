@@ -1,0 +1,389 @@
+﻿@{
+    ViewBag.Module = "Promo Code";
+    ViewBag.Title = (Model.ID > 0 ? "Edit" : "Add") + " Promo Code";
+    ViewBag.pageTitle = (Model.ID > 0 ? "Edit" : "Add") + " Promo Code";
+    Layout = "~/Views/Shared/_LayoutCourseArea.cshtml";
+}
+@using Golfler.Models
+@model Golfler.Models.GF_PromoCode
+<script language="javascript" type="text/javascript">
+
+    $(document).ready(
+        function () {
+
+            $('fieldset').addClass("bodD5D5D5");
+            $('.width_49 label').addClass("cat");
+            $('.datainner_box input[type="text"]').addClass("txtfelds");
+            $('.datainner_box input[type="password"]').addClass("txtfelds");
+            $('.datainner_box input[type="checkbox"]').addClass("checkbox-spacing5");
+            $('.datainner_box select').addClass("txtfelds");
+            $('.width_49 span:contains("*")').css("color", "Red").css("display", "none");
+            $('.width_49 span:contains("*")').parent().children('label').append('<span>*</span>');
+
+            $('#btnCancel').click(function () {
+                window.location = '@Url.Action("PromoCodeList")';
+            });
+
+            if ('@Model.DiscountType' == '@DiscountType.Amount') {
+                $('#disType').text('$');
+                $('#dvPromoType').hide();
+                $('#MenuItemID').attr('disabled', 'disabled');
+            }
+            else {
+                $('#disType').text('%');
+                $('#dvPromoType').show();
+                $('#MenuItemID').removeAttr('disabled');
+            }
+
+            $('#DiscountType').val('@Model.DiscountType');
+            $('#DiscountType').change(function () {
+                if ($(this).val() == '@DiscountType.Percentage') {
+                    $('#disType').text('%');
+                    $('#dvPromoType').show();
+                    $('#MenuItemID').removeAttr('disabled');
+                }
+                else if ($(this).val() == '@DiscountType.Amount') {
+                    $('#disType').text('$');
+                    $('#dvPromoType').hide();
+                    $('#MenuItemID').attr('disabled', 'disabled');
+                }
+                else {
+                    $('#disType').text('%');
+                    $('#dvPromoType').show();
+                    $('#MenuItemID').removeAttr('disabled');
+                }
+            });
+
+            $('#btnSubmit').on("click", function () {
+
+                var currdate = new Date($("#Currdate").val()); //Year, Month, Date
+                var expiryDate = new Date($("#ExpiryDate").val()); //Year, Month, Date
+
+                if (currdate >= expiryDate) {
+                    showStickMessage("Promo code has been expired.");
+                    return false;
+                }
+                else {
+                    //alert("Expiry Date is greather then Current Date.");
+                }
+            });
+
+            //Confirmation Page
+            if ($("#ID").val() == 0) {
+                $('#Active').prop("checked", true);
+                $("#btnConfirm").fancybox({
+                    'scrolling': 'no',
+                    'onStart': function () {
+                        $("#lblPromoCode").text($('#PromoCode').val());
+                        $("#lblFoodItem").text($('#MenuItemID').val() == "0" ? "-" : $('#MenuItemID :selected').text());
+
+                        if ($('#DiscountType').val() == '@DiscountType.Amount')
+                            $("#lblDiscount").text('$' + $('#Discount').val());
+                        else
+                            $("#lblDiscount").text($('#Discount').val() + '%');
+
+                        $("#lblExpiryDate").text($('#ExpiryDate').val());
+                        //$("#lblOneTime").text($('#OneTimeUse').is(':checked') ? "Yes" : "No");
+                        $("#lblOneTime").text($('#OneTimeUse').val() == 'True' ? "Yes" : "No");
+
+                        //$("#lblStatus").text($('#Active').is(':checked') ? "Active" : "Inactive");
+                        $("#lblStatus").text($('#Active').val() == 'True' ? "Active" : "Inactive");
+
+                        $("#myModal").css("display", "block");
+                    },
+                    'onClosed': function () { $("#myModal").css("display", "none"); }
+                });
+                $('#btnSubmit').on("click", function () {
+                    if (!$('#btnSubmit').hasClass('unaccess') && $('#frmSubmit').valid()) {
+                        if ($('#hdnConfirm').val() != "1") {
+                            $("#btnConfirm").click();
+                            return false;
+                        }
+                    }
+                });
+            }
+
+            var $radios = $('input:radio[name=ReferenceType]');
+            if ($radios.is(':checked') === false) {
+                if ('@Model.ID' > 0) {
+                    $radios.filter('[value=' + '@Model.ReferenceType' + ']').prop('checked', true);
+                    getFoodItems('@Model.ReferenceType');
+                    $('#MenuItemID').val('@Model.ReferenceID');
+
+                    if ('@Model.ReferenceType' === '@PromoCodeType.CategoryWise') {
+                        $('#ddlMenu').text('Select Category');
+                    }
+                    else {
+                        $('#ddlMenu').text('Select Menu Item');
+                    }
+                }
+                else {
+                    $radios.filter('[value=' + '@PromoCodeType.MenuItemWise' + ']').prop('checked', true);
+                    $('#ddlMenu').text('Select Menu Item');
+                }
+            }
+
+            $radios.click(function () {
+                var type = '';
+
+                if ($(this).val() === '@PromoCodeType.CategoryWise') {
+                    type = '@PromoCodeType.CategoryWise';
+                    $('#ddlMenu').text('Select Category');
+                }
+                else {
+                    type = '@PromoCodeType.MenuItemWise';
+                    $('#ddlMenu').text('Select Menu Item');
+                }
+
+                getFoodItems(type);
+            });
+
+            function getFoodItems(type) {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetFoodItem", "CourseAdmin")',
+                    data: { type: type },
+                    async: false,
+                    success: function (data) {
+
+                        $('#MenuItemID').empty();
+                        $('#MenuItemID').append('<option value="">Select</option>');
+
+                        if (data.msg == 'Success') {
+                            for (var i = 0; i < data.data.length; i++) {
+                                $('#MenuItemID').append('<option value="' + data.data[i].ID + '">' + data.data[i].Name + '</option>');
+                            }
+                        }
+                        else {
+                            //Do nothing
+                        }
+                    }
+                });
+            }
+        });
+</script>
+<script type="text/javascript">
+    $(document).ready(
+        function () {
+            $("#frmSubmit").validate();
+        });
+</script>
+
+<style>
+    .widthDatepicker {
+        width: 30% !important;
+    }
+</style>
+<input type="hidden" name="Currdate" id="Currdate" value="@DateTime.Now" />
+<tr>
+    <td class="id_pathway">
+        <div class="breadcrumb">
+            <ul>
+                <li><a href='@Url.Action("Dashboard")'>Dashboard</a><img src="/Content/Images/arrow.png"
+                    class="arrow_position" /></li>
+                <li><a href='@Url.Action("PromoCodeList")'>Manage
+                    @ViewBag.Module</a><img src="/Content/Images/arrow.png" class="arrow_position" /></li>
+                <li>@ViewBag.Title</li>
+            </ul>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td id="content_center_td2" valign="top" align="center">
+        <div id="content_div" class="form_box organization_form">
+            @using (Html.BeginForm("PromoCodeAddEdit", null, FormMethod.Post, new { id = "frmSubmit" }))
+            {
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(x => x.ID)
+                @Html.Hidden("hdnIsLoginUser", (object)ViewBag.IsLoginUser)
+
+                @Html.HiddenFor(x => x.CourseID)
+
+                <div style="margin: 0px 0px 0px 0px;">
+                    <div class="organization_left">
+                        <p class="tpspacing">
+                            @if (Model.ID > 0)
+                            {
+                                @Html.LabelFor(x => x.PromoCode)
+                                @Html.TextBoxFor(x => x.PromoCode, new { @class = "userfeilder red-border", @readonly = "true", @maxlength = "25" })
+                            }
+                            else
+                            {
+                                @Html.LabelFor(x => x.PromoCode)
+                                @Html.TextBoxFor(x => x.PromoCode, new { @class = "userfeilder red-border", @autocomplete = "off", @maxlength = "25" })
+                                @Html.ValidationMessageFor(x => x.PromoCode)
+                            }
+                        </p>
+                    </div>
+                    <div class="organization_left">
+                        <p>
+                            @Html.LabelFor(x => x.ExpiryDate)
+                            @Html.TextBoxFor(x => x.ExpiryDate, new { @class = "widthDatepicker userfeilder red-border datepickerFuture spacingt5 adname-1  datefeild border_process adname calc_icon", @maxlength = "50", @readonly = "readonly" })
+                            @Html.ValidationMessageFor(x => x.ExpiryDate)
+                        </p>
+                    </div>
+                </div>
+                <div>
+                    <div class="organization_left">
+                        <p class="tpspacing">
+                            @Html.LabelFor(x => x.DiscountType)
+                            @Html.DropDownListFor(x => x.DiscountType, (SelectList)(ViewBag.DiscountType), "Select", new { @class = "red-border" })
+                            @Html.ValidationMessageFor(x => x.DiscountType)
+                        </p>
+                    </div>
+                    <div class="organization_left">
+                        <p>
+                            @*@Html.LabelFor(x => x.Discount)*@
+                            <label>Discount (in <span id="disType">%</span>)</label>
+                            @Html.TextBoxFor(x => x.Discount, new { @class = "userfeilder red-border", @maxlength = "50", @Value = Model.Discount != null ? Convert.ToInt32(Model.Discount) : Model.Discount })
+                            @Html.ValidationMessageFor(x => x.Discount)
+                        </p>
+                    </div>
+                    <div class="clr">
+                    </div>
+                </div> 
+                
+                <div id="dvPromoType">
+                    <div class="organization_left">
+                        <p class="tpspacing">
+                            <label for="IsMinor">Promo Type</label>
+                            <label class="widthauto">
+                                <input type="radio" name="ReferenceType" value='@PromoCodeType.CategoryWise' />Category</label>
+                            <label class="widthauto">
+                                <input type="radio" name="ReferenceType" value='@PromoCodeType.MenuItemWise' />Menu</label>
+                        </p>
+
+                    </div>
+                    <div class="organization_left">
+                        <p class="tpspacing">
+                            <label id="ddlMenu">Select Menu Item</label>
+                            @*@Html.LabelFor(x => x.ReferenceID)*@
+                            @Html.DropDownListFor(x => x.ReferenceID, (SelectList)(ViewBag.MenuItemList), "Select", new { @id = "MenuItemID", @class = "red-border" })
+                            @Html.ValidationMessageFor(x => x.ReferenceID)
+                        </p>
+                    </div>
+                    <div class="clr">
+                    </div>
+                </div>
+                <div>
+                    <div class="organization_left">
+                        <p>
+                            @Html.LabelFor(x => x.IsOneTimeUse)
+                            @*@Html.CheckBoxFor(x => x.OneTimeUse, new { @class = "noleft_space" })*@
+
+                            <span class="selected-row">
+                                <span class="switch">
+                                    <input id="cmn-toggle-1" data-result-id="OneTimeUse" class="cmn-toggle cmn-toggle-round" type="checkbox" data-value="@(Model.OneTimeUse ? "1" : "0")" @(Model.OneTimeUse ? "checked='checked'" : "") />
+                                    <label for="cmn-toggle-1"></label>
+                                    @Html.HiddenFor(x => x.OneTimeUse)
+                                </span>
+                            </span>
+
+                        </p>
+                    </div>
+                    <div class="organization_left">
+                        <p>
+                            @Html.LabelFor(x => x.Active)
+                            @*@Html.CheckBoxFor(x => x.Active, new { @class = "noleft_space" })*@
+
+                            <span class="selected-row">
+                                <span class="switch">
+                                    <input id="cmn-toggle-2" data-result-id="Active" class="cmn-toggle cmn-toggle-round" type="checkbox" data-value="@(Model.Active ? "1" : "0")" @(Model.Active ? "checked='checked'" : "") />
+                                    <label for="cmn-toggle-2"></label>
+                                    @Html.HiddenFor(x => x.Active)
+                                </span>
+                            </span>
+
+
+
+                        </p>
+                    </div>
+                </div>
+                <div class="clr">
+                </div>
+                <div align="center" class="center-button">
+                    @Html.HiddenFor(x => x.Active)
+                    <a href="#myModal" id="btnConfirm" class="submit-btn update-btn" style="display: none;">Submit</a>
+                    <input type="submit" id="btnSubmit" class="submit-btn update-btn" name="btnSubmit" value="Submit" action="add" />
+                    <input type="button" id="btnCancel" class="submit-btn cancel-btn" value="Cancel" />
+                    <input type="button" id="btnPartial" class="submit-btn update-btn" name="btnPartial" value="Submit" style="display: none;" />
+                </div>
+            }
+        </div>
+    </td>
+</tr>
+<input type="hidden" id="hdnConfirm" />
+<div id="myModal" class="reveal-modal" style="display: none; top: 100px;">
+    <div class="pop_detail">
+        <h1>Confirm Details</h1>
+        <div class="page-wrap">
+            <table class="voucher-details-table">
+                <tr>
+                    <td class="align-left" colspan="2">
+                        <p>
+                            <strong>Dear @Golfler.Models.LoginInfo.UserName,</strong><br />
+                            @String.Format("Please confirm Promo Code details to save.")<br />
+                            <strong>Thanks</strong>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>Promo Code</strong>
+                    </td>
+                    <td class="align-left" id="lblPromoCode"></td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>Food Item</strong>
+                    </td>
+                    <td class="align-left" id="lblFoodItem"></td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>Discount</strong>
+                    </td>
+                    <td class="align-left" id="lblDiscount"></td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>Expiry Date</strong>
+                    </td>
+                    <td class="align-left" id="lblExpiryDate"></td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>One Time Use</strong>
+                    </td>
+                    <td class="align-left" id="lblOneTime"></td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>Status</strong>
+                    </td>
+                    <td class="align-left" id="lblStatus"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="clr">
+    </div>
+    <div class="margin-top15">
+    </div>
+    <div class="clr">
+    </div>
+    <div align="center" class="center-button">
+        <input type="button" id="close" value="Edit" class="submit-btn cancel-btn" onclick="$.fancybox.close();" />
+        <input type="button" id="btnSave" onclick="javascript: showAfterPopup(); $('#hdnConfirm').val('1'); $('#btnSubmit').click(); $('#divProgress').show();"
+            value="Confirm" class="submit-btn update-btn" />
+    </div>
+    <div class="clear">
+    </div>
+</div>
+<script language="javascript" type="text/javascript">
+    function showAfterPopup() {
+        $("#fancybox-overlay").css("z-index", "99999999");
+    }
+</script>

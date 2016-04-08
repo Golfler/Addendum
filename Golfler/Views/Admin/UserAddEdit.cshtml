@@ -1,0 +1,7 @@
+﻿@{
+    ViewBag.Module = "Users";
+    ViewBag.Title = (Model.ID > 0 ? "Edit" : "Add") + " User";
+    ViewBag.pageTitle = (Model.ID > 0 ? "Edit" : "Add") + " User";
+    ViewBag.CallFrom = "SuperAdmin";
+}
+@Html.Partial("~/Views/Shared/_UserAddEditScreen.cshtml")

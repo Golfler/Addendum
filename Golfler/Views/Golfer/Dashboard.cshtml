@@ -1,0 +1,713 @@
+﻿@model Golfler.Models.GF_Roles
+@{
+    ViewBag.Title = "Dashboard";
+    ViewBag.pagetitle = "Welcome to your Dashboard";
+
+}
+
+
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+<script>
+
+    google.load("visualization", "1", { packages: ["corechart"] });
+
+
+</script>
+<tr>
+    <td>
+        <div id="AllLinks">
+            <div class="summary margin-top15">
+                <h4>Our Dashboard</h4>
+                <div class="clr">
+                </div> 
+            </div>
+            <div class="clr">
+            </div>
+            <div class="app_store">
+                   <div class="app-green dark-blue equal_height min_ min_border" inrid="Misc" onclick="openDashboardLinks('Misc')">
+                    <img class="icon" src="/Content/images/icon_green_reso.png">
+                    <div class="red_txt">
+                        <a href="/Golfler/Golfer/ResolutionMessages">Resolution Center</a><span class="dash_top_status"></span>
+                    </div>
+                    <div class="info_text"><a href="/Golfler/Golfer/ResolutionMessages" style="color: #a8b3bb;">No. Of Resolution Messages<span> ( @ViewBag.NoOfReso )</span></a></div>
+                    <div class="clr">
+                    </div>
+                </div>
+                <div class="app-sky sky-color equal_height min_ min_border" inrid="users" onclick="openDashboardLinks('users')">
+                    <img class="icon" src="/Content/images/icon_main_manage.png">
+                    <div class="red_txt">
+                        <a href="/Golfler/Golfer/OrderHistoryList">Orders</a><span class="dash_top_status"></span>
+                    </div>
+                    <div class="info_text"><a href="/Golfler/Golfer/OrderHistoryList" style="color: #a8b3bb;">No. Of Orders<span> ( @ViewBag.NoOfOrders )</span></a></div>
+                    <div class="clr">
+                    </div>
+                </div>
+             
+                <div class="orgnize_box blue equal_height min_ min_border" inrid="OrgMngmt" onclick="openDashboardLinks('OrgMngmt')">
+                    <img class="icon" src="/Content/Images/icon_main_enquiries.png">
+                    <div class="red_txt">
+                        <a href="/Golfler/Golfer/MessagingCenterList">Messaging Center</a><span class="dash_top_status"></span>
+                    </div>
+                    <div class="info_text"><a href="/Golfler/Golfer/MessagingCenterList" style="color: #a8b3bb;">No. Of Messages<span> ( @ViewBag.NoOfMsg )</span></a><label id="incommingMsgGolferDashBoard" style="display: none;"></label></div>
+
+                    <div class="clr">
+                    </div>
+                </div>
+
+                <div class="app-green dark-blue equal_height min_ min_border" inrid="Misc" onclick="openDashboardLinks('Misc')">
+                    <img class="icon" src="/Content/images/icon_green_reso.png">
+                    <div class="red_txt">
+
+                        <a href="/Golfler/Golfer/OrderAnalytics">Analytics</a> <span class="dash_top_status"></span>
+                    </div>
+                    <div class="info_text"><a href="/Golfler/Golfer/OrderAnalytics" style="color: #a8b3bb;">Order Analytics <span></span></a></div>
+                    <div class="info_text"><a href="/Golfler/Golfer/GameAnalytics" style="color: #a8b3bb;">Game Analytics <span></span></a></div>
+                    <div class="clr">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="dash_chart">
+            <div class="left_chart_cont">
+
+
+                <div id="barchart_material" class="chart_div"></div>
+
+            </div>
+            <div class="right_chart_cont">
+
+                <div id="barchart_material_Play" class="chart_div"></div>
+
+            </div>
+        </div>
+    </td>
+</tr>
+
+
+
+<tr>
+    <td id="content_center_td2" valign="top" align="center">
+        <div id="All">
+            <div class="summary color margin-top15 OrgMngmt" style="display: none">
+                <h4>Organization Management</h4>
+                <div class="clr">
+                </div>
+            </div>
+            <div class="app_store OrgMngmt" style="display: none;">
+                <div class="orgnize_box_4 back_dash equal_height min_ min_border" onclick="openDashboard()">
+                    <div class="center-txt">
+                        Back to Dashboard
+                    </div>
+                </div>
+                @*@if (@Model.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.Course && x.Visible) > 0)
+                {
+                    *@<div class="orgnize_box_4 orange equal_height min_ min_border ">
+                        <a href='@Url.Action("EditAppStore")'>
+                            <img src="../../../../Content/Images/icons/manage_organization.png" class="icon" />
+                        </a>
+                        <div class="red_txt">
+                            <a href='@Url.Action("EditAppStore")'>Manage Organization</a>
+                        </div>
+                    </div>
+                @*}
+                @if (@Model.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.Course && x.Visible) > 0)
+                {
+                    *@<div class="orgnize_box_4 left-border red equal_height min_ min_border">
+                        <a href='@Url.Action("LocationList")'>
+                            <img src="../../../../Content/Images/icons/manage_sub_organization.png" class="icon" />
+                        </a>
+                        <div class="red_txt">
+                            <a href='@Url.Action("LocationList")'>Manage Sub Organizations</a>
+                        </div>
+                    </div>
+                @*}
+                @if (@Model.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.Course && x.Visible) > 0)
+                {
+                    *@<div class="orgnize_box_4 green equal_height min_ min_border ">
+                        <a href='@Url.Action("SetUpDepartment")'>
+                            <img src="../../../../Content/Images/icons/setup_department.png" class="icon" /></a>
+                        <div class="red_txt">
+                            <a href='@Url.Action("SetUpDepartment")'>Setup Departments</a>
+                        </div>
+                    </div>
+                @*}*@
+            </div>
+            <div class="summary color margin-top15 appStoreMngmt" style="display: none">
+                <h4>App Store Management</h4>
+                <div class="clr">
+                </div>
+            </div>
+            <div class="app_store appStoreMngmt" style="display: none;">
+                <div class="widthsixteen back_dash equal_height min_ min_border " onclick="openDashboard()">
+                    <div class="center-txt">
+                        Back to Dashboard
+                    </div>
+                </div>
+                @*@if (@Model.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.Menu && x.Visible) > 0)
+                {   
+                    *@<div class="app_store-orage width28 equal_height min_ min_border">
+                        <a href='@Url.Action("MenuList")'>
+                            <img src="../../../../Content/Images/icons/menu.png" class="icon" /></a>
+                        <div class="red_txt">
+                            <a href='@Url.Action("MenuList")'>Manage Menu</a>
+                        </div>
+                    </div>
+                @*}
+                @if (@Model.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.Category && x.Visible) > 0)
+                {
+                    *@<div class="app_store-blue width28 equal_height min_ min_border">
+                        <a href='@Url.Action("CategoryList")'>
+                            <img src="../../../../Content/Images/icons/category.png" class="icon" /></a>
+                        <div class="red_txt">
+                            <a href='@Url.Action("CategoryList")'>Manage Categories</a>
+                        </div>
+                    </div>
+                <div class="com-light_orange width28 equal_height min_ min_border">
+                    <a href='@Url.Action("TagList")'>
+                        <img src="../../../../Content/Images/icons/statement.png" class="icon" /></a>
+                    <div class="red_txt">
+                        <a href='@Url.Action("TagList")'>Manage Tags</a>
+                    </div>
+                </div>
+                @*}
+                @if (@Model.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.StaticPage && x.Visible) > 0)
+                {   
+                    *@<div class="app_store-green width28 equal_height min_ min_border">
+                        <a href='@Url.Action("PageList")'>
+                            <img src="../../../../Content/Images/icons/dynamic_page.png" class="icon" />
+                        </a>
+                        <div class="red_txt">
+                            <a href='@Url.Action("PageList")'>Manage Dynamic Pages</a>
+                        </div>
+                    </div>
+                @*}
+                @if (@Model.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.ContactUs && x.Visible) > 0)
+                {   
+                    *@<div class="app_store-red width20 equal_height min_ min_border">
+                        <a href='@Url.Action("ContactUsList")'>
+                            <img src="../../../../Content/Images/icons/contact_book.png" class="icon" /></a>
+                        <div class="red_txt">
+                            <a href='@Url.Action("ContactUsList")'>Contact Us Requests</a>
+                        </div>
+                    </div>
+                @*}
+                @if (@Model.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.Course && x.Visible) > 0)
+                {   
+                    *@<div class="app_store-light_blue width20 equal_height min_ min_border">
+                        <a href="AppReviewList">
+                            <img src="../../../../Content/Images/icons/review.png" class="icon" /></a>
+                        <div class="red_txt">
+                            <a href="AppReviewList">Manage App Reviews</a>
+                        </div>
+                    </div>
+                @*}
+                @if (@Model.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.Course && x.Visible) > 0)
+                {
+                    *@<div class="app_store-dark-pink width20 equal_height min_ min_border">
+                        <a href="ContantOfList">
+                            <img src="../../../../Content/Images/icons/page_content.png" class="icon" />
+                        </a>
+                        <div class="red_txt">
+                            <a href="ContantOfList">Manage Page Content</a>
+                        </div>
+                    </div>
+                @*}*@
+            </div>
+            <div class="summary color margin-top15 communication" style="display: none">
+                <h4>Communications</h4>
+                <div class="clr">
+                </div>
+            </div>
+            <div class="app_store communication" style="display: none;">
+                <div class="orgnize_box widthsixteen back_dash red equal_height min_ min_border "
+                    onclick="openDashboard()">
+                    <div class="center-txt">
+                        Back to Dashboard
+                    </div>
+                </div>
+                @*@if (@Model.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.EmailTemplates && x.Visible) > 0)
+                {
+                    *@<div class="com-light_orange width28 equal_height min_ min_border">
+                        <a href='@Url.Action("EmailTemplates")'>
+                            <img src="../../../../Content/Images/icons/email_icon.png" class="icon" />
+                        </a>
+                        <div class="red_txt">
+                            <a href='@Url.Action("EmailTemplates")'>Manage Email Templates</a>
+                        </div>
+                    </div>
+
+                @*}
+                @if (@Model.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.Smtp && x.Visible) > 0)
+                {
+                    *@<div class="com-red width28 left-border equal_height min_ min_border">
+                        <a href='@Url.Action("SMTPDetails")'>
+                            <img src="../../../../Content/images/icons/smtp_icon.png" class="icon" /></a>
+                        <div class="red_txt">
+                            <a href='@Url.Action("SMTPDetails")'>Manage SMTP Details</a>
+                        </div>
+                    </div>
+                @*}*@
+            </div>
+            <div class="summary color margin-top15 users" style="display: none">
+                <h4>Users</h4>
+                <div class="clr">
+                </div>
+            </div>
+            <div class="app_store users" style="display: none;">
+                <div class="orgnize_box back_dash width20 red equal_height min_ min_border " onclick="openDashboard()">
+                    <div class="center-txt">
+                        Back to Dashboard
+                    </div>
+                </div>
+                @*@if (@Model.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.User && x.Visible) > 0)
+                {
+                    *@<div class="user-orange width20 equal_height min_ min_border">
+                        <a href='@Url.Action("UserList")'>
+                            <img src="../../../../Content/Images/icons/user.png" class="icon" /></a>
+                        <div class="red_txt">
+                            <a href='@Url.Action("UserList")'>Manage Onboarded Users</a>
+                        </div>
+                    </div>
+                @*}
+                @if (@Model.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.Course && x.Visible) > 0)
+                {                                           
+                    *@<div class="user-pink width20 equal_height min_ min_border">
+                        <a href='@Url.Action("EndUserList")'>
+                            <img src="../../../../Content/images/icons/end_user.png" class="icon" /></a>
+                        <div class="red_txt">
+                            <a href='@Url.Action("EndUserList")'>Manage Self Registered Users</a>
+                        </div>
+                    </div>
+                @*}
+                @if (@Model.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.Role && x.Visible) > 0)
+                {
+                    *@<div class="user-green width20 equal_height min_ min_border">
+                        <a href='@Url.Action("RoleList")'>
+                            <img src="../../../../Content/images/icons/manage_user.png" class="icon" /></a>
+                        <div class="red_txt">
+                            <a href='@Url.Action("RoleList")'>Manage Roles</a>
+                        </div>
+                    </div>
+                @*}
+                @if (@Model.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.Course && x.Visible) > 0)
+                {
+                    *@<div class="app-sky sky-color equal_height min_ min_border">
+                        <a href='@Url.Action("UserGroupList")'>
+                            <img src="../../../../Content/Images/icons/user.png" class="icon" /></a>
+                        <div class="red_txt">
+                            <a href='@Url.Action("UserGroupList")'>Manage User Groups</a>
+                        </div>
+                    </div>
+                @*}*@
+            </div>
+            <div class="app_store Case" style="display: none;">
+                <div class="orgnize_box widthsixteen back_dash red equal_height min_ min_border "
+                    onclick="openDashboard()">
+                    <div class="center-txt">
+                        Back to Dashboard
+                    </div>
+                </div>
+                @*@if (@Model.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.Course && x.Visible) > 0)
+                {                                           
+                    *@<div class="user-mg width20 equal_height min_ min_border">
+                        <a href='@Url.Action("ApprovalChainList")'>
+                            <img src="../../../../Content/images/icons/approvel_chain.png" class="icon" /></a>
+                        <div class="red_txt">
+                            <a href='@Url.Action("ApprovalChainList")'>Manage Approval Chains</a>
+                        </div>
+                    </div>
+                @*}
+                @if (@Model.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.Course && x.Visible) > 0)
+                {
+                    *@<div class="mis-light-orange width33 equal_height min_ min_border">
+                        <a href='@Url.Action("CaseList")'>
+                            <img src="../../../../Content/Images/icons/app_cause.png" class="icon" /></a>
+                        <div class="red_txt">
+                            <a href='@Url.Action("CaseList")'>Process App Cases</a>
+                        </div>
+                    </div>
+                @*}
+                else
+                {
+                }
+                @if (@Model.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.Course && x.Visible) > 0)
+                {
+                    *@<div class="mis-drk-green width20 equal_height min_ min_border">
+                        <a href='@Url.Action("ViewAllCases")'>
+                            <img src="../../../../Content/images/icons/all_cases.png" class="icon" /></a>
+                        <div class="red_txt">
+                            <a href='@Url.Action("ViewAllCases")'>View All Cases</a>
+                        </div>
+                    </div>
+                @*}
+                @if (@Model.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.Course && x.Visible) > 0)
+                {                                           
+                    *@<div class="com-drk_gren left-border width28 equal_height min_ min_border">
+                        <a href='@Url.Action("DeptTicketList")'>
+                            <img src="../../../../Content/images/icons/causes_approvel.png" class="icon" /></a>
+                        <div class="red_txt">
+                            <a href='@Url.Action("DeptTicketList")'>Cases For Approval</a>
+                        </div>
+                    </div>
+                @*}*@
+            </div>
+        </div>
+    </td>
+</tr>
+
+@*<tr>
+    <td colspan="2">
+        <div class="summary">
+            <h4>
+                summary</h4>
+            <div class="clr">
+            </div>
+        </div>
+        <div class="form_box nopadding">
+            <div class="detailleft">
+                <div class="login_detail login_summary">
+                    <table class="table">
+                        <tr>
+                            <td class="blu-txt">
+                                Last Login :
+                            </td>
+                            <td width="25%">
+                                @if (Golfler.Models.LoginInfo.LastLogin == null)
+                                {
+                                    <span>-</span>
+                                }
+                                else
+                                {
+                                    @Golfler.Models.LoginInfo.LastLogin
+                                                            
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="blu-txt">
+                                Last Login IP :
+                            </td>
+                            <td>
+                                @Golfler.Models.LoginInfo.LastLoginIP
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="blu-txt">
+                                Users :
+                            </td>
+                            <td>
+                                @{Golfler.Models.CommonFunctions.SetDb();}
+                                @Golfler.Models.CommonFunctions.UserCount
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="blu-txt">
+                                Course :
+                            </td>
+                            <td>
+                                @Golfler.Models.CommonFunctions.CourseCount
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="detailright">
+                <table class="table">
+                    <tr>
+                        <td align="center">
+                            <img src="/Content/Images/dollar_icons.png" class="dollar-img" />
+                            <div align="center" style="color: #06B1DC;">
+                                <a class="noanchor">Credit Details</a></div>
+                        </td>
+                        <td>
+                            <table class="table" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td>
+                                        <table class="table" cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <td valign="top" class="blu-txt left-txt">
+                                                    User 1 :
+                                                </td>
+                                                <td class="left-txt">
+                                                    1
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="blu-txt left-txt">
+                                                    User 2 :
+                                                </td>
+                                                <td class="left-txt">
+                                                    1
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="blu-txt left-txt">
+                                                    User 3 :
+                                                </td>
+                                                <td class="left-txt">
+                                                    1
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <table class="table" cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <td colspan="2" valign="bottom">
+                                                    <div class="btm-blue-btn">
+                                                        Total Credits: <span>
+                                                            &nbsp;
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table class="table" cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <td colspan="2" valign="bottom">
+                                                    <div class="btm-blue-btn">
+                                                        Available Budget: <span>
+                                                            &nbsp;
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>*@
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#ltrMessage').html('');
+        $('#ltrMessage').hide();
+
+        $("#content_center_td").each(function () {
+            var dvManage = $(this).find($("#dvSubManage"));
+            if ((dvManage).children().size() <= 1) {
+                $("#dvManage").hide();
+            }
+            var dvManage = $(this).find($("#dvSubUsers"));
+            if (dvManage.children().size() <= 1) {
+                $("#dvUsers").hide();
+            }
+            var dvManage = $(this).find($("#dvSubMis"));
+            if (dvManage.children().size() <= 1) {
+                $("#dvSubMis").hide();
+            }
+            var dvManage = $(this).find($("#dvSubAd"));
+            if (dvManage.children().size() <= 1) {
+                $("#dvAd").hide();
+            }
+            var dvManage = $(this).find($("#dvSubApp"));
+            if (dvManage.children().size() <= 1) {
+                $("#dvApp").hide();
+            }
+            var dvManage = $(this).find($("#dvSubStore"));
+            if (dvManage.children().size() <= 1) {
+                $("#dvStore").hide();
+            }
+        });
+
+        //hideEmptythumbs();
+        //logic for hiding divs that dont have content    
+        function hideEmptythumbs() {
+            var OrgMngmtSize, appStoreMngmtSize, AdvSize, AppsSize, communicationSize, usersSize, MiscSize, SpendSize, AssetsSize, MDMSize, CaseSize = 0;
+            OrgMngmtSize = $('#All div.OrgMngmt div.equal_height').size();
+            appStoreMngmtSize = $('#All div.appStoreMngmt div.equal_height').size();
+            AdvSize = $('#All div.Adv div.equal_height').size();
+            AppsSize = $('#All div.Apps div.equal_height').size();
+            communicationSize = $('#All div.communication div.equal_height').size();
+            usersSize = $('#All div.users div.equal_height').size();
+            MiscSize = $('#All div.Misc div.equal_height').size();
+            SpendSize = $('#All div.Spend div.equal_height').size();
+            AssetsSize = $('#All div.Assets div.equal_height').size();
+            MDMSize = $('#All div.MDM div.equal_height').size();
+            CaseSize = $('#All div.Case div.equal_height').size();
+            if (OrgMngmtSize <= 1) {
+                $('div[inrID="OrgMngmt"]').css('display', 'none');
+            }
+            if (appStoreMngmtSize <= 1) {
+                $('div[inrID="appStoreMngmt"]').css('display', 'none');
+            }
+            if (AdvSize <= 1) {
+                $('div[inrID="Adv"]').css('display', 'none');
+            }
+            if (AppsSize <= 1) {
+                $('div[inrID="Apps"]').css('display', 'none');
+            }
+            if (communicationSize <= 1) {
+                $('div[inrID="communication"]').css('display', 'none');
+            }
+            if (usersSize <= 1) {
+                $('div[inrID="users"]').css('display', 'none');
+            }
+            if (MiscSize <= 1) {
+                $('div[inrID="Misc"]').css('display', 'none');
+            }
+            if (SpendSize <= 1) {
+                $('div[inrID="Spend"]').css('display', 'none');
+            }
+            if (AssetsSize <= 1) {
+                $('div[inrID="Assets"]').css('display', 'none');
+            }
+            if (MDMSize <= 1) {
+                $('div[inrID="MDM"]').css('display', 'none');
+            }
+            if (CaseSize <= 1) {
+                $('div[inrID="Case"]').css('display', 'none');
+            }
+        }
+    });
+    function openDashboardLinks(cls) {
+        //$("." + cls).show();
+        //$("#AllLinks").hide();
+    }
+    function openDashboard() {
+        $(".OrgMngmt").hide();
+        $(".appStoreMngmt").hide();
+        $(".Adv").hide();
+        $(".Apps").hide();
+        $(".communication").hide();
+        $(".users").hide();
+        $(".Misc").hide();
+        $(".Spend").hide();
+        $(".Assets").hide();
+        $(".MDM").hide();
+        $(".Case").hide();
+        $("#AllLinks").show();
+    }
+</script>
+
+@*//Chart//*@
+
+<script>
+    $(document).ready(function () {
+        GetChartData();
+    });
+    function GetChartData() {
+
+        $.ajax({
+            type: 'POST',
+            async: false,
+            url: '/Golfler/Golfer/GetGolferChartResult',
+            data: {},
+            success: function (data) {
+                if (data.result.SpendResult != null) {
+                    CreateSpendChart(data.result.SpendResult);
+                }
+                if (data.result.PlayResult != null) {
+                    CreatePlayChart(data.result.PlayResult);
+                }
+            }
+
+        })
+    }
+    function CreateSpendChart(jsondata) {
+
+
+        var courseArr = new Array();
+        courseArr[0] = new Array("", "Amount");
+
+        for (var i = 0; i < jsondata.length; i++) {
+
+            courseArr[i + 1] = new Array();
+            courseArr[i + 1].push(jsondata[i].Date);
+            var stringData = jsondata[i].Amount;
+            var decimalData = parseFloat(stringData);
+            courseArr[i + 1].push(decimalData);
+
+        }
+
+        var data = google.visualization.arrayToDataTable(courseArr);
+        var width = data.getNumberOfRows() * 100;
+        if (width < 500) {
+            width = 500;
+        }
+        var options = {
+            title: "Spend this Month",
+            hAxis: { title: "" },
+            seriesType: "bars",
+            width: width,
+            vAxis: { title: "Amount", format: '$#.##', baselineColor: "none", minValue: 3 },
+            legend: { position: 'top' },
+            colors: ['#0078ff', 'blue']
+        };
+
+        var chart = new google.visualization.ComboChart(document.getElementById('barchart_material'));
+        chart.draw(data, options);
+        $("#btnExport").click(function () { ExprotToExcel(1); });
+    }
+
+    function CreatePlayChart(jsondata) {
+
+        var courseArr = new Array();
+        courseArr[0] = new Array("", "Number of Played Rounds");
+        for (var i = 0; i < jsondata.length; i++) {
+
+            courseArr[i + 1] = new Array();
+            courseArr[i + 1].push(jsondata[i].Date);
+            var stringData = jsondata[i].NumberofRounds;
+            var decimalData = parseFloat(stringData);
+            courseArr[i + 1].push(decimalData);
+
+        }
+
+        var data = google.visualization.arrayToDataTable(courseArr);
+        var width = data.getNumberOfRows() * 100;
+        if (width < 500) {
+            width = 500;
+        }
+        var options = {
+            title: "Play this Month",
+            hAxis: { title: "" },
+            seriesType: "bars",
+            width: width,
+            vAxis: { title: "Number of Played Rounds", baselineColor: "none", minValue: 3 },
+            legend: { position: 'top' },
+            colors: ['#fcb441', 'blue']
+        };
+
+        var chart = new google.visualization.ComboChart(document.getElementById('barchart_material_Play'));
+        chart.draw(data, options);
+        $("#btnExportPlay").click(function () { ExprotToExcel(2); });
+    }
+
+    $("#btnPrintPlay").live("click", function () {
+        var divContents = $("#barchart_material_Play").html();
+        var printWindow = window.open('', '', 'height=400,width=800');
+        printWindow.document.write('<html><head><title>Play this month - Graph</title>');
+        printWindow.document.write('</head><body >');
+        printWindow.document.write(divContents);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        printWindow.print();
+    });
+
+</script>
+<style>
+    .chart_div
+    {
+        overflow-x: scroll;
+        overflow-y: hidden;
+        height: 380px;
+    }
+</style>
+

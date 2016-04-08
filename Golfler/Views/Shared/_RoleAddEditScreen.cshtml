@@ -1,0 +1,570 @@
+﻿@model Golfler.Models.GF_Roles
+
+<style>
+    .accordion-toggle
+    {
+        cursor: pointer;
+    }
+
+    .accordion-content
+    {
+        display: none;
+    }
+
+        .accordion-content.default
+        {
+            display: table-row;
+        }
+</style>
+
+<script type="text/javascript">
+
+
+    $(document).ready(function () {
+
+        $("#chkAddAll").change(function () {
+            if ($(this).is(":checked")) {
+                $(".imgAdd").attr("src", "/Content/images/add-ico-2.png");
+                $(".imgAdd").attr("title", "Click here to Deselect.");
+            }
+            else {
+                $(".imgAdd").attr("src", "/Content/images/add-ico-1.png");
+                $(".imgAdd").attr("title", "Click here to Select.");
+            }
+        });
+
+
+        $(".imgAdd").each(function () {
+            $(this).click(function () {
+                var checkbox = $(this).parent().find("input:checkbox");
+                checkbox.click();
+                if (checkbox.is(":checked")) {
+                    $(this).attr("src", "/Content/images/add-ico-2.png");
+                    $(this).attr("title", "Click here to Deselect.");
+                }
+                else {
+                    $(this).attr("src", "/Content/images/add-ico-1.png");
+                    $(this).attr("title", "Click here to Select.");
+                }
+                isAllChecked("add", "#chkAddAll");
+            });
+        });
+
+
+
+        $("#chkUpdateAll").change(function () {
+            if ($(this).is(":checked")) {
+                $(".imgUpdate").attr("src", "/Content/images/update_ico-2.png");
+                $(".imgUpdate").attr("title", "Click here to Deselect.");
+            }
+            else {
+                $(".imgUpdate").attr("src", "/Content/images/update_ico-1.png");
+                $(".imgUpdate").attr("title", "Click here to Select.");
+            }
+        });
+
+        $(".imgUpdate").each(function () {
+            $(this).click(function () {
+                var checkbox = $(this).parent().find("input:checkbox");
+                checkbox.click();
+                if (checkbox.is(":checked")) {
+                    $(this).attr("src", "/Content/images/update_ico-2.png");
+                    $(this).attr("title", "Click here to Deselect.");
+                }
+                else {
+                    $(this).attr("src", "/Content/images/update_ico-1.png");
+                    $(this).attr("title", "Click here to Select.");
+                }
+                isAllChecked("update", "#chkUpdateAll");
+
+            });
+        });
+
+
+        $("#chkReadAll").change(function () {
+            if ($(this).is(":checked")) {
+                $(".imgRead").attr("src", "/Content/images/view-list-2.png");
+                $(".imgRead").attr("title", "Click here to Deselect.");
+            }
+            else {
+                $(".imgRead").attr("src", "/Content/images/view-list-1.png");
+                $(".imgRead").attr("title", "Click here to Select.");
+            }
+        });
+
+        $(".imgRead").each(function () {
+            $(this).click(function () {
+                var checkbox = $(this).parent().find("input:checkbox");
+                checkbox.click();
+                if (checkbox.is(":checked")) {
+                    $(this).attr("src", "/Content/images/view-list-2.png");
+                    $(this).attr("title", "Click here to Deselect.");
+                }
+                else {
+                    $(this).attr("src", "/Content/images/view-list-1.png");
+                    $(this).attr("title", "Click here to Select.");
+                }
+                isAllChecked("read", "#chkReadAll");
+            });
+        });
+
+
+
+
+
+        $("#chkDeleteAll").change(function () {
+            if ($(this).is(":checked")) {
+                $(".imgDelete").attr("src", "/Content/images/remove-2.png");
+                $(".imgDelete").attr("title", "Click here to Deselect.");
+            }
+            else {
+                $(".imgDelete").attr("src", "/Content/images/remove-1.png");
+                $(".imgDelete").attr("title", "Click here to Select.");
+
+            }
+
+        });
+
+        $(".imgDelete").each(function () {
+            $(this).click(function () {
+                var checkbox = $(this).parent().find("input:checkbox");
+
+                checkbox.click();
+                if (checkbox.is(":checked")) {
+                    $(this).attr("src", "/Content/images/remove-2.png");
+                    $(this).attr("title", "Click here to Deselect.")
+                }
+                else {
+                    $(this).attr("src", "/Content/images/remove-1.png");
+                    $(this).attr("title", "Click here to Select.")
+                }
+                isAllChecked("delete", "#chkDeleteAll");
+
+
+
+            });
+        });
+
+        $('#accordion').find('.accordion-toggle').click(function () {
+            //Expand or collapse this panel
+            //$(this).next().slideToggle('fast');
+
+            //Hide the other panels
+            //$(".accordion-content").not($(this).next()).slideUp('fast');
+
+            //Expand or collapse this panel
+            var nextToggle = $(this).attr('data-next');
+
+            if ($(this).find('td').hasClass('acd-close')) {
+                $(this).find('td').removeClass('acd-close');
+                $(this).find('td').addClass('acd-open');
+            }
+            else {
+                $(this).find('td').removeClass('acd-open');
+                $(this).find('td').addClass('acd-close');
+            }
+
+            $('.' + nextToggle).closest('tr').slideToggle('fast');
+
+            //Hide the other panels
+            //$(".accordion-content").not($('.' + nextToggle).closest('tr')).slideUp('fast');
+        });
+
+    });
+
+    $(function () {
+
+        CheckBoxChecks('#chkAddAll', 'add');
+        CheckBoxChecks('#chkUpdateAll', 'update');
+        CheckBoxChecks('#chkReadAll', 'read');
+        CheckBoxChecks('#chkDeleteAll', 'delete');
+        CheckBoxChecks('#chkAllowAll', 'allow');
+        CheckBoxChecks('#chkAllowAllFrontEnd', 'frontend');
+
+        $(function () {
+            CheckBoxChecks('#chkAddAllad', 'addAd');
+            CheckBoxChecks('#chkUpdateAllad', 'updateAd');
+            CheckBoxChecks('#chkReadAllad', 'readAd');
+            CheckBoxChecks('#chkDeleteAllad', 'deleteAd');
+            CheckBoxChecks('#chkAllowAllad', 'allowAd');
+        });
+
+        $('#btnCancel').click(function () {
+            window.location = '@Url.Action("RoleList")';
+        });
+
+
+        //Design classes
+        $('fieldset').addClass("bodD5D5D5");
+        $('.width_49_ label').addClass("cat");
+        $('#Active').parent().children().eq(0).addClass("cat2");
+        $('.datainner_box input[type="text"]').addClass("txtfeldsN");
+        $('textarea').addClass("txtfeldsN");
+        $('.datainner_box input[type="checkbox"]').addClass("checkbox-spacing15");
+        $('span:contains("*")').css("color", "Red").css("display", "none");
+        $('span:contains("*")').parent().children('label').append('<span>*</span>');
+        $("#tbModule tr.row1").filter(':even').addClass('treven');
+        $("#tbModule tr.row1").filter(':odd').addClass('trodd');
+        $("#tbSpecial tr.row1").filter(':even').addClass('treven');
+        $("#tbSpecial tr.row1").filter(':odd').addClass('trodd');
+        $("#tbAdminRoles tr.row1").filter(':even').addClass('treven');
+        $("#tbAdminRoles tr.row1").filter(':odd').addClass('trodd');
+
+        //Confirmation Page
+        if ($("#ID").val() == 0) {
+            $("#btnConfirm").fancybox({
+                'scrolling': 'no',
+                'onStart': function () {
+                    $("#lblName").text($('#Name').val());
+                    $("#lblDescription").text($('#Description').val());
+                    //                               $("#lblModule").html($('#tbModule').html());
+                    //                               $("#lblSpecial").html($('#tbSpecial').html());
+                    $("#myModal").css("display", "block");
+                    $("#divProgress").hide();
+                },
+                'onClosed': function () { $("#myModal").css("display", "none"); }
+            });
+            $('#btnSubmit').on("click", function () {
+                //   $("#divProgress").show();
+                var n = $("#tbModule input:checked").length;
+
+                var nSpecial = $("#tbSpecial input:checked").length;
+
+                var nFrontend = $("#tbFrontEnd input:checked").length;
+
+                if (!$('#btnSubmit').hasClass('unaccess') && $('#frmSubmit').valid()) {
+                    if ((n > 0) || (nSpecial > 0) || (nFrontend > 0)) {
+                        if ($('#hdnConfirm').val() != "1") {
+                            $("#btnConfirm").click();
+                            //   $("#divProgress").hide();
+                            return false;
+                        }
+                    }
+                    else {
+                        showStickMessage("Please Select Atleast One Permission!");
+
+                        //   $("#divProgress").hide();
+                        return false;
+
+                    }
+
+                }
+
+            });
+        }
+        else {
+            $('#btnSubmit').on("click", function () {
+                //    $("#divProgress").show();
+                var n = $("#tbModule input:checked").length;
+
+                var nSpecial = $("#tbSpecial input:checked").length;
+                var nFrontend = $("#tbFrontEnd input:checked").length;
+                if (!$('#btnSubmit').hasClass('unaccess') && $('#frmSubmit').valid()) {
+                    if ((n > 0) || (nSpecial > 0) || (nFrontend > 0)) {
+                        return true;
+                    }
+                    else {
+                        showStickMessage("Please Select Atleast One Permission!");
+                        //    $("#divProgress").hide();
+                        return false;
+                    }
+
+                }
+
+            });
+            //   $("#divProgress").hide();
+        }
+    });
+
+
+</script>
+<tr>
+    <td class="id_pathway">
+        <div class="breadcrumb">
+            <ul>
+                <li><a href='@Url.Action("Dashboard")'>Dashboard</a><img src="/Content/Images/arrow.png"
+                    class="arrow_position" /></li>
+                <li><a href='@Url.Action("RoleList")'>Manage Roles</a>
+                    <img src="/Content/Images/arrow.png" class="arrow_position" /></li>
+                <li>@ViewBag.pageTitle</li>
+            </ul>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td id="content_center_td2" valign="top" align="center">
+        <div id="content_div" class="organization_form">
+            @using (Html.BeginForm("RoleAddEdit", null, FormMethod.Post, new { id = "frmSubmit" }))
+            {
+                @Html.ValidationSummary(true)                
+               
+                <div class="form_box">
+                    @*<div class="organization_left nolabel">*@
+                    <div class="organization_left">
+                        <p>
+                            @Html.HiddenFor(x => x.ID)
+                            @Html.LabelFor(x => x.Name)
+                            @Html.TextBoxFor(x => x.Name, new { @maxlength = "50", @class = "red-border" })
+                            @Html.ValidationMessageFor(x => x.Name, "", new { @style = "padding-top:8px;" })
+                        </p>
+                    </div>
+                    <div class="organization_left">
+                        <p>
+                            @Html.LabelFor(x => x.Description)
+                            @Html.TextAreaFor(x => x.Description, new { @class = "red-border" })
+                            @Html.ValidationMessageFor(x => x.Description, string.Empty, new { @style = "margin-top:10px;padding-top:15px;" })
+                        </p>
+                    </div>
+                    <div class="clr"></div>
+
+
+                    <div align="left">
+                        <h3 style="margin-top: 0px;">Access Control Level</h3>
+                        For full control select the header checkbox of Add, Update, View list and Delete
+                        column.
+                    </div>
+                    <div class="clr"></div>
+
+                    <div id="page-wrap">
+                        <div class="clr">
+                        </div>
+                        <table width="100%" cellspacing="1" cellpadding="2" border="0" align="left" id="tbModule"
+                            class="left_bod">
+                            <thead>
+                                <tr>
+                                    <th class="text-center acl1">
+                                        <span>Admin Modules </span>
+                                    </th>
+                                    <th class="text-center acl2" style="display: none">
+                                        <a class="ToolTipIcon" message="Allow user to create entry"></a><span>Add</span><input type="checkbox" id="chkAddAll" />
+                                    </th>
+                                    <th class="text-center acl3">
+                                        <a class="ToolTipIcon" message="Allow user to create/edit/delete entry"></a><span>Edit@*Update*@</span><input type="checkbox" id="chkUpdateAll" />
+                                    </th>
+                                    <th class="text-center acl4">
+                                        <a class="ToolTipIcon" message="Allow user to view list"></a><span>View List</span><input type="checkbox" id="chkReadAll" />
+                                    </th>
+                                    <th class="text-center acl5" style="display: none">
+                                        <a class="ToolTipIcon" message="Allow user to delete entry"></a><span>Delete</span><input type="checkbox" id="chkDeleteAll" />
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="accordion">
+
+                                @{ HashSet<string> hsModuleGroupName = new HashSet<string>();
+                                   string firstDefault = "";
+                                   bool blIsSuperAdmin = true;
+                                   if (ViewBag.CallFrom == "SuperAdmin")
+                                   {
+                                       blIsSuperAdmin = true;
+                                   }
+                                   else
+                                   {
+                                       blIsSuperAdmin = false;
+                                   }
+                                }
+                                @for (var i = 0; i < Model.ArrRoleModules.Where(x => x.IsAdmin==blIsSuperAdmin).Count(); i++)
+                                {
+                                    if (hsModuleGroupName.Add(@Model.ArrRoleModules[i].ModuleGroupName))
+                                    {
+                                    <tr class="accordion-toggle" data-next="@(Model.ArrRoleModules[i].ModuleGroupName.Replace(" ", string.Empty))" style="background-color: #eaeaea;color:#04B404;">
+
+                                        <td colspan="5" class="@(i == 0 ? "acd-open" : "acd-close")">
+                                            @Model.ArrRoleModules[i].ModuleGroupName
+                                            @if (i == 0)
+                                            {
+                                                firstDefault = Model.ArrRoleModules[i].ModuleGroupName;
+                                            }
+                                        </td>
+                                    </tr>
+                                    }
+                                    @*<tr class='row1 accordion-content @(i <= 1 ? "default" : "") @(Model.ArrRoleModules[i].ModuleGroupName.Replace(" ", string.Empty))'>*@
+                                    <tr class='row1 accordion-content @(firstDefault == Model.ArrRoleModules[i].ModuleGroupName ? "default" : "") @(Model.ArrRoleModules[i].ModuleGroupName.Replace(" ", string.Empty))'>
+
+                                        <td class="details">
+                                            @Model.ArrRoleModules[i].Name
+
+
+                                            @Html.HiddenFor(x => x.ArrRoleModules[i].ModuleID)
+                                            @Html.HiddenFor(x => x.ArrRoleModules[i].Name)
+
+
+                                        </td>
+                                        <td class="details text-center" style="display: none">
+                                            @*Add*@
+
+                                            @Html.CheckBoxFor(x => x.ArrRoleModules[i].AddFlag, new { action = "add", style = "display:none;" })
+
+                                            @if (Model.ArrRoleModules[i].Value.ToUpper() != "SUGGESTEDCOURSE_ADMIN" && Model.ArrRoleModules[i].Value.ToUpper() != "SUGGESTEDGOLFCOORDINATES_ADMIN"
+                                            && Model.ArrRoleModules[i].Value.ToUpper() != "GOLFER_ADMIN" && Model.ArrRoleModules[i].Value.ToUpper() != "SETTING_ADMIN"
+                                            && Model.ArrRoleModules[i].Value.ToUpper() != "EMAIL_ADMIN" && Model.ArrRoleModules[i].Value.ToUpper() != "SMTPDETAIL_ADMIN"
+                                            && Model.ArrRoleModules[i].Value.ToUpper() != "INBOX_ADMIN" && Model.ArrRoleModules[i].Value.ToUpper() != "PROCESSREFUND_ADMIN"
+                                            && Model.ArrRoleModules[i].Value.ToUpper() != "COURSE" && Model.ArrRoleModules[i].Value.ToUpper() != "FOOD" && Model.ArrRoleModules[i].Value.ToUpper() != "ORDERHISTORY"
+                                            && Model.ArrRoleModules[i].Value.ToUpper() != "SETTING" && Model.ArrRoleModules[i].Value.ToUpper() != "EMAIL" && Model.ArrRoleModules[i].Value.ToUpper() != "SMTPDETAIL"
+                                            && Model.ArrRoleModules[i].Value.ToUpper() != "PROCESSREFUND" && Model.ArrRoleModules[i].Value.ToUpper() != "INBOX"
+                                            && Model.ArrRoleModules[i].Value.ToUpper() != "RATING" && Model.ArrRoleModules[i].Value.ToUpper() != "EMPLOYEEREPORT" && Model.ArrRoleModules[i].Value.ToUpper() != "GOLFPLAYINGHISTORYREPORT" && Model.ArrRoleModules[i].Value.ToUpper() != "FOODITEMSREPORT" && Model.ArrRoleModules[i].Value.ToUpper() != "MSGCENTER")
+                                            {
+
+                                                if (Model.ArrRoleModules[i].AddFlag)
+                                                {
+                                                <img title="Click here to deselect." src="/Content/images/add-ico-2.png" class="imgAdd"
+                                                    alt="imageOne" />
+                                                }
+                                                else
+                                                {
+                                                <img title="Click here to Select." src="/Content/images/add-ico-1.png" class="imgAdd"
+                                                    alt="imageOne" />
+                                                }
+                                            }
+                                        </td>
+                                        <td class="details text-center">
+                                            @*update*@
+                                            @Html.CheckBoxFor(x => x.ArrRoleModules[i].UpdateFlag, new { action = "update", style = "display:none;" })
+                                            @if (Model.ArrRoleModules[i].Value.ToUpper() != "COMMREPORTADMIN"
+                                                && Model.ArrRoleModules[i].Value.ToUpper() != "ANALYTICSREPORTADMIN"
+                                                && Model.ArrRoleModules[i].Value.ToUpper() != "RATING"
+                                                && Model.ArrRoleModules[i].Value.ToUpper() != "EMPLOYEEREPORT"
+                                                && Model.ArrRoleModules[i].Value.ToUpper() != "GOLFPLAYINGHISTORYREPORT"
+                                                && Model.ArrRoleModules[i].Value.ToUpper() != "FOODITEMSREPORT"
+                                                && Model.ArrRoleModules[i].Value.ToUpper() != "MSGCENTER"
+                                                && Model.ArrRoleModules[i].Value.ToUpper() != "GOLFERORDERHISTORYREPORT")
+                                            {
+                                                if (Model.ArrRoleModules[i].UpdateFlag)
+                                                {
+                                                <img title="Click here to deselect." src="/Content/images/update_ico-2.png" class="imgUpdate"
+                                                    alt="imageOne" />
+                                                }
+                                                else
+                                                {
+                                                <img title="Click here to Select." src="/Content/images/update_ico-1.png" class="imgUpdate"
+                                                    alt="imageOne" />
+                                                }
+                                            }
+                                        </td>
+                                        <td class="details text-center">
+                                            @*view*@
+                                            @Html.CheckBoxFor(x => x.ArrRoleModules[i].ReadFlag, new { action = "read", style = "display:none;" })
+                                            @if (Model.ArrRoleModules[i].ReadFlag)
+                                            {
+                                                <img title="Click here to Deselect." src="/Content/images/view-list-2.png" class="imgRead"
+                                                    alt="imageOne" />
+                                            }
+                                            else
+                                            {
+                                                <img title="Click here to Select." src="/Content/images/view-list-1.png" class="imgRead"
+                                                    alt="imageOne" />
+                                            }
+                                        </td>
+                                        <td class="details text-center" style="display: none">
+                                            @*delte*@
+
+                                            @Html.CheckBoxFor(x => x.ArrRoleModules[i].DeleteFlag, new { action = "delete", style = "display:none;" })
+                                            @if (Model.ArrRoleModules[i].Value.ToUpper() != "SUGGESTEDCOURSE_ADMIN" && Model.ArrRoleModules[i].Value.ToUpper() != "SUGGESTEDGOLFCOORDINATES_ADMIN"
+                                            && Model.ArrRoleModules[i].Value.ToUpper() != "STATIC_ADMIN" && Model.ArrRoleModules[i].Value.ToUpper() != "SETTING_ADMIN"
+                                            && Model.ArrRoleModules[i].Value.ToUpper() != "EMAIL_ADMIN" && Model.ArrRoleModules[i].Value.ToUpper() != "SMTPDETAIL_ADMIN"
+                                            && Model.ArrRoleModules[i].Value.ToUpper() != "INBOX_ADMIN" && Model.ArrRoleModules[i].Value.ToUpper() != "PROCESSREFUND_ADMIN"
+                                            && Model.ArrRoleModules[i].Value.ToUpper() != "COMMREPORTADMIN" && Model.ArrRoleModules[i].Value.ToUpper() != "ANALYTICSREPORTADMIN"
+                                            && Model.ArrRoleModules[i].Value.ToUpper() != "COURSE" && Model.ArrRoleModules[i].Value.ToUpper() != "FOOD"
+                                            && Model.ArrRoleModules[i].Value.ToUpper() != "ORDERHISTORY" && Model.ArrRoleModules[i].Value.ToUpper() != "SETTING"
+                                            && Model.ArrRoleModules[i].Value.ToUpper() != "EMAIL" && Model.ArrRoleModules[i].Value.ToUpper() != "SMTPDETAIL"
+                                            && Model.ArrRoleModules[i].Value.ToUpper() != "INBOX"
+                                            && Model.ArrRoleModules[i].Value.ToUpper() != "PROCESSREFUND" && Model.ArrRoleModules[i].Value.ToUpper() != "RATING"
+                                            && Model.ArrRoleModules[i].Value.ToUpper() != "EMPLOYEEREPORT" && Model.ArrRoleModules[i].Value.ToUpper() != "GOLFPLAYINGHISTORYREPORT"
+                                            && Model.ArrRoleModules[i].Value.ToUpper() != "FOODITEMSREPORT" && Model.ArrRoleModules[i].Value.ToUpper() != "MSGCENTER"                                             )
+                                            {
+                                                if (Model.ArrRoleModules[i].DeleteFlag)
+                                                {
+                                                <img title="Click here to Deselect." src="/Content/images/remove-2.png" class="imgDelete"
+                                                    alt="imageOne" />
+                                                }
+                                                else
+                                                {
+                                                <img title="Click here to Select." src="/Content/images/remove-1.png" class="imgDelete"
+                                                    alt="imageOne" />
+                                                }
+                                            }
+                                        </td>
+                                    </tr> 
+                                }
+                            </tbody>
+                        </table>
+
+                        <div class="clr">
+                        </div>
+                        <div class="organization_left">
+                            <p>
+                                <label class="txtleft">
+                                    Is Active</label>
+                                <span class="selected-row">
+                                    <span class="switch">
+                                        <input id="cmn-toggle-1" data-result-id="Active" class="cmn-toggle cmn-toggle-round" type="checkbox" data-value="@(Model.Active ? "1" : "0")" @(Model.Active ? "checked='checked'" : "") />
+                                        <label for="cmn-toggle-1"></label>
+                                        @Html.HiddenFor(x => x.Active)
+                                    </span>
+                                </span>
+
+                            </p>
+                        </div>
+
+                        <div align="center" class="center-button">
+                            <a href="#myModal" id="btnConfirm" class="submit-btn update-btn" style="display: none;">Submit</a>
+                            <input type="submit" id="btnSubmit" class="submit-btn update-btn" name="btnSubmit"
+                                value="Submit" />
+                            <input type="button" id="btnCancel" class="submit-btn cancel-btn" value="Cancel" />
+                        </div>
+                        <div class="clr">
+                        </div>
+                    </div>
+                </div>
+                <div class="clr">
+                </div>
+            }
+        </div>
+    </td>
+</tr>
+<input type="hidden" id="hdnConfirm" />
+<div id="myModal" class="reveal-modal" style="display: none; top: 100px;">
+    <div class="pop_detail">
+        <h1>Confirm Details</h1>
+        <div class="page-wrap">
+            <table class="voucher-details-table">
+                <tr>
+                    <td class="align-left" colspan="2">
+                        <p>
+                            <strong>Dear @Golfler.Models.LoginInfo.UserName,</strong><br />
+                            @String.Format("Please confirm Role details to save.")<br />
+                            <strong>Thanks</strong>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>Name</strong>
+                    </td>
+                    <td class="align-left" id="lblName"></td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>Description</strong>
+                    </td>
+                    <td class="align-left" id="lblDescription"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="clr">
+    </div>
+    <div class="margin-top15">
+    </div>
+    <div class="clr">
+    </div>
+    <div align="center" class="center-button">
+        <input type="button" id="close" value="Edit" class="submit-btn cancel-btn" onclick="$.fancybox.close();" />
+        <input type="button" id="btnSave" onclick="javascript: $('#hdnConfirm').val('1'); $('#btnSubmit').click(); $('#divProgress').show();"
+            value="Confirm" class="submit-btn update-btn">
+    </div>
+    <div class="clear">
+    </div>
+</div>

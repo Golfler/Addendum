@@ -1,0 +1,566 @@
+/* CSS Document */
+/*
+File name: global.css
+CSS document designed by Segnant
+Purpose: This includes the generic styles of the webpage which includes header, footer, scrollbars etc. 
+Include this file on every page.
+*/
+
+/*===================================
+ LOGIN FORM CLASSES 
+ ===================================*/
+ #id_table_login_form td
+ {
+ 	font-family: tahoma;
+	font-size: 11px;
+	color: #0E0E0E;
+ }
+.small
+{
+ 	font-family: tahoma;
+	font-size: 11px;
+	color: #0E0E0E;
+} 
+
+.btnlogin
+{
+	font-family: tahoma;
+	font-size: 11px;
+	padding: 2px 6px 2px 6px;
+	line-height: 140%;
+	color: #8058BD;
+	background-color: #FFFFFF;
+	border: 1px solid #B3A0DA;
+}
+
+#login_form_td
+{
+	height: 470px;
+	vertical-align: middle;
+}
+
+#id_table_login_form
+{
+	border-color: #B3A0DA; 
+	border-style: solid; 
+	border-width: 1px;
+	background-color: #EEE7F9;
+	height: 229px;
+	width: 430px;
+	text-align:left;
+}
+
+#id_table_form_inner
+{
+	border-color: #B3A0DA; 
+	border-style: solid; 
+	border-width: 1px;
+	background-color: #D4CBEB;
+	width: 239px;
+	height: auto;
+	text-align: left;
+}
+
+/*===================================
+ DESKTOP CLASSES 
+ ===================================*/
+.my_icon
+{
+	FILTER: alpha(opacity=80);
+	filter:alpha(opacity=80);
+	-moz-opacity:.80;
+	opacity:.80;
+	width: 113px;
+	height: 100px;
+	text-decoration:none;
+}	
+
+.my_icon a:link, .my_icon a:active, .my_icon a:visited, .my_icon a:hover 
+{
+	text-decoration: none;
+}	
+.pressNo
+{
+
+}
+
+.pressDown
+{
+	padding-top: 2px;
+	padding-left: 1px;
+}
+
+.my_icon_hover
+{
+	FILTER: alpha(opacity=100);
+	filter:alpha(opacity=100);
+	-moz-opacity:.100;
+	opacity:.100;
+	padding-left: 1px; 
+	padding-top: 1px;
+}
+
+
+#desktop_content_div
+{
+	height: inherit !important;
+	height: auto;
+	padding: 5px;
+	margin: 9px;
+	background-color: #EEE7F9;
+	border: 1px solid #C4DAD3;
+}
+
+.desktop_icon_table
+{
+	background-color: #EEE7F9;
+}
+
+
+/*===================================
+ GENERIC CLASSES 
+ ===================================*/
+body, html
+{
+	font-family: tahoma;
+	font-size: 11px;
+	color: #0E0E0E;
+	line-height:100%;
+	font-weight: normal;
+	
+   	scrollbar-arrow-color:#535A6B;
+	scrollbar-base-color:#B4B4B4;
+	scrollbar-shadow-color:#FFFFFF;
+	scrollbar-face-color:#E6E6E6;
+	scrollbar-highlight-color:#FFFFFF;
+	scrollbar-darkshadow-color:#B4B4B4;
+	scrollbar-3dlight-color:#B4B4B4; 
+	background: #FFFFFF url(../images/page_bg.gif)  repeat-x top left;
+	margin: 0px;
+}
+
+/* FOR SETTING THE PAGE WIDTH */
+.page_width
+{
+	width: 100% !important;
+	width: 100%;
+	background-color: #FFFFFF;
+}
+
+/* DEFAULT FONT SETTINGS */
+p, div, span, td
+{
+	font-family: tahoma;
+	font-size: 11px;
+	color: #0E0E0E;
+	line-height:110%;
+	font-weight: normal;
+}
+
+.alertmessage
+{
+	color: #7036A6;
+	font-weight:bold;
+	font-size:11px;
+	font-family:Tahoma;
+	line-height: 200%;
+}
+
+#id_footer_td
+{
+	font-size: 11px;
+	text-align: center;
+	padding: 5px;
+}
+
+:link, :active, :visited
+{
+	color: #6A4A9F;
+	text-decoration: underline;
+}
+
+:hover
+{
+	
+	text-decoration: none;
+}
+/*===================================
+ HEADER CLASSES 
+ ===================================*/
+
+/* TOP HEADER */
+.header_bg
+{
+	background: url('../images/header_logo2.gif') left no-repeat #6B2394;
+	height: 42px;
+	font-family: Arial;
+	font-size: 25px;
+	color: #FFFFFF;
+	padding-left: 7px;
+}
+
+.header_bg_version
+{
+	background: url('../images/header_logo2.gif') left no-repeat #6B2394;
+	height: 42px;
+	font-family: Arial;
+	font-size: 11px;
+	color: #FFFFFF;
+	vertical-align:bottom;
+	padding-right: 8px;
+	padding-bottom: 2px;
+}
+
+.header_base_line
+{
+	height: 3px;
+	background-color: #000000;
+}
+
+
+/*===================================
+ MENU CLASSES 
+ ===================================*/
+
+#id_menubar, #id_menubar1
+{
+	background-color: #F3F3F3;
+	font-size: 11px;
+	height: 25px;
+	border-bottom: 1px solid #DEDEDE;
+	padding: 0px 5px 0px 5px;
+}
+
+/* FOR BREAD CRUMB */
+#id_pathway
+{
+	background-color: #F3F3F3;
+	font-size: 11px;
+	height: 25px;
+	border-top: 1px solid #FFFFFF;
+	border-bottom: 1px solid #B4B4B4;
+	padding: 0px 10px 0px 10px;
+}
+
+
+.id_shortcut_icon_td
+{
+	padding: 1px 9px 1px 9px;
+	border-bottom: 1px solid #B4B4B4;
+	background-color: #EBEBEB;
+	height: 48px;
+	text-align:center;
+}
+
+/* PLACEMENT OF SHOW SHORTCUT ICONS BUTTON */
+#id_toggle_icons_button
+{
+	text-align: right;
+	padding-right: 10px;
+}
+
+.shortcut_icon
+{
+	text-align: left;
+	font-family: tahoma;
+	font-size: 10px;
+	padding-right: 10px;
+}
+
+/* PLACEMENT OF LAST ICON I.E. PRINT THOS PAGE BUTTON */
+#shortcut_icon_last
+{
+	text-align: right;
+	font-family: tahoma;
+	font-size: 10px;
+	padding-right: 10px;
+}
+
+.shortcut_icon :link, .shortcut_icon :active, .shortcut_icon :visited
+{
+	text-align: center;
+	font-family: tahoma;
+	font-size: 10px;
+	color: #0E0E0E;
+	text-decoration: none;
+	padding: 0px;
+	margin: 0px;
+}
+
+.shortcut_icon :hover
+{
+	backround-color: #B5CDE8;
+	text-decoration: underline;
+	padding: 0px;
+	margin: 0px;
+}
+
+.top_icon, .top_icon br
+{
+	float: center;
+	text-align: center;
+}
+
+#Layer1
+{
+	width: 100%;
+	background-color: transparent;
+}
+
+/*===================================
+ BODY CLASSES 
+ ===================================*/
+#content_center_td
+{
+	height: inherit !important;
+	height: 280px;
+}
+
+#content_div
+{
+	height: inherit !important;
+	padding: 5px;
+	margin: 9px;
+	background-color: #EEE7F9;
+	border: 1px solid #C4DAD3;
+}
+
+/* DO NOT CHANGE THIS VALUE */
+#content_div #heigtForFirefox
+{
+	height: 280px !important; 
+	overflow: visible;
+}
+
+#id_td_pageHeading
+{
+	padding: 6px 5px 3px 5px;
+	height: 46px !important;
+	height: 39px;
+}
+
+#pageTitle
+{
+	padding: 15px 5px 0px 28px;
+	margin-top: 15px;
+	font-family: arial;
+	font-size: 20px;
+	font-weight:bold;
+	color: #7036A6;
+	background: url('../images/heading_logo_white.png') no-repeat;
+	background-position: 0px 13px !important;
+	background-position: 0px 14px;	
+}
+
+.listing_table 
+{
+	background-color: #B3A0DA;
+}
+
+.listing_table  td
+{
+	padding-left: 3px;
+	padding-top: 0px;
+}
+
+/* SETTINGS FOR BUTTON BAR IN LISTINGS PAGE */
+#listpage_button_bar
+{
+	height: 95px !important;
+	height: 75px; 
+	background-color: #FCFCF8; 
+	border: 1px solid #BCB997; 
+	margin: 0px 0px 5px 0px;
+}
+
+.fieldset
+{
+	height: inherit !important;
+	height: inherit; 
+	padding: 3px; 
+	border: 1px solid #cccccc;
+}
+
+legend
+{
+	color: #999999;
+}
+
+.input_table td
+{
+	border-bottom: 1px solid #CCCCCC;
+	background-color: #FFFFFF;
+}
+
+/* CAPTION SETTINGS FOR INPUT FORMS */
+.input_form_caption_td
+{
+	padding-right: 6px;
+	text-align: right;
+	font-weight: bold;
+	color: #0F52B6;
+}
+
+/* FONT SETTINGS FOR THE CAPTION */
+.input_form_caption_td span
+{
+	padding: 2px;
+	font-weight: bold;
+	font-family: "Courier New", Courier, mono;
+	font-size:13px;
+	color: #FF0000;
+}
+
+
+.form_header
+{
+	height: 25px;
+	background: url('../images/heading_bar_purple.jpg') repeat-x;
+	background-position:bottom;
+}
+.form_base_header
+{
+	height: 25px;
+	background: url('../images/heading_bar_purple.jpg');
+	background-position: 0px -19px;
+	text-align:center;
+	color: #FFFFFF;
+}
+/* Paging in form header base */
+.pagenav
+{
+	vertical-align:middle;
+	color: #FFFFFF;
+	font-weight:bold;
+	line-height:120%;
+	text-align:center;
+	padding: 0px 5px 0px 5px;
+}
+/* hyperlinks in paging */
+:link.pagenav, :actve.pagenav, :visited.pagenav
+{
+	vertical-align:middle;
+	color: #FFFFFF;
+	font-weight:bold;
+	line-height:120%;
+	text-align:center;
+	text-decoration: underline;
+	padding: 0px 5px 0px 5px;
+}
+
+:hover.pagenav
+{
+	vertical-align:middle;
+	color: #FFFFFF;
+	font-weight:bold;
+	line-height:120%;
+	text-align:center;
+	text-decoration: none;
+	padding: 0px 5px 0px 5px;
+}
+
+.form_header span
+{
+	color: #FFFFFF;
+	font-family: Tahoma;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 0px 3px 0px 3px;
+}
+
+/* CLASS FOR TEXTBOX, TEXTAREA AND SELECT BOX */
+.inputbox, .inputbox0
+{
+
+	font-size: 11px;
+	background-color: #F4F7F2;
+	padding: 1px;
+	border: 1px solid #B3A0DA;
+	font-weight:normal;
+	margin: 2px 0px 2px 0px;
+}
+
+/* CLASS FOR BUTTONS */
+.button
+{
+	background: url(../images/button_bg_purple.jpg) no-repeat left;
+	color: #000000;
+	font: 11px tahoma;
+	text-transform:uppercase;	
+	border: 1px solid #838383;
+	padding-right: 0px;
+	font-weight: normal;
+	padding-left: 28px;
+	height: 21px;
+	text-decoration:none;
+}
+
+/* ALTERNATE COLORS FOR TDs */
+.row0
+{
+	background-color: #F7F3FF;
+	height: 22px;
+}
+
+/* ALTERNATE COLORS FOR TDs */
+.row1
+{
+	background-color: #EEE7F9;
+	height: 22px;
+}
+
+.warning
+{
+	background: url("../images/warning.gif") left no-repeat;
+	background-color: #FFF8A7;
+	background-position: 14px center;
+	padding: 8px 3px 8px 48px;
+	border: 1px dotted #E5D200;	
+	margin: 5px;
+	width: 80%;
+	text-align: left;
+	color: #000000;
+	font-family: arial;
+	font-size: 11px;
+	font-weight:bold;
+}
+
+.info
+{
+	background: url("../images/info.gif") left no-repeat;
+	background-color: #D4F5D4;
+	background-position: 14px center;
+	padding: 3px 3px 3px 42px;
+	border: 1px dotted #54AF54;	
+	margin: 5px;
+	width: 70%;
+	text-align: left;
+	font-family: arial;
+	font-size: 11px;
+	font-weight:bold;
+}
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default
+{
+    background: url("../images/heading_bar_purple.jpg") repeat-x scroll center bottom transparent !important;
+}
+.ui-jqgrid .ui-jqgrid-htable th div
+{
+    font-weight: bold !important;
+    color: White !important;
+}
+.ui-jqgrid .ui-pg-table td
+{
+    font-weight: bold !important;
+    color: White !important;
+}
+
+.ui-jqgrid .ui-pg-table td span
+{
+    font-weight: bold !important;
+    color: White !important;
+}
+.ui-jqgrid .ui-paging-info
+{
+    font-weight: bold !important;
+    color: White !important;
+}

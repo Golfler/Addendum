@@ -1,0 +1,346 @@
+﻿
+@{
+    ViewBag.Title = "ManageRatings";
+    ViewBag.Module = "Ratings";
+    Layout = "~/Views/Shared/_LayoutCourseArea.cshtml";               
+                   
+}
+
+@{
+    ViewBag.Module = "Ratings";
+    ViewBag.Title = "Manage Ratings";
+    ViewBag.pageTitle = "Manage Ratings";
+}
+@Html.Partial("_jqGrid")
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        BindList();
+
+    });
+
+
+    function BindList() {
+
+        bindJqGridNoMultiSelect('list', 'pager', 'GetRatingList',
+                ['Id', 'Name', 'Date', 'Email', 'OrderNo', 'Rating', 'GolferName', 'OrderDetails', 'GolferEmail', 'DateOfBirth',
+                 'Gender', 'Status', 'Phone', 'GolferCourse', 'EID'],
+                [{ name: 'Id', index: 'Id', width: 10, hidden: true },
+                    { name: 'Name', index: 'Name', width: 50, sortable: false, formatter: SetViewEmployeeLink },
+                    { name: 'Date', index: 'Date', width: 50, formatter: 'date', formatoptions: { srcformat: 'U', newformat: 'm/d/Y' } },
+                    { name: 'EmailAddress', index: 'EmailAddress', width: 50, sortable: false },
+                    { name: 'OrderNo', index: 'OrderNo', width: 50, sortable: true, formatter: SetEditLink },
+                    { name: 'Rating', index: 'Rating', width: 50, sortable: true, formatter: SetRatingLink },
+                    { name: 'GolferName', index: 'GolferName', width: 50, hidden: true },
+                    { name: 'OrderDetails', index: 'OrderDetails', width: 50, hidden: true },
+                    { name: 'GolferEmail', index: 'GolferEmail', width: 50, hidden: true },
+                    { name: 'DateOfBirth', index: 'DateOfBirth', width: 50, hidden: true },
+                    { name: 'Gender', index: 'Gender', width: 50, hidden: true },
+                    { name: 'Status', index: 'Status', width: 50, hidden: true },
+                    { name: 'Phone', index: 'Phone', width: 50, hidden: true },
+                    { name: 'GolferCourse', index: 'GolferCourse', width: 50, hidden: true },
+                    { name: 'EID', index: 'EID', width: 50, hidden: true }
+                ], 'Id', 'desc',
+                {
+                    "searchText": (function () {
+                        return $("#txtSearch").val();
+                    }),
+                    "fromDate": (function () {
+                        return $("#txtDate").val();
+                    }),
+                    "toDate": (function () {
+                        return $("#txtToDate").val();
+                    })
+                }, '');
+    }
+    function SetEditLink(cellvalue, options, rowObject) {
+
+        try {
+            return "<a class='viewOrder' onclick='javascript:ViewOrder(this)' style='cursor:pointer; text-decoration: underline;' >" + cellvalue + "</a>";
+        }
+        catch (ex) { alert(ex.message); }
+    }
+    function SetGolferLink(cellvalue, options, rowObject) {
+        var Eid = rowObject["EID"];
+      // alert(Eid);
+        try {
+           // return "<a class='viewOrder' onclick='javascript:ViewGolferInfo(this)' style='cursor:pointer; text-decoration: underline;' >" + cellvalue + "</a>";
+            return "<a href='UserAddEdit/" + Eid + "' style='cursor:pointer; text-decoration: underline;' >" + cellvalue + "</a>";
+
+        }
+        catch (ex) { alert(ex.message); }
+    }
+    
+    function SetRatingLink(cellvalue, options, rowObject) {
+        var Rating = rowObject["Rating"];
+        //  alert(Rating);
+        if (Rating == 5) {
+            return "<img src='../../images/star-full.png' /><img src='../../images/star-full.png' /><img src='../../images/star-full.png' /><img src='../../images/star-full.png' /><img src='../../images/star-full.png' />";
+
+        }
+        if (Rating == 4) {
+            return "<img src='../../images/star-full.png' /><img src='../../images/star-full.png' /><img src='../../images/star-full.png' /><img src='../../images/star-full.png' /><img src='../../images/star-em.png' />";
+
+        }
+        if (Rating == 3) {
+            return "<img src='../../images/star-full.png' /><img src='../../images/star-full.png' /><img src='../../images/star-full.png' /><img src='../../images/star-em.png' /><img src='../../images/star-em.png' />";
+
+        }
+        if (Rating == 2) {
+            return "<img src='../../images/star-full.png' /><img src='../../images/star-full.png' /><img src='../../images/star-em.png' /><img src='../../images/star-em.png' /><img src='../../images/star-em.png' />";
+        }
+        if (Rating == 1) {
+            return "<img src='../../images/star-full.png' /> <img src='../../images/star-em.png' /><img src='../../images/star-em.png' /><img src='../../images/star-em.png' /><img src='../../images/star-em.png' />";
+        }
+
+
+    }
+    function ViewOrder(ele) {
+        //debugger;
+        var rowID = $(ele).parent().parent().attr('id');
+        var columnIndex = 3;
+        var cellValue = $("#" + rowID).find('td').eq(columnIndex).text();
+        var orderinfo = JSON.parse($("#" + rowID).find('td').eq(7).text());
+
+        var itemList = '';
+
+        $('#selectedData').empty();
+        for (var i = 0; i < orderinfo.length; i++) {
+            $('#selectedData').append('<tr><td>Course</td><td colspan="3">' + orderinfo[i].CourseInfo + '</td></tr>');
+            $('#selectedData').append('<tr><td>Order No.</td><td colspan="3">' + $("#" + rowID).find('td').eq(3).text() + '</td></tr>');
+            $('#selectedData').append('<tr><td>Order Date</td><td colspan="3">' + orderinfo[i].CreatedDate + ' ' + orderinfo[i].time + '</td></tr>');
+            $('#selectedData').append('<tr><td>Golfer Name</td><td colspan="3">' + $("#" + rowID).find('td').eq(6).text() + '</td></tr>');
+            $('#selectedData').append('<tr><td>OrderType</td><td colspan="3">' + orderinfo[i].OrderType + '</td></tr>');
+            $('#selectedData').append('<tr><td>Payment Mode</td><td colspan="3">' + orderinfo[i].PaymentMode + '</td></tr>');
+            $('#selectedData').append('<tr><th align="left">Items</th><th align="center">Qty.</th><th align="center">Price</th><th align="center">Amount</th></tr>');
+            var itemList = "";
+            var item = JSON.parse(orderinfo[i].itemOrdered);
+            for (var k = 0; k < item.length; k++) {
+                itemList = itemList + '<tr><td>' + item[k].Name + '</td><td align="center">' + item[k].Quantity + '</td><td align="center">$' + item[k].UnitPrice + '</td><td align="center">$' + item[k].Amount + '</td></tr>';
+            }
+            $('#selectedData').append(itemList);
+            $('#selectedData').append('<tr><td align="right" colspan="4">Total Amount: $' + orderinfo[i].billAmount + '</td></tr>');
+            $('#selectedData').append('<tr><td align="right" colspan="4">Tax: $' + orderinfo[i].TaxAmount + '</td></tr>');
+            $('#selectedData').append('<tr><td align="right" colspan="4">Promo Code Discount: $' + orderinfo[i].PromoCodeDiscount + '</td></tr>');
+            $('#selectedData').append('<tr><td align="right" colspan="4">Golfler Platform Fee: $' + orderinfo[i].GolferPlatformFee + '</td></tr>');
+            $('#selectedData').append('<tr><td align="right" colspan="4">Grand Total: $' + orderinfo[i].GrandTotal + '</td></tr>');
+        }
+        $('#btnShowOrder').click();
+    }
+    function ViewGolferInfo(ele) {
+        //debugger;
+        var rowID = $(ele).parent().parent().attr('id');
+        var columnIndex = 3;
+        var cellValue = $("#" + rowID).find('td').eq(columnIndex).text();
+        $('#titleHeader').html("Golfer Detail");
+        $('#selectedData').empty();
+       
+           $('#selectedData').append('<tr><td>Course</td><td colspan="3">' + $("#" + rowID).find('td').eq(13).text() + '</td></tr>');
+            $('#selectedData').append('<tr><td>Golfer Name</td><td colspan="3">' + $("#" + rowID).find('td').eq(6).text() + '</td></tr>');
+            $('#selectedData').append('<tr><td>Email</td><td colspan="3">' + $("#" + rowID).find('td').eq(8).text() + '</td></tr>');
+            $('#selectedData').append('<tr><td>Phone</td><td colspan="3">' + $("#" + rowID).find('td').eq(12).text() + '</td></tr>');
+            $('#selectedData').append('<tr><td>DateOfBirth</td><td colspan="3">' + $("#" + rowID).find('td').eq(9).text() + '</td></tr>');
+            $('#selectedData').append('<tr><td>Gender</td><td colspan="3">' + $("#" + rowID).find('td').eq(10).text() + '</td></tr>');
+            $('#selectedData').append('<tr><td>Status</td><td colspan="3">' + $("#" + rowID).find('td').eq(11).text() + '</td></tr>');
+        $('#btnShowOrder').click();
+    }
+    function SetViewEmployeeLink(cellvalue, options, rowObject) {
+        try {
+            var Eid = rowObject["EID"];
+            return "<a class='viewOrder' href='javascript:void(0)' onclick='javascript:ViewEmployee(&apos;" + Eid + "&apos;)' style='cursor:pointer; text-decoration: underline;' >" + cellvalue + "</a>";
+        }
+        catch (ex) { alert(ex.message); }
+    }
+
+    function ViewEmployee(eid) {
+        try {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetAdminUserByID", "CourseAdmin")',
+                data: { eid: eid },
+                async: false,
+                success: function (data) {
+                    if (data.status == "1") {
+                        console.log(data.data);
+                        $('#tdName').text(data.data.Name);
+                        $('#tdEmail').text(data.data.Email);
+                        $('#tdUserName').text(data.data.UserName);
+                        $('#tdPhone').text(data.data.Phone);
+                        $('#tdUserType').text(data.data.UserType);
+                        $('#tdStatus').text(data.data.Status);
+                        $('#empImage').attr('src', data.data.Image)
+                        $('#btnShowEmployee').click();
+                    }
+                    else {
+                        //showStickMessage(data.msg);
+                    }
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        }
+        catch (ex) { console.log(ex.message); }
+    }
+</script>
+<tr>
+    <td class="id_pathway" valign="middle">
+        <div class="breadcrumb">
+            <ul>
+                <li><a href='@Url.Action("Dashboard")'>Dashboard</a><img src="/Content/Images/arrow.png"
+                    class="arrow_position" /></li>
+                <li>Manage @ViewBag.Module</li>
+            </ul>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+<tr class="chatappend">
+    <td id="content_center_td2" valign="top" align="center">
+        <div class="form_box">
+            <div class="search-advertiser">
+                <label>
+                    Search</label>
+                <input type="text" placeholder="Name, Email" name="searchText" id="txtSearch"
+                    class="searchfeild jqGrid_refreshKey adname" value="" style="margin-bottom: 2px;"
+                    size="30" />
+                <label class="width22 vacdate width19">
+                    From</label>
+                <input type="text" placeholder="Date From" id="txtDate" style="width: 8%;" class="datepicker spacingt5 adname-1  datefeild border_process adname calc_icon ">
+
+                <label class="width22 vacdate width19">
+                    To</label>
+                <input placeholder="Date To" type="text" id="txtToDate" style="width: 8%;" class="datepicker spacingt5 adname-1  datefeild border_process adname calc_icon ">
+
+
+                <img src="/Content/Images/search_icon.png" border="0" alt="search" class="go-btn floatleft jqGrid_refresh"
+                    id="fbox_jqgAdminUser_search" onclick="return BindData();" />
+                <div class="clr">
+                </div>
+
+            </div>
+            <div class="clr">
+            </div>
+        </div>
+        <div id="page-wrap">
+            <div id="divList">
+                <table id="list" cellpadding="0" cellspacing="0" style="width: 97%;" class="jqgridTable">
+                </table>
+                <div id="pager" style="width: 100%;">
+                </div>
+            </div>
+
+            <input type="hidden" id="hdnId" value='@Golfler.Models.LoginInfo.UserId' />
+            <input type="hidden" id="hdnCourseId" value='@Golfler.Models.LoginInfo.UserId' />
+            <input type="hidden" id="hdnCourseName" value='@Golfler.Models.LoginInfo.UserName' />
+            <input type="hidden" id="hdnGolferUserId" value='@Golfler.Models.LoginInfo.GolferUserId' />
+            <input type="hidden" id="hdnGolferUserName" value='@Golfler.Models.LoginInfo.GolferFirstName' />
+        </div>
+    </td>
+</tr>
+@*//open Pop Up*@
+<a href="#myModal" id="btnShowOrder" class="submit-btn update-btn" style="display: none;"></a>
+<div id="myModal" class="reveal-modal" style="display: none; top: 100px; height: 500px;">
+    <div align="right" id="pop_close_btn" class="center-button">
+        <input type="button" id="close" value="Close" class="cancel-btn blk-btn margin_bottom5" onclick="$.fancybox.close();" />
+    </div>
+    <div class="pop_detail">
+        <h1 id="titleHeader">Order Detail</h1>
+
+        <div id="tableContainer" class="page-wrap" style="height: 490px; overflow-x: scroll; border: 1px solid #EAEAEA;">
+            <table id="selectedData" class="voucher-details-table"></table>
+        </div>
+    </div>
+    <div class="clr"></div>
+    <div class="margin-top15"></div>
+
+    <br />
+    <div class="clear"></div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $('a[href="#myModal"]').fancybox({
+            'scrolling': 'no',
+            'onStart': function () {
+                $('#myModal').css('width', '550px');
+                $('#myModal').css('height', '620px');
+                $("#myModal").css("display", "block");
+            },
+            'onClosed': function () {
+                $("#myModal").parent().css('overflow', 'hidden');
+                $("#myModal").hide();
+            }
+        });
+    });
+</script>
+@*//*@
+
+
+
+@*//open Pop Up*@
+<a href="#myEmpModal" id="btnShowEmployee" class="submit-btn update-btn" style="display: none;"></a>
+<div id="myEmpModal" class="reveal-modal" style="display: none; top: 100px; height: 500px;">
+    <div class="pop_detail">
+        <h1 id="title">Employee Detail</h1>
+        <div id="tblContainer" class="page-wrap" style="height: 308px; border: 1px solid #EAEAEA;">
+            <img id="empImage" src="/images/noprofile.png" style="border: 1px solid #eaeaea;float: left;margin: -1px 0 10px;padding: 5px;width: 25%;height:45%" />
+            <table id="empData" class="voucher-details-table" style="float:left;width:72.7%">
+                <tr>
+                    <td>Name:</td>
+                    <td id="tdName">--</td>
+                </tr>
+                <tr>
+                    <td>Email:</td>
+                    <td id="tdEmail">--</td>
+                </tr>
+                <tr>
+                    <td>User Name:</td>
+                    <td id="tdUserName">--</td>
+                </tr>
+                <tr>
+                    <td>Phone:</td>
+                    <td id="tdPhone">--</td>
+                </tr>
+                <tr>
+                    <td>User Type:</td>
+                    <td id="tdUserType">--</td>
+                </tr>
+                <tr>
+                    <td>Status:</td>
+                    <td id="tdStatus">--</td>
+                </tr>
+            </table>
+        </div>
+        <div align="right" id="pop_close" class="center-button">
+        <input type="button" id="btnClose" value="Close" class="cancel-btn blk-btn margin_bottom5" onclick="$.fancybox.close();" />
+    </div>
+    </div>
+    <div class="clr"></div>
+    <div class="margin-top15"></div>
+
+    <br />
+    <div class="clear"></div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $('a[href="#myEmpModal"]').fancybox({
+            'scrolling': 'no',
+            'onStart': function () {
+                $('#myEmpModal').css('width', '550px');
+                $('#myEmpModal').css('height', '420px');
+                $("#myEmpModal").css("display", "block");
+            },
+            'onClosed': function () {
+                $("#myEmpModal").parent().css('overflow', 'hidden');
+                $("#myEmpModal").hide();
+            }
+        });
+    });
+</script>
+@*//*@
+
+
+
+

@@ -1,0 +1,14 @@
+﻿@{
+ 
+ //   Layout = "~/Views/Shared/_LayoutCourseArea.cshtml";
+
+    ViewBag.Module = "Suggested Golf Co-ordinates";
+    ViewBag.Title = "Suggested Golf Co-ordinates";
+    ViewBag.pageTitle = "Suggested Golf Co-ordinates";
+ 
+    ViewBag.BuilderType = "SuperAdmin";
+
+    ViewBag.ParDetails = Golfler.Models.CommonFunctions.GetCoursePar(Convert.ToString(ViewBag.CourseId));
+    
+}
+@Html.Partial("~/Views/Shared/_CourseBuilderScreen.cshtml")

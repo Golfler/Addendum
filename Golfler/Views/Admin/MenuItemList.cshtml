@@ -1,0 +1,284 @@
+﻿@{
+    ViewBag.Title = "Menu Items List";
+    ViewBag.Module = "Menu Items List";
+}
+
+@Html.Partial("_jqGrid")
+<style>
+    .tempwidth {
+        width: 40% !important;
+    }
+
+    .dropdownCate {
+        border: 1px solid #eaeaea !important;
+        float: left !important;
+        padding: 3.5% 2% !important;
+        width: 90% !important;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        bindJqGridMin('list', 'pager', '/Golfler/Admin/GetSubCategoryList',
+                ['ID', 'Category', 'Sub Category Name', 'Active', 'DoActive'],
+                [
+                    { name: 'ID', index: 'ID', width: 10, hidden: true },
+                    { name: 'Category', index: 'Category', width: 50 },
+                    { name: 'Name', index: 'Name', width: 50, formatter: SetEditLink },
+                    { name: 'Status', index: 'Status', width: 50, formatter: SetActiveInActive, align: "center" },
+                    { name: 'DoActive', index: 'DoActive', hidden: true }
+                ], 'ID', 'desc',
+                {
+                    "searchText": (function () {
+                        return $("#txtSearch").val();
+                    }),
+                    "category": (function () {
+                        return ($("#ddlCategory").val() == "" ? '@TempData["MenuItemFilter"]' : $("#ddlCategory").val());
+                    }),
+                    "subCategory": (function () {
+                        return ($("#ddlSubCategory").val() == "" ? "0" : $("#ddlSubCategory").val());
+                    })
+
+                }, '');
+
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetCategory", "CourseAdmin")',
+            async: false,
+            success: function (data) {
+
+                $('#ddlCategory').empty();
+                $('#ddlCategory').append('<option value="">Select Category</option>');
+
+                if (data.msg == 'success') {
+                    for (var i = 0; i < data.data.length; i++) {
+                        $('#ddlCategory').append('<option value="' + data.data[i].ID + '">' + data.data[i].Name + '</option>');
+                    }
+
+                    $('#ddlCategory').val('@TempData["MenuItemFilter"]');
+                    getSubCategory('@TempData["MenuItemFilter"]');
+                }
+                else {
+                    //Do nothing
+                }
+            }
+        });
+
+        $('#ddlCategory').change(function () {
+            if ($(this).val() == '') {
+                $('#ddlSubCategory').empty();
+                $('#ddlSubCategory').append('<option value="">Select Sub Category</option>');
+            }
+            else {
+                getSubCategory($(this).val());
+            }
+        });
+    });
+
+
+    function getSubCategory(cid) {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetSubCategory", "CourseAdmin")',
+            data: { catID: cid },
+            async: false,
+            success: function (data) {
+
+                $('#ddlSubCategory').empty();
+                $('#ddlSubCategory').append('<option value="">Select Sub Category</option>');
+
+                if (data.msg == 'success') {
+                    for (var i = 0; i < data.data.length; i++) {
+                        $('#ddlSubCategory').append('<option value="' + data.data[i].ID + '">' + data.data[i].Name + '</option>');
+                    }
+                }
+                else {
+                    //Do nothing
+                }
+            }
+        });
+    }
+
+    function DeleteUsers() {
+        try {
+            DeleteMultiple('list', '@Url.Action("DeleteMenuItems")');
+        }
+        catch (ex) { alert(ex.message); }
+    }
+
+    function SetEditLink(cellvalue, options, rowObject) {
+
+        try {
+            var Eid = rowObject["EID"];
+            var type = rowObject["Type"];
+            var doActive = rowObject["DoActive"];
+
+            var renameOnlick = "onclick='renameSubCategory(" + cellvalue + ");'";
+
+            if ($('#UpdateFlag').size() != 0 && $('#UpdateFlag').val() != "True")
+                return cellvalue;
+            else
+                return "<a href='/Golfler/Admin/MenuItemAddEdit/" + Eid + "' >" + cellvalue + "</a><a href='javascript:void(0);' style='float:right' onclick='renameSubCategory(this);' data-eid='" + Eid + "' data-name='" + cellvalue + "' >[Rename]</a>";
+        }
+        catch (ex) { alert(ex.message); }
+    }
+
+    function renameSubCategory(ele) {
+        var eid = $(ele).attr('data-eid');
+        var subCategory = prompt("Please enter sub category name", $(ele).attr('data-name'));
+
+        if (subCategory != null) {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("RenameSubCateogry", "Admin")',
+                        data: { eid: eid, newName: subCategory },
+                        async: false,
+                        success: function (data) {
+                            //console.log(data);
+                            if (data.status == 'success') {
+                                $(ele).prev().html(subCategory);
+                                $(ele).attr('data-name', subCategory);
+                                showMessage(data.message);
+                            }
+                            else {
+                                showStickMessage(data.message);
+                            }
+                        },
+                        error: function (data) {
+                            //console.log(data.status, data);
+                        }
+                    });
+                }
+            }
+
+            function SetActiveInActive(cellvalue, options, rowObject) {
+                try {
+
+                    var rowId = rowObject["ID"];
+                    var type = rowObject["Type"];
+                    var doActive = rowObject["DoActive"];
+
+                    var onclickCall = "onclick=javascript:UpdateRowStatus(" + rowId + ",&apos;" + cellvalue.trim() + "&apos;);";
+                    
+                    if (doActive == 'true') {
+                        if ($('#UpdateFlag').size() != 0 && $('#UpdateFlag').val() != "True") {
+                            //if (cellvalue.trim() == "A" || cellvalue == true)
+                            //    return "<img  alt='" + cellvalue + "'  src='/Content/images/nw_active.png'/>";
+                            //else
+                            //    return "<img  alt='" + cellvalue + "'  src='/Content/images/nw_inactive.png'/>";
+
+                            if (cellvalue.trim() == "A" || cellvalue == true)
+                                return '<div class="selected-row"><div class="switch"><input id="cmn-toggle-' + rowId + '" class="cmn-toggle cmn-toggle-round" type="checkbox" checked="checked"><label for="cmn-toggle-' + rowId + '"></label></div></div>';
+                            else
+                                return '<div class="selected-row"><div class="switch"><input id="cmn-toggle-' + rowId + '" class="cmn-toggle cmn-toggle-round" type="checkbox" ><label for="cmn-toggle-' + rowId + '"></label></div></div>';
+                        }
+                        else {
+                            if (cellvalue.trim() == "A" || cellvalue == true)
+                                //return "<a href='#'><img " + onclickCall + " alt='" + cellvalue + "' title='click to deactivate' src='/Content/images/nw_active.png'/></a>";
+                                return '<div class="selected-row"><div class="switch"><input id="cmn-toggle-' + rowId + '" class="cmn-toggle cmn-toggle-round" type="checkbox" ' + onclickCall + ' checked="checked"><label for="cmn-toggle-' + rowId + '"></label></div></div>';
+                            else
+                                //return "<a href='#'><img " + onclickCall + " alt='" + cellvalue + "' title='click to activate' src='/Content/images/nw_inactive.png'/></a>";
+                                return '<div class="selected-row"><div class="switch"><input id="cmn-toggle-' + rowId + '" class="cmn-toggle cmn-toggle-round" type="checkbox" ' + onclickCall + ' ><label for="cmn-toggle-' + rowId + '"></label></div></div>';
+                        }
+                    }
+                    else {
+                        var onclickCall = "onclick=javascript:NoUpdateRowStatus(" + rowId + ",&apos;" + cellvalue.trim() + "&apos;);";
+
+                        if (cellvalue.trim() == "A" || cellvalue == true)
+                            return '<div class="selected-row"><div class="switch"><input id="cmn-toggle-' + rowId + '" class="cmn-toggle cmn-toggle-round" type="checkbox" ' + onclickCall + ' checked="checked"><label for="cmn-toggle-' + rowId + '"></label></div></div>';
+                        else
+                            return '<div class="selected-row"><div class="switch"><input id="cmn-toggle-' + rowId + '" class="cmn-toggle cmn-toggle-round" type="checkbox" ' + onclickCall + '><label for="cmn-toggle-' + rowId + '"></label></div></div>';
+                    }
+                }
+                catch (ex) {
+                    alert(ex.message);
+                }
+            }
+            function AddNewUser() {
+                window.location = '@Url.Action("MenuItemAddEdit")'
+    }
+
+    function UpdateRowStatus(id, status) {
+        try {
+            UpdateStatus('UpdateSubCateogryStatus', 'Golfler/Admin', id, status, 'list');
+        }
+        catch (ex) { alert(ex.message); }
+    };
+
+    function NoUpdateRowStatus(id, status) {
+        try {
+            if (status == 'A') {
+                $('#cmn-toggle-' + id).prop('checked', true);
+            }
+            showStickMessage('This menu item can\'t be deactivated, it is already in use by some of the courses. Please disallow this item from course menu.');
+        }
+        catch (ex) { alert(ex.message); }
+    };
+</script>
+<tr>
+    <td class="id_pathway" valign="middle">
+        <div class="breadcrumb">
+            <ul>
+                <li><a href='@Url.Action("Dashboard")'>Dashboard</a><img src="/Content/Images/arrow.png"
+                    class="arrow_position" /></li>
+                <li>Manage @ViewBag.Module</li>
+            </ul>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td id="content_center_td2" valign="top" align="center">
+        <div class="form_box">
+            <div class="search-advertiser">
+                <label>
+                    Search</label>
+                <input type="text" placeholder="Name" name="searchText" id="txtSearch"
+                    class="searchfeild jqGrid_refreshKey adname" value="" style="margin-bottom: 2px;"
+                    size="30" />
+                <div class="drop_down1">
+                    <select class="dropdownCate" id="ddlCategory">
+                        <option value="">Select Category</option>
+                    </select>
+                </div>
+                <div class="drop_down1">
+                    <select class="dropdownCate" id="ddlSubCategory">
+                        <option value="">Select Sub Category</option>
+                    </select>
+                </div>
+                <img src="/Content/Images/search_icon.png" border="0" alt="search" class="go-btn floatleft jqGrid_refresh"
+                    id="fbox_jqgAdminUser_search" />
+                <div class="clr">
+                </div>
+                <div style="border-top: 1px solid silver; padding-top: 12px; margin-top: 12px;">
+                    <input type="button" id="addNew" value="Add New Item" class="blu-btn leftmargin_3" onclick="javascript: AddNewUser();" action="add" />
+                    <input id="aDeletePopup" type="button" value="Delete" onclick="DeleteUsers();" class="delete blk-btn margin_bottom5" action="delete" />
+                </div>
+            </div>
+            <div class="clr">
+            </div>
+            <div class="em nop" style="display: none;">
+                <label>
+                </label>
+                Use blank search to see all records
+            </div>
+            <div class="em nop">
+                <label>
+                </label>
+                Note:- Inactive checkbox represent menu item are already used in courses. In order to delete these menu item, please get disallow from course menu.
+            </div>
+
+            <div id="page-wrap">
+                <table id="list" cellpadding="0" cellspacing="0" style="width: 100%;" class="jqgridTable">
+                </table>
+                <div id="pager" style="width: 100%;">
+                </div>
+                <input type="hidden" id="hdnId" value='@Golfler.Models.LoginInfo.UserId' />
+            </div>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+<input type="hidden" id="hdnConfirm" />
+

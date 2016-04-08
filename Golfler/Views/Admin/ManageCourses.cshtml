@@ -1,0 +1,219 @@
+﻿@{
+    //ViewBag.Title = "ManageCourses";
+    ViewBag.Title = "Manage Club House";
+}
+
+
+@Html.Partial("_jqGrid")
+<style>
+    .tempwidth {
+        width: 40% !important;
+    }
+
+    .status {
+        width: 100% !important;
+    }
+
+    .adname {
+        width: 25.7% !important;
+    }
+
+    img.floatleft {
+        margin: 0 2px 0 -1px !important;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".choose_inner_department").addClass("tempwidth");
+
+        bindJqGridMin('list', 'pager', 'GetCourseInfo',
+                   ['ID', 'Club House Name', 'State', 'City', 'Login as Club House Admin', 'Partnership Status', 'Club House Co-ordinate', 'Score Card (9/18)', 'APP Status'],
+                   [{ name: 'ID', index: 'ID', width: 10, hidden: true },
+                    { name: 'COURSE_NAME', index: 'COURSE_NAME', width: 100, formatter: SetEditLink },
+                    { name: 'STATE', index: 'STATE', width: 50 },
+                    { name: 'CITY', index: 'CITY', width: 50 },
+                    { name: 'EID', index: 'EID', width: 50, formatter: SetLoginLink },
+                    { name: 'PartnershipStatus', index: 'PartnershipStatus', width: 50 },
+                    { name: 'Coordinate', index: 'Coordinate', width: 50 },
+                    { name: 'ScoreCard', index: 'ScoreCard', width: 50 },
+                    { name: 'Status', index: 'Status', width: 30, formatter: SetActiveInActive, align: "center" }
+                   ], 'ID', 'desc',
+                {
+                    "searchText": (function () {
+                        return $("#txtSearch").val();
+                    }),
+                    "cityName": (function () {
+                        return $("#txtCityName").val();
+                    }),
+                    "partnerType": (function () {
+                        return $("#ddlPartnerType").val();
+                    })
+
+                }, '');
+    });
+
+
+
+    function DeleteUsers() {
+        try {
+            DeleteMultiple('list', '@Url.Action("DeleteCoursesInfo")');
+        }
+        catch (ex) { alert(ex.message); }
+    }
+
+
+
+    function SetEditLink(cellvalue, options, rowObject) {
+
+        try {
+            var Eid = rowObject["EID"];
+            var type = rowObject["Type"];
+            var doActive = rowObject["DoActive"];
+            if ($('#UpdateFlag').size() != 0 && $('#UpdateFlag').val() != "True")
+                return cellvalue;
+            else {
+                //return "<a href='CoursesAddUpdate/" + Eid + "' >" + cellvalue + "</a>";
+                return "<a href='ClubHouseAddUpdate/" + Eid + "' >" + cellvalue + "</a>";
+            }
+        }
+        catch (ex) { alert(ex.message); }
+    }
+
+    function SetLoginLink(cellvalue, options, rowObject) {
+
+        try {
+            var rowid = rowObject["ID"];
+            var uName = rowObject["UserName"];
+
+            if (isNaN(uName)) {
+                return "<a href='javascript:;' onclick='Open(" + rowid + ")'>" + uName + "</a>";
+            }
+            else {
+                return "<a href='javascript:;' onclick='Open(" + rowid + ")'>Login as Club House Admin</a>";
+            }
+        }
+        catch (ex) { alert(ex.message); }
+    }
+
+    function Open(id) {
+        $.ajax({
+            type: 'POST',
+            url: 'SuperAdminLogin',
+            data: { courseID: id },
+            success: function (data) {
+                if (data.msg == true) {
+                    window.location.href = '/Golfler/CourseAdmin/Dashboard';
+                }
+                else {
+                    showStickMessage(data.reason);
+                }
+            }
+        });
+    }
+
+    function SetActiveInActive(cellvalue, options, rowObject) {
+        try {
+
+
+            var rowId = rowObject["ID"];
+            var type = rowObject["Type"];
+
+            var onclickCall = "onclick=javascript:UpdateRowStatus(" + rowId + ",&apos;" + cellvalue.trim() + "&apos;);";
+            //if (($('#UpdateFlag').size() != 0 && $('#UpdateFlag').val() != "True") && !notadminpanel) {
+            //    onclickCall = 'onclick="javascript:showStickMessage(unaccess); return false;"';
+            //}
+
+            if ($('#UpdateFlag').size() != 0 && $('#UpdateFlag').val() != "True") {
+                if (cellvalue == "A" || cellvalue == true)
+                    //return "<a href='javascript:void(0)' onclick='NonAccessMsg();'><img  alt='" + cellvalue + "' title='click to deactivate' src='/Content/images/nw_active.png'/></a>";
+                    return '<div class="selected-row"><div class="switch"><input id="cmn-toggle-' + rowId + '" class="cmn-toggle cmn-toggle-round" type="checkbox" onclick="NonAccessMsg();" checked="checked"><label for="cmn-toggle-' + rowId + '"></label></div></div>';
+                else
+                    //return "<a href='javascript:void(0)' onclick='NonAccessMsg();'><img alt='" + cellvalue + "' title='click to activate' src='/Content/images/nw_inactive.png'/></a>";
+                    return '<div class="selected-row"><div class="switch"><input id="cmn-toggle-' + rowId + '" class="cmn-toggle cmn-toggle-round" type="checkbox" onclick="NonAccessMsg();" ><label for="cmn-toggle-' + rowId + '"></label></div></div>';
+
+            }
+
+            if (cellvalue.trim() == "A" || cellvalue == true)
+                //return "<a href='#'><img " + onclickCall + " alt='" + cellvalue + "' title='click to deactivate' src='/Content/images/nw_active.png'/></a>";
+                return '<div class="selected-row"><div class="switch"><input id="cmn-toggle-' + rowId + '" class="cmn-toggle cmn-toggle-round" type="checkbox" ' + onclickCall + ' checked="checked"><label for="cmn-toggle-' + rowId + '"></label></div></div>';
+            else
+                //return "<a href='#'><img " + onclickCall + " alt='" + cellvalue + "' title='click to activate' src='/Content/images/nw_inactive.png'/></a>";
+                return '<div class="selected-row"><div class="switch"><input id="cmn-toggle-' + rowId + '" class="cmn-toggle cmn-toggle-round" type="checkbox" ' + onclickCall + ' ><label for="cmn-toggle-' + rowId + '"></label></div></div>';
+        }
+        catch (ex) {
+            alert(ex.message);
+        }
+    }
+
+    function UpdateRowStatus(id, status) {
+        try {
+            UpdateStatus('UpdateCourseStatus', 'Golfler/Admin', id, status, 'list');
+        }
+        catch (ex) { alert(ex.message); }
+    };
+    function AddNewUser() {
+        //window.location = '@Url.Action("CoursesAddUpdate")'
+        window.location = '@Url.Action("ClubHouseAddUpdate")'
+    }
+</script>
+<tr>
+    <td class="id_pathway" valign="middle">
+        <div class="breadcrumb">
+            <ul>
+                <li><a href='@Url.Action("Dashboard")'>Dashboard</a><img src="/Content/Images/arrow.png"
+                    class="arrow_position" /></li>
+                <li>@ViewBag.Title</li>
+            </ul>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td id="content_center_td2" valign="top" align="center">
+        <div class="form_box">
+            <div class="search-advertiser">
+                <div class="search-advertiser_box">
+                    <label>
+                        Search</label>
+                    <input type="text" placeholder="Club House Name" name="searchText" id="txtSearch"
+                        class="searchfeild jqGrid_refreshKey adname" value="" style="margin-bottom: 2px;"
+                        size="200" />
+                    <input type="text" placeholder="City Name" name="cityName" id="txtCityName"
+                        class="searchfeild jqGrid_refreshKey adname" value="" style="margin-bottom: 2px;" size="50" />
+                    <div class="drop_down1">
+                        @Html.DropDownList("PartnershipStatus", (SelectList)(ViewBag.Partner), "Select", new { id = "ddlPartnerType", @class = "status" })
+                    </div>
+                    <img src="/Content/Images/search_icon.png" border="0" alt="search" class="go-btn floatleft jqGrid_refresh"
+                        id="fbox_jqgAdminUser_search" />
+                    <div class="clr">
+                    </div>
+                    <div class="em nop">
+                        <label>
+                        </label>
+                        Use blank search to see all records
+                    </div>
+                    <div class="clr">
+                    </div>
+                    <div style="border-top: 1px solid silver; padding-top: 12px; margin-top: 12px;">
+                        <input type="button" id="addNew" value="Add New Club House" class="blu-btn leftmargin_3" onclick="javascript: AddNewUser();" action="add" />
+                        <input id="aDeletePopup" type="button" value="Delete" onclick="DeleteUsers();" class="delete blk-btn margin_bottom5" action="delete" />
+                    </div>
+                </div>
+            </div>
+            <div class="clr">
+            </div>
+            <div id="page-wrap">
+                <table id="list" cellpadding="0" cellspacing="0" style="width: 100%;" class="jqgridTable">
+                </table>
+                <div id="pager" style="width: 100%;">
+                </div>
+                <input type="hidden" id="hdnId" value='@Golfler.Models.LoginInfo.UserId' />
+            </div>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+<input type="hidden" id="hdnConfirm" />
+

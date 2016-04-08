@@ -1,0 +1,467 @@
+﻿@model Golfler.Models.GF_Settings
+
+@{
+    ViewBag.Title = "Setting";
+    ViewBag.pageTitle = "Manage Setting";
+    Layout = "~/Views/Shared/_LayoutCourseArea.cshtml";
+}
+<script>
+    $(document).ready(function () {
+        if ('@TempData["Message"]' != '') {
+            showMessage('@TempData["Message"]');
+        }
+    });
+</script>
+<div id="divSecond" class="organization_form form_box">
+    @using (Html.BeginForm("SettingAddEdit", "CourseAdmin", FormMethod.Post, new { id = "formSettings" }))
+    {
+        <div class="breadcrumb">
+            <ul>
+                <li><a href='@Url.Action("Dashboard")'>Dashboard</a><img src="/Content/Images/arrow.png"
+                    class="arrow_position" /></li>
+                <li>Manage Settings</li>
+            </ul>
+            <div class="clr">
+            </div>
+        </div>
+        if (Model != null)
+        {
+        <div id="divSettings">
+            @foreach (var item in Model.lstSettings)
+            {        
+                <div>
+                    <div class="organization_left">
+                        <p>
+                            @if (item.CourseID == Model.CourseID)
+                            {
+                                if (item.Name.Contains("Login"))
+                                {
+                                <label>
+                                    @item.Name (in Minutes) <a class="ToolTipIcon" message="This value represent the number of minutes account will be locked, if user try 3 fail attempt of login."></a>
+                                </label>
+                                }
+@*else if (item.Name.Contains("StripeAccount"))
+                                {
+                                <label>
+                                    @item.Name<a class="ToolTipIcon" message="Stripe Account to which users will sent payment"></a>
+                                </label>
+                                }
+                                else if (item.Name.Contains("StripeApiKey"))
+                                {
+                                <label>
+                                    @item.Name<a class="ToolTipIcon" message="Stripe Publishable Api Key to which users will sent payment"></a>
+                                </label>
+                                }
+                                else if (item.Name.Contains("StripeSecretApiKey"))
+                                {
+                                <label>
+                                    @item.Name<a class="ToolTipIcon" message="Stripe Secret Api Key to which users will sent payment"></a>
+                                </label>
+                                }*@
+                                else if (item.Name.Contains("Order Auto Cancelled Time"))
+                                {
+                                <label>
+                                    @item.Name (in Minutes)<a class="ToolTipIcon" message="This value represent that, if order placed by Golfer is not accepted/rejected by any Gophie/Kitchen then after how much minutes that order will be auto cancelled."></a>
+                                </label>
+                                }
+                                else if (item.Name.Contains("Game Auto Cancelled Time"))
+                                {
+                                <label>
+                                    @item.Name (in Minutes)<a class="ToolTipIcon" message="This value represent that, if round is started manually and there is no update in score card then after how much of inactivtiy that round should be treated as cancelled."></a>
+                                </label>
+                                }
+                                else if (item.Name.Contains("BTSubMerchantId"))
+                                {
+                                <label>
+                                    @item.Name<a class="ToolTipIcon" message="This value represent that, this course have created the MerchantID with Braintree payment gateway. It is not editable and auto generated once account is created."></a>
+                                </label>
+                                }
+                                else if (item.Name.Contains("Order Limit"))
+                                {
+                                <label>
+                                    @item.Name<a class="ToolTipIcon" message="This value represent that, Golfer need to place order more than this given amount."></a>
+                                </label>
+                                }
+                                else if (item.Name.Contains("Hole Radius"))
+                                {
+                                <label>
+                                    @item.Name (in Meters) <a class="ToolTipIcon" message="Hole Radius (in Meters)"></a>
+                                </label>
+                                }
+                                else if (item.Name.Contains("Course Time Zone"))
+                                {
+                                <label>
+                                    @item.Name<a class="ToolTipIcon" message="This value represent that, in which time zone course data will be saved. Report time will be effected with this settings."></a>
+                                </label>
+                                }
+                                else if (item.Name.Contains("Enable Delivery Order"))
+                                {
+                                <label>
+                                    @item.Name<a class="ToolTipIcon" message="In case there is only one host in Club house."></a>
+                                </label>
+                                }
+                                else if (item.Name.Contains("Enable Pickup Order"))
+                                {
+                                <label>
+                                    @item.Name<a class="ToolTipIcon" message="In case there is only one host in Club house."></a>
+                                </label>
+                                }
+                                else
+                                {
+                                <label>
+                                    @item.Name<a class="ToolTipIcon" message="This is a password of an authenticated email address"></a>
+                                </label>
+                                }
+                           
+                                @Html.TextBox("txtName", item.Name, new { @maxlength = "50", @Style = "display:none;" })
+
+                                if (item.Name.Contains("Course Time Zone"))
+                                {
+                                    @Html.DropDownList("txtValue", (SelectList)(ViewBag.TimeZone), "Select Time Zone", new { @id = "ddlTimeZone", @class = "red-border" })
+                                }
+                                else if (item.Name.Contains("Enable Delivery Order") || item.Name.Contains("Enable Pickup Order"))
+                                {
+                                    <span class="selected-row">
+                                        <span class="switch">
+                                            <input id="cmn-toggle-@(item.ST_ID)" data-result-id="@("enable" + item.ST_ID)" class="cmn-toggle cmn-toggle-round" type="checkbox" data-value="@(item.Value == "False" ? "0" : "1")" @(item.Value == "False" ? "" : "checked=checked") />
+                                            <label for="cmn-toggle-@(item.ST_ID)"></label>
+                                            @Html.Hidden("txtValue", item.Value, new { @id = ("enable" + item.ST_ID), @class = "red-border", @maxlength = "50", Value = (item.Value == "False" ? false : true) })
+                                        </span>
+                                    </span>
+                                }
+                                else
+                                {
+                                    @Html.TextBox("txtValue", item.Value, new { @id = item.Name, @class = "red-border", @maxlength = "50" })
+                                }
+
+                            }
+                        </p>
+                    </div>
+                    <div class="clr">
+                    </div>
+                </div>
+
+            }
+
+
+        </div>
+        <div class="clr">
+        </div>
+        <div id="divBtMerchantId" style="display: none;">
+            <fieldset>
+                <legend>Create SubMerchant Account</legend>
+                <p style="font-weight: bold; padding-left: 15px;">Note: Values are filled in the below form are only for demonstration purpose. Please fill the form as per given format.</p>
+                <p style="font-weight: bold; padding-left: 15px;">Individual Details</p>
+                <div>
+                    <div class="organization_left">
+                        <label>First Name</label>
+                        <input type="text" id="txtBTIndividualFirstName" class="red-border" placeholder="John" />
+                    </div>
+                    <div class="organization_left">
+                        <label>Last Name</label>
+                        <input type="text" id="txtBTIndividualLastName" class="red-border" placeholder="Smith" />
+                    </div>
+                </div>
+                <div class="innerClear"></div>
+                <div>
+                    <div class="organization_left">
+                        <label>Email </label>
+                        <input type="text" id="txtBTIndividualEmail" class="red-border" placeholder="Jsmith@test.com" />
+                    </div>
+                    <div class="organization_left">
+                        <label>Phone</label>
+                        <input type="text" id="txtBTIndividualPhone" class="red-border" placeholder="5553334344" />
+                    </div>
+                </div>
+                <div class="innerClear"></div>
+                <div>
+                    <div class="organization_left">
+                        <label>Date Of Birth </label>
+                        <input type="text" id="txtBTIndividualDateOfBirth" class="red-border" placeholder="1982-11-19" />
+                    </div>
+                    <div class="organization_left">
+                        <label>S.S.N.</label>
+                        <input type="text" id="txtBTIndividualSsn" placeholder="Optional" />
+                        <label>&nbsp;</label>
+                        <label style="text-align: left; vertical-align: top"><small>e.g. 456-45-4568.</small></label>
+                    </div>
+                </div>
+                <div class="innerClear"></div>
+                <div>
+                    <div class="organization_left">
+                        <label>Street Address </label>
+                        <input type="text" id="txtBTIndividualStreetAddress" class="red-border" placeholder="112 Main St" />
+                    </div>
+                    <div class="organization_left">
+                        <label>Locality</label>
+                        <input type="text" id="txtBTIndividualLocality" class="red-border" placeholder="Chicago" />
+                    </div>
+                </div>
+                <div class="innerClear"></div>
+                <div>
+                    <div class="organization_left">
+                        <label>Region </label>
+                        <input type="text" id="txtBTIndividualRegion" class="red-border" placeholder="IL" />
+                    </div>
+                    <div class="organization_left">
+                        <label>Postal Code</label>
+                        <input type="text" id="txtBTIndividualPostalCode" class="red-border" placeholder="60622" />
+                    </div>
+                </div>
+                <div class="innerClear"></div>
+                <p style="font-weight: bold; padding-left: 15px;">Business Details</p>
+
+                <div>
+                    <div class="organization_left">
+                        <label>Legal Name </label>
+                        <input type="text" id="txtBTBusinessLegalName" class="red-border" placeholder="John's Golf Course" />
+                    </div>
+                    <div class="organization_left">
+                        <label>
+                            DBA Name</label>
+                        <input type="text" id="txtBTBusinessDbaName" class="red-border" placeholder="John's Golf Course" />
+                    </div>
+                </div>
+                <div class="innerClear"></div>
+                <div>
+                    <div class="organization_left">
+                        <label>Tax Id</label>
+                        <input type="text" id="txtBTBusinessTaxId" class="red-border" placeholder="98-7654322" />
+                    </div>
+                    <div class="organization_left">
+                        <label>Street Address</label>
+                        <input type="text" id="txtBTBusinessStreetAddress" class="red-border" placeholder="112 Main St" />
+                    </div>
+                </div>
+                <div class="innerClear"></div>
+                <div>
+                    <div class="organization_left">
+                        <label>Locality</label>
+                        <input type="text" id="txtBTBusinessLocality" class="red-border" placeholder="Chicago" />
+                    </div>
+                    <div class="organization_left">
+                        <label>Region</label>
+                        <input type="text" id="txtBTBusinessRegion" class="red-border" placeholder="IL" />
+                    </div>
+                </div>
+                <div class="innerClear"></div>
+                <div>
+                    <div class="organization_left">
+                        <label>Postal Code</label>
+                        <input type="text" id="txtBTBusinessPostalCode" placeholder="60622" />
+                    </div>
+                    <div class="organization_left">
+                        <label></label>
+
+                    </div>
+                </div>
+                <div class="innerClear"></div>
+                <p style="font-weight: bold; padding-left: 15px;">Funding Details</p>
+
+                <div>
+                    <div class="organization_left">
+                        <label>Email</label>
+                        <input type="text" id="txtBTFundingEmail" class="red-border" placeholder="Jsmith@test.com" />
+                    </div>
+                    <div class="organization_left">
+
+                        <label>Descriptor</label>
+                        <input type="text" id="txtBTFundingDescriptor" class="red-border" placeholder="John's Golf Course" />
+                    </div>
+                </div>
+                <div class="innerClear"></div>
+                <div>
+                    <div class="organization_left">
+                        <label>Mobile Phone</label>
+                        <input type="text" id="txtBTFundingMobilePhone" class="red-border" placeholder="5555555556" />
+                    </div>
+                    <div class="organization_left">
+
+                        <label>Account Number</label>
+                        <input type="text" id="txtBTFundingAccountNumber" class="red-border" placeholder="1123581322" />
+                    </div>
+                </div>
+                <div class="innerClear"></div>
+                <div>
+                    <div class="organization_left">
+                        <label>Routing Number</label>
+                        <input type="text" id="txtBTFundingRoutingNumber" class="red-border" placeholder="071101307" />
+                    </div>
+                    <div class="organization_left">
+                    </div>
+                </div>
+                <div class="innerClear"></div>
+                <center> <input type="button" id="btnCreate" value="Create" onclick="return Create();" class="blk-btn on" action="admin" /></center>
+            </fieldset>
+        </div>
+    
+        <div align="center" class="center-button">
+            <input type="button" id="btnSubmit" value="Update Settings" onclick="return Validate();" class="blk-btn on" action="admin" />
+            <input type="button" id="btnCreateBTId" value="Create BrainTree Sub Merchant Id" onclick="return Generate();" class="blk-btn on" action="admin" />
+        </div>
+        }
+        else
+        {
+        <label style="color: red;">
+            <center>Please contact your Administaror to insert settings record in Database.</center>
+        </label>
+        }
+    }
+</div>
+<div style="display: none" id="divProgress">
+    <div align="center" style="width: 100%; position: fixed; z-index: 100001; top: 0px; left: 0px; vertical-align: middle; text-align: center; _height: expression(document.body.offsetHeight + 'px');">
+        <div style="margin-top: 250px">
+            <img src="../../images/loading.gif" alt="loading" />
+        </div>
+    </div>
+    <div id="backgroundElement" style="position: fixed; left: 0px; top: 0px; z-index: 10000; width: 100%; height: 1800px; background-color: #666666; opacity: 0.4; filter: alpha(opacity=40);">
+    </div>
+</div>
+<script type="text/javascript">
+    function Validate() {
+
+        if ($('#UpdateFlag').size() != 0 && $('#UpdateFlag').val() != "True") {
+            NonAccessMsg();
+            return false;
+        }
+
+
+        var i = 0;
+        $("#divSettings").find("input.red-border").each(function () {
+
+            if ($(this).val() == "") {
+                i = 1;
+            }
+
+        });
+
+        if (i == 1) {
+            alert("All fields are required.")
+            return false;
+        }
+        else {
+            $("#formSettings").submit();
+        }
+
+    }
+
+
+</script>
+<style>
+    .innerClear {
+        padding: 1%;
+        clear: both;
+    }
+</style>
+<script>
+
+    $(document).ready(function () {
+        $('#BTSubMerchantId').attr('readonly', 'true');
+        //if ($('#BTSubMerchantId').val() != "") {
+        //  $("#btnCreateBTId").css("display", "none");
+        //  $("#btnCreate").css("display", "none");
+        // }
+        //else {
+        $("#btnCreateBTId").css("display", "");
+        //}
+
+        if ($("#BTSubMerchantId").val() == "") {
+            $("#btnCreateBTId").show();
+        }
+        else {
+            $("#btnCreateBTId").hide();
+        }
+        $("#ddlTimeZone").val('@ViewBag.TimeZoneValue');
+    });
+    function Generate() {
+        $("#divBtMerchantId").slideToggle("slow");
+    }
+    function Create() {
+        var IndividualFirstName = $("#txtBTIndividualFirstName").val();
+        var IndividualLastName = $("#txtBTIndividualLastName").val();
+        var IndividualEmail = $("#txtBTIndividualEmail").val();
+        var IndividualPhone = $("#txtBTIndividualPhone").val();
+        var IndividualDateOfBirth = $("#txtBTIndividualDateOfBirth").val();
+        var IndividualSsn = $("#txtBTIndividualSsn").val();
+        var IndividualStreetAddress = $("#txtBTIndividualStreetAddress").val();
+        var IndividualLocality = $("#txtBTIndividualLocality").val();
+        var IndividualRegion = $("#txtBTIndividualRegion").val();
+        var IndividualPostalCode = $("#txtBTIndividualPostalCode").val();
+
+        var BusinessLegalName = $("#txtBTBusinessLegalName").val();
+        var BusinessDbaName = $("#txtBTBusinessDbaName").val();
+        var BusinessTaxId = $("#txtBTBusinessTaxId").val();
+        var BusinessStreetAddress = $("#txtBTBusinessStreetAddress").val();
+        var BusinessLocality = $("#txtBTBusinessLocality").val();
+        var BusinessRegion = $("#txtBTBusinessRegion").val();
+        var BusinessPostalCode = $("#txtBTBusinessPostalCode").val();
+
+        var FundingDescriptor = $("#txtBTFundingDescriptor").val();
+        var FundingEmail = $("#txtBTFundingEmail").val();
+        var FundingMobilePhone = $("#txtBTFundingMobilePhone").val();
+        var FundingAccountNumber = $("#txtBTFundingAccountNumber").val();
+        var FundingRoutingNumber = $("#txtBTFundingRoutingNumber").val();
+
+        if (IndividualFirstName == " " ||
+            IndividualLastName == " " ||
+            IndividualEmail == "" ||
+            IndividualPhone == "" ||
+            IndividualDateOfBirth == "" ||
+            //IndividualSsn == "" ||
+            IndividualStreetAddress == "" ||
+            IndividualLocality == "" ||
+            IndividualRegion == "" ||
+            IndividualPostalCode == "" ||
+            BusinessLegalName == "" ||
+            BusinessDbaName == "" ||
+            BusinessTaxId == "" ||
+            BusinessStreetAddress == "" ||
+            BusinessLocality == "" ||
+            BusinessRegion == "" ||
+            BusinessPostalCode == "" ||
+            FundingDescriptor == "" ||
+            FundingEmail == "" ||
+            FundingMobilePhone == "" ||
+            FundingAccountNumber == "" ||
+            FundingRoutingNumber == ""
+            ) {
+            showStickMessage('All fields are required.');
+            return;
+        }
+        var params = '{"IndividualFirstName":"' + IndividualFirstName + '","IndividualLastName":"' + IndividualLastName + '","IndividualEmail":"' + IndividualEmail + '" ,"IndividualPhone":"' + IndividualPhone + '" ,"IndividualDateOfBirth":"' + IndividualDateOfBirth + '" ,"IndividualSsn":"' + IndividualSsn + '","IndividualStreetAddress":"' + IndividualStreetAddress + '" ,"IndividualLocality":"' + IndividualLocality + '"  ,"IndividualRegion":"' + IndividualRegion + '"  ,"IndividualPostalCode":"' + IndividualPostalCode + '" ,"BusinessLegalName":"' + BusinessLegalName + '","BusinessDbaName":"' + BusinessDbaName + '" ,"BusinessTaxId":"' + BusinessTaxId + '" ,"BusinessStreetAddress":"' + BusinessStreetAddress + '"  ,"BusinessLocality":"' + BusinessLocality + '" ,"BusinessRegion":"' + BusinessRegion + '","BusinessPostalCode":"' + BusinessPostalCode + '","FundingDescriptor":"' + FundingDescriptor + '" ,"FundingEmail":"' + FundingEmail + '" ,"FundingMobilePhone":"' + FundingMobilePhone + '","FundingAccountNumber":"' + FundingAccountNumber + '" ,"FundingRoutingNumber":"' + FundingRoutingNumber + '"}';
+        $("#divProgress").show();
+        debugger;
+
+        $.ajax
+        ({
+            type: "POST",
+            url: '@Url.Action("CreateBTSubMerchantId", "CourseAdmin")',
+            data: params,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                if (result.result == "1") {
+                    //  alert(result.result);
+                    $("#divBtMerchantId").slideToggle("slow");
+                    $('#BTSubMerchantId').val(result.msg);
+                    showMessage('Sub-Merchant Id created successfully.');
+                    $("#btnCreateBTId").hide();
+                    $("#divProgress").hide();
+                }
+                else {
+                    $("#btnCreateBTId").show();
+                    showStickMessage("Error: " + result.msg);
+                    $("#divProgress").hide();
+                }
+            }
+            , error: function () {
+                $("#btnCreateBTId").show();
+                showStickMessage('An error occur while creating Sub Merchant Id.');
+                $("#divProgress").hide();
+            }
+        });
+    }
+
+</script>
+
+

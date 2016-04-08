@@ -1,0 +1,250 @@
+﻿@model Golfler.Models.GF_Order
+
+@{
+    ViewBag.Module = "Processed Refund";
+    ViewBag.Title = "Process Refund";
+    ViewBag.pageTitle = "Process Refund";
+   
+}
+@Html.Partial("_jqGrid")
+<style>
+    .tempwidth
+    {
+        width: 40% !important;
+    }
+</style>
+
+<tr>
+    <td class="id_pathway" valign="middle">
+        <div class="breadcrumb">
+            <ul>
+                <li><a href='@Url.Action("Dashboard")'>Dashboard</a><img src="/Content/Images/arrow.png"
+                    class="arrow_position" /></li>
+                <li>Manage @ViewBag.Module</li>
+            </ul>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td id="content_center_td2" valign="top" align="center">
+        <div id="content_div" class="form_box organization_form">
+            <div>
+                <div><b>Order Details</b></div>
+                <br />
+                <div>
+                    <b>Golfer Name: </b>@(Model.GF_Golfer.FirstName + " " + Model.GF_Golfer.LastName)<br />
+                    <b>Order Number:</b> @(Model.ID)<br />
+                    <input type="hidden" id="hdnOrderId" value="@(Model.ID)" />
+                    @*  Card Number: *************1111<br />
+                Card Type: Visa<br />*@
+                    <b>Date:</b> @String.Format("{0:d}", @Model.CreatedDate)<br />
+                    <br />
+                    <div style="width: 100%;">
+                        <table>
+                            <tr>
+                                <td><b>Items</b>
+                                </td>
+                                <td><b>Qty</b></td>
+                                <td><b>Price</b></td>
+                                <td><b>Amount</b></td>
+                            </tr>
+
+                            @{
+                                var temp = 0.00;
+                     
+                            }
+                            @foreach (var item in Model.GF_OrderDetails)
+                            {
+                                temp = temp + Convert.ToDouble(@item.UnitPrice * @item.Quantity);
+                                <tr>
+                                    <td>@item.GF_MenuItems.Name</td>
+                                    <td>@item.Quantity</td>
+                                    <td>$@item.UnitPrice</td>
+                                    <td>@string.Format("{0:c}", (@item.UnitPrice * @item.Quantity))</td>
+                                </tr>
+                            }
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <br />
+            <div class="total-right" style="width:98%; text-align:right">
+                @*Total Order Amount=@string.Format("{0:c}", (@temp))<br />
+                Total Amount=@string.Format("{0:c}", (@temp))<br />
+                Tax=$@(Model.TaxAmount)<br />
+                Promo Code Discount=-$0.00<br />
+                Golfer platform Fee= $@(Model.GolferPlatformFee)
+                <br />
+                Grand Total=@string.Format("{0:c}", (@temp))
+                <br />*@
+
+                <b>Total Order Amount</b> = $@ViewBag.billAmount
+                <br />
+                <b>Total Amount</b> =$@ViewBag.billAmount
+                <br />
+                <b>Tax</b> =$@ViewBag.TaxAmount
+                <br />
+                <b>Promo Code Discount</b> =- $@ViewBag.PromoCode
+                <br />
+                <b>Golfer platform Fee</b> = $@ViewBag.GolferPlatformFee
+                <br />
+                <b>Grand Total</b> =$@ViewBag.Total
+                <br />
+
+            </div>
+        
+            <div id="divrefund" class="refund-left" style="padding-top:10px; width:100%;">
+				<div style=" width:50%; float:left;">
+					<b>Refund Amount</b><br />
+					<input type="text" id="refundAmount" class="inp" style="width:90%;" />
+                 </div>
+				<div style=" width:50%; float:left;">	
+					<b>Refund Type</b><br />
+					<input type="radio" name="RefundType" value="F" id="FRefund">Full Refund&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="RefundType" value="P" id="PRefund">Partial Refund
+				</div>
+				<div style="width:100%; float:left;">
+                <b>Refund Description</b><br />
+                <textarea id="Description" class="text" style="width:96%;"></textarea>
+				</div>
+                <br />
+                <br />
+                <img src="../../images/landing_images/submit.png" border="0" alt="search" class="go-btn floatleft jqGrid_refresh"
+                    id="fbox_jqgAdminUser_search" onclick="return refund();" action="add" />
+            </div>
+             <br />
+            <br />
+          
+            <br />
+            <br />
+            <br />
+            <br/><br/>
+            <div class="refund-history">
+                <b>Refund History</b><br />
+                @if (Model.GF_OrderRefund.Count > 0)
+                {
+                    <table>
+                        <tr>
+                            <td><b>Date</b> </td>
+                            <td><b>Refund Type</b></td>
+                            <td><b>Refund Amt</b></td>
+                            <td><b>Description</b></td>
+                        </tr>
+
+
+                        @foreach (var item in Model.GF_OrderRefund)
+                        {
+                        
+
+                            <tr>
+                                <td>
+                                    @String.Format("{0:d}", @item.CreatedDate)
+                                </td>
+                                <td>@item.RefundType</td>
+                                <td>$@item.RefundAmount</td>
+                                <td>@item.Description</td>
+                            </tr>
+                        }
+
+                    </table>
+                }
+                else
+                {
+                    <p>No Refunds</p>
+                }
+            </div>
+            <br />
+            <br />
+           
+        </div>
+    </td>
+</tr>
+<div style="display: none" id="divProgress">
+    <div align="center" style="width: 100%; position: fixed; z-index: 100001; top: 0px; left: 0px; vertical-align: middle; text-align: center; _height: expression(document.body.offsetHeight + 'px');">
+        <div style="margin-top: 250px">
+            <img src="../../images/loading.gif" alt="loading" />
+        </div>
+    </div>
+    <div id="backgroundElement" style="position: fixed; left: 0px; top: 0px; z-index: 10000; width: 100%; height: 1800px; background-color: #666666; opacity: 0.4; filter: alpha(opacity=40);">
+    </div>
+</div>
+<script>
+ @*   $(document).ready(function () {
+        var refundId=@ViewBag.refundId;
+        debugger;
+        if (refundId!= "0") {
+            $("#divrefund").hide();
+        }
+    });*@
+    function refund() {
+
+        var RefundAmount = $("#refundAmount").val();
+        var id = $("#hdnOrderId").val()
+        var RefundDesc = $("#Description").val();
+        var RefundType = "";
+        if ($('#FRefund').is(':checked')) {
+            RefundType = "F";
+            if (RefundAmount == "") {
+               // alert("Please enter refund amount.");
+                showStickMessage('Please enter refund amount.');
+                return false;
+            }
+            else { }
+        }
+        else if ($('#PRefund').is(':checked')) {
+            RefundType = "P";
+            if (RefundAmount == "") {
+               // alert("Please enter refund amount.");
+                showStickMessage('Please enter refund amount.');
+                return false;
+            }
+            else { }
+        }
+        else {
+          //  alert("Please select refund type.");
+            showStickMessage('Please select refund type.');
+            return false;
+        }
+        if (RefundType != "") {
+            if (RefundDesc == "") {
+               // alert("Please select refund description.");
+                showStickMessage('Please select refund description.');
+                return false;
+            }
+            else {
+                var params = '{"refundAmount":"' + RefundAmount + '","refundType":"' + RefundType + '","refundDesc":"' + RefundDesc + '","orderId":"' + id + '"}';
+                $("#divProgress").show();
+              
+                $.ajax
+                ({
+                    type: "POST",
+                    url: '@Url.Action("OrderRefund", "Admin")',
+                    data: params,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                       
+                        if (data.result)
+                        {
+                          
+                            showStickMessage('Refund Successfull.');
+                            $("#divProgress").hide();
+                        }
+                        else
+                        {
+                             showStickMessage("Error : "+data.error);
+                              $("#divProgress").hide();
+                        }
+                    }
+                    , error: function () {
+                        showStickMessage('An error occur while refund process.');
+                        $("#divProgress").hide();
+                    }
+                });
+            }
+        }
+
+    }
+</script>

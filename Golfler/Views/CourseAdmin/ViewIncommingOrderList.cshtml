@@ -1,0 +1,227 @@
+﻿@using Golfler.Models
+@{
+    ViewBag.Module = "App View - " + UserType.GetFullUserType(LoginInfo.LoginUserType);
+    ViewBag.Title = "View Order List";
+    ViewBag.pageTitle = "View Order List";
+    Layout = "~/Views/Shared/_LayoutCourseArea.cshtml";
+}
+@Html.Partial("_jqGrid")
+<style>
+    .tempwidth {
+        width: 40% !important;
+    }
+
+    .btn_order_history {
+        float: right !important;
+        margin-left: 5px;
+    }
+
+    #map_cont {
+        margin: 1px;
+    }
+
+    .gmnoprint img {
+        max-width: none;
+    }
+
+    .gm-style img {
+        max-width: none;
+    }
+</style>
+<script type="text/javascript" src="https://maps-api-ssl.google.com/maps/api/js?sensor=false"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".choose_inner_department").addClass("tempwidth");
+        bindJqGridNoMultiSelect('list', 'pager', 'GetViewIncommingOrderList',
+                ['ID', 'Order No', 'Name', 'Order Date', 'Amount', 'Golfer Platform Fee', 'Bill Amount', 'View', 'Time', 'Action', 'Tax',
+                 'Item Ordered Json', 'Latitude', 'Longitude', 'Order Include'],
+                [{ name: 'orderID', index: 'orderID', width: 10, hidden: true },
+                 { name: 'orderID', index: 'orderID', width: 50, formatter: SetEditLink, classes: 'zzz', hidden: true },
+                 { name: 'golferName', index: 'golferName', width: 50, formatter: SetOrderIncludeImage },
+                 { name: 'OrderDate', index: 'OrderDate', width: 50 },
+                 { name: 'GrandTotal', index: 'GrandTotal', width: 50 },
+                 { name: 'GolferPlatformFee', index: 'GolferPlatformFee', width: 50, hidden: true },
+                 { name: 'billAmount', index: 'billAmount', width: 50, hidden: true },
+                 { name: 'orderID', index: 'orderID', width: 50, formatter: SetViewLink, classes: 'zzz', sortable: false },
+                 { name: 'time', index: 'time', width: 50 },
+                 { name: 'orderID', index: 'orderID', width: 50, formatter: SetReadyLink, classes: 'zzz', sortable: false },
+                 { name: 'TaxAmount', index: 'TaxAmount', width: 50, hidden: true },
+                 { name: 'itemOrdered', index: 'itemOrdered', width: 50, hidden: true },
+                 { name: 'Latitude', index: 'Latitude', width: 50, hidden: true },
+                 { name: 'Longitude', index: 'Longitude', width: 50, hidden: true },
+                 { name: 'orderInclude', index: 'orderInclude', width: 50, hidden: true }
+                ], 'orderID', 'desc',
+                {
+                    "searchText": ''
+                }, '');
+
+        setInterval(function () {
+            $("#list").trigger("reloadGrid", [{ current: true }]);
+        }, 10000);
+    });
+
+    function SetEditLink(cellvalue, options, rowObject) {
+        try {
+            return "<a class='viewOrder' >" + cellvalue + "</a>";
+        }
+        catch (ex) { alert(ex.message); }
+    }
+
+    function SetViewLink(cellvalue, options, rowObject) {
+
+        try {
+            return "<input type='button' onclick='javascript:ViewOrder(this)' class='newuser blu-btn margin_bottom5' value='View' />";
+        }
+        catch (ex) { alert(ex.message); }
+    }
+
+    function SetReadyLink(cellvalue, options, rowObject) {
+
+        try {
+            return "<input type='button' onclick='javascript:OrderAcceptRejectStatus(" + cellvalue + ", 1)' class='newuser blu-btn margin_bottom5' value='Accept' />" +
+                "<input type='button' onclick='javascript:OrderAcceptRejectStatus(" + cellvalue + ", 0)' class='newuser blu-btn margin_bottom5' value='Reject' />";
+        }
+        catch (ex) { alert(ex.message); }
+    }
+
+    function SetOrderIncludeImage(cellvalue, options, rowObject) {
+
+        try {
+            var orderInclude = rowObject["orderInclude"];
+            var colorCode = rowObject["HEXColor"];
+
+            var image = '';
+
+            if (orderInclude.toLowerCase().indexOf('@FoodCategoryType.Kitchen.ToLower()') >= 0) {
+                image = image + '<img src="/images/CourseImage/order_kichen.jpg" width="15" height="27" />&nbsp;'
+            }
+
+            if (orderInclude.toLowerCase().indexOf('@FoodCategoryType.Proshop.ToLower()') >= 0) {
+                image = image + '<img src="/images/CourseImage/order_proshop.png" width="21" />&nbsp;'
+            }
+
+            if (orderInclude.toLowerCase().indexOf('@FoodCategoryType.Cart.ToLower()') >= 0) {
+                image = image + '<img src="/images/CourseImage/order_cart.jpg" width="15" height="27" />&nbsp;'
+            }
+
+            return '<p style="float:left;color:' + colorCode + '">' + cellvalue + '</p>&nbsp;' + image;
+        }
+        catch (ex) { alert(ex.message); }
+    }
+
+    function OrderAcceptRejectStatus(orderID, status) {
+        try {
+            var st = status == 1 ? 'true' : 'false';
+
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("AcceptRejectOrders", "CourseAdmin")',
+                data: { orderID: orderID, status: st },
+                async: false,
+                success: function (data) {
+                    if (data.msg == "success") {
+                        showMessage(data.result);
+                        $("#list").trigger("reloadGrid", [{ current: true }]);
+                    }
+                    else {
+                        showStickMessage(data.msg);
+                    }
+                },
+                error: function (data) {
+                    console.log(data.statusText, data);
+                }
+            });
+        }
+        catch (ex) { console.log(ex.message); }
+    }
+
+    function ViewOrder(ele) {
+        var rowID = $(ele).parent().parent().attr('id');
+        var columnIndex = 3;
+        var cellValue = $("#" + rowID).find('td').eq(columnIndex).text();
+        var item = JSON.parse($("#" + rowID).find('td').eq(11).text());
+
+        var itemList = '';
+
+        $('#selectedData').empty();
+        $('#selectedData').append('<tr><td>Order No.</td><td>' + $("#" + rowID).find('td').eq(1).text() + '</td><td align="right">Date</td><td>' + $("#" + rowID).find('td').eq(2).text() + '  ' + $("#" + rowID).find('td').eq(7).text() + '</td></tr>');
+        $('#selectedData').append('<tr><td>Golfer Name.</td><td colspan="3">' + $("#" + rowID).find('td').eq(3).text() + '</td></tr>');
+        $('#selectedData').append('<tr><th>Items</th><th>Qty.</th><th>Price</th><th>Amount</th></tr>');
+        for (var i = 0; i < item.length; i++) {
+            //alert(item[i].Name + ' ---- ' + item[i].UnitPrice + ' ---- ' + item[i].Quantity + ' ---- ' + item[i].Amount);
+            itemList = itemList + '<tr><td>' + item[i].Name + '</td><td>' + item[i].Quantity + '</td><td>$' + item[i].UnitPrice + '</td><td>$' + item[i].Amount + '</td></tr>';
+        }
+        $('#selectedData').append(itemList);
+        $('#selectedData').append('<tr><td align="right" colspan="4">Total Amount: $' + $("#" + rowID).find('td').eq(7).text() + '</td></tr>');
+        $('#selectedData').append('<tr><td align="right" colspan="4">Tax: $' + $("#" + rowID).find('td').eq(10).text() + '</td></tr>');
+        $('#selectedData').append('<tr><td align="right" colspan="4">Promo Code Discount: $00.00</td></tr>');
+        $('#selectedData').append('<tr><td align="right" colspan="4">Golfler Platform Fee: $' + $("#" + rowID).find('td').eq(5).text() + '</td></tr>');
+        $('#selectedData').append('<tr><td align="right" colspan="4">Grand Total: $' + $("#" + rowID).find('td').eq(4).text() + '</td></tr>');
+
+        $('#btnShowOrder').click();
+    }
+</script>
+
+<tr>
+    <td class="id_pathway" valign="middle">
+        <div class="breadcrumb">
+            <ul>
+                <li><a href='@Url.Action("Dashboard")'>Dashboard</a><img src="/Content/Images/arrow.png"
+                    class="arrow_position" /></li>
+                <li>@ViewBag.Module</li>
+            </ul>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td>
+        <h3 style="text-align: center">Today's Order @DateTime.Now.ToString("dd-MMM-yyyy")
+            <a href="/Golfler/CourseAdmin/ViewOrderList" class="btn_order_history">Go to App view</a></h3>
+    </td>
+</tr>
+<tr>
+    <td id="content_center_td2" valign="top" align="center">
+        <div id="page-wrap">
+            <table id="list" cellpadding="0" cellspacing="0" style="width: 100%;" class="jqgridTable">
+            </table>
+            <div id="pager" style="width: 100%;">
+            </div>
+            <input type="hidden" id="hdnId" value='@Golfler.Models.LoginInfo.UserId' />
+        </div>
+    </td>
+</tr>
+<a href="#myModal" id="btnShowOrder" class="submit-btn update-btn" style="display: none;"></a>
+<div id="myModal" class="reveal-modal" style="display: none; top: 100px; height: 500px;">
+    <div class="pop_detail">
+        <h1>Order Detail</h1>
+        <div id="tableContainer" class="page-wrap" style="height: 490px; overflow-x: scroll; border: 1px solid #EAEAEA;">
+            <table id="selectedData" class="voucher-details-table"></table>
+        </div>
+    </div>
+    <div class="clr"></div>
+    <div class="margin-top15"></div>
+    <div align="center" class="center-button">
+        <input type="button" id="close" value="Close" class="cancel-btn blk-btn margin_bottom5" onclick="$.fancybox.close();" />'
+    </div>
+    <br />
+    <div class="clear"></div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $('a[href="#myModal"]').fancybox({
+            'scrolling': 'no',
+            'onStart': function () {
+                $('#myModal').css('width', '550px');
+                $('#myModal').css('height', '620px');
+                $("#myModal").css("display", "block");
+            },
+            'onClosed': function () {
+                $("#myModal").parent().css('overflow', 'hidden');
+                $("#myModal").hide();
+            }
+        });
+    });
+</script>

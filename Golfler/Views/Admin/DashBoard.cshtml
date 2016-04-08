@@ -1,0 +1,409 @@
+﻿@model Golfler.Models.GF_Roles
+@{
+    Golfler.Models.GF_Roles objRoles = new Golfler.Models.GF_Roles();
+    objRoles = Golfler.Models.CommonFunctions.GetRolesforHeaderMenus();
+}
+@{
+    ViewBag.Title = "Dashboard";
+    ViewBag.pagetitle = "Welcome to your Dashboard";
+}
+
+<tr>
+    <td>
+        <div id="AllLinks">
+            <div class="summary margin-top15">
+                <h4>Our Dashboard</h4>
+                <div class="clr">
+                </div>
+            </div>
+            <div class="clr">
+            </div>
+            <div class="app_store">
+                @if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.UsersAdmin && x.Visible) > 0)
+                {
+                <div class="app-blue sky-color equal_height min_ min_border" inrid="Apps" onclick="openDashboardLinks('Apps')">
+                    <img class="icon" src="/Content/images/left_icon_reso_center.png">
+                    <div class="red_txt">
+                        <a href="/Golfler/Admin/UserList">Resolution Center</a> <span class="dash_top_status"></span>
+                    </div>
+                    <div class="info_text"><a href="/Golfler/Admin/ResolutionMessages" style="color: #a8b3bb;">No. of Unread Messages <span class="resolutionMsg">( 0 )</span></a></div>
+                    <div class="clr">
+                    </div>
+                </div>
+                }
+                @if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.UsersAdmin && x.Visible) > 0)
+                {
+                <div class="app-blue sky-color equal_height min_ min_border" inrid="Apps" onclick="openDashboardLinks('Apps')">
+                    <img class="icon" src="/Content/images/icon_main_user.png">
+                    <div class="red_txt">
+                        <a href="/Golfler/Admin/UserList">Manage Users</a> <span class="dash_top_status"></span>
+                    </div>
+                    <div class="info_text"><a href="/Golfler/Admin/UserList" style="color: #a8b3bb;">No. of Users <span>( @ViewBag.UserCount )</span></a></div>
+                    <div class="clr">
+                    </div>
+                </div>
+                }
+                @if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.RolesAdmin && x.Visible) > 0)
+                {
+                <div class="app-sky sky-color equal_height min_ min_border" inrid="users" onclick="openDashboardLinks('users')">
+                    <img class="icon" src="/Content/images/icon_main_user_roles.png">
+                    <div class="red_txt">
+                        <a href="/Golfler/Admin/RoleList">Roles</a><span class="dash_top_status"></span>
+                    </div>
+                    <div class="info_text"><a href="/Golfler/Admin/RoleList" style="color: #a8b3bb;">No. Of Roles<span> ( @ViewBag.RoleCount )</span></a></div>
+                    <div class="clr">
+                    </div>
+                </div>
+                }
+                @if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.CourseAdmin && x.Visible) > 0)
+                {
+                <div class="app-green dark-blue equal_height min_ min_border" inrid="Misc" onclick="openDashboardLinks('Misc')">
+                    <img class="icon" src="/Content/images/icon_main_course.png">
+                    <div class="red_txt">
+                        @*<a href="/Golfler/admin/ManageCourses">Courses</a><span class="dash_top_status"></span>*@
+                        <a href="/Golfler/admin/ManageClubHouse">Courses</a><span class="dash_top_status"></span>
+                    </div>
+                    @*<div class="info_text"><a href="/Golfler/admin/ManageCourses" style="color: #a8b3bb;">No. Of Courses<span> ( @ViewBag.CourseCount )</span></a></div>
+                    <div class="info_text"><a href="/Golfler/admin/ManageCourses" style="color: #a8b3bb;">Suggested Course <span class="spnSuggCourseCount">( @ViewBag.SuggCourseCount )</span></a></div>*@
+                    <div class="info_text"><a href="/Golfler/admin/ManageClubHouse" style="color: #a8b3bb;">No. Of Courses<span> ( @ViewBag.CourseCount )</span></a></div>
+                    <div class="info_text"><a href="/Golfler/admin/ManageClubHouse" style="color: #a8b3bb;">Suggested Course <span class="spnSuggCourseCount">( @ViewBag.SuggCourseCount )</span></a></div>
+                    <div class="clr">
+                    </div>
+                </div>
+                }
+                @*if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.StaticPageAdmin && x.Visible) > 0)
+                {
+                <div class="orgnize_box blue equal_height min_ min_border" inrid="OrgMngmt" onclick="openDashboardLinks('OrgMngmt')">
+                    <img class="icon" src="/Content/Images/icon_main_manage.png">
+                    <div class="red_txt">
+                        <a href="/Golfler/Admin/StaticPageList">Static Pages</a><span class="dash_top_status"></span>
+                    </div>
+                    <div class="info_text"><a href="/Golfler/Admin/StaticPageList" style="color: #a8b3bb;">No. Of Static Pages<span> ( @ViewBag.StaticPageCount )</span></a></div>
+                    <div class="clr">
+                    </div>
+                </div>
+                }*@
+                @if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.UsersAdmin && x.Visible) > 0)
+                {
+                <div class="orgnize_box blue equal_height min_ min_border" inrid="OrgMngmt" onclick="openDashboardLinks('OrgMngmt')">
+                    <img class="icon" src="/Content/Images/icon_main_golfer_view.png">
+                    <div class="red_txt">
+                        <a href="/Golfler/Golfer/GolferList">Golfer Users</a><span class="dash_top_status"></span>
+                    </div>
+                    <div class="info_text"><a href="/Golfler/Golfer/GolferList" style="color: #a8b3bb;">No. Of Users <span>( @ViewBag.GolferUserCount )</span></a></div>
+                    <div class="clr">
+                    </div>
+                </div>
+                }
+                @if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.SettingAdmin && x.Visible) > 0)
+                {
+                <div class="orgnize_box blue equal_height min_ min_border" inrid="OrgMngmt" onclick="openDashboardLinks('OrgMngmt')">
+                    <img class="icon" src="/Content/Images/icon_main_setting.png">
+                    <div class="red_txt">
+                        <a href="/Golfler/Admin/SettingAddEdit">Web Settings</a><span class="dash_top_status"></span>
+                    </div>
+                    <div class="info_text"><a href="/Golfler/Admin/SettingAddEdit" style="color: #a8b3bb;">Manage Settings</a></div>
+                    <div class="clr">
+                    </div>
+                </div>
+                }
+                @if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.SmtpAdmin && x.Visible) > 0)
+                {
+                <div class="app-green dark-blue equal_height min_ min_border" inrid="communication"
+                    onclick="openDashboardLinks('communication')">
+                    <img class="icon" src="/Content/Images/icon_main_enquiries.png">
+                    <div class="red_txt">
+                        <a href="/Golfler/Admin/EmailTemplates">Communications</a><span class="dash_top_status"></span>
+                    </div>
+                    <div class="info_text"><a href="/Golfler/Admin/EmailTemplates" style="color: #a8b3bb;">Email Templates<span></span></a></div>
+                    <div class="info_text"><a href="/Golfler/Admin/SMTPDetails" style="color: #a8b3bb;">SMTP Details<span></span></a></div>
+                    <div class="clr">
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+        <div class="dash_chart">
+            <div class="left_chart_cont">
+                <div class="chart_box">
+                    <img class="icon" src="/Content/Images/image_site_visit.png" style="display:none"></div>
+            </div>
+            <div class="right_chart_cont">
+                <div class="chart_box">
+                    <img class="icon" src="/Content/Images/image_REVENUE.png" style="display:none"></div>
+            </div>
+        </div>
+    </td>
+</tr>
+
+
+
+<tr>
+    <td id="content_center_td2" valign="top" align="center">
+        <div id="All">
+            <div class="summary color margin-top15 OrgMngmt" style="display: none">
+                <h4>Organization Management</h4>
+                <div class="clr">
+                </div>
+            </div>
+            <div class="app_store OrgMngmt" style="display: none;">
+                <div class="orgnize_box_4 back_dash equal_height min_ min_border" onclick="openDashboard()">
+                    <div class="center-txt">
+                        Back to Dashboard
+                    </div>
+                </div>
+                @if (@Model.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.Course && x.Visible) > 0)
+                {
+                    <div class="orgnize_box_4 orange equal_height min_ min_border ">
+                        <a href='@Url.Action("EditAppStore")'>
+                            <img src="../../../../Content/Images/icons/manage_organization.png" class="icon" />
+                        </a>
+                        <div class="red_txt">
+                            <a href='@Url.Action("EditAppStore")'>Manage Organization</a>
+                        </div>
+                    </div>
+                }
+                @if (@Model.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.Course && x.Visible) > 0)
+                {
+                    <div class="orgnize_box_4 left-border red equal_height min_ min_border">
+                        <a href='@Url.Action("LocationList")'>
+                            <img src="../../../../Content/Images/icons/manage_sub_organization.png" class="icon" />
+                        </a>
+                        <div class="red_txt">
+                            <a href='@Url.Action("LocationList")'>Manage Sub Organizations</a>
+                        </div>
+                    </div>
+                }
+                @if (@Model.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.Course && x.Visible) > 0)
+                {
+                    <div class="orgnize_box_4 green equal_height min_ min_border ">
+                        <a href='@Url.Action("SetUpDepartment")'>
+                            <img src="../../../../Content/Images/icons/setup_department.png" class="icon" /></a>
+                        <div class="red_txt">
+                            <a href='@Url.Action("SetUpDepartment")'>Setup Departments</a>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="summary color margin-top15 appStoreMngmt" style="display: none">
+                <h4>App Store Management</h4>
+                <div class="clr">
+                </div>
+            </div>
+            <div class="app_store appStoreMngmt" style="display: none;">
+                <div class="widthsixteen back_dash equal_height min_ min_border " onclick="openDashboard()">
+                    <div class="center-txt">
+                        Back to Dashboard
+                    </div>
+                </div>
+              @*  @if (@Model.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.Menu && x.Visible) > 0)
+                {   
+                    *@<div class="app_store-orage width28 equal_height min_ min_border">
+                        <a href='@Url.Action("MenuList")'>
+                            <img src="../../../../Content/Images/icons/menu.png" class="icon" /></a>
+                        <div class="red_txt">
+                            <a href='@Url.Action("MenuList")'>Manage Menu</a>
+                        </div>
+                    </div>
+               @* }
+                @if (@Model.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.Category && x.Visible) > 0)
+                {
+                    *@<div class="app_store-blue width28 equal_height min_ min_border">
+                        <a href='@Url.Action("CategoryList")'>
+                            <img src="../../../../Content/Images/icons/category.png" class="icon" /></a>
+                        <div class="red_txt">
+                            <a href='@Url.Action("CategoryList")'>Manage Categories</a>
+                        </div>
+                    </div>
+                    <div class="com-light_orange width28 equal_height min_ min_border">
+                        <a href='@Url.Action("TagList")'>
+                            <img src="../../../../Content/Images/icons/statement.png" class="icon" /></a>
+                        <div class="red_txt">
+                            <a href='@Url.Action("TagList")'>Manage Tags</a>
+                        </div>
+                    </div>
+              @*  }
+                @if (@Model.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.StaticPage && x.Visible) > 0)
+                {   
+                    *@<div class="app_store-green width28 equal_height min_ min_border">
+                        <a href='@Url.Action("PageList")'>
+                            <img src="../../../../Content/Images/icons/dynamic_page.png" class="icon" />
+                        </a>
+                        <div class="red_txt">
+                            <a href='@Url.Action("PageList")'>Manage Dynamic Pages</a>
+                        </div>
+                    </div>
+               @* }
+                @if (@Model.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.ContactUs && x.Visible) > 0)
+                {   
+                    *@<div class="app_store-red width20 equal_height min_ min_border">
+                        <a href='@Url.Action("ContactUsList")'>
+                            <img src="../../../../Content/Images/icons/contact_book.png" class="icon" /></a>
+                        <div class="red_txt">
+                            <a href='@Url.Action("ContactUsList")'>Contact Us Requests</a>
+                        </div>
+                    </div>
+               @* }
+                @if (@Model.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.Course && x.Visible) > 0)
+                {   
+                    *@<div class="app_store-light_blue width20 equal_height min_ min_border">
+                        <a href="AppReviewList">
+                            <img src="../../../../Content/Images/icons/review.png" class="icon" /></a>
+                        <div class="red_txt">
+                            <a href="AppReviewList">Manage App Reviews</a>
+                        </div>
+                    </div>
+              @*  }
+                @if (@Model.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.Course && x.Visible) > 0)
+                {
+                    *@<div class="app_store-dark-pink width20 equal_height min_ min_border">
+                        <a href="ContantOfList">
+                            <img src="../../../../Content/Images/icons/page_content.png" class="icon" />
+                        </a>
+                        <div class="red_txt">
+                            <a href="ContantOfList">Manage Page Content</a>
+                        </div>
+                    </div>                    
+                @*}*@
+            </div>
+            <div class="summary color margin-top15 communication" style="display: none">
+                <h4>Communications</h4>
+                <div class="clr">
+                </div>
+            </div>
+            <div class="app_store communication" style="display: none;">
+                <div class="orgnize_box widthsixteen back_dash red equal_height min_ min_border "
+                    onclick="openDashboard()">
+                    <div class="center-txt">
+                        Back to Dashboard
+                    </div>
+                </div>
+               @* @if (@Model.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.EmailTemplates && x.Visible) > 0)
+                {
+                    *@<div class="com-light_orange width28 equal_height min_ min_border">
+                        <a href='@Url.Action("EmailTemplates")'>
+                            <img src="../../../../Content/Images/icons/email_icon.png" class="icon" />
+                        </a>
+                        <div class="red_txt">
+                            <a href='@Url.Action("EmailTemplates")'>Manage Email Templates</a>
+                        </div>
+                    </div>
+                                                                    
+               @* }
+                @if (@Model.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.Smtp && x.Visible) > 0)
+                {
+                    *@<div class="com-red width28 left-border equal_height min_ min_border">
+                        <a href='@Url.Action("SMTPDetails")'>
+                            <img src="../../../../Content/images/icons/smtp_icon.png" class="icon" /></a>
+                        <div class="red_txt">
+                            <a href='@Url.Action("SMTPDetails")'>Manage SMTP Details</a>
+                        </div>
+                    </div>
+               @* }*@
+            </div>
+            <div class="summary color margin-top15 users" style="display: none">
+                <h4>Users</h4>
+                <div class="clr">
+                </div>
+            </div>
+            <div class="app_store users" style="display: none;">
+                <div class="orgnize_box back_dash width20 red equal_height min_ min_border " onclick="openDashboard()">
+                    <div class="center-txt">
+                        Back to Dashboard
+                    </div>
+                </div>
+               @* @if (@Model.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.User && x.Visible) > 0)
+                {
+                    *@<div class="user-orange width20 equal_height min_ min_border">
+                        <a href='@Url.Action("UserList")'>
+                            <img src="../../../../Content/Images/icons/user.png" class="icon" /></a>
+                        <div class="red_txt">
+                            <a href='@Url.Action("UserList")'>Manage Onboarded Users</a>
+                        </div>
+                    </div>
+              @*  }
+                @if (@Model.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.Course && x.Visible) > 0)
+                {                                           
+                    *@<div class="user-pink width20 equal_height min_ min_border">
+                        <a href='@Url.Action("EndUserList")'>
+                            <img src="../../../../Content/images/icons/end_user.png" class="icon" /></a>
+                        <div class="red_txt">
+                            <a href='@Url.Action("EndUserList")'>Manage Self Registered Users</a>
+                        </div>
+                    </div>
+              @*  }
+                @if (@Model.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.Role && x.Visible) > 0)
+                {
+                    *@<div class="user-green width20 equal_height min_ min_border">
+                        <a href='@Url.Action("RoleList")'>
+                            <img src="../../../../Content/images/icons/manage_user.png" class="icon" /></a>
+                        <div class="red_txt">
+                            <a href='@Url.Action("RoleList")'>Manage Roles</a>
+                        </div>
+                    </div>                                                            
+                @*}
+                @if (@Model.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.Course && x.Visible) > 0)
+                {
+                    *@<div class="app-sky sky-color equal_height min_ min_border">
+                        <a href='@Url.Action("UserGroupList")'>
+                            <img src="../../../../Content/Images/icons/user.png" class="icon" /></a>
+                        <div class="red_txt">
+                            <a href='@Url.Action("UserGroupList")'>Manage User Groups</a>
+                        </div>
+                    </div>
+               @* }*@
+            </div>
+            <div class="app_store Case" style="display: none;">
+                <div class="orgnize_box widthsixteen back_dash red equal_height min_ min_border "
+                    onclick="openDashboard()">
+                    <div class="center-txt">
+                        Back to Dashboard
+                    </div>
+                </div>
+               @* @if (@Model.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.Course && x.Visible) > 0)
+                {                                           
+                    *@<div class="user-mg width20 equal_height min_ min_border">
+                        <a href='@Url.Action("ApprovalChainList")'>
+                            <img src="../../../../Content/images/icons/approvel_chain.png" class="icon" /></a>
+                        <div class="red_txt">
+                            <a href='@Url.Action("ApprovalChainList")'>Manage Approval Chains</a>
+                        </div>
+                    </div>
+              @*  }
+                @if (@Model.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.Course && x.Visible) > 0)
+                {
+                    *@<div class="mis-light-orange width33 equal_height min_ min_border">
+                        <a href='@Url.Action("CaseList")'>
+                            <img src="../../../../Content/Images/icons/app_cause.png" class="icon" /></a>
+                        <div class="red_txt">
+                            <a href='@Url.Action("CaseList")'>Process App Cases</a>
+                        </div>
+                    </div>
+               @* }
+                else
+                {
+                }
+                @if (@Model.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.Course && x.Visible) > 0)
+                {
+                    *@<div class="mis-drk-green width20 equal_height min_ min_border">
+                        <a href='@Url.Action("ViewAllCases")'>
+                            <img src="../../../../Content/images/icons/all_cases.png" class="icon" /></a>
+                        <div class="red_txt">
+                            <a href='@Url.Action("ViewAllCases")'>View All Cases</a>
+                        </div>
+                    </div>
+               @* }
+                @if (@Model.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.Course && x.Visible) > 0)
+                {                                           
+                    *@<div class="com-drk_gren left-border width28 equal_height min_ min_border">
+                        <a href='@Url.Action("DeptTicketList")'>
+                            <img src="../../../../Content/images/icons/causes_approvel.png" class="icon" /></a>
+                        <div class="red_txt">
+                            <a href='@Url.Action("DeptTicketList")'>Cases For Approval</a>
+                        </div>
+                    </div>                                                                
+                @*}*@
+            </div>
+        </div>
+    </td>
+</tr>

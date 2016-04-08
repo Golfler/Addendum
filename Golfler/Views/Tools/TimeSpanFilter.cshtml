@@ -1,0 +1,521 @@
+﻿@using Golfler.Models
+
+<style>
+    .table_header .date_range_bi {
+        background: #1b1d1e!important;
+        border: 1px solid #4D4D4D!important;
+        float: left;
+        font-size: 14px;
+        padding: 10px 0 10px 10px;
+        text-align: left;
+		position:relative;
+		min-width:253px;
+    }
+
+        .table_header .date_range_bi label.white {
+            color: #ffffff;
+        }
+
+    .table_header .date_range label {
+        line-height: 20px;
+        margin: 0 10px 0 0;
+    }
+
+    .table_header .date_range img {
+        display: inline;
+        margin-left: 5px;
+        vertical-align: text-bottom;
+    }
+
+    .cursorpointer {
+        cursor: pointer;
+    }
+
+    .DatePopUp {
+        background-color: #ffffff;
+        border: 1px solid #1b1d1e;
+        display: none;
+        position: absolute;
+        width: 100%;
+        z-index: 3;
+		top:41px;
+		left:-1px;
+    }
+
+    table {
+        border-collapse: inherit;
+        margin: 0 0 10px;
+        text-align: left;
+        width: 100% !important;
+    }
+
+    thead, tbody {
+        margin: 0;
+        padding: 0;
+    }
+
+    #DivTimer table td.sep {
+        border-right: 1px solid #d2d2d2;
+    }
+	.sep_bottom{ border-bottom: 1px solid #d2d2d2 !important;}
+    #DivTimer table td {
+        font-size: 12px;
+        padding: 3px 3px 3px 5px;
+        text-align: left;
+        vertical-align: top;
+		border:none;
+    }
+
+    ul.date_select {
+        list-style: outside none none;
+        margin: 0 15px 0 5px;
+        padding: 0;
+        text-align: left;
+    }
+
+        ul.date_select li {
+            list-style: outside none none;
+            padding: 2px 0;
+        }
+
+            ul.date_select li a {
+                color: #068dd3;
+                cursor: pointer;
+                text-decoration: none;
+            }
+
+    #accordionReports .date_range_bi div table ul.date_select li a {
+        color: #068dd3 !important;
+    }
+
+    #accordionReports a {
+        color: #fff !important;
+    }
+
+    .table_header .date_range a {
+        line-height: 0;
+    }
+
+    .DatePopUp table td a {
+        font-size: 12px;
+        line-height: 18px !important;
+    }
+.DatePopUp table td a:hover{color:#43b34a !important;}
+    .date_range_bi div#DivTimer span {
+        color: #000000;
+        margin-top: 0 !important;
+    }
+
+    #accordionReports h2 span {
+        background: url("/content/images/inner/accord-icons.png") no-repeat scroll left top transparent;
+        display: block;
+        float: left;
+        height: 11px;
+        margin-right: 5px;
+        margin-top: 3px;
+        width: 11px;
+    }
+	    #DivTimer table td:hover, #DivTimer table tr:hover{ background:#fff !important;}
+.textfield2{ border:1px solid #eaeaea !important; height:35px; color:#7f7f7f;}
+.ui-datepicker th{ font-size:13px; background:#1b1d1e;}
+.ui-datepicker .ui-datepicker-title{ margin:0px 1.3em;}
+.ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next{ width:1.2em;}
+.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight{ background:#43b34a; color:#fff !important;}
+.ui-datepicker-calendar tr:hover{ background:#fff !important;}
+.ui-datepicker .ui-datepicker-title select{ margin:1px !important;}
+.ui-datepicker select.ui-datepicker-month, .ui-datepicker select.ui-datepicker-year{ width:48% !important;}
+</style> 
+
+
+<div class="table_header background2b2b2b">
+    <div class="date_range_bi date_range utimate_date">
+        <label class="white">@TimeSpanResource.DateRange
+            <img id="imgPrev" src="@Url.Content("/content/images/time_arrow_left.png")" class="cursorpointer" alt="@TimeSpanResource.arrowleft" title="@TimeSpanResource.Previous" width="17" height="17" style="cursor:pointer" />
+            <img id="imgNext" src="@Url.Content("/content/images/time_arrow_right.png")" class="cursorpointer" alt="@TimeSpanResource.arrowright" title="@TimeSpanResource.Next" width="17" height="17" style="cursor:pointer" />
+        </label>
+        <label>
+            <a id="aDateLable" style="color:#ffffff;">@TimeSpanResource.ThisWeek</a>
+            <a href="javascript:;" id="BottomClick">
+                <img id="btnShowDateChart"  title="@TimeSpanResource.SelectDate"  src="@Url.Content("/content/images/time_arrow_down.png")" width="17" height="17" alt="@TimeSpanResource.arrowbottom" /></a>
+        </label>
+        <div id="DivTimer" class="DatePopUp">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td class="sep sep_bottom">
+                        <ul class="date_select">
+                            <li><a title="@TimeSpanResource.Today" id="aToday">@TimeSpanResource.Today</a></li>
+                            <li><a title="@TimeSpanResource.Yesterday" id="aYesterday">@TimeSpanResource.Yesterday</a></li>
+                            <li><a title="@TimeSpanResource.ThisWeek" id="aWeek">@TimeSpanResource.ThisWeek</a></li>
+                            <li><a title="@TimeSpanResource.AllTime" id="aAll">@TimeSpanResource.AllTime</a></li>
+                        </ul>
+                    </td>
+                    <td valign="top" class="sep_bottom">
+                        <ul class="date_select">
+                            <li><a id="aLastWeek" title="@TimeSpanResource.LastWeek">@TimeSpanResource.LastWeek</a></li>
+                            <li><a id="aMonth" title="@TimeSpanResource.ThisMonth">@TimeSpanResource.ThisMonth</a></li>
+                            <li><a id="aLastMonth" title="@TimeSpanResource.LastMonth">@TimeSpanResource.LastMonth</a></li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td valign="top">
+                        <span>@TimeSpanResource.From ...</span><br />
+                        <input id="txtFromDate" name="startDate" type="text" style="width: 90px" class="textfield2 ie_crossicon_none" onkeydown="return false;" />
+                    </td>
+                    <td>
+                        <span>...@TimeSpanResource.To</span><br />
+                        <input id="txtToDate" name="endDate" type="text" style="width: 90px" class="textfield2 ie_crossicon_none" onkeydown="return false;" />
+                    </td>
+                </tr>
+                <tr>
+                    <td valign="top">
+                        @*<input type="submit" value="@TimeSpanResource.Show" title="@TimeSpanResource.Show" id="btnShowDate" />*@
+                    </td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    @*<span title="hidden variables for data config">*@
+    <input type="hidden" id="hdnDateSpan" value="week" title="hidden ctr for keeping current Search type Like week, month and day." />
+    <input type="hidden" id="ReportViewer" name="returnType" />
+    @* </span> *@
+</div>
+<script type="text/javascript">
+    function FadeInOut() {
+        $("#DivTimer").toggle();
+    }
+    function GetStartEndDates(dateSpan) {
+
+        $.ajax({
+            url: '@Url.Action("GetStartEndDate_New", "Golfer")',
+            data: { DateSpan: dateSpan.toLowerCase(), report: $('#hdnGroupBy').val() },
+            type: 'POST',
+            async: true,
+            success: function (data) {
+                $('#txtFromDate').val(data.dateStart);
+                $('#txtToDate').val(data.dateEnd);
+                // alert($('#txtToDate').val());
+                $('#aDateLable').html('').html(data.displayText);
+            },
+            error: function () { }
+        });
+    }
+    $(document).ready(function () {
+        var box = $('#DivTimer');
+        var mouse_is_inside = false;
+        //var reportFor = $('#inputReportFor').val();
+
+
+        function GetNextPreviousValues(req) {
+            var dateSpan = $('#hdnDateSpan').val();
+            var fromDate = $('#txtFromDate').val();
+            var toDate = $('#txtToDate').val();
+            $.post('@Url.Action("GetNextPreviousValues_New", "Golfer")',
+                { DateSpan: dateSpan.toLowerCase(), FromDate: fromDate, report: $('#hdnGroupBy').val(), ToDate: toDate, DateReq: req },
+                function (data) {
+                    $('#txtFromDate').val(data.dateStart);
+                    $('#txtToDate').val(data.dateEnd);
+
+                    $('#aDateLable').html('').html(data.displayText);
+                });
+        }
+
+
+        GetStartEndDates("thisweek");
+        $($('#Userreport').attr('href')).hide();
+        // alert($('#Go').length);
+        if ($('#aSearchRecords').length > 0) {
+            $('#aSearchRecords').focus();
+        }
+        else {
+            $('#Go').focus();
+        }
+        //if (reportFor.toLowerCase() == "reviewreport") {
+        //    $('#aToday').hide();
+        //    $('#aYesterday').hide();
+        //    $('#aAll').hide();
+        //    $('#aMonth').hide();
+        //    $('#aLastMonth').hide();
+        //    // $('#txtToDate').val('');
+        //    $('#txtToDate').hide();
+        //    $('#spanTo').html('');
+        //    $('#aWeek').hide();
+        //    $('#aLastWeek').hide();
+        //    $('#BottomClick').hide();
+        //}
+        //else {
+        $('#aToday').show();
+        $('#aYesterday').show();
+        $('#aAll').show();
+        $('#aMonth').show();
+        $('#aLastMonth').show();
+        $('#txtToDate').show();
+        $('#aWeek').show();
+        $('#aLastWeek').show();
+        $('#BottomClick').show();
+        //$('#spanTo').html('...' + Globalize.localize("To"));
+        //}
+        $("#BottomClick").click(function () {
+            $(box).show();
+            return false;
+        });
+
+        $(document).click(function () {
+            if (!$('#ui-datepicker-div').is(":visible")) {
+                // element is visible
+                $(box).hide();
+            }
+        });
+
+        $(box).click(function (e) {
+            e.stopPropagation();
+        });
+
+        $('#imgPrev').click(function () {
+            GetNextPreviousValues("previous");
+        });
+
+        $('#imgNext').click(function () {
+            GetNextPreviousValues("next");
+        });
+
+        $('#aAll').click(function () {
+            $('#hdnDateSpan').val("day");
+            GetStartEndDates("all");
+            FadeInOut();
+            $('#imgNext').hide();
+            $('#imgPrev').hide();
+        });
+
+        $('#aToday').click(function () {
+            $('#hdnDateSpan').val("day");
+            GetStartEndDates("today");
+            FadeInOut();
+            $('#imgNext').show();
+            $('#imgPrev').show();
+        });
+
+        $('#aYesterday').click(function () {
+            $('#hdnDateSpan').val("day");
+            GetStartEndDates("yesterday");
+            FadeInOut();
+            $('#imgNext').show();
+            $('#imgPrev').show();
+        });
+
+        $('#aWeek').click(function () {
+            $('#hdnDateSpan').val("week");
+            GetStartEndDates("thisweek");
+            FadeInOut();
+            $('#imgNext').show();
+            $('#imgPrev').show();
+        });
+
+        $('#aLastWeek').click(function () {
+            $('#hdnDateSpan').val("week");
+            GetStartEndDates("lastweek");
+            FadeInOut();
+            $('#imgNext').show();
+            $('#imgPrev').show();
+        });
+
+        $('#aMonth').click(function () {
+            $('#hdnDateSpan').val("month");
+            GetStartEndDates("thismonth");
+            FadeInOut();
+            $('#imgNext').show();
+            $('#imgPrev').show();
+        });
+
+        $('#aLastMonth').click(function () {
+            $('#hdnDateSpan').val("month");
+            GetStartEndDates("lastmonth");
+            FadeInOut();
+            $('#imgNext').show();
+            $('#imgPrev').show();
+        });
+
+
+        DatePicker();
+        function DatePicker() {
+            $("#ui-datepicker-div").remove();
+            maindatepicker();
+            $("#ui-datepicker-div").hide();
+        }
+
+        function maindatepicker() {
+            var dates = $("#txtFromDate, #txtToDate").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                numberOfMonths: 1,
+                onSelect: function (selectedDate) {
+                    var option = this.id == "txtFromDate" ? "minDate" : "maxDate",
+                                        instance = $(this).data("datepicker"),
+                                        date = $.datepicker.parseDate(
+                                            instance.settings.dateFormat ||
+                                                $.datepicker._defaults.dateFormat,
+                                            selectedDate, instance.settings);
+                    dates.not(this).datepicker("option", option, date);
+                }
+                                , beforeShow: function () {
+                                    var option1 = this.id;
+                                    if (option1 == "txtFromDate") {
+                                        if ($('#txtToDate').val() == "") {
+                                            $('#txtFromDate').datepicker('option', { maxDate: null });
+                                        }
+                                    }
+                                    else {
+                                        if ($('#txtFromDate').val() == "") {
+                                            $('#txtToDate').datepicker('option', { minDate: null, maxDate: null });
+                                        }
+                                    }
+                                }
+            });
+        }
+
+
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*<script type="text/javascript">
+    $(document).ready(function () {
+
+        var curr = new Date; // get current date
+        var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
+        var last = first + 6; // last day is the first day + 6
+        
+        var firstday = new Date(curr.setDate(first)).toUTCString();
+        var lastday = new Date(curr.setDate(last)).toUTCString();
+
+        $('#hdnFromDate').val(firstday);
+        $('#hdnToDate').val(lastday);
+
+        $('#spnFromDate').text(moment(firstday).format("MMM DD, YY"));
+        $('#spnToDate').text(moment(lastday).format("MMM DD, YY"));
+
+        $('#aDay').click(function () {
+
+            $(this).removeClass();
+            $(this).addClass('blu-btn margin_bottom5');
+
+            $('#aWeek').removeClass();
+            $('#aWeek').addClass('blk-btn margin_bottom5');
+
+            $('#aMonth').removeClass();
+            $('#aMonth').addClass('blk-btn margin_bottom5');
+
+            $('#aYear').removeClass();
+            $('#aYear').addClass('blk-btn margin_bottom5');
+        });
+
+        $('#aWeek').click(function () {
+            $(this).removeClass();
+            $(this).addClass('blu-btn margin_bottom5');
+
+            $('#aDay').removeClass();
+            $('#aDay').addClass('blk-btn margin_bottom5');
+
+            $('#aMonth').removeClass();
+            $('#aMonth').addClass('blk-btn margin_bottom5');
+
+            $('#aYear').removeClass();
+            $('#aYear').addClass('blk-btn margin_bottom5');
+        });
+
+        $('#aMonth').click(function () {
+            $(this).removeClass();
+            $(this).addClass('blu-btn margin_bottom5');
+
+            $('#aDay').removeClass();
+            $('#aDay').addClass('blk-btn margin_bottom5');
+
+            $('#aWeek').removeClass();
+            $('#aWeek').addClass('blk-btn margin_bottom5');
+
+            $('#aYear').removeClass();
+            $('#aYear').addClass('blk-btn margin_bottom5');
+        });
+
+        $('#aYear').click(function () {
+            $(this).removeClass();
+            $(this).addClass('blu-btn margin_bottom5');
+
+            $('#aDay').removeClass();
+            $('#aDay').addClass('blk-btn margin_bottom5');
+
+            $('#aWeek').removeClass();
+            $('#aWeek').addClass('blk-btn margin_bottom5');
+
+            $('#aMonth').removeClass();
+            $('#aMonth').addClass('blk-btn margin_bottom5');
+        });
+
+        function getWeekFirstDate(curr) {
+            var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
+            return new Date(curr.setDate(first)).toLocaleDateString();
+        }
+
+        function getWeekLastDate(first) {
+            var last = first + 6; // last day is the first day + 6
+            return new Date(curr.setDate(last)).toLocaleDateString();
+        }
+    });
+</script>
+<div style="border-top: 1px solid silver; padding-top: 12px; margin-top: 12px;">
+
+    <input type="hidden" id="hdnFromDate" />
+    <input type="hidden" id="hdnToDate" />
+
+    <input id="aFirst" type="button" value="<<" class="blk-btn margin_bottom5" />
+    <input id="aPrev" type="button" value="<" class="blk-btn margin_bottom5" />
+    <input id="aNext" type="button" value=">" class="blk-btn margin_bottom5" />
+    <input id="aLast" type="button" value=">>" class="blk-btn margin_bottom5" />
+    <label id="lblDateRange">
+        <span id="spnFromDate">-</span>
+         - 
+        <span id="spnToDate">-</span>
+    </label>
+    <input id="aDay" type="button" value="Day" class="blk-btn margin_bottom5" />
+    <input id="aWeek" type="button" value="Week" class="blu-btn margin_bottom5" />
+    <input id="aMonth" type="button" value="Month" class="blk-btn margin_bottom5" />
+    <input id="aYear" type="button" value="Year" class="blk-btn margin_bottom5" />
+</div>*@

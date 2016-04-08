@@ -1,0 +1,252 @@
+﻿<style>
+    #fancybox-content
+    {
+        width:800px !important;
+    }
+    #fancybox-wrap
+    {
+           width:820px !important;
+    }
+
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#btnExport").click(function () { ExprotToExcel(0); });
+
+        $("#btnExportGrid").click(function () { ExprotToExcel(1); });
+
+
+        $("#btnPrint").live("click", function () {
+            var divContents = $("#chart_div").html();
+            var printWindow = window.open('', '', 'height=400,width=800');
+            printWindow.document.write('<html><head><title>Golfer Playing History</title>');
+            printWindow.document.write('</head><body >');
+            printWindow.document.write(divContents);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.print();
+        });
+
+        bindJqGridNoMultiSelect('listGolfer', 'pagerGolfer', '@Url.Action("GetGolpherPlayingHistory", "CourseAdmin")',
+             ['GolpherId', 'CourseId', 'Course Name', 'No. of time played', 'Avg. time for one hole', 'Avg. time for 9 holes', 'Avg. time for 18 holes', 'Last Game Date'],
+             [{ name: 'GolpherId', index: 'GolpherId', width: 10, hidden: true },
+                 { name: 'CourseId', index: 'CourseId', width: 10, hidden: true },
+                 { name: 'CourseName', index: 'CourseName', width: 50, formatter: GetCourseDetails, classes: 'zzz' },
+
+                  { name: 'TotalPlay', index: 'TotalPlay', width: 50 },
+                   { name: 'OneHoleAvgTime', index: 'OneHoleAvgTime', width: 50 },
+                    { name: 'NineHoleAvgTime', index: 'NineHoleAvgTime', width: 50 },
+                     { name: 'EighteenHoleAvgTime', index: 'EighteenHoleAvgTime', width: 50 },
+
+                  { name: 'strLastGameDate', index: 'strLastGameDate', width: 50 }
+             ], 'GolpherId', 'desc',
+             {
+                 "searchText": (function () {
+                     return "";
+                 }),
+                 "golferid": (function () {
+                     return $("#hdngolferid").val();
+                 }),
+                 "CourseId": (function () {
+                     return $("#hdnGolferCourseId").val();
+                 }),
+                 "HistoryFrom": (function () {
+                     return $("#txtFromDate").val();
+                 }),
+                 "HistoryTo": (function () {
+                     return $("#txtToDate").val();
+                 })
+
+             }, '');
+        drawVisualization();
+
+    });
+
+
+
+    function GetCourseDetails(cellvalue, options, rowObject) {
+
+        try {
+            var gid = rowObject["GolpherId"];
+            var cid = rowObject["CourseId"];
+            //var doActive = rowObject["DoActive"];
+            // if ($('#UpdateFlag').size() != 0 && $('#UpdateFlag').val() != "True")
+            return "<a href='javascript:void(0)' onclick=javascript:ShowGolferGame(&apos;" + gid + "&apos;,&apos;" + cid + "&apos;); >" + cellvalue + "</a>";
+            //  else
+            //     return ((type == true || type == "true") || (doActive == "false" || doActive == false)) ? "<a href='UserAddEdit/" + Eid + "' >" + cellvalue + "</a>" : cellvalue;
+
+            //return "<a href='UserAddEdit/" + Eid + "' >" + cellvalue + "</a>";
+        }
+        catch (ex) { alert(ex.message); }
+    }
+
+    function ShowGolferGame(gid, cid) {
+        $('#divProgress').show();
+        $.ajax({
+            type: 'POST',
+            url: '/Golfler/CourseAdmin/ShowGolferHistoryForCourseAdmin',
+            data: { courseid: cid, golferid: gid, HistoryFrom: $("#txtFromDate").val(), HistoryTo: $("#txtToDate").val() },
+            success: function (data) {
+                $.fancybox(data, { 'scrolling': 'no', 'showCloseButton': true, 'width': '800px' });
+                $("#divProgress").hide();
+            }
+        });
+
+        $('#divProgress').hide();
+
+    }
+
+    function drawVisualization() {
+        //   alert("in draw");
+        // Some raw data (not necessarily accurate)
+        var graphdata = [['Course', 'Number of times played'], ['Hoover', 5], ['xyz', 7], ['lmn', 1], ['abc', 2]];
+        var jsonData = "";
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetPlayingHistoryForGraph", "CourseAdmin")',
+            data: { golferid: $("#hdngolferid").val(), HistoryFrom: $("#txtFromDate").val(), HistoryTo: $("#txtToDate").val() },
+            async: false,
+            success: function (data) {
+                if (data.msg == "") {
+                    // alert(data.result);
+                    var obj = $.parseJSON(data.result);
+                    // alert(obj);
+                    var data = google.visualization.arrayToDataTable(obj);
+
+                    var options = {
+                        title: 'Number of times played',
+                        vAxis: { title: "No of times" },
+                        hAxis: { title: "Course(s)" },
+                        seriesType: "bars",
+                        series: { 1: { type: "line" } }
+                    };
+                    // alert("here");
+                    var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
+                    chart.draw(data, options);
+                }
+                else {
+                    alert(data.msg);
+                    $("#visualization").html("No record found.");
+
+                }
+
+            },
+            error: function (data) {
+            }
+        });
+    }
+
+    function ExprotToExcel(reportType) {
+
+        var searchText = "";
+        var golferid = $("#hdngolferid").val();
+        var CourseId = $("#hdnGolferCourseId").val();
+        var fromdate = $("#txtFromDate").val();
+        var todate = $("#txtToDate").val();
+
+
+        //if ($("#txtName").val() == "") {
+        //    showStickMessage('Please enter User Name.');
+        //    return false;
+        //}
+        //else if ($("#ddlUserType").val() == "") {
+        //    showStickMessage('Please select a User Type.');
+        //    return false;
+        //}
+
+
+        //else {
+
+        //name = $("#txtName").val();
+        //type = $("#ddlUserType").val();
+        $("#divProgress").show();
+        var oldurl = window.locationl
+        var url = '@Url.Action("ExportToExcelPlayingHistory")' + '?golferid=' + golferid + '&CourseId=' + CourseId + '&fromdate=' + fromdate + '&todate=' + todate + '&reportType=' + reportType;
+        if (url == "") {
+
+            window.location = oldurl;
+            showStickMessage('Some error occurs while creating excel, Please try again later.');
+            $("#divProgress").hide();
+        }
+        else {
+            $("#divProgress").hide();
+            window.location = url;
+
+        }
+        //} 
+    }
+</script>
+
+
+
+<tr>
+    <td id="content_center_td2" valign="top" align="center">
+        <div class="form_box">
+            <div class="search-advertiser">
+                <div>
+                    <h1 style="color: #43b34a;">Playing History</h1>
+
+                </div>
+                <div>
+                    <label>
+                        Golfer Name:
+                    </label>
+                    <span style="display: inline-block; padding: 1%;">@ViewBag.GolferName </span>
+                    <input type="hidden" id="hdngolferid" value="@ViewBag.GolferId" />
+                    <input type="hidden" id="hdnGolferCourseId" value="@ViewBag.CourseId" />
+
+                </div>
+                <div class="clr">
+                </div>
+                <div>
+                    <label>
+                        Email:
+                    </label>
+                    <span style="display: inline-block; padding: 1%;">@ViewBag.GolferEmail </span>
+                </div>
+                <div class="clr">
+                </div>
+
+            </div>
+
+            <br />
+        </div>
+        <div class="analytics-cont" style="border: solid 1px grey;">
+            <br />
+            <div style="width: 43%; float: right;">
+
+                <input value="Export to Excel" name="btnExport" class="submit-btn update-btn" id="btnExportGrid">
+            </div>
+            <div class="clr"></div>
+            <table id="listGolfer" cellpadding="0" cellspacing="0" style="width: 100%;" class="jqgridTable">
+            </table>
+            <div id="pagerGolfer" style="width: 100%;">
+            </div>
+        </div>
+        <div class="clr"></div>
+        <div>
+        </div>
+    </td>
+</tr>
+
+<tr>
+    <td>&nbsp;
+    </td>
+</tr>
+<tr>
+    <td>
+        <div id="divGraph" class="analytics-cont" style="border: solid 1px grey;">
+            <br />
+            <div style="width: 43%; float: right;">
+
+                <input value="Export to Excel" name="btnExport" class="submit-btn update-btn" id="btnExport">
+                <input type="Print" value="Print" name="btnPrint" class="submit-btn update-btn" id="btnPrint">
+            </div>
+            <div class="clr"></div>
+            <div id="chart_div" style="width: 900px; height: 500px;"></div>
+        </div>
+        <div class="clr"></div>
+
+    </td>
+</tr>

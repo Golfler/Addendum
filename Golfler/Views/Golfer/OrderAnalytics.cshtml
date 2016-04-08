@@ -1,0 +1,583 @@
+﻿@{
+    ViewBag.Title = "OrderAnalytics";
+    Layout = "~/Views/Shared/_LayoutAdminArea.cshtml";
+    ViewBag.Module = "Order Analytics";
+}
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+<script>
+    //google.load("visualization", "1.1", { packages: ["bar"] });
+    google.load("visualization", "1", { packages: ["corechart"] });
+
+
+</script>
+<script>
+
+    $(".ui-corner-all").live('click', function (e) {
+       // alert("jjg");
+        e.preventDefault();
+        var courseVal = $("#hdnCourseID").val();
+        $("#CourseId").val(courseVal);
+        CourseChange(courseVal);
+    });
+
+    $('#txtCourseName').live('change', function (e) {
+        e.preventDefault();
+        var courseVal = $("#hdnCourseID").val();
+        $("#CourseId").val(courseVal);
+        CourseChange(courseVal);
+    });
+
+    $("#txtCourseName").live("keydown", function (event) {
+        if (event.keyCode == 13) {
+            var courseVal = $("#hdnCourseID").val();
+            $("#CourseId").val(courseVal);
+            CourseChange(courseVal);
+        }
+    });
+
+    function CourseChange(courseVal) {
+        //  debugger;
+        if (courseVal == "") {
+            $("#FoodItem").prop("disabled", false);
+            $("#SubFoodItem").prop("disabled", false);
+
+        }
+        else {
+            $("#FoodItem").html("");
+            $("#SubFoodItem").val("");
+            $("#SubFoodItem").prop("disabled", true);
+            $("#CompareParameter").val("");
+
+            $.ajax({
+                type: 'POST',
+                async: false,
+                url: '/Golfler/Golfer/FoodItemList',
+                data: { course: courseVal },// $("#CourseId").val() },
+                success: function (data) {
+
+                    Result = data.result;
+
+                    $("#FoodItem").prop("disabled", false);
+                    $("#FoodItem").append($("<option></option>").val("").html("Select Menu"));
+                    for (var i = 0; i < data.result.length; i++) {
+                        //   alert(data.result[i].ID);
+
+                        $("#FoodItem").append($("<option></option>").val(data.result[i].CatID).html(data.result[i].Name));
+                    }
+
+
+                }
+            });
+
+        }
+    }
+    function CountryChange() {
+        if ($("#Country").val() == "") {
+            $("#CourseId").prop("disabled", false);
+            $("#State").prop("disabled", true);
+            $("#City").prop("disabled", true);
+            $("#CourseId").val("");
+            $("#State").val("");
+            $("#City").val("");
+        }
+        else {
+            $("#CourseId").prop("disabled", true);
+            $("#CourseId").val("");
+            //fill state list 
+            $.ajax({
+                type: 'POST',
+                async: false,
+                url: '/Golfler/Golfer/StateList',
+                data: { country: $("#Country").val() },
+                success: function (data) {
+                    // debugger;
+                    Result = data.result;
+
+                    $("#State").prop("disabled", false);
+
+                    for (var i = 0; i < data.result.length; i++) {
+                        // alert(data.result[i].ID);
+                        $("#State").append($("<option></option>").val(data.result[i].ID).html(data.result[i].Name));
+                    }
+
+
+                }
+            });
+            //
+        }
+    }
+    function StateChange() {
+        if ($("#State").val() == "") {
+            $("#City").val("");
+            $("#City").prop("disabled", true);
+        }
+        else {
+
+            //fill city list 
+            $.ajax({
+                type: 'POST',
+                async: false,
+                url: '/Golfler/Golfer/CityList',
+                data:
+                   {
+                       country: $("#Country").val(), state: $("#State").val()
+                   },
+                success: function (data) {
+                    // debugger;
+
+
+                    $("#City").prop("disabled", false);
+
+                    for (var i = 0; i < data.result.length; i++) {
+                        //   alert(data.result[i].ID);
+                        $("#City").append($("<option></option>").val(data.result[i].ID).html(data.result[i].Name));
+                    }
+
+
+                }
+            });
+            //
+        }
+    }
+    function FoodItemChange() {
+        //   alert("FoodItemChange");
+        if ($("#FoodItem").val() == "") {
+            $("#SubFoodItem").val("");
+            $("#SubFoodItem").prop("disabled", true);
+        }
+        else {
+
+            $("#SubFoodItem").val("");
+            $("#SubFoodItem").html("");
+
+            $("#SubFoodItem").append($("<option></option>").val("").html("Select Sub Category"));
+            //fill city list 
+            $.ajax({
+                type: 'POST',
+                async: false,
+                url: '/Golfler/Golfer/SubFoodItemList',
+                data:
+                   {
+                       FoodItem: $("#FoodItem").val()
+                   },
+                success: function (data) {
+                    $("#SubFoodItem").prop("disabled", false);
+
+                    for (var i = 0; i < data.result.length; i++) {
+
+                        $("#SubFoodItem").append($("<option></option>").val(data.result[i].CatID).html(data.result[i].Name));
+                    }
+
+
+                }
+            });
+            //
+        }
+    }
+    function CompareChange() {
+        if ($("#CompareParameter").val() != "3" && $("#CompareParameter").val() != "4") {
+            $("#RangeParameter").val("");
+            $("#RangeParameter").prop("disabled", true);
+        }
+        else {
+            $("#RangeParameter").prop("disabled", false);
+        }
+    }
+
+</script>
+<style>
+    #divGraphMonth {
+        overflow-x: scroll;
+        overflow-y: hidden;
+        width: 100%;
+    }
+</style>
+<tr>
+    <td class="id_pathway" valign="middle">
+        <div class="breadcrumb">
+            <ul>
+                <li><a href='@Url.Action("Dashboard")'>Dashboard</a><img src="/Content/Images/arrow.png" class="arrow_position" /></li>
+                <li><a href=''>Analytics</a><img src="/Content/Images/arrow.png" class="arrow_position" /></li>
+                <li>@ViewBag.Module</li>
+            </ul>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td id="content_center_td2" valign="top" align="center">
+        <div class="form_box" style="float: left; width:98%;">
+            <div class="search-advertiser">
+                <label>Search</label>
+                @Html.DropDownList("CourseIds", (SelectList)(ViewBag.CourseIds), "Select Course", new { @id = "CourseId", @class = "red-border", @style = "display:none; " })
+                @Html.Partial("~/Views/Tools/CourseOnlyAutoComplete.cshtml")
+
+                @* <label><center>OR</center></label>*@
+
+                @* <label>Country</label>*@
+                @*  @Html.DropDownList("Country", (SelectList)(ViewBag.Country), "Select Country", new { @id = "Country", @class = "red-border", @onchange = "CountryChange();", @style = "width:20%;display:none;" })
+            *@   &nbsp;&nbsp; &nbsp;
+            @*    @Html.DropDownList("State", (SelectList)(ViewBag.State), "Select State", new { @id = "State", @class = "red-border", @onchange = "StateChange();", @style = "width:20%;" })
+           
+                 *@
+                &nbsp;&nbsp;&nbsp; @* @Html.DropDownList("City", (SelectList)(ViewBag.City), "Select City", new { @id = "City", @class = "red-border", @style = "width:20%;" })*@
+                <select id="State" disabled="disabled" style="display: none;">
+                    <option value="">Select State</option>
+                </select>
+                <select id="City" disabled="disabled" style="display: none;">
+                    <option value="">Select City</option>
+                </select>
+                <div class="clr" style="width:100%; float:left;"></div>
+                <label>Menu Item</label>
+                <div class="search-food-select">
+
+                    <select id="FoodItem" disabled="disabled" onchange="FoodItemChange();">
+                        <option value="">Select Menu</option>
+                    </select>
+                </div>
+                <div class="search-food-select search-food-select-full">
+                    <select id="SubFoodItem" disabled="disabled">
+                        <option value="">Select Sub Category</option>
+                    </select>
+                </div>
+                @*  @Html.DropDownList("FoodItems", (SelectList)(ViewBag.FoodItems), "Select Food Items", new { @id = "FoodItem", @class = "red-border", @style = "width:20%;" })
+               *@   &nbsp;&nbsp;&nbsp;   &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;   
+				<div class="search-food-select search-food-select-full">
+                    <select id="CompareParameter" onchange="CompareChange();">
+                        <option value="">Select Compare Parameter</option>
+                        <option value="1">County</option>
+                        <option value="2">State</option>
+                        <option value="3">City</option>
+                        <option value="4">ZIP</option>
+                    </select>
+                </div>
+                <div class="search-food-select">
+                    <select id="RangeParameter" disabled="disabled">
+                        <option value="">Select Range</option>
+                        <option value="5">5 Miles</option>
+                        <option value="10">10 Miles</option>
+                        <option value="20">20 Miles</option>
+                        <option value="25">25 Miles</option>
+
+                    </select>
+                </div>
+                <div class="search-food-btn">
+                    <img src="/Content/Images/search_icon.png" border="0" alt="search" class="go-btn floatleft jqGrid_refresh"
+                        id="fbox_jqgAdminUser_search" onclick="return SearchData();" />
+                </div>
+                <div class="clr"></div>
+
+            </div>
+            <div class="clr">
+            </div>
+            <br />
+            <br />
+
+
+            <div id="divAverageOrder">
+           @*     <div class="analytics-cont">
+					<div class="analytics-heading">Analytics of golfer in Course <span>COGNITER GOLF CLUB</span></div>
+				
+					<div class="anal-details">Average price per order $121.05</div>
+					<div class="anal-details">Average rating per order 2</div>
+					<div class="anal-details">Average price per order across all courses $121.05</div>
+					<div class="anal-details">Average rating across all courses 2</div>
+				</div>
+				<h3>Average Price by Menu Type for each item</h3>
+				<div class="analytics-cont">
+					<div class="analytics-heading">Menu Type <span>Drinks</span></div>
+					<div class="anal-details"><span>FoodItem Coke: </span>$121.05</div>
+					<div class="anal-details"><span>FoodItem Coke Zero: </span>$1.5</div>
+				</div>
+				<div class="analytics-cont">
+					<div class="analytics-heading">Menu Type <span>Drinks</span></div>
+					<div class="anal-details"><span>FoodItem Coke: </span>$121.05</div>
+					<div class="anal-details"><span>FoodItem Coke Zero: </span>$1.5</div>
+				</div>
+				<div class="analytics-cont">
+					<div class="analytics-heading">Menu Type <span>Drinks</span></div>
+					<div class="anal-details"><span>FoodItem Coke: </span>$121.05</div>
+					<div class="anal-details"><span>FoodItem Coke Zero: </span>$1.5</div>
+				</div>*@
+            </div>
+
+            @*   <div id="divAverageNMenu">
+            </div>*@
+            <div id="divGraphMonth" class="analytics-cont" style="display:none;border:solid 1px grey;">
+                <div id="barchart_material" style="min-height: 400px;min-width:1800px;"></div>
+            </div>
+        </div>
+
+
+
+    </td>
+</tr>
+<div style="display: none" id="divProgress">
+    <div align="center" style="width: 100%; position: fixed; z-index: 100001; top: 0px; left: 0px; vertical-align: middle; text-align: center; _height: expression(document.body.offsetHeight + 'px');">
+        <div style="margin-top: 250px">
+            <img src="../../images/loading.gif" alt="loading" />
+        </div>
+    </div>
+    <div id="backgroundElement" style="position: fixed; left: 0px; top: 0px; z-index: 10000; width: 100%; height: 1800px; background-color: #666666; opacity: 0.4; filter: alpha(opacity=40);">
+    </div>
+</div>
+
+<script>
+
+    function SearchData() {
+
+        var type = "";
+        var course = "";
+        var country = "";
+        var state = "";
+        var city = "";
+        var foodItem = "";
+        var miles = "";
+
+        if ($("#txtCourseName").val() == "") {
+
+            showStickMessage('Please enter a Course.');
+            return false;
+        }
+        else if ($("#FoodItem").val() == "") {
+            showStickMessage('Please select a Food Item.');
+            return false;
+        }
+        else if ($("#CompareParameter").val() == "") {
+            showStickMessage('Please select a Compare Parameter.');
+            return false;
+        }
+
+        else {
+            if ($("#CompareParameter").val() == "4" || $("#CompareParameter").val() == "3") {
+                if (($("#RangeParameter").val() == "")) {
+                    showStickMessage('Please select a Range.');
+                    return false;
+                }
+                else {
+                    miles = $("#RangeParameter").val();
+                }
+
+            }
+
+            type = $("#CompareParameter").val();
+
+            course = $("#CourseId").val();
+            courseName = $("#CourseId option:selected").text();
+            foodItemName = $("#FoodItem option:selected").text();
+            foodItem = $("#FoodItem").val();
+            subfoodItem = $("#SubFoodItem").val();
+            $("#divGraphMonth").hide();
+            $("#divProgress").show();
+            $.ajax({
+                type: 'POST',
+                async: false,
+                url: '/Golfler/Golfer/OrderAnalyticsSearch',
+                data:
+                   {
+                       type: type, Course: course, FoodItem: foodItem, subfoodCategory: subfoodItem, miles: miles
+                   },
+                success: function (data) {
+
+                    $("#divAverageOrder").html("");
+                    var html = "<div class='analytics-heading'>Analytics of golfer in Course <span> " + courseName + "</span></div>"
+
+                    html = html + "<div class='anal-details'>Average price per order $" + data.result.AvgPricePerOrder + "</div>"
+                    html = html + "<div class='anal-details'>Average rating per order " + getRating(data.result.AvgRatingPerOrder) + "</div>"
+                    html = html + "<div class='anal-details'>Average price per order across all courses $" + data.result.AvgPricePerAllCourses + "</div>"
+                    html = html + "<div class='anal-details'>Average rating per order across all courses " + getRating(data.result.AvgRatingPerAllCourses) + "</div>"
+                    html = html + "</div>"
+                    $("#divAverageOrder").append(html);
+                  //  debugger;
+                    var htmlInner = "";
+                    if (data.result.MenuSearch.length > 0) {
+                        var foodItemName = "";
+
+                        var html = "<div class='analytics-heading'><span>Average Price by Menu Type for each item</span><br/></div>"
+                        //
+                        $("#divAverageOrder").append(html);
+
+
+                        for (var i = 0; i < data.result.MenuSearch.length; i++) {
+
+                            if (((foodItemName.indexOf(data.result.MenuSearch[i].CategoryName)) > -1)) {
+
+                            }
+                            else {
+                                //debugger;
+                                if (data.result.MenuSearch[i].CategoryName == $("#FoodItem option:selected").text()) {
+                                    htmlInner = htmlInner + "<div class='analytics-cont'>"
+                                    htmlInner = htmlInner + "<div class='analytics-heading'>Menu Type <span>" + data.result.MenuSearch[i].CategoryName + "</span></div>"
+                                    // inner items
+                                    for (var k = 0; k < data.result.MenuSearch.length; k++) {
+
+                                        if (data.result.MenuSearch[k].CategoryName == data.result.MenuSearch[i].CategoryName) {
+                                            htmlInner = htmlInner + "<div class='anal-details'><span>" + data.result.MenuSearch[k].Name + ": </span>$" + data.result.MenuSearch[k].AvgPrice + "</div>"
+                                        }
+                                    }
+                                    //
+                                    htmlInner = htmlInner + "</div>";
+                                }
+                            }
+                            if (foodItemName == "")
+                            {
+                                foodItemName = data.result.MenuSearch[i].CategoryName;
+                            }
+                            else
+                            {
+                                foodItemName = foodItemName + "," + data.result.MenuSearch[i].CategoryName;
+                            }
+
+
+                        }
+
+                        // htmlInnerCombine = htmlInnerCombine + htmlInner;
+                        $("#divAverageOrder").append(htmlInner);
+                    }
+                   
+                    if (data.result.GraphSearch != null)
+                    {
+                        CreateChart(data.result.GraphSearch, data.result.GraphCourseSearch);
+                    }
+                    else
+                     {
+                        $("#divProgress").hide();
+                    }
+
+                }
+            });
+        }
+    }
+</script>
+
+<script type="text/javascript">
+
+    function CreateChart(jsondata, jsonCoursedata) {
+
+
+        var jsond = jsondata;
+        var jsonCourse = jsonCoursedata;
+        var InnerIds = 1;
+        var checkDuplicate = "";
+
+        var courseArr = new Array();
+        courseArr[0] = new Array("FoodItem");
+
+        for (var d = 0; d < jsonCourse.length; d++) {
+            if (courseArr[0].indexOf(jsonCourse[d].CourseName) > -1) {
+
+            }
+            else {
+
+                courseArr[0].push(jsonCourse[d].CourseName);
+            }
+        }
+      
+        for (var innerD = 0; innerD < jsond.length; innerD++) {
+
+
+            if ((checkDuplicate.indexOf(jsond[innerD].Name)) > -1) {
+
+            }
+            else {
+
+                var combineNameArr = new Array();
+                combineNameArr = jsond[innerD].CombineName.split(',');
+                courseArr[InnerIds] = new Array();
+             
+                for (var com = 0; com < combineNameArr.length; com++)
+                {
+                      if (com > 0) {
+                            var stringData1 = combineNameArr[com];
+                            var decimalData1 = parseFloat(stringData1);
+                            courseArr[InnerIds].push(decimalData1);
+                        }
+                        else {
+                            courseArr[InnerIds].push(combineNameArr[com]);
+                        }
+                    
+                }
+              
+                InnerIds = InnerIds + 1;
+            }
+            
+            if (checkDuplicate == "") {
+                checkDuplicate = jsond[innerD].Name;
+            }
+            else {
+                checkDuplicate = checkDuplicate + "," + jsond[innerD].Name;
+            }
+        }
+        var formatter = new google.visualization.NumberFormat({
+
+            prefix: '$'
+        });
+        // debugger;
+        var data = google.visualization.arrayToDataTable(courseArr
+            //[
+        //   ['Month', 'Bolivia', 'Ecuador', 'Madagascar', 'Papua New Guinea', 'Rwanda', 'Average'],
+        //   ['2004/05', 165, 938, 522, 998, 450, 614.6],
+        //   ['2005/06', 135, 1120, 599, 1268, 288, 682],
+        //   ['2006/07', 157, 1167, 587, 807, 397, 623],
+        //   ['2007/08', 139, 1110, 615, 968, 215, 609.4],
+        //   ['2008/09', 136, 691, 629, 1026, 366, 569.6]
+       // ]
+        );
+        for (var d = 0; d < combineNameArr.length; d++) {
+            formatter.format(data, d); // Apply formatter to second column.
+        }
+        var options = {
+            title: 'Price Comparison',
+         
+            hAxis: {
+                title: "Food Items",
+                count: -1,
+                viewWindowMode: 'pretty',
+                slantedText: true,
+                showTextEvery: 1
+            },
+            seriesType: "bars",
+            series: { 5: { type: "line" } },
+            vAxis: {
+                title: "Average Price", format: '$#.##',
+                baselineColor: "none"
+            },
+            legend: { position: 'top' },
+            chartArea: { left: '5%', width: '92%', height: '50%' }//, width: "100%" }
+        };
+        $("#divGraphMonth").show();
+        var chart = new google.visualization.ComboChart(document.getElementById('barchart_material'));
+        chart.draw(data, options);
+        $("#divProgress").hide();
+    }
+    function getRating(rating) {
+        var Rating = rating;
+      
+        if (Rating == 5) {
+            return "<img src='../../images/star-full.png' /><img src='../../images/star-full.png' /><img src='../../images/star-full.png' /><img src='../../images/star-full.png' /><img src='../../images/star-full.png' />";
+
+        }
+       else if (Rating == 4) {
+            return "<img src='../../images/star-full.png' /><img src='../../images/star-full.png' /><img src='../../images/star-full.png' /><img src='../../images/star-full.png' /><img src='../../images/star-em.png' />";
+
+        }
+        else if (Rating == 3) {
+            return "<img src='../../images/star-full.png' /><img src='../../images/star-full.png' /><img src='../../images/star-full.png' /><img src='../../images/star-em.png' /><img src='../../images/star-em.png' />";
+
+        }
+        else  if (Rating == 2) {
+            return "<img src='../../images/star-full.png' /><img src='../../images/star-full.png' /><img src='../../images/star-em.png' /><img src='../../images/star-em.png' /><img src='../../images/star-em.png' />";
+        }
+        else if (Rating == 1) {
+            return "<img src='../../images/star-full.png' /> <img src='../../images/star-em.png' /><img src='../../images/star-em.png' /><img src='../../images/star-em.png' /><img src='../../images/star-em.png' />";
+        }
+        else {
+            return "0";
+        }
+    }
+</script>
+
+
+

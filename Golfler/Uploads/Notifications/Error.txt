@@ -1,0 +1,236 @@
+---------------------------------------------------------------------
+7/28/2015 4:28:12 PM
+---------------------------------------------------------------------
+PushMessage: You got the response of resolution message.
+Device: android
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+8/12/2015 5:24:23 PM
+---------------------------------------------------------------------
+Message: MismatchSenderId
+InnerException: 
+StackTrace: 
+TargetSite: 
+PushMessage: "You got the response of resolution message."
+Device: android
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+8/12/2015 5:25:59 PM
+---------------------------------------------------------------------
+Message: MismatchSenderId
+InnerException: 
+StackTrace: 
+TargetSite: 
+PushMessage: "You got the response of resolution message."
+Device: android
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+8/13/2015 4:14:41 PM
+---------------------------------------------------------------------
+Message: MismatchSenderId
+InnerException: 
+StackTrace: 
+TargetSite: 
+PushMessage: "You got the response of resolution message."
+Device: android
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/3/2015 4:52:11 PM
+---------------------------------------------------------------------
+Message: MismatchSenderId
+InnerException: 
+StackTrace: 
+TargetSite: 
+PushMessage: "You got the response of resolution message."
+Device: android
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/3/2015 5:23:38 PM
+---------------------------------------------------------------------
+Message: MismatchSenderId
+InnerException: 
+StackTrace: 
+TargetSite: 
+PushMessage: "You got the response of resolution message."
+Device: android
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/3/2015 5:25:15 PM
+---------------------------------------------------------------------
+Message: MismatchSenderId
+InnerException: 
+StackTrace: 
+TargetSite: 
+PushMessage: "You got the response of resolution message."
+Device: android
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/3/2015 5:26:38 PM
+---------------------------------------------------------------------
+Message: MismatchSenderId
+InnerException: 
+StackTrace: 
+TargetSite: 
+PushMessage: "You got the response of resolution message."
+Device: android
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/3/2015 5:27:44 PM
+---------------------------------------------------------------------
+Message: MismatchSenderId
+InnerException: 
+StackTrace: 
+TargetSite: 
+PushMessage: "You got the response of resolution message."
+Device: android
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/3/2015 5:28:36 PM
+---------------------------------------------------------------------
+Message: MismatchSenderId
+InnerException: 
+StackTrace: 
+TargetSite: 
+PushMessage: "You got the response of resolution message."
+Device: android
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/3/2015 5:28:57 PM
+---------------------------------------------------------------------
+Message: MismatchSenderId
+InnerException: 
+StackTrace: 
+TargetSite: 
+PushMessage: "You got the response of resolution message."
+Device: android
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/3/2015 5:29:26 PM
+---------------------------------------------------------------------
+Message: MismatchSenderId
+InnerException: 
+StackTrace: 
+TargetSite: 
+PushMessage: "You got the response of resolution message."
+Device: android
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/3/2015 5:29:38 PM
+---------------------------------------------------------------------
+Message: MismatchSenderId
+InnerException: 
+StackTrace: 
+TargetSite: 
+PushMessage: "You got the response of resolution message."
+Device: android
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+9/3/2015 6:18:11 PM
+---------------------------------------------------------------------
+Message: MismatchSenderId
+InnerException: 
+StackTrace: 
+TargetSite: 
+PushMessage: "You got the response of resolution message."
+Device: android
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+3/16/2016 11:55:07 PM
+---------------------------------------------------------------------
+Message: The maximum number of Send attempts to send the notification was reached!
+InnerException: 
+StackTrace: 
+TargetSite: 
+PushMessage: Your order has gone for processing.
+Device: ios
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+3/17/2016 12:05:11 AM
+---------------------------------------------------------------------
+Message: The maximum number of Send attempts to send the notification was reached!
+InnerException: 
+StackTrace: 
+TargetSite: 
+PushMessage: Order is ready to be picked up.
+Device: ios
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+3/17/2016 12:05:21 AM
+---------------------------------------------------------------------
+Message: The maximum number of Send attempts to send the notification was reached!
+InnerException: 
+StackTrace: 
+TargetSite: 
+PushMessage: Order is ready to be picked up.
+Device: ios
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+3/17/2016 12:25:32 AM
+---------------------------------------------------------------------
+Message: The maximum number of Send attempts to send the notification was reached!
+InnerException: 
+StackTrace: 
+TargetSite: 
+PushMessage: Order is ready to be picked up.
+Device: ios
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+3/17/2016 1:46:35 AM
+---------------------------------------------------------------------
+Message: The maximum number of Send attempts to send the notification was reached!
+InnerException: 
+StackTrace: 
+TargetSite: 
+PushMessage: Order is ready to be picked up.
+Device: ios
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+3/17/2016 1:49:18 AM
+---------------------------------------------------------------------
+Message: The maximum number of Send attempts to send the notification was reached!
+InnerException: 
+StackTrace: 
+TargetSite: 
+PushMessage: Order is ready to be picked up.
+Device: ios
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+3/17/2016 3:57:38 AM
+---------------------------------------------------------------------
+Message: The maximum number of Send attempts to send the notification was reached!
+InnerException: 
+StackTrace: 
+TargetSite: 
+PushMessage: Order is ready to be picked up.
+Device: ios
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+3/17/2016 3:57:39 AM
+---------------------------------------------------------------------
+Message: The maximum number of Send attempts to send the notification was reached!
+InnerException: 
+StackTrace: 
+TargetSite: 
+PushMessage: Order is ready to be picked up.
+Device: ios
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+3/19/2016 12:38:34 AM
+---------------------------------------------------------------------
+Message: The maximum number of Send attempts to send the notification was reached!
+InnerException: 
+StackTrace: 
+TargetSite: 
+PushMessage: Your order has gone for processing.
+Device: ios
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+3/22/2016 9:10:26 PM
+---------------------------------------------------------------------
+Message: The maximum number of Send attempts to send the notification was reached!
+InnerException: 
+StackTrace: 
+TargetSite: 
+PushMessage: Your order has gone for processing.
+Device: ios
+---------------------------------------------------------------------

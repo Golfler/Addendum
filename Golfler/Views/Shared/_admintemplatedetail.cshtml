@@ -1,0 +1,121 @@
+﻿@model Golfler.Models.GF_EmailTemplates
+<script type="text/javascript" src="@Url.Content("~/content/CKEditorJavascript/ckeditor/ckeditor.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/content/CKEditorJavascript/ckeditor/adapters/jquery.js")"></script>
+<style>
+.cke_skin_v2 .cke_editor{ width:100%;}
+</style>
+<script type="text/javascript">
+    $(document).ready(
+
+        function () {
+            var url = window.location.pathname.toLowerCase();
+            if (url.indexOf("courseadmin") > -1) {
+                url = "/Golfler/CourseAdmin/";
+
+            }
+            else {
+                url = "/Golfler/Admin/";
+            }
+            // alert(url);
+            $('#divfields').replaceWith($('#tbfields'));
+            $('#btnUpdate').click(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    async: false,
+                    url: url + 'UpdateEmailTemplate',
+                    data: { id: $("#hdId").val(), content: $("#txtContent").val() },
+                    success: function (data) {
+                        if (data.msg == true) {
+                            window.location = url + "EmailTemplates";
+                        }
+                        else {
+                            showStickMessage('There is some error while updating template.');
+                        }
+                    }
+                });
+            });
+            $('#btnReset').click(function (e) {
+                e.preventDefault();
+                if (confirm("Are you sure want to Reset?")) {
+                    $("#txtContent").val($("#txtMessage").val());
+                }
+            });
+            $('#btnCancel').click(function (e) {
+                e.preventDefault();
+                window.location = url + "EmailTemplates";
+            });
+            $('fieldset').addClass("bodD5D5D5");
+        });
+</script>
+
+<tr>
+    <td class="id_pathway">
+        <div class="breadcrumb">
+            <ul>
+                <li><a href='@Url.Action("Dashboard")'>Dashboard</a><img src="/Content/Images/arrow.png"
+                    class="arrow_position" /></li>
+                <li><a href='@Url.Action("EmailTemplates")'>Manage
+                    Email Templates</a><img src="/Content/Images/arrow.png" class="arrow_position" /></li>
+                <li>Edit Email Template</li>
+            </ul>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+
+<tr>
+    <td id="content_center_td2" valign="top" align="center">
+        <div id="content_div" style="background:#fff;">
+
+
+            @using (Html.BeginForm())
+            {
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(model => model.ID, new { id = "hdId" })
+                <div>
+                    <div class="organization_left">
+                        <p>
+                            <label>Template Name</label>
+                            @Html.TextBoxFor(model => model.TemplateName, new { id = "txtTemplateName", @disabled = "disabled", @class = "txtfelds" })
+                            @Html.ValidationMessageFor(model => model.TemplateName)
+                        </p>
+                    </div>
+                    <div class="clr">
+                    </div>
+                </div> 
+                <div style=" width:96%; padding:0px 2%;">
+                    
+                                                    <label style="font-size:15px; padding-bottom:10px; float:left; width:100%;">Message Body</label>
+						<div class="clr"></div>
+                            @Html.TextAreaFor(model => model.MessageBody, new { id = "txtContent", @class = "jquery_ckeditor",@style="width:100%;" })
+                            @Html.ValidationMessageFor(model => model.MessageBody)
+                            @Html.TextBoxFor(model => model.MessageBodyOriginal, new { id = "txtMessage", style = "display:none;" })
+                        
+                    
+                    <div class="clr"></div>
+                </div> 
+                <br />
+
+
+                <div align="center" class="center-button">
+                    <label class="cat" style="margin-right: 41px;"></label>
+                    <input type="button" value="Update" id="btnUpdate" class="blu-btn" />
+                    <input type="button" value="Reset Template" id="btnReset" class="blu-btn" />
+                    <input type="button" value="Cancel" id="btnCancel" class="blu-btn" />
+
+                </div>
+               
+            }
+
+            <div class="clear">
+            </div>
+    </td>
+</tr>
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        $(".jquery_ckeditor").ckeditor(function () { /* callback code */ }, { skin: 'v2' });
+    });
+</script>
+

@@ -1,0 +1,1196 @@
+﻿@{
+    Golfler.Models.GF_Roles objRoles = new Golfler.Models.GF_Roles();
+    objRoles = Golfler.Models.CommonFunctions.GetRolesforHeaderMenus();
+}
+<script type="text/javascript">
+    $(function () {
+
+        var ulManage = $("#ulManage");
+        if (ulManage.children().size() == 0) {
+            $("#liManage").hide();
+        }
+        var ulManage = $("#ulUsers");
+        if (ulManage.children().size() == 0) {
+            $("#liUsers").hide();
+        }
+        var ulManage = $("#ulMis");
+        if (ulManage.children().size() == 0) {
+            $("#liMis").hide();
+        }
+        var ulManage = $("#ulAd");
+        if (ulManage.children().size() == 0) {
+            $("#liAd").hide();
+        }
+        var ulManage = $("#ulAppStore");
+        if (ulManage.children().size() == 0) {
+            $("#liAppStore").hide();
+        }
+        var ulApp = $("#ulApp");
+        if (ulApp.children().size() == 0) {
+            $("#liApp").hide();
+        }
+
+        var ulApp = $("#ulComm");
+        if (ulApp.children().size() == 0) {
+            $("#liComm").hide();
+        }
+
+        var ulApp = $("#ulSpend");
+        if (ulApp.children().size() == 0) {
+            $("#liSpend").hide();
+        }
+        var ulApp = $("#ulManageAssets");
+        if (ulApp.children().size() == 0) {
+            $("#liManageAssets").hide();
+        }
+        var ulApp = $("#ulMDM");
+        if (ulApp.children().size() == 0) {
+            $("#liMDM").hide();
+        }
+        var ulApp = $("#ulCase");
+        if (ulApp.children().size() == 0) {
+            $("#liCase").hide();
+        }
+
+
+
+        if ($('.mnuOrganizationManagement ul li').length <= 0) {
+            $('.mnuOrganizationManagement').remove();
+        }
+
+        if ($('.mnuAppStoreManagement ul li').length <= 0) {
+            $('.mnuAppStoreManagement').remove();
+        }
+
+        if ($('.mnuCommunications ul li').length <= 0) {
+            $('.mnuCommunications').remove();
+        }
+
+        if ($('.mnuUsers ul li').length <= 0) {
+            $('.mnuUsers').remove();
+        }
+
+        if ($('.mnuMiscellaneous ul li').length <= 0) {
+            $('.mnuMiscellaneous').remove();
+        }
+
+        if ($('.mnuAdvertiser ul li').length <= 0) {
+            $('.mnuAdvertiser').remove();
+        }
+
+        if ($('.mnuApps ul li').length <= 0) {
+            $('.mnuApps').remove();
+        }
+
+        if ($('.mnuSpend ul li').length <= 0) {
+            $('.mnuSpend').remove();
+        }
+
+        if ($('.mnuManageAssets ul li').length <= 0) {
+            $('.mnuManageAssets').remove();
+        }
+
+        if ($('.mnuMDM ul li').length <= 0) {
+            $('.mnuMDM').remove();
+        }
+
+        if ($('.mnuCase ul li').length <= 0) {
+            $('.mnuCase').remove();
+        }
+    });
+</script>
+<script type="text/jscript">
+    $(window).load(function () {
+
+        var Url = $(location).attr('href');
+        var cls = ''
+
+
+        $("#Mnu option").each(function () {
+            cls = $(this).val();
+            if (Url.indexOf(cls) > 0) {
+                $("#Mnu").val(cls);
+            }
+        });
+
+        var count = 0;
+        $("#nav li").each(function () {
+            Url = $.trim(Url).toLowerCase();
+            cls = $(this).attr('class');
+            var clsSplit = cls.split(" ");
+            var active = false;
+            for (var j = 0; j < clsSplit.length; j++) {
+                if (!active) {
+                    if (Url.indexOf("/" + clsSplit[j].toLowerCase()) > 0) {
+                        //debugger;
+                        active = true;
+                        count += 1;
+                    }
+                }
+            }
+            if (active) {
+                ///debugger;
+                var hasParent = false;
+                $(this).parents('li').each(function () {
+                    hasParent = true;
+                })
+
+                if (hasParent) {
+                    if (count > 1) {
+                        //alert(count);                        
+                        $("#nav li ul").slideUp(350);
+                        $("#nav li a").removeClass("open");
+                        $(this).parents('li').find('a').next("ul").slideDown(350);
+                        $(this).parents('li').find('a').addClass("open");
+                        $(this).addClass("currentsub");
+                    }
+                    else {
+                        $(this).parents('li').find('a').next("ul").slideDown(350);
+                        $(this).parents('li').find('a').addClass("open");
+                        $(this).addClass("currentsub");
+                    }
+                }
+                else {
+                    $(this).find('a').addClass("open");
+                }
+            }
+        });
+    })
+    $(document).ready(function () {
+        $("#Mnu").change(function () {
+            var dropdown = $("#Mnu option:selected");
+            var selected_value = dropdown.val();
+            window.location = selected_value;
+        });
+
+        $("#nav > li > a").on("click", function (e) {
+            if ($(this).parent().has("ul")) {
+                // e.preventDefault();
+            }
+
+            if (!$(this).hasClass("open")) {
+                // hide any open menus and remove all other classes
+                $("#nav li ul").slideUp(350);
+                $("#nav li a").removeClass("open");
+
+                // open our new menu and add the open class
+                $(this).next("ul").slideDown(350);
+                $(this).addClass("open");
+            }
+
+            else if ($(this).hasClass("open")) {
+                $(this).removeClass("open");
+                $(this).next("ul").slideUp(350);
+            }
+        });
+    });
+</script>
+
+<select class="select" id="Mnu">
+    <option value="Dashboard">@Html.ActionLink("Dashboard", "Dashboard")</option>
+    @if ((Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.SuperAdmin || Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.Admin) &&
+            Golfler.Models.LoginInfo.MasterUserId == 0)
+    {
+        if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.UsersAdmin && x.Visible) > 0)
+        {
+        <optgroup label="Users">
+            <option value="UserList" class="UserList"><a href='/Golfler/Admin/UserList'>Manage Admins</a></option>
+            @if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.GolferAdmin && x.Visible) > 0)
+            {
+                <option value="UserAddEdit" class="UserAddEdit"><a href='/Golfler/Admin/UserAddEdit'>Add New Users</a></option>
+            }
+        </optgroup>
+        }
+        if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.RolesAdmin && x.Visible) > 0)
+        {
+        <optgroup label="Roles">
+            <option value="RoleList" class="RoleList"><a href='/Golfler/Admin/RoleList'>Manage Roles</a></option>
+            @if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.RolesAdmin && x.Visible && x.AddFlag) > 0)
+            {
+                <option value="RoleAddEdit" class="RoleAddEdit"><a href='/Golfler/Admin/RoleAddEdit'>Add/Edit Roles</a></option>
+            }
+        </optgroup>
+        }
+        if ((objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.CourseAdmin && x.Visible) > 0) || (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.SuggestedCourseAdmin && x.Visible) > 0) || (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.SuggestedGolfCoordinates && x.Visible) > 0))
+        {
+        <optgroup label="Course Management">
+            @if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.CourseAdmin && x.Visible) > 0)
+            {
+                @*<option value="ManageCourses" class="ManageCourses"><a href='/Golfler/Admin/ManageCourses'>Manage Course</a></option>*@
+                <option value="ManageClubHouse" class="ManageClubHouse"><a href='/Golfler/Admin/ManageClubHouse'>Manage Club House</a></option>
+            }
+            @if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.CourseAdmin && x.Visible && x.AddFlag) > 0)
+            {
+                @*<option value="CoursesAddUpdate" class="CoursesAddUpdate"><a href='/Golfler/Admin/CoursesAddUpdate'>Add New course</a></option>*@
+                <option value="ClubHouseAddUpdate" class="ClubHouseAddUpdate"><a href='/Golfler/Admin/ClubHouseAddUpdate'>Add New Club House</a></option>
+            }
+            @if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.ManageClubHouse && x.Visible) > 0)
+            {
+                <option value="CoursesList" class="CoursesList"><a href='/Golfler/Admin/CoursesList'>Manage Course</a></option>
+            }
+                    
+        </optgroup>
+        }
+        if ((objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.CourseAdmin && x.Visible) > 0) || (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.SuggestedCourseAdmin && x.Visible) > 0) || (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.SuggestedGolfCoordinates && x.Visible) > 0))
+        {
+            if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.SuggestedCourseAdmin && x.Visible) > 0 ||
+                objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.SuggestedGolfCoordinates && x.Visible) > 0)
+            {
+        <optgroup label="Manage Suggested Course">
+            @if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.SuggestedCourseAdmin && x.Visible) > 0)
+            {
+                <option value="CourseSuggestList" class="CourseSuggestList"><a href='/Golfler/Admin/CourseSuggestList'>Suggested Course</a></option>
+            }
+            @if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.SuggestedGolfCoordinates && x.Visible) > 0)
+            {
+                <option value="SuggestedCoordinates" class="SuggestedCoordinates CourseCoordinateSuggestion"><a href='/Golfler/Admin/SuggestedCoordinates'>Suggested Golf Co-ordinates</a></option>
+            }
+        </optgroup>
+            }
+        }
+        @*if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.StaticPageAdmin && x.Visible) > 0)
+        {
+        <optgroup label="Static Pages">
+            <option value="StaticPageList" class="StaticPageList"><a href='/Golfler/Admin/StaticPageList'>Manage Static Pages</a></option>
+        </optgroup>
+        }*@
+        if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.ItemAdmin && x.Visible) > 0)
+        {
+        <optgroup label="Manage Menu Items">
+            <option value="Snacks" class="Snacks"><a href='/Golfler/Admin/MenuItemList/Snacks'>Snacks</a></option>
+            <option value="Drinks" class="Drinks"><a href='/Golfler/Admin/MenuItemList/Drinks'>Drinks</a></option>
+            <option value="Food" class="Food"><a href='/Golfler/Admin/MenuItemList/Food'>Food</a></option>
+            <option value="Alcohol" class="Alcohol"><a href='/Golfler/Admin/MenuItemList/Alcohol'>Alcohol</a></option>
+            <option value="Gear" class="Gear"><a href='/Golfler/Admin/MenuItemList/Gear'>Gear</a></option>
+        </optgroup>
+        }
+        if (Golfler.Models.LoginInfo.IsSuper)
+        { //superadmin
+        <optgroup label="Web Settings">
+            <option value="SettingAddEdit" class="SettingAddEdit"><a href='/Golfler/Admin/SettingAddEdit'>Manage Settings</a></option>
+        </optgroup>
+        }
+        else
+        {
+            if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.SettingAdmin && x.Visible) > 0)
+            {
+        <optgroup label="Web Settings">
+            <option value="SettingAddEdit" class="SettingAddEdit"><a href='/Golfler/Admin/SettingAddEdit'>Manage Settings</a></option>
+        </optgroup>
+            }
+        }
+
+        if ((objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.EmailTemplatesAdmin && x.Visible) > 0) || (Golfler.Models.LoginInfo.IsSuper) || (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.MassMessageAdmin && x.Visible) > 0))
+        {
+        <optgroup label="Communications">
+            @if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.EmailTemplatesAdmin && x.Visible) > 0)
+            {
+                <option value="EmailTemplates" class="EmailTemplates"><a href='/Golfler/Admin/EmailTemplates'>Manage Email Templates</a></option>
+            }
+            @if (Golfler.Models.LoginInfo.IsSuper)
+            { //superadmin
+                <option value="SMTPDetails" class="SMTPDetails"><a href='/Golfler/Admin/SMTPDetails'>Manage SMTP Details</a></option>
+            }
+            else
+            {
+                if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.SmtpAdmin && x.Visible) > 0)
+                {
+                <option value="SMTPDetails" class="SMTPDetails"><a href='/Golfler/Admin/SMTPDetails'>Manage SMTP Details</a></option>
+                }
+            }
+            @*@if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.MassMessageAdmin && x.Visible) > 0)
+            {
+                <option value="MassMessages" class="MassMessages MessageHistory"><a href='/Golfler/Admin/MassMessages'>Mass Messages</a></option>
+            }*@
+        </optgroup>
+        }
+        if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Visible && x.Value == Golfler.Models.ModuleValues.inboxAdmin) > 0)
+        {
+        <optgroup label="Resolution Center">
+            <option value="ResolutionMessages" class="ResolutionMessages OrderListByGolfer"><a href='/Golfler/Admin/ResolutionMessages'>Inbox</a></option>
+        </optgroup>
+        }
+        if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.MessageCenter && x.Visible) > 0 ||
+            objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.MassMessageAdmin && x.Visible) > 0)
+        { 
+            <optgroup label="Messaging">
+            @if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.MessageCenter && x.Visible) > 0)
+            {
+                <option value="MessagingCenterList" class="MessagingCenterList"><a href='/Golfler/Admin/MessagingCenterList'>Messaging Center</a></option>
+            }
+            @if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.MassMessageAdmin && x.Visible) > 0)
+            {
+                <option value="MassMessages" class="MassMessages MessageHistory"><a href='/Golfler/Admin/MassMessages'>Mass Messages</a></option>
+            }
+            </optgroup>
+        }
+        if (Golfler.Models.LoginInfo.IsSuper || ((objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.CommissionReportAdmin && x.Visible) > 0) || (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.AnalyticsReportAdmin && x.Visible) > 0)))
+        {
+        <optgroup label="Report">
+            @if (Golfler.Models.LoginInfo.IsSuper || (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.CommissionReportAdmin && x.Visible) > 0))
+            {
+                <option value="CommissionReport" class="CommissionReport"><a href='/Golfler/Admin/CommissionReport'>Commission Report</a></option>
+            }
+            @if (Golfler.Models.LoginInfo.IsSuper || (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.AnalyticsReportAdmin && x.Visible) > 0))
+            {
+                <option value="AnalyticsReport" class="AnalyticsReport"><a href='/Golfler/Admin/AnalyticsReport'>Analytics Report</a></option>
+            }
+        </optgroup>
+        }
+    }
+    else if (Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.CourseAdmin ||
+                 Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.Kitchen ||
+                 Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.Cartie ||
+                 Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.Proshop ||
+                 Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.Ranger ||
+                 Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.PowerAdmin ||
+                 ((Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.Admin) ||
+                  (Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.SuperAdmin) &&
+                 Golfler.Models.LoginInfo.MasterUserId != 0 &&
+                 !Golfler.Models.LoginInfo.IsGolferLoginUser))
+    {
+        if (Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.CourseAdmin || objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.User && x.Visible) > 0)
+        {
+        <optgroup label="Users">
+            <option value="UserList" class="UserList UserAddEdit"><a href='/Golfler/CourseAdmin/UserList'>Manage Staff User Accounts</a></option>
+            @if (Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.CourseAdmin || objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.Role && x.Visible) > 0)
+            {
+                <option value="RoleList" class="RoleList RoleAddEdit"><a href='/Golfler/CourseAdmin/UserAddEdit'>Manage Staff Roles</a></option>
+            }
+        </optgroup>
+        }
+
+        if (Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.CourseAdmin ||
+                objRoles.ArrRoleModules.AsQueryable().Count(x => x.Visible && (x.Value == Golfler.Models.ModuleValues.CourseAdmin ||
+                            x.Value == Golfler.Models.ModuleValues.CourseBuilder ||
+                            x.Value == Golfler.Models.ModuleValues.ManageSettings)) > 0)
+        {
+            <optgroup label="Course Management">
+                @if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.Course && x.Visible) > 0 ||
+                        Golfler.Models.LoginInfo.LoginUserType == Golfler.Models.UserType.CourseAdmin)
+                {
+                    <option value="CoursesUpdate" class="CoursesUpdate"><a href='/Golfler/CourseAdmin/CoursesUpdate'>Manage Course</a></option>
+                }
+                @if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.CourseBuilder && x.Visible) > 0 ||
+                        Golfler.Models.LoginInfo.LoginUserType == Golfler.Models.UserType.CourseAdmin)
+                {
+                    <option value="CourseBuilder" class="CourseBuilder"><a href='/Golfler/CourseAdmin/CourseBuilder'>Course Builder</a></option>
+                }
+                @if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.ManageSettings && x.Visible) > 0 ||
+                        Golfler.Models.LoginInfo.LoginUserType == Golfler.Models.UserType.CourseAdmin)
+                {
+                    <option value="SettingAddEdit" class="SettingAddEdit"><a href='/Golfler/CourseAdmin/SettingAddEdit'>Course Settings</a></option>
+                }
+            </optgroup>
+        }
+
+        if (Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.CourseAdmin ||
+            objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.ManageFoodItems && x.Visible) > 0)
+        {
+        <optgroup label="Manage Menu Items">
+            <option value="Snacks" class="Snacks"><a href='/Golfler/CourseAdmin/MenuItemList/Snacks'>Snacks</a></option>
+            <option value="Drinks" class="Drinks"><a href='/Golfler/CourseAdmin/MenuItemList/Drinks'>Drinks</a></option>
+            <option value="Food" class="Food"><a href='/Golfler/CourseAdmin/MenuItemList/Food'>Food</a></option>
+            <option value="Alcohol" class="Alcohol"><a href='/Golfler/CourseAdmin/MenuItemList/Alcohol'>Alcohol</a></option>
+            <option value="Gear" class="Gear"><a href='/Golfler/CourseAdmin/MenuItemList/Gear'>Gear</a></option>
+        </optgroup>
+        }
+        if (Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.CourseAdmin ||
+                         objRoles.ArrRoleModules.AsQueryable().Count(x => (x.Value == Golfler.Models.ModuleValues.GopherView ||
+                             x.Value == Golfler.Models.ModuleValues.AppView) && x.Visible) > 0)
+        {
+            <optgroup label="App View">
+                @if (Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.CourseAdmin ||
+                        objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.GopherView && x.Visible) > 0)
+                {
+                    <option value="ViewGolfersOnMap" class="ViewGolfersOnMap"><a href='/Golfler/CourseAdmin/ViewGolfersOnMap'>Gopher View</a></option>
+                }
+                @if (Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.CourseAdmin ||
+                        objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.ActiveOrders && x.Visible) > 0)
+                {
+                    <option value="ViewOrderList" class="ViewOrderList"><a href='/Golfler/CourseAdmin/ViewOrderList'>Active Orders</a></option>
+                }
+            </optgroup>
+        }
+
+        if (Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.CourseAdmin ||
+                        objRoles.ArrRoleModules.AsQueryable().Count(x => (x.Value == Golfler.Models.ModuleValues.OrderHistory ||
+                        x.Value == Golfler.Models.ModuleValues.MissedOrders) && x.Visible) > 0)
+        {
+            <optgroup label="Manage Order">
+                @if (Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.CourseAdmin ||
+                            objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.OrderHistory && x.Visible) > 0)
+                {
+                    <option value="OrderList" class="OrderList"><a href='/Golfler/CourseAdmin/OrderList'>Order History</a></option>
+                }
+                @if (Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.CourseAdmin ||
+                            objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.MissedOrders && x.Visible) > 0)
+                {
+                    <option value="OrderList" class="OrderList"><a href='/Golfler/CourseAdmin/MissingOrdersList'>Missed Orders</a></option>
+                }
+            </optgroup>
+        }
+
+        if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Visible && (x.Value == Golfler.Models.ModuleValues.Smtp ||
+            x.Value == Golfler.Models.ModuleValues.EmailTemplates ||
+            x.Value == Golfler.Models.ModuleValues.MassMessage)) > 0 ||
+            Golfler.Models.LoginInfo.LoginUserType == Golfler.Models.UserType.CourseAdmin)
+        {
+        <optgroup label="Communications">
+            @if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.Smtp && x.Visible) > 0 ||
+                Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.CourseAdmin)
+            {
+                <option value="SMTPDetails" class="SMTPDetails"><a href='/Golfler/CourseAdmin/SMTPDetails'>Manage SMTP Details</a></option>
+            }
+            @if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.EmailTemplates && x.Visible) > 0 ||
+                Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.CourseAdmin)
+            {
+                <option value="EmailTemplates" class="EmailTemplates"><a href='/Golfler/CourseAdmin/EmailTemplates'>Manage Email Templates</a></option>
+            }
+        </optgroup>
+        }
+
+        if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Visible && (x.Value == Golfler.Models.ModuleValues.Inbox)) > 0 ||
+                Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.CourseAdmin)
+        {
+            <optgroup label="Resolution Center">
+                <option value="ResolutionMessage" class="ResolutionMessage OrderListByGolfer"><a href='/Golfler/CourseAdmin/ResolutionMessages'>Inbox</a></option>
+            </optgroup>
+        }
+
+        if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.PromoCode && x.Visible) > 0 ||
+            objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.managemembershipidnumber && x.Visible) > 0 ||
+                Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.CourseAdmin)
+        {
+            <optgroup label="Payment Center">
+            @if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.PromoCode && x.Visible) > 0 ||
+                Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.CourseAdmin)
+            {
+                <option value="PromoCodeList" class="PromoCodeList"><a href='/Golfler/CourseAdmin/PromoCodeList'>Manage Promo Code</a></option>
+            }
+            @if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.managemembershipidnumber && x.Visible) > 0 ||
+                Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.CourseAdmin)
+            {
+                <option value="MembershipList" class="MembershipList"><a href='/Golfler/CourseAdmin/MembershipList'>Manage Membership ID Numbers</a></option>
+            }
+            </optgroup>
+        }
+
+        if (Golfler.Models.LoginInfo.LoginUserType == Golfler.Models.UserType.CourseAdmin ||
+                        objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.MessageCenter && x.Visible) > 0)
+        { 
+            <optgroup label="Messaging">
+            @if (Golfler.Models.LoginInfo.LoginUserType == Golfler.Models.UserType.CourseAdmin ||
+                objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.MessageCenter && x.Visible) > 0)
+            {
+                <option value="MessagingCenterList" class="MessagingCenterList"><a href='/Golfler/CourseAdmin/MessagingCenterList'>Messaging Center</a></option>
+            }
+            @if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.MassMessage && x.Visible) > 0 ||
+                Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.CourseAdmin)
+            {
+                <option value="MassMessages" class="MassMessages MessageHistory"><a href='/Golfler/CourseAdmin/MassMessages'>Mass Messages</a></option>
+            }
+            </optgroup>
+        }
+
+        if (Golfler.Models.LoginInfo.LoginUserType == Golfler.Models.UserType.CourseAdmin ||
+                       ((objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.Ratting && x.Visible) > 0) ||
+                        (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.GolfPlayingHistoryReport && x.Visible) > 0) ||
+                        (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.FoodItemsReport && x.Visible) > 0) ||
+                        (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.EmployeeReport && x.Visible) > 0) ||
+                        (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.GolferOrderHistoryReport && x.Visible) > 0)))
+        { 
+            <optgroup label="Reports">
+                @if (Golfler.Models.LoginInfo.LoginUserType == Golfler.Models.UserType.CourseAdmin ||
+                    objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.Ratting && x.Visible) > 0)
+                {
+                    <option value="ManageRatings" class="ManageRatings"><a href='/Golfler/CourseAdmin/ManageRatings'>Manage Ratings</a></option>
+                }
+                @if (Golfler.Models.LoginInfo.LoginUserType == Golfler.Models.UserType.CourseAdmin ||
+                    objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.EmployeeReport && x.Visible) > 0)
+                {
+                    <option value="EmployeeAnalytics" class="EmployeeAnalytics"><a href='/Golfler/CourseAdmin/EmployeeAnalytics'>Employee Report</a></option>
+                }
+                @if (Golfler.Models.LoginInfo.LoginUserType == Golfler.Models.UserType.CourseAdmin ||
+                    objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.GolfPlayingHistoryReport && x.Visible) > 0)
+                {
+                    <option value="PlayingHistory" class="PlayingHistory"><a href='/Golfler/CourseAdmin/PlayingHistory'>Golfer Playing History</a></option>
+                }
+                @if (Golfler.Models.LoginInfo.LoginUserType == Golfler.Models.UserType.CourseAdmin ||
+                    objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.FoodItemsReport && x.Visible) > 0)
+                {
+                    <option value="FoodItemsreport" class="FoodItemsreport"><a href='/Golfler/CourseAdmin/FoodItemsreport'>Food Items Report</a></option>
+                }
+                @if (Golfler.Models.LoginInfo.LoginUserType == Golfler.Models.UserType.CourseAdmin ||
+                    objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.GolferOrderHistoryReport && x.Visible) > 0)
+                {
+                    <option value="GolferOrderHistoryReport" class="GolferOrderHistoryReport"><a href='/Golfler/CourseAdmin/GolferOrderHistoryReport'>Golfer Order History Report</a></option>
+                }
+            </optgroup>
+        }
+    }
+    else if (Golfler.Models.LoginInfo.GolferType == Golfler.Models.UserType.Golfer)
+    {
+        <optgroup label="Manage">
+            <option value="GolferEditInformation" class="GolferEditInformation"><a href='/Golfler/Golfer/GolferEditInformation'>Manage User Information</a></option>
+            <option value="OrderHistoryList" class="OrderHistoryList"><a href='/Golfler/Golfer/OrderHistoryList'>Order History</a></option>
+            <option value="ResolutionMessages" class="ResolutionMessage OrderListByGolfer"><a href='/Golfler/Golfer/ResolutionMessages'>Resolution Center</a></option>
+            <option value="MessagingCenterList" class="MessagingCenterList"><a href='/Golfler/Golfer/MessagingCenterList'>Messaging Center</a></option>
+            <option value="CourseCoordinateSuggestionList" class="CourseCoordinateSuggestionList"><a href='/Golfler/Golfer/CourseCoordinateSuggestionList'>Suggest Flag Co-ordinates</a></option>
+        </optgroup>
+        <optgroup label="Analytics">
+            <option value="OrderAnalytics" class="OrderAnalytics"><a href='/Golfler/Golfer/OrderAnalytics'>Order Analytics</a></option>
+        </optgroup>
+    }
+</select>
+<div class="left_panel">
+    <ul id="nav">
+        <li class="Dashboard"><a href="@Url.Action("Dashboard")">Dashboard<span></span></a></li>
+        @if ((Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.SuperAdmin || Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.Admin) &&
+            Golfler.Models.LoginInfo.MasterUserId == 0)
+        {
+            if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.UsersAdmin && x.Visible) > 0)
+            {
+            <li class="mnuUsers"><a href="#" id="liUsers">Users<span></span></a>
+                <ul id="ulUsers">
+                    <li class="UserList UserAddEdit"><a href="/Golfler/Admin/UserList">Manage Admins</a></li>
+                    @*<li class="UserAddEdit"><a href="/Golfler/Admin/UserAddEdit">Add/Edit Users</a></li>*@
+                    @if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.GolferAdmin && x.Visible) > 0)
+                    {
+                        <li class="GolferList GolferAddUpdate"><a href='/Golfler/Golfer/GolferList'>Golf Users</a></li>
+                    }
+                </ul>
+            </li>
+            }
+            if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.RolesAdmin && x.Visible) > 0)
+            {
+            <li class="mnuUsers_roles"><a href="#" id="liUsers">Roles<span></span></a>
+                <ul id="ulUsers">
+                    <li class="RoleList"><a href="/Golfler/Admin/RoleList">Manage Roles</a></li>
+                    @if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.RolesAdmin && x.Visible && x.AddFlag) > 0)
+                    {
+                        <li class="RoleAddEdit RoleAddEdit"><a href="/Golfler/Admin/RoleAddEdit">Add/Edit Roles</a></li>
+                    }
+                </ul>
+            </li>
+            }
+            if ((objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.CourseAdmin && x.Visible) > 0) ||
+                (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.SuggestedCourseAdmin && x.Visible) > 0) ||
+                (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.SuggestedGolfCoordinates && x.Visible) > 0) ||
+                (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.ManageClubHouse && x.Visible) > 0))
+            {
+            <li class="mnuOrganizationCourses"><a href="#" id="liCourses">Course Management<span></span></a>
+                <ul id="ulManage">
+                    @if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.CourseAdmin && x.Visible) > 0)
+                    {
+                        @*<li class="ManageCourses"><a href='/Golfler/admin/ManageCourses'>Manage Club House</a></li>*@
+                        <li class="ManageClubHouse"><a href='/Golfler/admin/ManageClubHouse'>Manage Club House</a></li>
+                    }
+                    @if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.CourseAdmin && x.Visible && x.AddFlag) > 0)
+                    {
+                        @*<li class="CoursesAddUpdate"><a href='/Golfler/admin/CoursesAddUpdate'>Add New Club House</a></li>*@
+                        <li class="ClubHouseAddUpdate"><a href='/Golfler/admin/ClubHouseAddUpdate'>Add New Club House</a></li>
+                    }
+                    @if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.ManageClubHouse && x.Visible) > 0)
+                    {
+                        <li class="CoursesList"><a href='/Golfler/admin/CoursesList'>Manage Course</a></li>
+                    }
+                </ul>
+            </li>
+            }
+            if ((objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.CourseAdmin && x.Visible) > 0) || (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.SuggestedCourseAdmin && x.Visible) > 0) || (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.SuggestedGolfCoordinates && x.Visible) > 0))
+            {
+                if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.SuggestedCourseAdmin && x.Visible) > 0 ||
+                    objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.SuggestedGolfCoordinates && x.Visible) > 0)
+                {
+            <li class="mnuOrganizationCourses"><a href="#" id="liCourses">Manage Suggested Course<span></span></a>
+                <ul id="ulManage">
+                    @if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.SuggestedCourseAdmin && x.Visible) > 0)
+                    {
+                        <li class="CourseSuggestList"><a href='/Golfler/admin/CourseSuggestList'>Suggested Courses</a></li>
+                    }
+                    @if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.SuggestedGolfCoordinates && x.Visible) > 0)
+                    {
+                        <li class="SuggestedCoordinates CourseCoordinateSuggestion"><a href='/Golfler/admin/SuggestedCoordinates'>Suggested Golf Co-ordinates</a></li>
+                    }
+                </ul>
+            </li>
+                }
+            }
+            @*if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.StaticPageAdmin && x.Visible) > 0)
+            {
+            <li class="mnuOrganizationManagement"><a href="#" id="liManage">Static Pages
+                    <span></span></a>
+                <ul id="ulManage">
+                    <li class="StaticPageList"><a href='/Golfler/Admin/StaticPageList'>Manage Static Pages</a></li>
+                </ul>
+            </li>
+            }*@
+@*if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.GolferAdmin && x.Visible) > 0)
+            {
+            <li class="mnuGolferUser"><a href="#" id="liManage">Golfer User
+                    <span></span></a>
+                <ul id="ulManage">
+                    <li class="GolferList"><a href='/Golfler/Golfer/GolferList'>Manage Golfer</a></li>
+                </ul>
+            </li>
+            }*@
+            if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.ItemAdmin && x.Visible) > 0)
+            {
+            <li class="mnuOrganizationItem"><a href="#" id="liItem">Manage Menu Items
+                    <span></span></a>
+                <ul id="ulManage">
+                    @*<li class="MenuItemList"><a href='/Golfler/Admin/MenuItemList'>Manage Menu Items</a></li>
+                    <li class="MenuItemAddEdit"><a href='/Golfler/Admin/MenuItemAddEdit'>Add/Update Menu Items</a></li>*@
+                    <li class="Snacks"><a href="/Golfler/Admin/MenuItemList/Snacks">Snacks</a></li>
+                    <li class="Drinks"><a href="/Golfler/Admin/MenuItemList/Drinks">Drinks</a></li>
+                    <li class="Food"><a href="/Golfler/Admin/MenuItemList/Food">Food</a></li>
+                    <li class="Alcohol"><a href="/Golfler/Admin/MenuItemList/Alcohol">Alcohol</a></li>
+                    <li class="Gear"><a href="/Golfler/Admin/MenuItemList/Gear">Gear</a></li>
+                </ul>
+            </li>
+            }
+            if (Golfler.Models.LoginInfo.IsSuper)
+            { //superadmin
+            <li class="mnuOrganizationsettings"><a href="#" id="lisetting">Web Settings
+                    <span></span></a>
+                <ul id="ulManage">
+                    <li class="SettingAddEdit"><a href='/Golfler/Admin/SettingAddEdit'>Manage Settings</a></li>
+                </ul>
+            </li>
+                 
+            }
+            else
+            {
+                if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.SettingAdmin && x.Visible) > 0)
+                {
+            <li class="mnuOrganizationsettings"><a href="#" id="lisetting">Web Settings
+                    <span></span></a>
+                <ul id="ulManage">
+                    <li class="SettingAddEdit"><a href='/Golfler/Admin/SettingAddEdit'>Manage Settings</a></li>
+                </ul>
+            </li>
+                }
+            }
+
+            if ((objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.EmailTemplatesAdmin && x.Visible) > 0) ||
+                (Golfler.Models.LoginInfo.IsSuper))
+            //|| (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.MassMessageAdmin && x.Visible) > 0))
+            {
+            <li class="mnuCommunications"><a href="#" id="liComm">Communications<span></span></a>
+                <ul id="ulComm">
+                    @if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.EmailTemplatesAdmin && x.Visible) > 0)
+                    {
+
+                        <li class="EmailTemplates"><a href="/Golfler/Admin/EmailTemplates">Manage Email Templates</a></li>
+                    }
+                    @if (Golfler.Models.LoginInfo.IsSuper)
+                    { //superadmin
+                        <li class="SMTPDetails"><a href="/Golfler/Admin/SMTPDetails">Manage SMTP Details</a></li>
+                    }
+                    else
+                    {
+                        if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.SmtpAdmin && x.Visible) > 0)
+                        {
+                        <li class="SMTPDetails"><a href="/Golfler/Admin/SMTPDetails">Manage SMTP Details</a></li>
+                        }
+                    }
+                    @*@if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.MassMessageAdmin && x.Visible) > 0)
+                    {
+                        <li class="MassMessages MessageHistory"><a href="/Golfler/Admin/MassMessages">Mass Messages</a></li>
+                    }*@
+                </ul>
+            </li>
+            }
+            if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Visible && x.Value == Golfler.Models.ModuleValues.inboxAdmin) > 0)
+            {
+            <li class="mnuResolutionCenter"><a href="#" id="liRes">Resolution Center<span></span>
+                &nbsp;<label class="resolutionMsg" style="display: none;"></label></a>
+                <ul id="ulComm">
+                    @*  @if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.inboxAdmin && x.Visible) > 0)
+                    {
+                        *@
+                    <li class="Inbox ResolutionMessage OrderListByGolfer"><a href="/Golfler/Admin/ResolutionMessages">Inbox</a></li>
+                    @*}*@
+                    @*@if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.ProcessRefundAdmin && x.Visible) > 0)
+                    {
+                        <li class="AdminProcessRefundList"><a href="/Golfler/Admin/AdminProcessRefundList">Process Refund</a></li>}*@
+
+                </ul>
+
+            </li>
+            }
+
+            if ((objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.MessageCenter && x.Visible) > 0) ||
+                (Golfler.Models.LoginInfo.IsSuper) ||
+                (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.MassMessage && x.Visible) > 0))
+            {
+            <li class="MessagingList MessagingCenterList">
+                <a href="#" id="liCourses">Messaging<span></span>
+                    &nbsp;&nbsp;<label id="incommingMsg" style="display: none;"></label></a>
+                <ul id="ulComm">
+                    @if ((Golfler.Models.LoginInfo.IsSuper) ||
+                        objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.MessageCenter && x.Visible) > 0)
+                    {
+                        <li class="MessagingCenterList"><a href="/Golfler/Admin/MessagingCenterList">Messaging Center</a></li>
+                    }
+                    @if ((Golfler.Models.LoginInfo.IsSuper) ||
+                        objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.MassMessage && x.Visible) > 0)
+                    {
+                        <li class="MassMessages"><a href="/Golfler/Admin/MassMessages">Mass Messages</a></li>
+                    }
+                </ul>
+            </li>
+            }
+
+            if (Golfler.Models.LoginInfo.IsSuper || ((objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.CommissionReportAdmin && x.Visible) > 0) || (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.AnalyticsReportAdmin && x.Visible) > 0)))
+            {
+            <li class="mnuOrganizationManagement"><a href="#" id="liManage">Report<span></span></a>
+                <ul id="ulManage">
+                    @if (Golfler.Models.LoginInfo.IsSuper || (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.CommissionReportAdmin && x.Visible) > 0))
+                    {
+                    <li class="CommissionReport"><a href="/Golfler/Admin/CommissionReport">Commission Report</a></li>
+                    }
+                     @if (Golfler.Models.LoginInfo.IsSuper || (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.AnalyticsReportAdmin && x.Visible) > 0))
+                     {
+                    <li class="AnalyticsReport"><a href="/Golfler/Admin/AnalyticsReport">Analytics Report</a></li>
+                     }
+                </ul>
+            </li>
+                    
+            }
+        }
+        else if (Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.CourseAdmin ||
+                 Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.Kitchen ||
+                 Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.Cartie ||
+                 Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.Proshop ||
+                 Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.Ranger ||
+                 Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.PowerAdmin ||
+                 ((Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.Admin) ||
+                  (Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.SuperAdmin) &&
+                 Golfler.Models.LoginInfo.MasterUserId != 0 &&
+                 !Golfler.Models.LoginInfo.IsGolferLoginUser))
+        {
+            if (Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.CourseAdmin || objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.User && x.Visible) > 0)
+            {
+            <li class="mnuUsers"><a href="#" id="liUsers">Users<span></span></a>
+                <ul id="ulUsers">
+                    <li class="UserList UserAddEdit"><a href="/Golfler/CourseAdmin/UserList">Manage Staff User Accounts</a></li>
+                    <li class="UserAddEdit" style="display: none;"><a href="/Golfler/CourseAdmin/UserAddEdit">Add Staff User</a></li>
+                    @if (Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.CourseAdmin || objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.Role && x.Visible) > 0)
+                    {
+                        <li class="RoleList RoleAddEdit"><a href="/Golfler/CourseAdmin/RoleList">Manage Staff Roles</a></li>
+                        <li class="RoleAddEdit" style="display: none;"><a href="/Golfler/CourseAdmin/RoleAddEdit">Create Custom Staff Role</a></li>
+                    }
+                </ul>
+            </li>
+            }
+            @*if (Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.CourseAdmin || objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.Role && x.Visible) > 0)
+            {
+            <li class="mnuOrganizationManagement"><a href="#" id="liManage">Roles<span></span></a>
+                <ul id="ulManage">
+                    <li class="RoleList"><a href="/Golfler/CourseAdmin/RoleList">Manage Staff Roles</a></li>
+                    <li class="RoleAddEdit"><a href="/Golfler/CourseAdmin/RoleAddEdit">Create Custom Staff Role</a></li>
+                </ul>
+            </li>
+            }*@
+            if (Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.CourseAdmin ||
+                objRoles.ArrRoleModules.AsQueryable().Count(x => x.Visible && (x.Value == Golfler.Models.ModuleValues.CourseAdmin ||
+                            x.Value == Golfler.Models.ModuleValues.CourseBuilder ||
+                            x.Value == Golfler.Models.ModuleValues.ManageSettings)) > 0)
+            {
+            <li class="mnuOrganizationCourses"><a href="#" id="liCourses">Course Management<span></span></a>
+                <ul id="ulComm">
+                    @if (Golfler.Models.LoginInfo.LoginUserType == Golfler.Models.UserType.CourseAdmin)
+                    { //courser admin
+                        <li class="CoursesUpdate"><a href="/Golfler/CourseAdmin/CoursesUpdate">Manage Course</a></li>   
+                        <li class="CourseBuilder"><a href="/Golfler/CourseAdmin/CourseBuilder">Course Builder</a></li>
+                        <li class="SettingAddEdit"><a href='/Golfler/CourseAdmin/SettingAddEdit'>Course Settings</a></li>
+                    }
+                    else
+                    {
+                        if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.Course && x.Visible) > 0)
+                        {
+                        <li class="CoursesUpdate"><a href="/Golfler/CourseAdmin/CoursesUpdate">Manage Course</a></li>                         
+                        }
+                        if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.CourseBuilder && x.Visible) > 0)
+                        {
+                        <li class="CourseBuilder"><a href="/Golfler/CourseAdmin/CourseBuilder">Course Builder</a></li>
+                        }
+                        if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.ManageSettings && x.Visible) > 0)
+                        {
+                        <li class="SettingAddEdit"><a href='/Golfler/CourseAdmin/SettingAddEdit'>Course Settings</a></li>
+                        }
+                    }
+                </ul>
+            </li>
+            }
+
+            if (Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.CourseAdmin || objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.ManageFoodItems && x.Visible) > 0)
+            {
+            <li class="mnuOrganizationItem"><a href="#" id="liItem">Manage Menu Items<span></span></a>
+                <ul id="ulManage">
+                    <li class="Snacks"><a href="/Golfler/CourseAdmin/MenuItemList/Snacks">Snacks</a></li>
+                    <li class="Drinks"><a href="/Golfler/CourseAdmin/MenuItemList/Drinks">Drinks</a></li>
+                    <li class="Food"><a href="/Golfler/CourseAdmin/MenuItemList/Food">Food</a></li>
+                    <li class="Alcohol"><a href="/Golfler/CourseAdmin/MenuItemList/Alcohol">Alcohol</a></li>
+                    <li class="Gear"><a href="/Golfler/CourseAdmin/MenuItemList/Gear">Gear</a></li>
+                </ul>
+            </li>
+@*<li class="mnuOrganizationItem MenuItem"><a href="/Golfler/CourseAdmin/MenuItemList" id="liItem">Manage Menu Items</a></li>*@
+            }
+
+            if (Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.CourseAdmin ||
+                         objRoles.ArrRoleModules.AsQueryable().Count(x => (x.Value == Golfler.Models.ModuleValues.GopherView ||
+                             x.Value == Golfler.Models.ModuleValues.AppView) && x.Visible) > 0)
+            {
+            <li class="mnuAppView"><a href="#" id="liManage">App View<span></span></a>
+                <ul id="ulManage">
+                    @if (Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.CourseAdmin ||
+                         objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.GopherView && x.Visible) > 0)
+                    {
+                        <li class="ViewGolfersOnMap"><a href="/Golfler/CourseAdmin/ViewGolfersOnMap">Gopher View</a></li>
+                    }
+                    @if (Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.CourseAdmin ||
+                         objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.ActiveOrders && x.Visible) > 0)
+                    {
+                        <li class="ViewOrderList"><a href="/Golfler/CourseAdmin/ViewOrderList">Active Orders</a></li>            
+                    }
+                </ul>
+            </li>
+            }
+            if (Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.CourseAdmin ||
+                        objRoles.ArrRoleModules.AsQueryable().Count(x => (x.Value == Golfler.Models.ModuleValues.OrderHistory ||
+                        x.Value == Golfler.Models.ModuleValues.MissedOrders) && x.Visible) > 0)
+            {
+            <li class="mnuOrganizationManagement"><a href="#" id="liManage">Manage Order<span></span></a>
+                <ul id="ulManage">
+                        @if (Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.CourseAdmin ||
+                             objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.OrderHistory && x.Visible) > 0)
+                        {
+                            <li class="OrderList"><a href="/Golfler/CourseAdmin/OrderList">Order History</a></li>
+                        }
+                        @if (Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.CourseAdmin ||
+                             objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.MissedOrders && x.Visible) > 0)
+                        {
+                            <li class="MissingOrdersList"><a href="/Golfler/CourseAdmin/MissingOrdersList">Missed Orders</a></li>
+                        }
+                </ul>
+            </li>
+            }
+@*if (Golfler.Models.LoginInfo.LoginUserType == Golfler.Models.UserType.CourseAdmin || Golfler.Models.LoginInfo.Type == Golfler.Models.UserType.Proshop)
+                    { //courser admin
+            <li class="mnuOrganizationsettings"><a href="#" id="lisetting">Web Settings<span></span></a>
+                <ul id="ulManage">
+                    <li class="SettingAddEdit"><a href='/Golfler/CourseAdmin/SettingAddEdit'>Manage Settings</a></li>
+
+                </ul>
+            </li> 
+                    }
+                    else
+                    {
+                        if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.ManageSettings && x.Visible) > 0)
+                        {
+            <li class="mnuOrganizationsettings"><a href="#" id="lisetting">Web Settings<span></span></a>
+                <ul id="ulManage">
+                    <li class="SettingAddEdit"><a href='/Golfler/CourseAdmin/SettingAddEdit'>Manage Settings</a></li>
+                </ul>
+            </li>                       
+                        }
+                    }          *@
+            <li class="mnuCommunications"><a href="#" id="liComm">Communications<span></span></a>
+                <ul id="ulComm">
+
+                    @if (Golfler.Models.LoginInfo.LoginUserType == Golfler.Models.UserType.CourseAdmin)
+                    { 
+                        <li class="RevenuseList EmailTemplates"><a href="/Golfler/CourseAdmin/EmailTemplates">Manage Email Templates</a></li>
+                        <li class="RevenuseList SMTPDetails"><a href="/Golfler/CourseAdmin/SMTPDetails">Manage SMTP Details</a></li>
+                    }
+                    else
+                    {
+                        if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.Smtp && x.Visible) > 0)
+                        {
+                        <li class="RevenuseList SMTPDetails"><a href="/Golfler/CourseAdmin/SMTPDetails">Manage SMTP Details</a></li>
+                        }
+                        if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.EmailTemplates && x.Visible) > 0)
+                        {
+                              
+                        <li class="RevenuseList EmailTemplates"><a href="/Golfler/CourseAdmin/EmailTemplates">Manage Email Templates</a></li>
+                        }
+                    }
+
+                </ul>
+            </li>
+                 
+         
+                    if (Golfler.Models.LoginInfo.LoginUserType == Golfler.Models.UserType.CourseAdmin)
+                    { 
+                        <li class="mnuResolutionCenter"><a href="#" id="liComm">Resolution Center<span></span>
+                            &nbsp;<label class="resolutionMsg" style="display: none;"></label></a>
+                            <ul id="ulComm">
+                                <li class="Inbox ResolutionMessages OrderListByGolfer"><a href="/Golfler/CourseAdmin/ResolutionMessages">Inbox</a></li>
+
+                                @* <li class="ProcessRefundList"><a href="/Golfler/CourseAdmin/ProcessRefundList">Process Refund</a></li>*@
+                            </ul>
+                        </li>
+                        <li class="mnuOrganizationManagement"><a href="#" id="liManage">Payment Center<span></span></a>
+                            <ul id="ulManage">
+                                <li class="PromoCodeList PaymentCenter"><a href="/Golfler/CourseAdmin/PromoCodeList">Manage Promo Code</a></li>
+                                <li class="MembershipList"><a href="/Golfler/CourseAdmin/MembershipList">Manage Membership ID Numbers</a></li>
+                            </ul>
+                        </li>
+                    }
+                    else
+                    {
+                        if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Visible && (x.Value == Golfler.Models.ModuleValues.Inbox ||
+                            x.Value == Golfler.Models.ModuleValues.PromoCode ||
+                            x.Value == Golfler.Models.ModuleValues.ProcessRefund)) > 0)
+                        {
+                            <li class="mnuResolutionCenter"><a href="#" id="liComm">Resolution Center<span></span>
+                                &nbsp;<label class="resolutionMsg" style="display: none;"></label></a>
+                                <ul id="ulComm">
+                                    @if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.Inbox && x.Visible) > 0)
+                                    {
+                                        <li class="Inbox ResolutionMessage OrderListByGolfer"><a href="/Golfler/CourseAdmin/ResolutionMessages">Inbox</a></li>
+                                    }
+                                </ul>
+                            </li>
+                        }
+
+                        if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.PromoCode && x.Visible) > 0 ||
+                            objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.managemembershipidnumber && x.Visible) > 0)
+                        {
+                            <li class="mnuPaymentCenter"><a href="#" id="liPaymentCenter">Payment Center<span></span></a>
+                                <ul id="ulPaymentCenter">
+                                    @if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.PromoCode && x.Visible) > 0)
+                                    {
+                                        <li class="PromoCodeList"><a href="/Golfler/CourseAdmin/PromoCodeList">Manage Promo Code</a></li>
+                                    }
+                                    @if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.managemembershipidnumber && x.Visible) > 0)
+                                    {
+                                        <li class="MembershipList"><a href="/Golfler/CourseAdmin/MembershipList">Manage Membership ID Numbers</a></li>
+                                    }
+                                </ul>
+                            </li>
+                        }
+                    }
+                    if (Golfler.Models.LoginInfo.LoginUserType == Golfler.Models.UserType.CourseAdmin ||
+                        objRoles.ArrRoleModules.AsQueryable().Count(x => (x.Value == Golfler.Models.ModuleValues.MassMessage ||
+                            x.Value == Golfler.Models.ModuleValues.MessageCenter) && x.Visible) > 0)
+                    { 
+                <li class="MessagingList MessagingCenterList">
+                    <a href="#" id="liCourses">Messaging<span></span>
+                      &nbsp;&nbsp;<label id="incommingMsg" style="display: none;"></label></a>
+                    <ul id="ulComm">
+                        @if (Golfler.Models.LoginInfo.LoginUserType == Golfler.Models.UserType.CourseAdmin ||
+                            objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.MessageCenter && x.Visible) > 0)
+                        {
+                            <li class="MassMessages MessageHistory"><a href="/Golfler/CourseAdmin/MessagingCenterList">Messaging Center</a></li>
+                        }
+                        @if (Golfler.Models.LoginInfo.LoginUserType == Golfler.Models.UserType.CourseAdmin ||
+                            objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.MassMessage && x.Visible) > 0)
+                        {
+                            <li class="MassMessages MessageHistory"><a href="/Golfler/CourseAdmin/MassMessages">Mass Messages</a></li>
+                        }
+                    </ul>
+                </li>
+                    }
+@*}
+                    else
+                    {
+                        if (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.MessageCenter && x.Visible) > 0)
+                        {
+            <li class="MessagingList MessagingCenterList"><a href="/Golfler/CourseAdmin/MessagingCenterList" id="liCourses">Messaging Center
+                  &nbsp;&nbsp;<label id="incommingMsg1" style="display: none;"></label>
+            </a></li>
+                        }
+                    }*@
+                 
+                    if (Golfler.Models.LoginInfo.LoginUserType == Golfler.Models.UserType.CourseAdmin ||
+                       ((objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.Ratting && x.Visible) > 0) ||
+                        (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.GolfPlayingHistoryReport && x.Visible) > 0) ||
+                        (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.FoodItemsReport && x.Visible) > 0) ||
+                        (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.EmployeeReport && x.Visible) > 0) ||
+                        (objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.GolferOrderHistoryReport && x.Visible) > 0)))
+                    { 
+            <li class="mnuOrganizationManagement"><a href="#" id="liManage">Reports<span></span></a>
+                <ul id="ulManage">
+                    @if (Golfler.Models.LoginInfo.LoginUserType == Golfler.Models.UserType.CourseAdmin || objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.Ratting && x.Visible) > 0)
+                    {
+                        <li class="ManageRatings"><a href="/Golfler/CourseAdmin/ManageRatings">Manage Ratings</a></li>
+                    }
+                    @if (Golfler.Models.LoginInfo.LoginUserType == Golfler.Models.UserType.CourseAdmin || objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.EmployeeReport && x.Visible) > 0)
+                    {
+                        <li class="EmployeeAnalytics"><a href="/Golfler/CourseAdmin/EmployeeAnalytics">Employee Report</a></li>
+                    }
+                    @if (Golfler.Models.LoginInfo.LoginUserType == Golfler.Models.UserType.CourseAdmin || objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.GolfPlayingHistoryReport && x.Visible) > 0)
+                    {
+                        <li class="PlayingHistory"><a href="/Golfler/CourseAdmin/PlayingHistory">Golfer Playing History</a></li>
+                    }
+                    @if (Golfler.Models.LoginInfo.LoginUserType == Golfler.Models.UserType.CourseAdmin || objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.FoodItemsReport && x.Visible) > 0)
+                    {
+                        <li class="FoodItemsreport"><a href="/Golfler/CourseAdmin/FoodItemsreport">Food Items Report</a></li>
+                    }
+                    @if (Golfler.Models.LoginInfo.LoginUserType == Golfler.Models.UserType.CourseAdmin || objRoles.ArrRoleModules.AsQueryable().Count(x => x.Value == Golfler.Models.ModuleValues.GolferOrderHistoryReport && x.Visible) > 0)
+                    {
+                        <li class="GolferOrderHistoryReport"><a href="/Golfler/CourseAdmin/GolferOrderHistoryReport">Golfer Order History Report</a></li>
+                    }
+                </ul>
+            </li>
+                    }
+        }
+        else if (Golfler.Models.LoginInfo.GolferType == Golfler.Models.UserType.Golfer || Golfler.Models.LoginInfo.MasterUserId != 0)
+        {
+            <li class="mnuGolferUsers GolferEditInformation"><a href="/Golfler/Golfer/GolferEditInformation" id="liGolferUsers">Manage Profile</a></li>
+            <li class="mnuOrganizationItem OrderHistoryList"><a href="/Golfler/Golfer/OrderHistoryList" id="liItem">Order History</a></li>
+            <li class="mnuResolutionCenter ResolutionMessages"><a href="/Golfler/Golfer/ResolutionMessages" id="liComm">Resolution Center</a></li>
+            <li class="MessagingList MessagingCenterList"><a href="/Golfler/Golfer/MessagingCenterList" id="liCourses">Messaging Center
+                &nbsp;&nbsp;<label id="incommingMsgGolfer" style="display: none;"></label></a>
+
+            </li>
+            <li class="mnuOrganizationCourses CourseCoordinateSuggestion"><a href="/Golfler/Golfer/CourseCoordinateSuggestionList" id="liCourses">Suggest Flag Coordinates</a></li>
+            <li class="mnuResolutionCenter"><a href="#" id="liComm">Analytics<span></span></a>
+                <ul id="ulComm">
+                    <li class="OrderAnalytics"><a href="/Golfler/Golfer/OrderAnalytics">Order Analytics</a></li>
+                    <li class="GameAnalytics"><a href="/Golfler/Golfer/GameAnalytics">Game Analytics</a></li>
+                </ul>
+            </li>
+            
+        }
+    </ul>
+    <input type="hidden" value="@ViewBag.IsGolfer"  id="hdnIsGolfer"/>
+
+</div>
+@*//New Messages Pop Up Start//*@
+<script>
+    var newMsgCount = 0;
+    var isGolfer = 0;
+    var newResMsgCount = 0;
+
+    window.setInterval(function () {
+        var loc = document.location.toString().toLowerCase();
+        //  alert(loc.indexOf('courseadmin/coursebuilder'));
+        if (loc.indexOf('courseadmin/coursebuilder') < 0) {
+            //debugger;
+            if ($("#hdnIsGolfer").val() != "") {
+                isGolfer = 1;
+            }
+
+            $.ajax({
+                type: 'POST',
+                async: false,
+                url: '/Golfler/Golfer/NewIncommingMsgsCount',
+                data: { isGolfer: isGolfer },
+                success: function (data) {
+                    newMsgCount = data.result.NewMsgCount;
+                },
+                error: function (data) {
+
+                }
+            });
+
+            $.ajax({
+                type: 'GET',
+                async: false,
+                url: '/Golfler/Admin/GetUnReadResolutionMsg',
+                success: function (data) {
+                    newResMsgCount = data.unReadCount;
+                },
+                error: function (data) {
+
+                }
+            });
+        }
+    }, 10000);
+
+    var spnSuggCourseCount = parseInt('@ViewBag.SuggCourseCount');
+    setInterval(function () {
+        var loc = document.location.toString().toLowerCase();
+        //  alert(loc.indexOf('courseadmin/coursebuilder'));
+        if (loc.indexOf('courseadmin/coursebuilder') < 0) {
+            if (isGolfer == 1) {
+                if (newMsgCount > 0) {
+                    // debugger;
+                    var newHTML = "&nbsp;(" + newMsgCount + ")&nbsp;";
+                    $('#incommingMsgGolfer').animate({ backgroundColor: 'red' }, 300)
+                    .animate({ backgroundColor: '#43b34a' }, 300);
+                    $('#incommingMsgGolfer').css('display', '');
+                    $('#incommingMsgGolfer').html(newHTML);
+
+                    ////
+                    $('#incommingMsgGolferDashBoard').animate({ backgroundColor: 'red' }, 300).animate({ backgroundColor: '#43b34a' }, 300);
+                    $('#incommingMsgGolferDashBoard').css('display', '');
+                    $('#incommingMsgGolferDashBoard').html(newHTML);
+                    ////
+
+                }
+                else {
+                    $('#incommingMsgGolfer').remove('style');
+                    $('#incommingMsgGolfer').css('background-color', '#43b34a');
+                    $('#incommingMsgGolfer').css('display', 'none');
+                    ////
+                    $('#incommingMsgGolferDashBoard').remove('style');
+                    $('#incommingMsgGolferDashBoard').css('background-color', '#43b34a');
+                    $('#incommingMsgGolferDashBoard').css('display', 'none');
+                    ////
+                }
+            }
+            else {
+                
+                if (newMsgCount > 0) {
+                    // debugger;
+                    var newHTML = "&nbsp;(" + newMsgCount + ")&nbsp;";
+                    $('#incommingMsg').animate({ backgroundColor: 'red' }, 300)
+                    .animate({ backgroundColor: '#43b34a' }, 300);
+                    $('#incommingMsg').css('display', '');
+                    $('#incommingMsg').html(newHTML);
+                }
+                else {
+                    $('#incommingMsg').remove('style');
+                    $('#incommingMsg').css('background-color', '#43b34a');
+                    $('#incommingMsg').css('display', 'none');
+                }
+                if (newMsgCount > 0) {
+                    // debugger;
+                    var newHTML = "&nbsp;&nbsp;Msg ( " + newMsgCount + " ) ";
+                    $('#incommingMsg1').animate({ backgroundColor: 'red' }, 300)
+                    .animate({ backgroundColor: '#43b34a' }, 300);
+                    $('#incommingMsg1').css('display', '');
+                    $('#incommingMsg1').html(newHTML);
+                }
+                else {
+                    $('#incommingMsg1').remove('style');
+                    $('#incommingMsg1').css('background-color', '#43b34a');
+                    $('#incommingMsg1').css('display', 'none');
+                }
+
+                if (newResMsgCount > 0) {
+                    var newHTML = "( " + newResMsgCount + " ) ";
+                    $('.resolutionMsg').animate({ backgroundColor: 'red' }, 300).animate({ backgroundColor: '#43b34a' }, 300);
+                    $('.resolutionMsg').css('display', '');
+                    $('.resolutionMsg').html(newHTML);
+                }
+                else {
+                    $('.resolutionMsg').remove('style');
+                    $('.resolutionMsg').css('background-color', '#43b34a');
+                    $('.resolutionMsg').css('display', 'none');
+                }
+
+                if (spnSuggCourseCount > 0) {
+                    $('.spnSuggCourseCount').animate({ backgroundColor: 'red' }, 300).animate({ backgroundColor: '#43b34a' }, 300);
+                    $('.spnSuggCourseCount').css('display', '');
+                }
+                else {
+                    $('.spnSuggCourseCount').remove('style');
+                    $('.spnSuggCourseCount').css('background-color', '#43b34a');
+                    $('.spnSuggCourseCount').css('display', 'none');
+                }
+            }
+        }
+    }, 1000);
+
+
+
+</script>
+
+@*//New Messages Pop Up End//*@

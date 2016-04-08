@@ -1,0 +1,298 @@
+/* Background color for the input field 
+ if any error occurs */
+.inputError
+{
+    background-color: #FFFFD7;
+    padding: 1px;
+    font-family: tahoma;
+    font-size: 11px;
+    border: 1px solid #CCCCCC;
+    border-width: 1px;
+    font-family: Verdana;
+    font-size: 12px;
+}
+.inputNormal
+{
+    /*background-color: #efefef*/
+}
+.innerError
+{
+    border-right: #FF8000 1px solid;
+    border-top: #FF8000 1px solid;
+    margin: 0px;
+    border-left: #FF8000 1px solid;
+    border-bottom: #FF8000 1px solid;
+    color: #FF8000;
+}
+
+.warning
+{
+    background: url("../images/warning.gif") left no-repeat;
+    background-color: #FFF8A7;
+    background-position: 14px center;
+    padding: 8px 3px 8px 48px;
+    border: 1px dotted #E5D200;
+    margin: 5px;
+    width: 80%;
+    text-align: left;
+    color: #000000;
+    font-family: arial;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.info
+{
+    background: url("../images/info.gif") left no-repeat;
+    background-color: #D4F5D4;
+    background-position: 14px center;
+    padding: 3px 3px 3px 42px;
+    border: 1px dotted #54AF54;
+    margin: 5px;
+    width: 70%;
+    text-align: left;
+    font-family: arial;
+    font-size: 11px;
+    font-weight: bold;
+}
+.field-validation-error2
+{
+    font-family: tahoma;
+    color: #FF0000;
+    float: left;
+    width: 77%;
+    height: auto;
+    margin-bottom: 10px;
+    font-size: 11px;
+}
+.field-validation-error5
+{
+    font-family: tahoma;
+    color: #FF0000;
+    width: 77%;
+    height: auto;
+    margin-bottom: 10px;
+    font-size: 11px;
+}
+
+.field-validation-error
+{
+   color: #FF0000;
+    display: block;
+    font-size: 11px;
+    line-height: 16px;
+	text-align:right;
+	padding:0px 5px; clear:both;
+}
+span.field-validation-error
+{
+    margin-left:5px;
+    
+}
+
+/*.field-validation-valid span
+{
+    font-family: tahoma;
+    font-size: 12px;
+    display: none;
+}
+
+.field-validation-error span
+{
+    font-family: tahoma;
+    font-size: 12px;
+    color: #FF0000;
+}*/
+.field-validation-valid
+{
+    display: none;
+}
+.input-validation-error
+{
+    background-color: #FFFFFF !important;
+    border: 2px solid #E06A6A !important;
+    border-radius: 2px 2px 2px 2px !important;
+    box-shadow: 0 0 5px #E06A6A !important;
+}
+.ddl-validation-error
+{
+    background-color: #FFEEEE !important;
+    border: 1px solid #FF0000 !important;
+}
+
+
+.validation-summary-errors
+{
+    font-family: tahoma;
+    font-size: 12px;
+    color: #FF0000;
+    font-weight: bold;
+    text-align: center;
+    font-size: 11px;
+    padding-top: 10px;
+}
+
+.forgot-password-reset-success
+{
+    font-family: tahoma;
+    font-size: 12px;
+    color: red;
+    font-weight: bold;
+    text-align: center;
+    font-size: 20px;
+}
+
+.forgot-password-reset-success-summary
+{
+    font-family: tahoma;
+    font-size: 12px;
+    color: Black;
+    text-align: center;
+    font-size: 11px;
+}
+.validation-summary-valid
+{
+    display: none;
+}
+.display-label, .editor-label
+{
+    margin: 1em 0 0;
+}
+.display-field, .editor-field
+{
+    margin: 0.5em 0 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+#commentForm
+{
+    width: 500px;
+}
+#commentForm label
+{
+    width: 250px;
+}
+#commentForm label.error, #commentForm input.submit
+{
+    margin-left: 253px;
+}
+
+
+/*******   styles for validations   *********/
+
+label.error
+{
+    color: red !important;
+    font-weight: normal !important;
+    padding-bottom: 2px !important;
+    font-size: 11px !important;
+    margin-left: 0px !important;
+}
+
+input.error
+{
+    background-color: #FFEEEE;
+    border: 1px solid #FF0000 !important;
+}
+textarea.error
+{
+    background-color: #FFEEEE;
+    border: 1px solid #FF0000;
+}
+select.error
+{
+    background-color: #FFEEEE;
+    border: 1px solid #FF0000;
+}
+
+.no_Favourite
+{
+    color: #868686;
+    float: left;
+    font-family: tahoma;
+    font-size: 14px;
+    font-weight: bold;
+    margin: 10px 10px 0;
+}
+
+
+.ddl
+{
+    border: 1px solid #D2D2D2;
+    color: #000000;
+    font-family: tahoma;
+    font-size: 12px;
+    height: 26px;
+    line-height: 26px;
+    padding: 0 5px;
+    width: 295px;
+}
+.ddl1
+{
+    border: 1px solid #D2D2D2;
+    color: #000000;
+    font-family: tahoma;
+    font-size: 12px;
+    height: 26px;
+    line-height: 26px;
+    padding: 0 5px;
+    width: 295px;
+}
+.whiteBoxBody h1
+{
+    color: #D71B32;
+    font-family: tahoma;
+    font-size: 28px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.whiteBoxBody h2
+{
+    color: #333333;
+    font-family: tahoma;
+    font-size: 12px;
+    text-align: center;
+}
+.dynamicHeader
+{
+    color: #D71B32;
+    font-family: tahoma;
+    font-size: 28px;
+    padding: 10px;
+    text-align: left;
+}
+
+.permalink
+{
+    color: #D71B32;
+    font-family: tahoma;
+    font-size: 14px;
+    padding: 20px;
+    text-align: center;
+}
+.catname
+{
+    color: #D71B32;
+    font-family: tahoma;
+    margin-left: 10px !important;
+    margin: 10px 5px 5px;
+    position: relative;
+    width: auto;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.required
+{
+    color: Red;
+}

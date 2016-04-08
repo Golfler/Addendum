@@ -1,0 +1,766 @@
+﻿@model Golfler.Models.GF_Golfer
+<script type="text/javascript">
+    $(document).ready(
+            function () {
+                //Confirmation Page
+                if ($("#ID").val() != 0) {
+
+                    $("#btnConfirm").fancybox({
+                        'scrolling': 'no',
+                        'onStart': function () {
+                            $("#lblUserName").text($('#txtEmail').val());
+                            $("#lblFirstName").text($('#FirstName').val());
+                            $("#lblLastname").text($("#LastName").val() == "" ? "-" : $("#LastName").val());
+                            $("#lblTimeZone").text($("#TimeZoneId").val() == "" ? "-" : $("#TimeZoneId option:selected").text());
+
+                            $("#lblPhone").text($("#MobileNo").val() == "" ? "-" : $("#MobileNo").val());
+
+                            //$("#lblStatus").text($('#Active').is(':checked') ? "Active" : "Inactive");
+                            $("#lblStatus").text($('#Active').val() == 'True' ? "Yes" : "No");
+
+                            $("#lblAddress").text($("#txtAddress").val() == "" ? "-" : $("#txtAddress").val());
+                            $("#lblCity").text($("#txtCity").val() == "" ? "-" : $("#txtCity").val());
+                            $("#lblState").text($("#txtState").val() == "" ? "-" : $("#txtState").val());
+                            $("#lblCountry").text($("#ddlCountry").val() == "" ? "-" : $("#ddlCountry option:selected").text());
+                            $("#lblZip").text($("#txtZipCode").val() == "" ? "-" : $("#txtZipCode").val());
+                            $("#lblPhone").text($("#txtPhone").val() == "" ? "-" : $("#txtPhone").val());
+                            $("#lblBirthdate").text($("#txtBirthdate").val() == "" ? "-" : $("#txtBirthdate").val());
+                            //$("#lblGender").text($("#rdoMale").checked == "" ? "-" : $("#txtBirthdate").val());
+                            $("#lblGender").text($('#rdoMale').is(':checked') ? "Male" : ($('#rdoFemale').is(':checked') ? "Female" : ""));
+                            $("#lblIncome").text($("#ddlIncome").val() == "" ? "-" : $("#ddlIncome option:selected").text());
+                            //$("#lblReceivedEmail").text($('#chkReceiveEmail').is(':checked') ? "Yes" : "No");
+                            $("#lblReceivedEmail").text($('#ReceiveEmail').val() == 'True' ? "Yes" : "No");
+
+
+                            //$("#lblReceivedPush").text($('#chkReceivePushNotification').is(':checked') ? "Yes" : "No");
+
+                            $("#lblReceivedPush").text($('#ReceivePushNotification').val() == 'True' ? "Yes" : "No");
+
+                            $("#lblReceivedEmailGolfer").text($('#ReceiveEmailGolfer').val() == 'True' ? "Yes" : "No");
+                            $("#lblReceivedPushGolfer").text($('#ReceivePushNotificationGolfer').val() == 'True' ? "Yes" : "No");
+
+                            $("#lblRace").text($("#ddlRace").val() == "" ? "-" : $("#ddlRace option:selected").text());
+                            $("#lblTee").text($("#ddlTee").val() == "" ? "-" : $("#ddlTee option:selected").text());
+                            //   $("#myselect option:selected").text();
+                            //$("#lblReceivedChat").text($('#chkReceiveChat').is(':checked') ? "Yes" : "No");
+
+                            $("#lblReceivedChat").text($('#ReceiveChat').val() == 'True' ? "Yes" : "No");
+
+
+
+                            $("#myModal").css("display", "block");
+                        },
+                        'onClosed': function () { $("#myModal").css("display", "none"); }
+                    });
+                    $('#btnSubmit').on("click", function () {
+                        // debugger;
+                        if (!isValidDate($("#txtBirthdate").val())) {
+                            showStickMessage('Please enter a valid birthdate');
+                            return false;
+                        }
+                        if (!$('#btnSubmit').hasClass('unaccess') && $('#frmSubmit').valid()) {
+                            if ($('#hdnConfirm').val() != "1") {
+                                $("#btnConfirm").click();
+                                return false;
+                            }
+                        }
+                    });
+                }
+
+                $('#cmn-toggle-4').click(function () {
+                    if (this.checked) {
+                        if (confirm('Are you sure you want to deactivate your account?')) {
+                            //Do nothing
+                        }
+                        else {
+                            this.checked = false;
+                            $('#Active').val('False');
+                        }
+                    }
+                });
+
+                $('#ddlMeasurement').val('@Model.measurement');
+                $('#dllTemperature').val('@Model.temperature');
+                $('#ddlSpeed').val('@Model.speed');
+            });
+</script>
+<script type="text/javascript">
+    $(document).ready(
+        function () {
+            //   $("#frmSubmit").validate();
+            $("#txtpassword").valid();
+        });
+</script>
+<style>
+    #txtBirthdate {
+        width: 30%;
+    }
+
+    #fileToUpload {
+        width: 44% !important;
+    }
+</style>
+
+
+<tr>
+    <td class="id_pathway">
+        <div class="breadcrumb">
+            <ul>
+                <li><a href='@Url.Action("Dashboard")'>Dashboard</a><img src="/Content/Images/arrow.png"
+                    class="arrow_position" /></li>
+
+                <li>@ViewBag.Title</li>
+            </ul>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td id="content_center_td2" valign="top" align="center">
+        <div id="content_div" class="form_box organization_form">
+            @using (Html.BeginForm("GolferEditInformation", null, FormMethod.Post, new { id = "frmSubmit", enctype = "multipart/form-data" }))
+            {
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(x => x.GF_ID)
+                @Html.Hidden("hdnIsLoginUser", (object)ViewBag.IsLoginUser)
+                <div>
+                    <div class="organization_left">
+                        <p>
+                            @Html.LabelFor(x => x.FirstName)
+                            @Html.TextBoxFor(x => x.FirstName, new { @class = "userfeilder red-border", @maxlength = "50" })
+                            @Html.ValidationMessageFor(x => x.FirstName)
+                        </p>
+                    </div>
+                    <div class="organization_left">
+                        <p>
+                            @Html.LabelFor(x => x.LastName)
+                            @Html.TextBoxFor(x => x.LastName, new { @class = "userfeilder red-border", @maxlength = "50" })
+                            @Html.ValidationMessageFor(x => x.LastName)
+                        </p>
+                    </div>
+                    <div class="clr">
+                    </div>
+                </div>                 
+                <div>
+                    <div class="organization_left">
+                        <p class="tpspacing">
+                            @Html.LabelFor(x => x.Password)
+                            @Html.PasswordFor(x => x.Password, new { id = "txtPassword", @autocomplete = "off", value = Model.Password, @class = "userfeilder  red-border" })
+                            @Html.ValidationMessageFor(x => x.Password)
+                            @*<div class="password-meter" width="100%" style="float: right; margin-right: 75px; height: auto;">
+                                <div class="password-meter-message">
+                                    &nbsp;
+                                </div>
+                                <div class="password-meter-bg">
+                                    <div class="password-meter-bar">
+                                    </div>
+                                </div>
+                            </div>*@
+                        </p>
+                    </div>
+                    <div class="organization_left">
+                        <label>Time Zone</label>
+                        @Html.DropDownListFor(x => x.TimeZoneId, (SelectList)(ViewBag.TimeZone), "Select Time Zone", new { @class = "" })
+                    </div>
+                    <div class="clr">
+                    </div>
+                </div> 
+                <div>
+                    <div class="organization_left">
+                        <p>
+                            @Html.LabelFor(x => x.Address)
+                            @Html.TextBoxFor(x => x.Address, new { id = "txtAddress", @class = "userfeilder", @maxlength = "100" })
+                            @Html.ValidationMessageFor(x => x.Address)
+                        </p>
+                    </div>
+                    <div class="organization_left">
+                        <p>
+                            @Html.LabelFor(x => x.City)
+                            @Html.TextBoxFor(x => x.City, new { id = "txtCity", @class = "userfeilder", @maxlength = "50" })
+                            @Html.ValidationMessageFor(x => x.City)
+                        </p>
+                    </div>
+                    <div class="clr">
+                    </div>
+                </div>                 
+                <div>
+                    <div class="organization_left">
+                        <p>
+                            @Html.LabelFor(x => x.State)
+                            @Html.TextBoxFor(x => x.State, new { id = "txtState", @class = "userfeilder", @maxlength = "100" })
+                            @Html.ValidationMessageFor(x => x.State)
+                        </p>
+                    </div>
+                    <div class="organization_left">
+                        <p>
+                            @Html.LabelFor(x => x.Country)
+                            @Html.DropDownListFor(x => x.Country, new List<SelectListItem>  
+     { new SelectListItem { Text = "USA", Value = "0", Selected=true},  
+       new SelectListItem { Text = "AUS", Value = "1"},  
+       }, "Select Country", new { @id = "ddlCountry", @class = "" })
+
+
+                            @Html.ValidationMessageFor(x => x.Country)
+                        </p>
+                    </div>
+                    <div class="clr">
+                    </div>
+                </div>                  
+                <div>
+                    <div class="organization_left">
+                        <p>
+                            @Html.LabelFor(x => x.ZipCode)
+                            @Html.TextBoxFor(x => x.ZipCode, new { id = "txtZipCode", @class = "userfeilder", @maxlength = "100" })
+                            @Html.ValidationMessageFor(x => x.ZipCode)
+                        </p>
+                    </div>
+                    <div class="organization_left">
+                        <p>
+                            <label>Photo</label>
+                            <input type="file" id="fileToUpload" name="profileImage" />
+                            @if (Model.Image != null)
+                            {
+                                if (Model.Image != "")
+                                {                              
+                                <a href='@Url.Content(Model.Image)' target="_blank" style="display: block !important; float: left;">
+                                    <img src='@Url.Content(Model.Image)'  alt="" width="30" height="30" style="display:block !important" />
+                                </a>
+                                }
+                            }
+@* <img src="D:\kiran\Project\GolferWebAPI\GolferWebAPI\Upload\Golferimages\10041_20150518_053221.jpg" />*@
+                        </p>
+
+                    </div>
+                    <div class="clr">
+                    </div>
+                </div> 
+                <div>
+                    <div class="organization_left">
+                        <p>
+                            @Html.LabelFor(x => x.Email, "Email ( UserName )")
+                            @Html.TextBoxFor(x => x.Email, new { id = "txtEmail", @class = "userfeilder red-border" })
+                        </p>
+                    </div>
+                    <div class="organization_left">
+                        <p>
+                            @Html.LabelFor(x => x.Phone)
+                            @Html.TextBoxFor(x => x.Phone, new { id = "txtPhone", @class = "userfeilder", @maxlength = "50" })
+                            @Html.ValidationMessageFor(x => x.Phone)
+                        </p>
+                    </div>
+                    <div class="clr">
+                    </div>
+                </div>  
+                <div>
+                    <div class="organization_left">
+                        <p>
+                            <label>Birthdate</label>
+                            @Html.TextBoxFor(x => x.Birthdate, new { id = "txtBirthdate", @class = "datepickerBirthDate", @maxlength = "10", @placeholder = "MM/DD/YYYY" })
+
+                            @Html.ValidationMessageFor(x => x.DateOfBirth)
+
+                        </p>
+                    </div>
+                    <div class="organization_left">
+                        <p>
+                            <label>Gender</label>
+                            @Html.RadioButtonFor(x => x.Gender, "M", new { id = "rdoMale" }) Male<br />
+                            @Html.RadioButtonFor(x => x.Gender, "F", new { id = "rdoFemale" }) Female
+                        </p>
+                    </div>
+                    <div class="clr">
+                    </div>
+                </div> 
+                <div>
+                    <div class="organization_left">
+                        <label>Tee</label>
+                        @Html.DropDownListFor(x => x.Tee, new List<SelectListItem>  
+                                   { new SelectListItem { Text = "Professional", Value = "1"},  
+                                     new SelectListItem { Text = "Gentleman", Value = "2"}, 
+                                       new SelectListItem { Text = "Lady", Value = "3"},   
+                                     
+                                   }, "Select Tee", new { @id = "ddlTee", @class = "red-border" })
+                    </div>
+                    <div class="organization_left">
+                        <p>
+                            @*@Html.LabelFor(x => x.IncomeID)*@
+                            <label>Income</label>
+                            @Html.DropDownListFor(x => x.IncomeID, (SelectList)(ViewBag.golferIncome), "Select", new { @id = "ddlIncome", @class = "" })
+                            @*  @Html.DropDownListFor(x => x.IncomeID, new List<SelectListItem>  
+                             {  new SelectListItem { Text = "Less than $10,000", Value = "1", Selected=true},  
+                                new SelectListItem { Text = "Less than $40,000", Value = "2"},  
+                                new SelectListItem { Text = "Less than $80,000", Value = "10002"},
+                                new SelectListItem { Text = "$100,000+", Value = "10003"}
+                               }, "Select Income", new { @id = "ddlIncome", @class = "" })*@
+
+
+
+                        </p>
+                    </div>
+                    <div class="clr">
+                    </div>
+                </div>
+                <div>
+                    <div class="organization_left">
+                        <p>
+                            @*<label>Receive E-mail Alerts</label>*@
+                            <label>Receive emails from courses</label>
+                            @*@Html.CheckBoxFor(x => x.ReceiveEmail, new { id = "chkReceiveEmail", @class = "noleft_space", })*@
+
+                            <span class="selected-row">
+                                <span class="switch">
+                                    <input id="cmn-toggle-1" data-result-id="ReceiveEmail" class="cmn-toggle cmn-toggle-round" type="checkbox" data-value="@(Model.ReceiveEmail ? "1" : "0")" @(Model.ReceiveEmail ? "checked='checked'" : "") />
+                                    <label for="cmn-toggle-1"></label>
+                                    @Html.HiddenFor(x => x.ReceiveEmail)
+                                </span>
+                            </span>
+
+
+                        </p>
+                    </div>
+                    <div class="organization_left">
+                        <p>
+                            @*<label>Receive push notification</label>*@
+                            <label>Receive push notifications from courses</label>
+                            @*@Html.CheckBoxFor(x => x.ReceivePushNotification, new { id = "chkReceivePushNotification", @class = "noleft_space" })*@
+
+                            <span class="selected-row">
+                                <span class="switch">
+                                    <input id="cmn-toggle-2" data-result-id="ReceivePushNotification" class="cmn-toggle cmn-toggle-round" type="checkbox" data-value="@(Model.ReceivePushNotification ? "1" : "0")" @(Model.ReceivePushNotification ? "checked='checked'" : "") />
+                                    <label for="cmn-toggle-2"></label>
+                                    @Html.HiddenFor(x => x.ReceivePushNotification)
+                                </span>
+                            </span>
+
+                        </p>
+                    </div>
+                    <div class="clr">
+                    </div>
+                </div>
+                <div>
+                    <div class="organization_left">
+                        <p>
+                            @*<label>Receive E-mail Alerts</label>*@
+                            <label>Receive emails from Golfer</label>
+                            @*@Html.CheckBoxFor(x => x.ReceiveEmail, new { id = "chkReceiveEmail", @class = "noleft_space", })*@
+
+                            <span class="selected-row">
+                                <span class="switch">
+                                    <input id="cmn-toggle-5" data-result-id="ReceiveEmailGolfer" class="cmn-toggle cmn-toggle-round" type="checkbox" data-value="@(Model.ReceiveEmailGolfer ? "1" : "0")" @(Model.ReceiveEmailGolfer ? "checked='checked'" : "") />
+                                    <label for="cmn-toggle-5"></label>
+                                    @Html.HiddenFor(x => x.ReceiveEmailGolfer)
+                                </span>
+                            </span>
+
+
+                        </p>
+                    </div>
+                    <div class="organization_left">
+                        <p>
+                            @*<label>Receive push notification</label>*@
+                            <label>Receive push notifications from Golfer</label>
+                            @*@Html.CheckBoxFor(x => x.ReceivePushNotification, new { id = "chkReceivePushNotification", @class = "noleft_space" })*@
+
+                            <span class="selected-row">
+                                <span class="switch">
+                                    <input id="cmn-toggle-6" data-result-id="ReceivePushNotificationGolfer" class="cmn-toggle cmn-toggle-round" type="checkbox" data-value="@(Model.ReceivePushNotificationGolfer ? "1" : "0")" @(Model.ReceivePushNotificationGolfer ? "checked='checked'" : "") />
+                                    <label for="cmn-toggle-6"></label>
+                                    @Html.HiddenFor(x => x.ReceivePushNotificationGolfer)
+                                </span>
+                            </span>
+
+                        </p>
+                    </div>
+                    <div class="clr">
+                    </div>
+                </div>
+                <div>
+                    <div class="organization_left">
+                        <p>
+                            <label>Receive Chat Messages</label>
+                            @*@Html.CheckBoxFor(x => x.ReceiveChat, new { id = "chkReceiveChat", @class = "noleft_space" })*@
+                            <span class="selected-row">
+                                <span class="switch">
+                                    <input id="cmn-toggle-3" data-result-id="ReceiveChat" class="cmn-toggle cmn-toggle-round" type="checkbox" data-value="@(Model.ReceiveChat ? "1" : "0")" @(Model.ReceiveChat ? "checked='checked'" : "") />
+                                    <label for="cmn-toggle-3"></label>
+                                    @Html.HiddenFor(x => x.ReceiveChat)
+                                </span>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="organization_left">
+                        <p>
+                            @Html.LabelFor(x => x.Active, "Deactivate Account")
+                            @*@Html.CheckBoxFor(x => x.Active, new { @class = "noleft_space" })*@
+                            <span class="selected-row">
+                                <span class="switch">
+                                    <input id="cmn-toggle-4" data-result-id="Active" class="cmn-toggle cmn-toggle-round" type="checkbox" data-value="@(Model.Active ? "1" : "0")" @(Model.Active ? "checked='checked'" : "") />
+                                    <label for="cmn-toggle-4"></label>
+                                    @Html.HiddenFor(x => x.Active)
+                                </span>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="clr">
+                    </div>
+                </div>
+                <div>
+                    <div class="organization_left">
+                        <p>
+                            <label>Measurement Preference</label>
+                            @Html.DropDownListFor(x => x.measurement, (SelectList)(ViewBag.Measurement), "Select", new { @id = "ddlMeasurement" })
+                        </p>
+                    </div>
+                    <div class="organization_left">
+                        <p>
+                            <label>Temperature Preference</label>
+                            @Html.DropDownListFor(x => x.temperature, (SelectList)(ViewBag.Temperature), "Select", new { @id = "dllTemperature" })
+                        </p>
+                    </div>
+                    <div class="clr">
+                    </div>
+                </div>
+                <div>
+                    <div class="organization_left">
+                        <p>
+                            <label>Distance Preference</label>
+                            @Html.DropDownListFor(x => x.speed, (SelectList)(ViewBag.Speed), "Select", new { @id = "ddlSpeed" })
+                        </p>
+                    </div>
+                    <div class="clr">
+                    </div>
+                </div>
+@*<div>
+                    <div class="organization_left">
+                        <p>
+                            <label>Created Date</label>
+                            @Html.TextBoxFor(x => x.CreatedOn, new { id = "txtCreatedOn", @class = "userfeilder", @readonly = "true" })
+                        </p>
+                    </div>
+                    <div class="organization_left">
+                        <label>Last Login</label>
+                        @Html.TextBoxFor(x => x.LastLogin, new { id = "txtLastLogin", @class = "userfeilder", @readonly = "true" })
+                    </div>
+                    <div class="clr">
+                    </div>
+                </div>*@
+                <div style="display: none;">
+                    <div class="organization_left">
+                        <p>
+                            <label>Race</label>
+                            @Html.DropDownListFor(x => x.Race, new List<SelectListItem>  
+                                   { new SelectListItem { Text = "Mixed Race", Value = "Mixed Race"},  
+                                     new SelectListItem { Text = "Arctic (Siberian, Eskimo)", Value = "Arctic (Siberian, Eskimo)"}, 
+                                       new SelectListItem { Text = "Caucasian (European)", Value = "Caucasian (European)"},   
+                                       new SelectListItem { Text = "Caucasian (Indian)", Value = "Caucasian (Indian)"},  
+                                       new SelectListItem { Text = "Caucasian (Middle East)", Value = "Caucasian (Middle East)"},  
+                                       new SelectListItem { Text = "Caucasian (European)", Value = "Caucasian (European)"},  
+                                       new SelectListItem { Text = "Caucasian (North African, Other)", Value = "Caucasian (North African, Other)"},   
+                                       new SelectListItem { Text = "Indigenous Australian", Value = "Indigenous Australian"},   
+                                       new SelectListItem { Text = "Native American", Value = "Native American"},   
+                                       new SelectListItem { Text = "Indigenous Australian", Value = "Indigenous Australian"},   
+                                       new SelectListItem { Text = "North East Asian (Mongol, Tibetan, Korean Japanese, etc)", Value = "North East Asian (Mongol, Tibetan, Korean Japanese, etc)"},   
+                                       new SelectListItem { Text = "Pacific (Polynesian, Micronesian, etc)", Value = "Pacific (Polynesian, Micronesian, etc)"},   
+                                       new SelectListItem { Text = "South East Asian (Chinese, Thai, Malay, Filipino, etc)", Value = "South East Asian (Chinese, Thai, Malay, Filipino, etc)"},   
+                                       new SelectListItem { Text = "West African, Bushmen, Ethiopian", Value = "West African, Bushmen, Ethiopian"},   
+                                       new SelectListItem { Text = "Other Race", Value = "Other Race"}
+                                   }, "Select Race", new { @id = "ddlRace", @class = "" })
+                        </p>
+                    </div>
+                    <div class="organization_left">
+                    </div>
+                    <div class="clr">
+                    </div>
+                </div>
+@*               
+                <div class="organization_left">
+                    <p id="divCourseHead">
+                        @Html.LabelFor(x => x.MobileNo)
+                        @Html.TextBoxFor(x => x.MobileNo, new { @class = "userfeilder red-border", @maxlength = "50" })
+                        @Html.ValidationMessageFor(x => x.MobileNo)
+                    </p>
+                    <p>
+                    </p>
+                </div>*@
+              
+@*<div style="margin: 0px 0px 0px 0px;">
+                    <div class="organization_left">
+                        <p class="tpspacing">
+
+                            @Html.LabelFor(x => x.Email)
+                            @Html.TextBoxFor(x => x.Email, new { @class = "userfeilder red-border", @readonly = "true" })
+
+
+                        </p>
+                    </div>
+                    <div class="organization_left">
+                        <p class="tpspacing">
+                            @Html.LabelFor(x => x.Password)
+                            @Html.PasswordFor(x => x.Password, new { id = "txtPassword", @autocomplete = "off", value = Model.Password, @class = "userfeilder  red-border" })
+                            @Html.ValidationMessageFor(x => x.Password)
+                        </p>
+                    </div>
+                    <div class="clr">
+                    </div>
+                </div> 
+                
+                <div>
+                    <div class="organization_left">
+                        <p>
+                            @Html.LabelFor(x => x.FirstName)
+                            @Html.TextBoxFor(x => x.FirstName, new { @class = "userfeilder red-border", @maxlength = "50" })
+                            @Html.ValidationMessageFor(x => x.FirstName)
+                        </p>
+                    </div>
+                    <div class="organization_left">
+                        <p>
+                            @Html.LabelFor(x => x.LastName)
+                            @Html.TextBoxFor(x => x.LastName, new { @class = "userfeilder red-border", @maxlength = "50" })
+                            @Html.ValidationMessageFor(x => x.LastName)
+                        </p>
+                    </div>
+                    <div class="clr">
+                    </div>
+                </div> 
+                
+                <div class="organization_left">
+                    <p id="divCourseHead">
+                        @Html.LabelFor(x => x.MobileNo)
+                        @Html.TextBoxFor(x => x.MobileNo, new { @class = "userfeilder red-border", @maxlength = "50" })
+                        @Html.ValidationMessageFor(x => x.MobileNo)
+                    </p>
+                </div>*@
+                
+                <div class="clr">
+                </div>
+                <div align="center" class="center-button">
+                    @Html.HiddenFor(x => x.Active)
+                    <a href="#myModal" id="btnConfirm" class="submit-btn update-btn" style="display: none;">Submit</a>
+                    <input type="submit" id="btnSubmit" class="submit-btn update-btn" name="btnSubmit" value="Submit" action="add" />
+                    <input type="button" id="btnPartial" class="submit-btn update-btn" name="btnPartial" value="Submit" style="display: none;" />
+                </div>
+            }
+        </div>
+    </td>
+</tr>
+<input type="hidden" id="hdnConfirm" />
+<div id="myModal" class="reveal-modal" style="display: none; top: 100px;">
+    <div class="pop_detail">
+        <h1>Confirm Details</h1>
+        <div class="page-wrap">
+            <table class="voucher-details-table">
+                <tr>
+                    <td class="align-left" colspan="2">
+                        <p>
+                            <strong>Dear @Golfler.Models.LoginInfo.UserName,</strong><br />
+                            @String.Format("Please confirm User details to save.")<br />
+                            <strong>Thanks</strong>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>First Name</strong>
+                    </td>
+                    <td class="align-left" id="lblFirstName"></td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>Last Name</strong>
+                    </td>
+                    <td class="align-left" id="lblLastname"></td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>Time Zone</strong>
+                    </td>
+                    <td class="align-left" id="lblTimeZone"></td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>Address</strong>
+                    </td>
+                    <td class="align-left" id="lblAddress"></td>
+                </tr>
+
+                <tr>
+                    <td class="align-left">
+                        <strong>City</strong>
+                    </td>
+                    <td class="align-left" id="lblCity"></td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>State</strong>
+                    </td>
+                    <td class="align-left" id="lblState"></td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>Country</strong>
+                    </td>
+                    <td class="align-left" id="lblCountry"></td>
+                </tr>
+
+                <tr>
+                    <td class="align-left">
+                        <strong>ZipCode</strong>
+                    </td>
+                    <td class="align-left" id="lblZip"></td>
+                </tr>
+
+
+                <tr>
+                    <td class="align-left">
+                        <strong>Email ( UserName )</strong>
+                    </td>
+                    <td class="align-left" id="lblUserName"></td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>Phone Number</strong>
+                    </td>
+                    <td class="align-left" id="lblPhone"></td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>Birthdate </strong>
+                    </td>
+                    <td class="align-left" id="lblBirthdate"></td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>Gender </strong>
+                    </td>
+                    <td class="align-left" id="lblGender"></td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>Income </strong>
+                    </td>
+                    <td class="align-left" id="lblIncome"></td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>Receive Emails From Courses</strong>
+                    </td>
+                    <td class="align-left" id="lblReceivedEmail"></td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>Receive Push Notifications From Courses</strong>
+                    </td>
+                    <td class="align-left" id="lblReceivedPush"></td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>Receive Emails From Golfer</strong>
+                    </td>
+                    <td class="align-left" id="lblReceivedEmailGolfer"></td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>Receive Push Notifications From Golfer</strong>
+                    </td>
+                    <td class="align-left" id="lblReceivedPushGolfer"></td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>Receive Chat Messages</strong>
+                    </td>
+                    <td class="align-left" id="lblReceivedChat"></td>
+                </tr>
+                @*  <tr>
+                    <td class="align-left">
+                        <strong>Race</strong>
+                    </td>
+                    <td class="align-left" id="lblRace"></td>
+                </tr>*@
+                <tr>
+                    <td class="align-left">
+                        <strong>Tee</strong>
+                    </td>
+                    <td class="align-left" id="lblTee"></td>
+                </tr>
+
+                <tr>
+                    <td class="align-left">
+                        <strong>Deactivate Account</strong>
+                    </td>
+                    <td class="align-left" id="lblStatus"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="clr">
+    </div>
+    <div class="margin-top15">
+    </div>
+    <div class="clr">
+    </div>
+    <div align="center" class="center-button">
+        <input type="button" id="close" value="Edit" class="submit-btn cancel-btn" onclick="$.fancybox.close();" />
+        <input type="button" id="btnSave" onclick="javascript: showAfterPopup(); $('#hdnConfirm').val('1'); $('#btnSubmit').click(); $('#divProgress').show();"
+            value="Confirm" class="submit-btn update-btn" />
+    </div>
+    <div class="clear">
+    </div>
+</div>
+<script language="javascript" type="text/javascript">
+    function showAfterPopup() {
+        $("#fancybox-overlay").css("z-index", "99999999");
+    }
+    $(document).ready(function () {
+        $('#Phone').on('keydown', function (e) {
+            if (e.shiftKey || e.ctrlKey || e.altKey) {
+                e.preventDefault();
+            } else {
+                var key = e.keyCode;
+                if (!((key == 8) || (key == 9) || (key == 46) || (key >= 35 && key <= 40) || (key >= 48 && key <= 57) || (key >= 96 && key <= 105))) {
+                    e.preventDefault();
+                }
+            }
+        })
+    });
+</script>
+<script>
+    // Validates that the input string is a valid date formatted as "mm/dd/yyyy"
+    function isValidDate(dateString) {
+        if (dateString == "") {
+            return true;
+        }
+        // First check for the pattern
+        if (!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(dateString))
+            return false;
+
+        // Parse the date parts to integers
+        var parts = dateString.split("/");
+        var day = parseInt(parts[1], 10);
+        var month = parseInt(parts[0], 10);
+        var year = parseInt(parts[2], 10);
+
+        // Check the ranges of month and year
+        if (year < 1000 || year > 3000 || month == 0 || month > 12)
+            return false;
+
+        var monthLength = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+        // Adjust for leap years
+        if (year % 400 == 0 || (year % 100 != 0 && year % 4 == 0))
+            monthLength[1] = 29;
+
+        // Check the range of the day
+        return day > 0 && day <= monthLength[month - 1];
+    };
+</script>
+<style>
+    .ui-datepicker {
+        width: 14em !important;
+    }
+
+    .ui-datepicker-header {
+        background-color: #43b34a;
+    }
+</style>
+

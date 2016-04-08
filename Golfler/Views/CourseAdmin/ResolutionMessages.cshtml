@@ -1,0 +1,11 @@
+﻿@{
+    ViewBag.Title = "Resolution Messages";
+    ViewBag.pagetitle = "Resolution Message";
+    Layout = "~/Views/Shared/_LayoutCourseArea.cshtml";
+    ViewBag.LoadFrom="CourseAdmin";
+}
+
+@Html.Partial("_jqGrid")
+
+
+@Html.Partial("~/Views/Shared/_GolferResolutionMessage.cshtml")

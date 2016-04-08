@@ -1,0 +1,768 @@
+﻿@using Golfler.Models
+@{
+    ViewBag.Module = "App View - " + UserType.GetFullUserType(LoginInfo.LoginUserType);
+    ViewBag.Title = "View Order List";
+    ViewBag.pageTitle = "View Order List";
+    Layout = "~/Views/Shared/_LayoutCourseArea.cshtml";
+}
+@Html.Partial("_jqGrid")
+<style>
+    .tempwidth {
+        width: 40% !important;
+    }
+
+    .btn_order_history {
+        float: right !important;
+        margin-left: 5px;
+    }
+
+    #map_cont {
+        margin: 1px;
+    }
+
+    .gmnoprint img {
+        max-width: none;
+    }
+
+    .gm-style img {
+        max-width: none;
+    }
+</style>
+<script type="text/javascript" src="https://maps-api-ssl.google.com/maps/api/js?sensor=false"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".choose_inner_department").addClass("tempwidth");
+        bindJqGridNoMultiSelect('list', 'pager', 'GetViewOrderList',
+                ['ID', 'Order No', 'Order Date', 'Name', 'Golfer Platform Fee', 'Bill Amount', 'View', 'Time Elapsed (HH:MM)', '', 'Tax',
+                 'Grand Total', 'Item Ordered Json', 'Latitude', 'Longitude', 'HEXColor', 'Order Include', 'Order Type'],
+                [{ name: 'orderID', index: 'orderID', width: 10, hidden: true },
+                 { name: 'orderID', index: 'orderID', width: 50, formatter: SetEditLink, classes: 'zzz', hidden: true },
+                 { name: 'OrderDate', index: 'OrderDate', width: 50, hidden: true },
+                 { name: 'golferName', index: 'golferName', width: 50, formatter: SetOrderIncludeImage },
+                 { name: 'GolferPlatformFee', index: 'GolferPlatformFee', width: 50, hidden: true },
+                 { name: 'billAmount', index: 'billAmount', width: 50, hidden: true },
+                 { name: 'orderID', index: 'orderID', width: 50, formatter: SetViewLink, classes: 'zzz', sortable: false },
+                 { name: 'time', index: 'time', width: 50 },
+                 { name: 'orderID', index: 'orderID', width: 50, formatter: SetReadyLink, classes: 'zzz', sortable: false },
+                 { name: 'TaxAmount', index: 'TaxAmount', width: 50, hidden: true },
+                 { name: 'GrandTotal', index: 'GrandTotal', width: 50, hidden: true },
+                 { name: 'itemOrdered', index: 'itemOrdered', width: 50, hidden: true },
+                 { name: 'Latitude', index: 'Latitude', width: 50, hidden: true },
+                 { name: 'Longitude', index: 'Longitude', width: 50, hidden: true },
+                 { name: 'HEXColor', index: 'HEXColor', width: 50, hidden: true, formatter: setOrderMapMarker },
+                 { name: 'orderInclude', index: 'orderInclude', width: 50, hidden: true },
+                 { name: 'OrderType', index: 'OrderType', width: 50, hidden: true }
+                ], 'orderID', 'desc',
+                {
+                    "searchText": '',
+                    "orderType": '@OrderType.TurnOrder',
+                    "orderInclucde": (function () {
+                        return $('#hdnOrderInclucde').val();
+                    })
+                }, '');
+
+        bindJqGridNoMultiSelect('list1', 'pager1', 'GetViewOrderList',
+                ['ID', 'Order No', 'Order Date', 'Name', 'Golfer Platform Fee', 'Bill Amount', 'View', 'Time Elapsed (HH:MM)', '', 'Tax',
+                 'Grand Total', 'Item Ordered Json', 'Latitude', 'Longitude', 'HEXColor', 'Order Include', 'Order Type'],
+                [{ name: 'orderID', index: 'orderID', width: 10, hidden: true },
+                 { name: 'orderID', index: 'orderID', width: 50, formatter: SetEditLink, classes: 'zzz', hidden: true },
+                 { name: 'OrderDate', index: 'OrderDate', width: 50, hidden: true },
+                 { name: 'golferName', index: 'golferName', width: 50, formatter: SetOrderIncludeImage },
+                 { name: 'GolferPlatformFee', index: 'GolferPlatformFee', width: 50, hidden: true },
+                 { name: 'billAmount', index: 'billAmount', width: 50, hidden: true },
+                 { name: 'orderID', index: 'orderID', width: 50, formatter: SetViewLink, classes: 'zzz', sortable: false },
+                 { name: 'time', index: 'time', width: 50 },
+                 { name: 'orderID', index: 'orderID', width: 50, formatter: SetReadyLink, classes: 'zzz', sortable: false },
+                 { name: 'TaxAmount', index: 'TaxAmount', width: 50, hidden: true },
+                 { name: 'GrandTotal', index: 'GrandTotal', width: 50, hidden: true },
+                 { name: 'itemOrdered', index: 'itemOrdered', width: 50, hidden: true },
+                 { name: 'Latitude', index: 'Latitude', width: 50, hidden: true },
+                 { name: 'Longitude', index: 'Longitude', width: 50, hidden: true },
+                 { name: 'HEXColor', index: 'HEXColor', width: 50, hidden: true, formatter: setOrderMapMarker },
+                 { name: 'orderInclude', index: 'orderInclude', width: 50, hidden: true },
+                 { name: 'OrderType', index: 'OrderType', width: 50, hidden: true }
+                ], 'orderID', 'desc',
+                {
+                    "searchText": '',
+                    "orderType": '@OrderType.CartOrder',
+                    "orderInclucde": (function () {
+                        return $('#hdnOrderInclucde').val();
+                    })
+                }, '');
+
+        if ('@LoginInfo.LoginUserType' == '@UserType.CourseAdmin' || '@LoginInfo.LoginUserType' == '@UserType.Proshop') {
+            $('#btnKitchen').addClass('blk-btn margin_bottom5');
+            $('#btnProshop').addClass('blu-btn margin_bottom5');
+            $('#btnDelivery').addClass('blk-btn margin_bottom5');
+        }
+        else if ('@LoginInfo.LoginUserType' == '@UserType.Kitchen') {
+            $('#btnKitchen').addClass('blu-btn margin_bottom5');
+            $('#btnProshop').addClass('blk-btn margin_bottom5');
+            $('#btnDelivery').addClass('blk-btn margin_bottom5');
+        }
+        else if ('@LoginInfo.LoginUserType' == '@UserType.Cartie') {
+            $('#btnKitchen').addClass('blk-btn margin_bottom5');
+            $('#btnProshop').addClass('blk-btn margin_bottom5');
+            $('#btnDelivery').addClass('blu-btn margin_bottom5');
+        }
+        else {
+            $('#btnKitchen').addClass('blu-btn margin_bottom5');
+            $('#btnProshop').addClass('blk-btn margin_bottom5');
+            $('#btnDelivery').addClass('blk-btn margin_bottom5');
+        }
+
+        $('#btnKitchen').click(function () {
+            $(this).removeClass();
+            $(this).addClass('blu-btn margin_bottom5');
+
+            $('#btnProshop').removeClass();
+            $('#btnProshop').addClass('blk-btn margin_bottom5');
+
+            $('#btnDelivery').removeClass();
+            $('#btnDelivery').addClass('blk-btn margin_bottom5');
+
+            $('#hdnOrderInclucde').val('@FoodCategoryType.Kitchen');
+            $('#turnOrderContainer').show();
+            clearMarkers(null);
+            $("#list").trigger("reloadGrid", [{ current: true }]);
+            $("#list1").trigger("reloadGrid", [{ current: true }]);
+        });
+
+        $('#btnProshop').click(function () {
+            $(this).removeClass();
+            $(this).addClass('blu-btn margin_bottom5');
+
+            $('#btnKitchen').removeClass();
+            $('#btnKitchen').addClass('blk-btn margin_bottom5');
+
+            $('#btnDelivery').removeClass();
+            $('#btnDelivery').addClass('blk-btn margin_bottom5');
+
+            $('#hdnOrderInclucde').val('@FoodCategoryType.Proshop');
+            $('#turnOrderContainer').show();
+            clearMarkers(null);
+            $("#list").trigger("reloadGrid", [{ current: true }]);
+            $("#list1").trigger("reloadGrid", [{ current: true }]);
+        });
+
+        $('#btnDelivery').click(function () {
+            $(this).removeClass();
+            $(this).addClass('blu-btn margin_bottom5');
+
+            $('#btnProshop').removeClass();
+            $('#btnProshop').addClass('blk-btn margin_bottom5');
+
+            $('#btnKitchen').removeClass();
+            $('#btnKitchen').addClass('blk-btn margin_bottom5');
+
+            $('#hdnOrderInclucde').val('@FoodCategoryType.Cart');
+            $('#turnOrderContainer').hide();
+            clearMarkers(null);
+            $("#list").trigger("reloadGrid", [{ current: true }]);
+            $("#list1").trigger("reloadGrid", [{ current: true }]);
+
+
+        });
+
+        initialize('@ViewBag.Lattitude', '@ViewBag.Longitude');
+
+        var newOrderCount = 0;
+        setInterval(function () {
+            clearMarkers(null);
+            $("#list").trigger("reloadGrid", [{ current: true }]);
+            $("#list1").trigger("reloadGrid", [{ current: true }]);
+            getAllActiveCourseUser();
+
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("NewIncommingOrderCount", "CourseAdmin")',
+                async: false,
+                success: function (data) {
+                    console.log(data);
+                    newOrderCount = data.records;
+                },
+                error: function (data) {
+                    console.log(data.statusText, data);
+                }
+            });
+
+        }, 20000);
+
+        //setInterval(function () {
+        //    if (newOrderCount > 0) {
+        //        $('#incommingOrder').animate({ backgroundColor: 'red' }, 300)
+        //        .animate({ backgroundColor: '#43b34a' }, 300);
+        //    }
+        //    else {
+        //        $('#incommingOrder').remove('style');
+        //        $('#incommingOrder').css('background-color', '#43b34a');
+        //    }
+        //}, 1000);
+
+        getAllActiveCourseUser();
+        creteFlagsNTees();
+
+        $('#rs_mlist').hide();
+        $('#rs_mlist1').hide();
+    });
+
+    function creteFlagsNTees() {
+        var infowindow = new google.maps.InfoWindow();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetCourseHoleDetails", "CourseAdmin")',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                if (data.rows != null) {
+                    for (var j in data.rows) {
+
+                        var location = new google.maps.LatLng(data.rows[j].Latitude, data.rows[j].Longitude);
+
+                        var icon = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=' + data.rows[j].HoleNo + '|FFFFFF|000000';
+
+                        if (data.rows[j].DragItemType.toLowerCase().indexOf("flag") >= 0) {
+                            //icon = '/images/CourseImage/flag_white.png';
+                            var markerTees = new google.maps.Marker({
+                                position: location,
+                                map: $map,
+                                icon: icon,
+                                animation: google.maps.Animation.DROP,
+                                holeDesc: data.rows[j].HoleNumber
+
+                            });
+
+                            google.maps.event.addListener(markerTees, 'click', function () {
+                                infowindow.setContent(this.holeDesc);
+                                infowindow.open($map, this);
+                            });
+                        }
+                    }
+                }
+
+            },
+            error: function (x, y, z) {
+
+            }
+        });
+    }
+
+    function SetEditLink(cellvalue, options, rowObject) {
+        try {
+            return "<a class='viewOrder' >" + cellvalue + "</a>";
+        }
+        catch (ex) { alert(ex.message); }
+    }
+
+    function SetViewLink(cellvalue, options, rowObject) {
+        try {
+            var orderID = rowObject["orderID"];
+
+            return "<input type='button' onclick='javascript:ViewOrder(" + orderID + ")' class='newuser blk-btn margin_bottom5' value='View' />";
+        }
+        catch (ex) { alert(ex.message); }
+    }
+
+    function SetReadyLink(cellvalue, options, rowObject) {
+
+        try {
+            var readyStatus = rowObject["ReadyStatus"];
+            var isNew = rowObject["IsNew"];
+
+            if (isNew) {
+                return "<input type='button' onclick='javascript:OrderAcceptRejectStatus(" + cellvalue + ", 1)' class='newuser blu-btn margin_bottom5' value='Accept' />" +
+                       "<input type='button' onclick='javascript:OrderAcceptRejectStatus(" + cellvalue + ", 0)' class='newuser blu-btn margin_bottom5' value='Reject' />";
+            }
+            else {
+                if (readyStatus == '1') {
+                    return "<input type='button' onclick='javascript:OrderReadyStatus(" + cellvalue + ")' class='newuser blu-btn margin_bottom5' value='Ready' />";
+                }
+                else {
+                    return "<input type='button' onclick='javascript:OrderReadyStatus(" + cellvalue + ")' class='newuser blk-btn margin_bottom5' value='Ready' />";
+                }
+            }
+        }
+        catch (ex) { alert(ex.message); }
+    }
+
+    function OrderAcceptRejectStatus(orderID, status) {
+        try {
+            var st = status == 1 ? 'true' : 'false';
+
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("AcceptRejectOrders", "CourseAdmin")',
+                data: { orderID: orderID, status: st },
+                async: false,
+                success: function (data) {
+                    if (data.msg == "success") {
+                        showMessage(data.result);
+                        $("#list").trigger("reloadGrid", [{ current: true }]);
+                        $("#list1").trigger("reloadGrid", [{ current: true }]);
+                    }
+                    else {
+                        showStickMessage(data.msg);
+                    }
+                },
+                error: function (data) {
+                    console.log(data.statusText, data);
+                }
+            });
+        }
+        catch (ex) { console.log(ex.message); }
+    }
+
+    function SetOrderIncludeImage(cellvalue, options, rowObject) {
+
+        try {
+            var orderInclude = rowObject["orderInclude"];
+            var colorCode = rowObject["HEXColor"];
+
+            var image = '';
+
+            if (orderInclude.toLowerCase().indexOf('@FoodCategoryType.Kitchen.ToLower()') >= 0 || orderInclude.toLowerCase().indexOf('@FoodCategoryType.Cart.ToLower()') >= 0) {
+                image = image + '<img src="/images/CourseImage/order_kichen.jpg" width="15" height="27" />&nbsp;'
+            }
+
+            if (orderInclude.toLowerCase().indexOf('@FoodCategoryType.Proshop.ToLower()') >= 0) {
+                image = image + '<img src="/images/CourseImage/order_proshop.png" width="21" />&nbsp;'
+            }
+
+            return '<p style="float:left;color:' + colorCode + '">' + cellvalue + '</p>&nbsp;' + image;
+        }
+        catch (ex) { alert(ex.message); }
+    }
+
+    function setOrderMapMarker(cellvalue, options, rowObject) {
+        var lat = rowObject["Latitude"];
+        var lng = rowObject["Longitude"];
+        var orderID = rowObject["orderID"];
+        var golferName = rowObject["golferName"];
+        var geocoder = new google.maps.Geocoder();// create a geocoder object
+        var location = new google.maps.LatLng(lat, lng);
+
+        var colorCode = rowObject["HEXColor"];
+        var icon = "https://maps-api-ssl.google.com/mapfiles/ms/icons/" + colorCode + ".png";
+
+        var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + colorCode.replace('#', ''),
+            new google.maps.Size(21, 34),
+            new google.maps.Point(0, 0),
+            new google.maps.Point(10, 34));
+        var pinShadow = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_shadow",
+            new google.maps.Size(40, 37),
+            new google.maps.Point(0, 0),
+            new google.maps.Point(12, 35));
+
+        var tooltip = golferName + ', Order No. ' + orderID;
+
+        placeMarker(location, pinImage, pinShadow, tooltip);
+    }
+
+    function getAllActiveCourseUser() {
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("GetActiveCourseUser", "CourseAdmin")',
+            async: false,
+            success: function (data) {
+                console.log(data.msg, data.data);
+                if (data.msg == "success") {
+                    var courseUser = data.data;
+                    for (var i in courseUser) {
+                        var lat = courseUser[i].Latitude;
+                        var lng = courseUser[i].Longitude;
+                        var name = courseUser[i].Name;
+                        var geocoder = new google.maps.Geocoder();// create a geocoder object
+                        var location = new google.maps.LatLng(lat, lng);
+
+                        var tooltip = name;
+
+                        var icon = "";
+                        if (courseUser[i].UserType == '@UserType.Kitchen') {
+                            icon = "/images/CourseImage/kitchen.png";
+                            placeMarker(location, icon, '', tooltip);
+                        }
+                        else if (courseUser[i].UserType == '@UserType.Proshop' || courseUser[i].UserType == '@UserType.CourseAdmin') {
+                            icon = "/images/CourseImage/proshop.png";
+                            placeMarker(location, icon, '', tooltip);
+                        }
+                        else if (courseUser[i].UserType == '@UserType.Ranger') {
+                            icon = "/images/CourseImage/ranger.png";
+                            placeMarker(location, icon, '', tooltip);
+                        }
+                        else if (courseUser[i].UserType == '@UserType.Cartie') {
+                            icon = "/images/CourseImage/gophie.png";
+                            placeMarker(location, icon, '', tooltip);
+                        }
+                        else {
+                            icon = "";
+                        }
+            }
+        }
+        else {
+                    //Do Nothing
+        }
+            },
+            error: function (data) {
+                console.log(data.msg, data);
+            }
+        });
+}
+
+function OrderReadyStatus(orderID) {
+    try {
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("OrderStatus", "CourseAdmin")',
+            data: { orderID: orderID },
+            async: false,
+            success: function (data) {
+                if (data.msg == "success") {
+                    showMessage(data.result);
+                    $("#list").trigger("reloadGrid", [{ current: true }]);
+                    $("#list1").trigger("reloadGrid", [{ current: true }]);
+                }
+                else {
+                    showStickMessage(data.msg);
+                }
+            },
+            error: function (data) {
+                console.log(data.statusText, data);
+            }
+        });
+    }
+    catch (ex) { console.log(ex.message); }
+}
+
+function ViewOrder(orderID) {
+    $('#selectedData').empty();
+
+    var itemList = '';
+
+    $.ajax({
+        type: 'GET',
+        url: '@Url.Action("GetOrderByID", "CourseAdmin")',
+        data: { orderID: orderID },
+        async: false,
+        success: function (data) {
+            console.log(data.msg, data);
+            if (data.msg == "success") {
+                $('#selectedData').append('<tr><td>Order No.</td><td>' + data.data.orderID + '</td><td align="right">Date</td><td>' + data.data.OrderDate + ' - ' + data.data.time + '</td></tr>');
+                $('#selectedData').append('<tr><td>Golfer Name.</td><td colspan="3">' + data.data.golferName + '</td></tr>');
+                $('#selectedData').append('<tr><th>Items</th><th>Qty.</th><th>Price</th><th>Amount</th></tr>');
+
+                var item = data.data.itemsOrdered;
+                for (var i = 0; i < item.length; i++) {
+                    //alert(item[i].Name + ' ---- ' + item[i].UnitPrice + ' ---- ' + item[i].Quantity + ' ---- ' + item[i].Amount);
+                    itemList = itemList + '<tr><td>' + item[i].Name;
+                    if (item[i].MenuOptionName != '') {
+                        var option = item[i].MenuOptionName.split(",");
+                        if (option.length > 0) {
+                            itemList = itemList + '<br /><b>Options:</b>';
+                            $.each(option, function (j) {
+                                itemList = itemList + '<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;' + option[j] + '';
+                            });
+                        }
+                    }
+
+                    itemList = itemList + '</td><td>' + item[i].Quantity + '</td><td>$' + item[i].UnitPrice.toFixed(2) + '</td><td>$' + item[i].Amount.toFixed(2) + '</td></tr>';
+                }
+                $('#selectedData').append(itemList);
+                $('#selectedData').append('<tr><td align="right" colspan="4">Subtotal: $' + data.data.billAmount.toFixed(2) + '</td></tr>');
+                $('#selectedData').append('<tr><td align="right" colspan="4">Tax: $' + data.data.TaxAmount.toFixed(2) + '</td></tr>');
+                $('#selectedData').append('<tr><td align="right" colspan="4">Promo Code Discount: $' + data.data.DiscountAmt.toFixed(2) + '</td></tr>');
+                $('#selectedData').append('<tr><td align="right" colspan="4">Golfler Platform Fee: $' + data.data.GolferPlatformFee.toFixed(2) + '</td></tr>');
+                $('#selectedData').append('<tr><td align="right" colspan="4">Total: $' + data.data.Total.toFixed(2) + '</td></tr>');
+
+                $('#popupButton').empty();
+                var orderID = data.data.orderID;
+
+                if ('@LoginInfo.LoginUserType' != '@UserType.Admin' && '@LoginInfo.LoginUserType' != '@UserType.SuperAdmin' &&
+                        '@LoginInfo.LoginUserType' != '@UserType.CourseAdmin') {
+                    if (data.data.OrderType == '@OrderType.TurnOrder') {
+                        if ('@LoginInfo.LoginUserType' != '@UserType.Cartie' && data.data.ReadyStatus == '1') {
+                            $('#popupButton').append('<input type="button" id="pickup" value="Picked Up" class="cancel-btn blu-btn margin_bottom5" onclick="javascript:OrderPickedUp(' + orderID + ')" />');
+                        }
+                    }
+                    else {
+                        if (('@LoginInfo.LoginUserType' == '@UserType.Cartie' || '@LoginInfo.LoginUserType' == '@UserType.PowerAdmin') && data.data.ReadyStatus == '1') {
+                            $('#popupButton').append('<input type="button" id="pickup" value="Delivered" class="cancel-btn blu-btn margin_bottom5" onclick="javascript:OrderDelivery(' + orderID + ')" />');
+                        }
+                    }
+                }
+            }
+            else {
+                showStickMessage(data.msg);
+            }
+        },
+        error: function (data) {
+            console.log(data.msg, data);
+        }
+    });
+
+    $('#popupButton').append('<input type="button" id="close" value="Close" class="cancel-btn blk-btn margin_bottom5" onclick="$.fancybox.close();" />');
+
+    $('#btnShowOrder').click();
+}
+
+    @*function ViewOrder(orderID) {
+
+        var rowID = $(ele).parent().parent().attr('id');
+        var columnIndex = 3;
+        var cellValue = $("#" + rowID).find('td').eq(columnIndex).text();
+        var item = JSON.parse($("#" + rowID).find('td').eq(11).text());
+        
+        var itemList = '';
+
+        $('#selectedData').empty();
+        $('#selectedData').append('<tr><td>Order No.</td><td>' + $("#" + rowID).find('td').eq(1).text() + '</td><td align="right">Date</td><td>' + $("#" + rowID).find('td').eq(2).text() + '  ' + $("#" + rowID).find('td').eq(7).text() + '</td></tr>');
+        $('#selectedData').append('<tr><td>Golfer Name.</td><td colspan="3">' + $("#" + rowID).find('td').eq(3).text() + '</td></tr>');
+        $('#selectedData').append('<tr><th>Items</th><th>Qty.</th><th>Price</th><th>Amount</th></tr>');
+        for (var i = 0; i < item.length; i++) {
+            //alert(item[i].Name + ' ---- ' + item[i].UnitPrice + ' ---- ' + item[i].Quantity + ' ---- ' + item[i].Amount);
+            itemList = itemList + '<tr><td>' + item[i].Name + '</td><td>' + item[i].Quantity + '</td><td>$' + item[i].UnitPrice + '</td><td>$' + item[i].Amount + '</td></tr>';
+        }
+        $('#selectedData').append(itemList);
+        $('#selectedData').append('<tr><td align="right" colspan="4">Total Amount: $' + $("#" + rowID).find('td').eq(5).text() + '</td></tr>');
+        $('#selectedData').append('<tr><td align="right" colspan="4">Tax: $' + $("#" + rowID).find('td').eq(9).text() + '</td></tr>');
+        $('#selectedData').append('<tr><td align="right" colspan="4">Promo Code Discount: $00.00</td></tr>');
+        $('#selectedData').append('<tr><td align="right" colspan="4">Golfler Platform Fee: $' + $("#" + rowID).find('td').eq(4).text() + '</td></tr>');
+        $('#selectedData').append('<tr><td align="right" colspan="4">Grand Total: $' + $("#" + rowID).find('td').eq(10).text() + '</td></tr>');
+        
+        $('#popupButton').empty();
+        var orderID = $("#" + rowID).find('td').eq(1).text();
+        if ($("#" + rowID).find('td').eq(16).text().toLowerCase() == '@OrderType.TurnOrder.ToLower()') {
+            if ('@LoginInfo.LoginUserType' != '@UserType.Cartie') {
+                $('#popupButton').append('<input type="button" id="pickup" value="Picked Up" class="cancel-btn blu-btn margin_bottom5" onclick="javascript:OrderPickedUp(' + orderID + ')" />');
+            }
+        }
+        else {
+            if ('@LoginInfo.LoginUserType' == '@UserType.Cartie') {
+                $('#popupButton').append('<input type="button" id="pickup" value="Delivery" class="cancel-btn blu-btn margin_bottom5" onclick="javascript:OrderDelivery(' + orderID + ')" />');
+            }
+        }
+
+        $('#popupButton').append('<input type="button" id="close" value="Close" class="cancel-btn blk-btn margin_bottom5" onclick="$.fancybox.close();" />');
+
+        $('#btnShowOrder').click();
+    }*@
+
+    function OrderPickedUp(orderID) {
+        try {
+            $.fancybox.close();
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("OrdersPickupStatus", "CourseAdmin")',
+                data: { orderID: orderID },
+                async: false,
+                success: function (data) {
+                    if (data.msg == "success") {
+                        showMessage(data.result);
+                        $("#list").trigger("reloadGrid", [{ current: true }]);
+                        $("#list1").trigger("reloadGrid", [{ current: true }]);
+                    }
+                    else {
+                        showStickMessage(data.msg);
+                    }
+                },
+                error: function (data) {
+                    console.log(data.statusText, data);
+                }
+            });
+        }
+        catch (ex) { console.log(ex.message); }
+    }
+
+    function OrderDelivery(orderID) {
+        try {
+            $.fancybox.close();
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("DeliveryOrdersStatus", "CourseAdmin")',
+                data: { orderID: orderID },
+                async: false,
+                success: function (data) {
+                    if (data.msg == "success") {
+                        showMessage(data.result);
+                        $("#list").trigger("reloadGrid", [{ current: true }]);
+                        $("#list1").trigger("reloadGrid", [{ current: true }]);
+                    }
+                    else {
+                        showStickMessage(data.msg);
+                    }
+                },
+                error: function (data) {
+                    console.log(data.statusText, data);
+                }
+            });
+        }
+        catch (ex) { console.log(ex.message); }
+    }
+</script>
+
+<script type="text/javascript">
+    var $map;
+    var $latlng;
+    var overlay;
+    var markers = [];
+
+    function initialize(lat, lng) {
+        var $latlng = new google.maps.LatLng(lat, lng);
+        var myOptions = {
+            zoom: 18,
+            center: $latlng,
+            mapTypeId: google.maps.MapTypeId.SATELLITE,
+            mapTypeControlOptions: {
+                style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+                position: google.maps.ControlPosition.TOP_LEFT
+            },
+            zoomControl: true,
+            zoomControlOptions: {
+                style: google.maps.ZoomControlStyle.LARGE,
+                position: google.maps.ControlPosition.LEFT_TOP
+            },
+            scaleControl: true,
+            scaleControlOptions: {
+                position: google.maps.ControlPosition.TOP_LEFT
+            },
+            streetViewControl: false,
+
+            panControl: false,
+        };
+        $map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+
+        overlay = new google.maps.OverlayView();
+        overlay.draw = function () { };
+        overlay.setMap($map);
+    }
+
+    function placeMarker(location, pinImage, pinShadow, golferName) {
+        var marker = new google.maps.Marker({
+            position: location,
+            map: $map,
+            icon: pinImage,
+            shadow: pinShadow,
+            animation: google.maps.Animation.DROP,
+            title: golferName
+        });
+
+        markers.push(marker);
+
+        var infowindow = new google.maps.InfoWindow({
+            content: golferName
+        });
+
+        google.maps.event.addListener(marker, 'click', function () {
+            infowindow.open($map, marker);
+        });
+    }
+
+    function clearMarkers(map) {
+        for (var i = 0; i < markers.length; i++) {
+            markers[i].setMap(map);
+        }
+    }
+
+    function removeOldMarker() {
+
+    }
+</script>
+<input id="hdnOrderInclucde" type="hidden" value="" />
+<tr>
+    <td class="id_pathway" valign="middle">
+        <div class="breadcrumb">
+            <ul>
+                <li><a href='@Url.Action("Dashboard")'>Dashboard</a><img src="/Content/Images/arrow.png"
+                    class="arrow_position" /></li>
+                <li>@ViewBag.Module</li>
+            </ul>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td>
+        <h3 style="text-align: center">Today's Order @(CommonFunctions.DateByCourseTimeZone(LoginInfo.CourseId, DateTime.UtcNow).ToString("dd-MMM-yyyy"))@*@DateTime.Now.ToString("dd-MMM-yyyy")*@
+            <a href="/Golfler/CourseAdmin/ViewIncommingOrderList" class="btn_order_history" id="incommingOrder" style="display: none">Incomming Orders</a>
+            <a href="/Golfler/CourseAdmin/MissingOrdersList" class="btn_order_history">Missing Order</a>
+            <a href="/Golfler/CourseAdmin/OrderList" class="btn_order_history">Order History</a>
+        </h3>
+        <div style="border-top: 1px solid silver; padding-top: 12px; margin-top: 12px;">
+            <input id="btnKitchen" type="button" value="Kitchen" class="" />
+            <input id="btnProshop" type="button" value="Proshop" class="" />
+            <input id="btnDelivery" type="button" value="Delivery" class="" />
+        </div>
+    </td>
+</tr>
+<tr>
+    <td valign="top" align="center">
+        <div id="map_cont">
+            <div id="map_canvas" style="height: 550px; width: 100%; border: 2px solid #fff; box-shadow: 0px 0px 5px 0px #A7A7A7;">
+            </div>
+        </div>
+        <div class="clr"></div>
+    </td>
+</tr>
+<tr>
+    <td valign="top" align="center">
+        <div id="turnOrderContainer">
+            <fieldset>
+                <legend>Turn Order</legend>
+                <div id="page-wrap">
+                    <table id="list" cellpadding="0" cellspacing="0" style="width: 100%;" class="jqgridTable">
+                    </table>
+                    <div id="pager" style="width: 100%;">
+                    </div>
+                    <input type="hidden" id="hdnId" value='@Golfler.Models.LoginInfo.UserId' />
+                </div>
+            </fieldset>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td valign="top" align="center">
+        <div id="cartOrderContainer">
+            <fieldset>
+                <legend>Cart Order</legend>
+                <div id="page-wrap">
+                    <table id="list1" cellpadding="0" cellspacing="0" style="width: 100%;" class="jqgridTable">
+                    </table>
+                    <div id="pager1" style="width: 100%;">
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </td>
+</tr>
+<a href="#myModal" id="btnShowOrder" class="submit-btn update-btn" style="display: none;"></a>
+<div id="myModal" class="reveal-modal" style="display: none; top: 100px; height: 500px;">
+    <div class="pop_detail">
+        <h1>Order Detail</h1>
+        <div id="tableContainer" class="page-wrap" style="height: 490px; overflow-x: scroll; border: 1px solid #EAEAEA;">
+            <table id="selectedData" class="voucher-details-table"></table>
+        </div>
+    </div>
+    <div class="clr"></div>
+    <div class="margin-top15"></div>
+    <div id="popupButton" align="center" class="center-button">
+    </div>
+    <br />
+    <div class="clear"></div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $('a[href="#myModal"]').fancybox({
+            'scrolling': 'no',
+            'onStart': function () {
+                $('#myModal').css('width', '550px');
+                $('#myModal').css('height', '620px');
+                $("#myModal").css("display", "block");
+            },
+            'onClosed': function () {
+                $("#myModal").parent().css('overflow', 'hidden');
+                $("#myModal").hide();
+            }
+        });
+    });
+</script>

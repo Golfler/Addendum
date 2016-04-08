@@ -1,0 +1,193 @@
+﻿@Html.Partial("_jqGrid")
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var buildby = "CA";
+        var needtoshow = 1;
+        if ($("#hdnBuilderType").val() == "CourseAdmin") {
+            buildby = "CA";
+
+            bindJqGridMin('list', 'pager', '@Url.Action("GetCourseBuilderList", "CourseAdmin")',
+               ['ID', 'Title', 'CoordinateType', 'Created Date', 'From', 'To', 'Action'],
+               [   { name: 'ID', index: 'ID', width: 10, hidden: true },
+                   { name: 'Title', index: 'Title', width: 50 },
+                   { name: 'CoordinateType', index: 'CoordinateType', width: 50, formatter: SetCoordinateType },
+                   { name: 'CreatedDate', index: 'CreatedDate', width: 50, formatter: 'date', formatoptions: { srcformat: 'U', newformat: 'm/d/Y' } },
+                   { name: 'DateFrom', index: 'DateFrom', width: 50, formatter: 'date', formatoptions: { srcformat: 'U', newformat: 'm/d/Y' } },
+                   { name: 'DateTo', index: 'DateTo', width: 50, formatter: 'date', formatoptions: { srcformat: 'U', newformat: 'm/d/Y' } },
+                   { name: 'Title', index: 'Title', width: 50, formatter: SetLoadLink, classes: 'zzz' }
+
+               ], 'ID', 'desc',
+               {
+                   "searchText": (function () {
+                       return "";
+                   }),
+                   "CourseId": (function () {
+                       return $("#hdnCourseId").val();
+                   }),
+                   "buildby": (function () {
+                       return buildby;
+                   })
+
+               }, ''); 
+        }
+        else {
+            buildby = "G";
+            
+            bindJqGridNoMultiSelect('list', 'pager', '@Url.Action("GetCourseBuilderList", "CourseAdmin")',
+              ['ID', 'Created Date', 'Status', 'Action', 'Comments'],
+              [{ name: 'ID', index: 'ID', width: 10, hidden: true },
+
+                  { name: 'ModifyDate', index: 'ModifyDate', width: 50, formatter: 'date', formatoptions: { srcformat: 'U', newformat: 'm/d/Y' } },
+                  { name: 'Status', index: 'Status', width: 50, formatter: SetStatus },
+                  { name: 'Title', index: 'Title', width: 50, formatter: SetLoadLink, classes: 'zzz' },
+                   { name: 'Comments', index: 'Comments', width: 50 }
+              ], 'ID', 'desc',
+              {
+                  "searchText": (function () {
+                      return "";
+                  }),
+                  "CourseId": (function () {
+                      return $("#hdnCourseId").val();
+                  }),
+                  "buildby": (function () {
+                      return buildby;
+                  })
+
+              }, '');
+             
+        }
+    });
+
+    function SetCoordinateType(cellvalue, options, rowObject) {
+        try {
+            if (cellvalue == "T") {
+
+                return "Temporary";
+            }
+            else {
+                return "Original";
+            }
+        }
+        catch (ex) { alert(ex.message); }
+    }
+
+    function SetStatus(cellvalue, options, rowObject) {
+        try {
+           
+            if (cellvalue == "I") {
+
+                return "Pending";
+            }
+            if (cellvalue == "A") {
+
+                return "Accepted";
+            }
+            if (cellvalue == "D") {
+                return "Rejected";
+            }
+        }
+        catch (ex) { alert(ex.message); }
+    }
+
+    function SetLoadLink(cellvalue, options, rowObject) {
+
+        try {
+            var CoordinateType = rowObject["CoordinateType"];
+            var coordID = rowObject["ID"];
+            return "<input type='button' onclick='javascript:LoadCoordinates(" + coordID + ",&#39;" + CoordinateType + "&#39;)' class='newuser blu-btn margin_bottom5' value='Load Co-ordinates' />";
+        }
+        catch (ex) { alert(ex.message); }
+    }
+
+    function LoadCoordinates(id, CoordinateType) {
+        // alert(id);
+        // alert(CoordinateType);
+        if (confirm('Do you want to load co-ordinates?')) {
+            // alert($('#hdnCourseBuilderId').val());
+            $('#hdnCourseBuilderId').val(id);
+            //alert($('#hdnCourseBuilderId').val());
+
+            if ($("#hdnBuilderType").val() == "Golfer") {
+                $("#hdnGolferLoadType").val("suggest");
+                GetCourseBuilder(id, 1, 'GolferCoordinate');
+            }
+            else {
+                if (CoordinateType == "O") {
+                    GetCourseBuilder(id, 1, 'org');
+                }
+                else {
+                    holeNumber = 1;
+                    $(".clsholenumber").each(function () {
+                        if ($(this).val() == holeNumber) {
+                            $(this).addClass("clsSelectedHole");
+                        }
+                        else {
+                            $(this).removeClass("clsSelectedHole");
+                        }
+                    });
+
+                    
+                  
+                    GetCourseBuilder(id, 1, 'temp');
+                }
+            }
+
+           
+        }
+    }
+
+    function DeleteCoordinate() {
+        try {
+
+            DeleteMultiple('list', '@Url.Action("DeleteCourseBuilder", "CourseAdmin")');
+            $('#hdnCourseBuilderId').val("0");
+            GetCourseBuilder(0, 1, 'new');
+        }
+        catch (ex) { alert(ex.message); }
+    }
+
+    function addCordinate() {
+        GetCourseBuilder(0, 1, 'newRecord');
+        window.scrollTo(0, 0);
+    }
+
+</script>
+
+<tr>
+    <td id="content_center_td3" valign="top" align="center">
+        <div class="form_box">
+            <div class="organization_left admin_map">
+                @if (ViewBag.BuilderType == "CourseAdmin")
+                {
+                    <h2 style="color: #04d762">List of Co-Ordinates</h2>
+                }
+                else
+                {
+                    <h2 style="color: #04d762">Suggested Co-Ordinates Status</h2>
+                }
+
+            </div>
+            @if (ViewBag.BuilderType == "CourseAdmin")
+            {
+                <div class="search-advertiser">
+                    <input id="aNewCoord" type="button" value="Add New Co-ordinates" class="blu-btn margin_bottom5" onclick="javascript: addCordinate();" action="add" />
+
+                    <input id="aDeletePopup" type="button" value="Delete" class="delete blk-btn margin_bottom5" onclick="javascript: DeleteCoordinate();" action="delete" />
+
+
+                </div>
+            }
+           
+            <div class="clr">
+            </div>
+        </div>
+        <div>
+            <table id="list" cellpadding="0" cellspacing="0" style="width: 100%;" class="jqgridTable">
+            </table>
+            <div id="pager" style="width: 100%;">
+            </div>
+        </div>
+    </td>
+</tr>

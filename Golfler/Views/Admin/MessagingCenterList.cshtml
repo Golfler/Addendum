@@ -1,0 +1,756 @@
+﻿@{
+    ViewBag.Module = "Messaging Center";
+    ViewBag.Title = "Messaging Center List";
+    ViewBag.pageTitle = "Messaging Center List";
+}
+@Html.Partial("_jqGrid")
+<style>
+    #fancybox-wrap {
+        z-index: 99999999 !important;
+    }
+
+    .search-advertiser input.adname {
+        width: 30.7% !important;
+    }
+</style>
+<script type="text/javascript">
+    function getUTCDateTime(d) {
+        var s = function (a, b) { return (1e15 + a + "").slice(-b) };
+        return (d.getUTCMonth() + 1) + '/' + d.getUTCDate() + '/' + d.getUTCFullYear();
+    }
+
+    var ddlType = '@Golfler.Models.LoginInfo.Type'
+    $(document).ready(function () {
+        BindList();
+        HideOtherChatWindows();
+    });
+
+    function BindList() {
+
+        bindJqGridNoMultiSelect('list', 'pager', 'GetOnlineCourseList',
+                ['Id', 'Name', 'Email', 'Course Name', 'Chat', 'Status', 'Type', 'TodaysMsgsCount', 'Notification', 'DateOfBirth',
+                 'Gender', 'Phone', 'IsReceivedChat', 'Block / UnBlock', 'IsBlocked'],
+                [{ name: 'Id', index: 'Id', width: 10, hidden: true },
+                    { name: 'Name', index: 'Name', width: 50, sortable: true, formatter: SetEditLink },
+                    { name: 'EmailAddress', index: 'EmailAddress', width: 50, sortable: true, formatter: SetEditLink },
+                    { name: 'GolferCourse', index: 'GolferCourse', width: 50 },
+                    { name: 'Chat', index: 'Chat', width: 20, formatter: SetChatLink, sortable: false },
+                    { name: 'IsOnline', index: 'IsOnline', width: 20, formatter: SetOnlineLink, sortable: true },
+                    { name: 'Type', index: 'Type', width: 10, hidden: true },
+                    { name: 'TodaysMsgsCount', index: 'TodaysMsgsCount', width: 10, hidden: true },
+                    { name: 'Notification', index: 'Id', width: 20, sortable: false, formatter: SetNotificationLink },
+                    { name: 'DateOfBirth', index: 'DateOfBirth', width: 50, hidden: true, formatter: 'date', formatoptions: { srcformat: 'U', newformat: 'm/d/Y' } },
+                    { name: 'Gender', index: 'Gender', width: 50, hidden: true },
+                    { name: 'Phone', index: 'Phone', width: 50, hidden: true },
+                    { name: 'IsReceiveChat', index: 'IsReceiveChat', width: 50, hidden: true },
+                    //{ name: 'EID', index: 'EID', width: 50, hidden: true }
+                    { name: 'Block', index: 'Block', width: 90, sortable: false, formatter: SetBlockLink, hidden: true },
+                    { name: 'IsBlocked', index: 'IsBlocked', width: 50, hidden: true }
+
+                ], 'Id', 'desc',
+                {
+                    "searchText": (function () {
+                        return $("#txtSearch").val();
+                    }),
+                    "courseID": (function () {
+                        return $("#hdnCourseID").val();
+                    }),
+                    "status": (function () {
+                        return ($("#ddlStatus").val() == "" ? "" : $("#ddlStatus").val());
+                    }),
+                    "userType": (function () {
+                        return ($("#UserType").val() == "" ? "" : $("#UserType").val());
+                    })
+                }, '');
+    }
+
+    function SetChatLink(cellvalue, options, rowObject) {
+
+        var Eid = rowObject["IsOnline"];
+        var Name = rowObject["Name"];
+        var id = rowObject["Id"];
+        var IsReceiveChat = rowObject["IsReceiveChat"];
+        var CourseLoginId = $("#hdnCourseId").val();
+        if (CourseLoginId == "") {
+            CourseLoginId = $("#hdnGolferUserId").val();
+        }
+        // alert(id);
+        if (Eid == true) {
+            if (IsReceiveChat == true) {
+                return "<a style='cursor:pointer;'  onclick='openChat(\"" + Name + "\"," + id + "," + CourseLoginId + ")' >Chat</a>";
+            }
+            else //not opt out for chat
+            {
+
+                return "<a style='color:grey !important; cursor:pointer;' title='" + Name + " does not opt out to receive chat messages'>Chat</a>";
+            }
+        }
+        else {
+            return "<span style='color:grey;'>Chat</span>";
+        }
+    }
+    function SetOnlineLink(cellvalue, options, rowObject) {
+
+        var Eid = rowObject["IsOnline"];
+        //  alert(Eid);
+        if (Eid == true) {
+            return "<span style='color:green;'>Online</span>";
+        }
+        else {
+            return "<span style='color:red;'>Offline</span>";
+        }
+    }
+    function SetNotificationLink(cellvalue, options, rowObject) {
+        var ID = rowObject["Id"];
+        var IsOnline = rowObject["IsOnline"];
+        var TodaysMsgsCount = rowObject["TodaysMsgsCount"];
+        //  alert(Eid);
+        if (IsOnline == true) {
+            if (TodaysMsgsCount > 0) {
+                return "<img src='../../images/new-msg.png' alt='New Msgs'  id='img_" + ID + "' name='online'/>";
+            }
+            else {
+                return "<img src='../../images/no-new-msg.png' alt='no New Msgs'  id='img_" + ID + "' name='online'/>";
+            }
+        }
+        else {
+            return "<img src='../../images/no-new-msg.png' alt='New Msgs'  id='img_" + ID + "'/>";
+        }
+    }
+
+    function SetEditLink(cellvalue, options, rowObject) {
+        var type = rowObject["Type"];
+        var Eid = rowObject["EID"];
+
+        //if (type == "NU") {
+        return "<a class='viewOrder' onclick='javascript:ViewGolferInfo(this)' style='cursor:pointer; text-decoration: underline;' >" + cellvalue + "</a>";
+        //}
+        //else
+        //{
+        //    return "<a href='UserAddEdit/" + Eid + "' style='cursor:pointer; text-decoration: underline;' >" + cellvalue + "</a>";
+
+        //}
+
+    }
+
+    function SetBlockLink(cellvalue, options, rowObject) {
+        var IsBlock = rowObject["IsBlocked"];
+        var Eid = rowObject["Id"];
+        var userId = $("#hdnId").val();
+        var Type = rowObject["Type"];
+        var linkId = userId + "-" + Eid;
+        if (Type == "NU") {
+            return "<span  style='color:grey;' >" + "Block" + "</span>";
+
+        }
+        else if (IsBlock > 0) {
+
+            return "<a class='viewOrder' id='" + linkId + "' onclick='javascript:BlockUnblockUsers(" + userId + "," + Eid + ")' style='cursor:pointer; text-decoration: underline;' >" + "Unblock" + "</a>";
+        }
+        else {
+            return "<a class='viewOrder' id='" + linkId + "' onclick='javascript:BlockUnblockUsers(" + userId + "," + Eid + ")'  style='cursor:pointer; text-decoration: underline;' >" + "Block" + "</a>";
+        }
+
+    }
+    function ViewGolferInfo(ele) {
+        var Name = "";
+        var rowID = $(ele).parent().parent().attr('id');
+        var columnIndex = 3;
+        var cellValue = $("#" + rowID).find('td').eq(columnIndex).text();
+        var type = $("#" + rowID).find('td').eq(5).text();
+        $('#selectedData').empty();
+        var gender = ($("#" + rowID).find('td').eq(9).text());
+        if (gender != "") {
+            if (gender == "M") {
+                gender = "Male";
+            }
+            else if (gender == "M") {
+                gender = "Female";
+            }
+            else {
+                gender = "";
+            }
+        }
+        if (type == "NU") {
+            Name = "Golfer Name";
+            $("#titleHeader").html("Golfer Detail");
+        }
+        if (type == "CC") {
+            Name = "Gophie Name";
+            $("#titleHeader").html("Gophie Detail");
+        }
+        if (type == "CK") {
+            Name = "Kitchen Name";
+            $("#titleHeader").html("Kitchen Detail");
+        }
+        if (type == "CP") {
+            Name = "Proshop Name";
+            $("#titleHeader").html("Proshop Detail");
+        }
+        if (type == "SC") {
+            Name = "Support Center";
+            $("#titleHeader").html("Support Center Detail");
+        }
+
+        $('#selectedData').append('<tr><td>Course</td><td colspan="3">' + $("#" + rowID).find('td').eq(11).text() + '</td></tr>');
+        $('#selectedData').append('<tr><td>' + Name + '</td><td colspan="3">' + $("#" + rowID).find('td').eq(1).text() + '</td></tr>');
+        $('#selectedData').append('<tr><td>Email</td><td colspan="3">' + $("#" + rowID).find('td').eq(2).text() + '</td></tr>');
+        $('#selectedData').append('<tr><td>Phone</td><td colspan="3">' + $("#" + rowID).find('td').eq(10).text() + '</td></tr>');
+        if (type == "NU") {
+            $('#selectedData').append('<tr><td>Date Of Birth</td><td colspan="3">' + $("#" + rowID).find('td').eq(8).text() + '</td></tr>');
+            $('#selectedData').append('<tr><td>Gender</td><td colspan="3">' + gender + '</td></tr>');
+        }
+        $('#selectedData').append('<tr><td>Status</td><td colspan="3">' + $("#" + rowID).find('td').eq(4).text() + '</td></tr>');
+        $('#btnShowOrder').click();
+    }
+</script>
+<tr>
+    <td class="id_pathway" valign="middle">
+        <div class="breadcrumb">
+            <ul>
+                <li><a href='@Url.Action("Dashboard")'>Dashboard</a><img src="/Content/Images/arrow.png"
+                    class="arrow_position" /></li>
+                <li>Manage @ViewBag.Module</li>
+            </ul>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+<tr class="chatappend">
+    <td id="content_center_td2" valign="top" align="center">
+        @*<input type="hidden" id="UserType" value="SC" />*@
+        <div class="form_box">
+            <div class="search-advertiser">
+                <label>
+                    Search</label>
+                <input type="text" placeholder="Name, Email" name="searchText" id="txtSearch"
+                    class="searchfeild jqGrid_refreshKey adname" value="" style="margin-bottom: 2px;"
+                    size="30" />
+                @Html.Partial("~/Views/Tools/CourseOnlyAutoComplete.cshtml")
+                <select id="ddlStatus" style="width: 11%; padding: 0.65%;">
+                    <option value="">Select Status</option>
+                    <option value="1">Online</option>
+                    <option value="0">Offline</option>
+                </select>
+                <select id="UserType" style="width: 11%; padding: 0.65%;">
+                    <option value="">Select User Type</option>
+                    <option value="SC">Course</option>
+                    <option value="NU">Golfer</option>
+                </select>
+                <img src="/Content/Images/search_icon.png" border="0" alt="search" class="go-btn floatleft jqGrid_refresh"
+                    id="fbox_jqgAdminUser_search" onclick="return BindData();" />
+                <div class="clr">
+                </div>
+            </div>
+            <div class="clr" style="padding-bottom:10px">
+            </div>
+
+            <div id="page-wrap">
+                <div id="divOrderList">
+                    <table id="list" cellpadding="0" cellspacing="0" style="width: 97%;" class="jqgridTable">
+                    </table>
+                    <div id="pager" style="width: 100%;">
+                    </div>
+                </div>
+                <input type="hidden" id="hdnId" value='@Golfler.Models.LoginInfo.UserId' />
+                <input type="hidden" id="hdnCourseId" value='@Golfler.Models.LoginInfo.UserId' />
+                <input type="hidden" id="hdnCourseName" value='@Golfler.Models.LoginInfo.FirstName'/>
+                <input type="hidden" id="hdnCourseLastName" value='@Golfler.Models.LoginInfo.LastName'/>
+                <input type="hidden" id="hdnGolferUserId" value='@Golfler.Models.LoginInfo.GolferUserId' />
+                <input type="hidden" id="hdnGolferUserName" value='@Golfler.Models.LoginInfo.GolferFirstName' />
+                <input type="hidden" id="hdnGolferLastName" value='@Golfler.Models.LoginInfo.GolferLastName' />
+                <input type="hidden" id="hdnCourseNametemp" value="" />
+                <input type="hidden" id="hdnGolferUserNametemp" value="" />
+            </div>
+        </div>
+    </td>
+</tr>
+<div id="divChatOuterParent">
+    <div id="divChatParent">
+    </div>
+</div>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js"></script>
+<link type="text/css" href="@Url.Content("~/Content/css/JqueryChat/jquery.ui.chatbox.css")" rel="stylesheet" />
+<script type="text/javascript" src="@Url.Content("~/Content/css/JqueryChat/jquery.ui.chatbox.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Content/css/JqueryChat/chatboxManager.js")"></script>
+<script type="text/javascript">
+    var counter = 0; var idList = new Array();
+    $(document).ready(function () {
+        var broadcastMessageCallback = function (from, msg) {
+            for (var i = 0; i < idList.length; i++) {
+                chatboxManager.addBox(idList[i]);
+                $("#" + idList[i]).chatbox("option", "boxManager").addMsg(from, msg);
+            }
+        }
+    });
+    function openChat(golfername, golferid, SenderCourseId) {
+        var linkId = "#" + $("#hdnId").val() + "-" + golferid;
+        var existingHtml = $(linkId).html();
+        if (existingHtml == "Unblock") {
+            showStickMessage('Please unblock this user to initiate chat');
+            return;
+        }
+        $("#hdnCourseNametemp").val("");
+        $("#hdnCourseNametemp").val($("#hdnCourseName").val() + " " + $("#hdnCourseLastName").val());
+        var istrue = false;
+
+        //  var lname = "";
+        //  var space=" ";
+        var fname = $("#hdnCourseNametemp").val();
+        // var lname = $("#hdnCourseLastName").val();
+        // lname = space + lname;
+        var CourseLogin = fname;
+
+
+        debugger;
+        if (CourseLogin == " ") {
+            $("#hdnGolferUserNametemp").val("");
+            $("#hdnGolferUserNametemp").val($("#hdnGolferUserName").val() + " " + $("#hdnGolferLastName").val());
+            var fname = $("#hdnGolferUserNametemp").val();
+            // var lname = $("#hdnGolferLastName").val();
+            // lname = space + lname;
+            CourseLogin = fname;
+        }
+        // alert(CourseLogin);
+        // alert($("#hdnGolferLastName").val());
+        var elementExists = document.getElementsByName("chat_" + golferid);
+        if (elementExists.length == 0) {
+            istrue = true;
+        }
+        GetMessage(golferid, 1, istrue);
+        counter++;
+        var id = "chat_" + golferid;
+        idList.push(golferid);
+        chatboxManager.addBox(id,
+                                {
+                                    dest: "dest" + counter, // not used in demo
+                                    title: golfername,
+                                    user: golfername,
+                                    first_name: golfername,
+                                    last_name: CourseLogin
+
+                                });
+    }
+    function SendMessage(msg, golferid) {
+
+        var msgfrom = $("#hdnCourseId").val();
+        var msgfromType = "0";
+        if (msgfrom == "0") {
+            msgfrom = $("#hdnGolferUserId").val();
+            msgfromType = "1";
+        }
+        var msgToType = $('#UserType').val() == "SC" ? "CP" : $("#UserType").val();
+
+        var params;
+        var msgto = golferid.replace("chat_", "");
+        if (msgToType != "NU") {
+            params = '{"msgfrom":"' + msgfrom + '","msgto":"' + msgto + '","msg":"' + msg + '","IsMessagesFromGolfer":"' + msgfromType + '","IsMessagesToGolfer":"0"}';
+        }
+        else {
+            params = '{"msgfrom":"' + msgfrom + '","msgto":"' + msgto + '","msg":"' + msg + '","IsMessagesFromGolfer":"' + msgfromType + '","IsMessagesToGolfer":"1"}';
+        }
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetGolferData", "Golfer")',
+            data: params,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+
+            },
+            error: function (x, y, z) {
+
+            }
+        });
+
+    }
+    function paging(GolferId, PgNo) {
+
+        GetMessage(GolferId, PgNo, false);
+    }
+
+
+
+    function GetMessage(GolferId, PgNo, IsfirstTime) {
+
+        var IsTodaysMsg = false;
+        var msgToType = $("#UserType").val();
+        var params;
+        if (msgToType == "NU") {
+
+            params = '{"id":"' + GolferId + '","PgNo":"' + PgNo + '","MsgTo":"' + "1" + '","Type":"' + "0" + '"}';
+        }
+        else {
+            params = '{"id":"' + GolferId + '","PgNo":"' + PgNo + '","MsgTo":"' + "0" + '","Type":"' + "1" + '"}';
+        }
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetGolferMessages", "Golfer")',
+            data: params,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                // debugger;
+                // alert(IsfirstTime);
+
+                // alert("cnj");
+                var chkid = "#CountCheckDiv" + GolferId;
+                var oldRecCount = $(chkid).html();
+                var elementExists = document.getElementsByName("chat_" + GolferId);
+                if (oldRecCount != data.rows.length) {
+                    //  alert("hhh");
+
+                    if (elementExists.length > 0) {
+                        $("#chat_" + GolferId).html("");
+                    }
+                    var totalrecords = 0;
+                    totalrecords = data.pages + 1;
+                    var CourseLogin = $("#hdnCourseName").val();
+                    if (CourseLogin == "") {
+                        CourseLogin = $("#hdnGolferUserName").val();
+                    }
+
+                    for (var i = 0; i < data.rows.length; i++) {
+
+                        if (IsfirstTime == true) {
+
+                            if (data.rows[i].Name == CourseLogin) {
+                                $("#chat_" + GolferId).chatbox("option", "boxManager").addMsg(data.rows[i].Name + " ( " + data.rows[i].MsgDate + " ) ", data.rows[i].Message, 1);
+                            }
+                            else {
+                                $("#chat_" + GolferId).chatbox("option", "boxManager").addMsg(data.rows[i].Name + " ( " + data.rows[i].MsgDate + " ) ", data.rows[i].Message, 0);
+                            }
+                        }
+
+
+                        else if (elementExists.length > 0) {
+                            // alert(GolferId);
+                            if (data.rows[i].Name == CourseLogin) {
+                                $("#chat_" + GolferId).chatbox("option", "boxManager").addMsg(data.rows[i].Name + " ( " + data.rows[i].MsgDate + " ) ", data.rows[i].Message, 1);
+                            }
+                            else {
+                                $("#chat_" + GolferId).chatbox("option", "boxManager").addMsg(data.rows[i].Name + " ( " + data.rows[i].MsgDate + " ) ", data.rows[i].Message, 0);
+                            }
+                            $("#img_" + GolferId).attr("alt", "new msg");
+                            $("#img_" + GolferId).attr("src", "../../images/new-msg.png");
+                        }
+                        else {
+
+                            var today = new Date();
+
+
+                            var d = new Date(data.rows[i].MsgDate);
+
+                            if (getUTCDateTime(d) == getUTCDateTime(today)) {
+
+                                if (IsTodaysMsg == false) {
+                                    IsTodaysMsg = true;
+                                    break;
+                                }
+                            }
+
+                        }
+
+
+                    }
+
+                    if (oldRecCount == null && (data.rows.length > 0) && IsTodaysMsg == true) {
+
+                        if ($("#img_" + GolferId).attr("name") == "online") {
+                            $("#img_" + GolferId).attr("alt", "new msg");
+                            $("#img_" + GolferId).attr("src", "../../images/new-msg.png");
+                        }
+                        else {
+                            $("#img_" + GolferId).attr("alt", "no new msg");
+                            $("#img_" + GolferId).attr("src", "../../images/no-new-msg.png");
+
+                        }
+                    }
+
+                    else {
+                        //   $("#img_" + GolferId).attr("alt", "no new msg");
+                        // $("#img_" + GolferId).attr("src", "../../images/no-new-msg.png");
+                    }
+                    if (elementExists.length > 0) {
+                        $("#chat_" + GolferId).append("<p id='CountCheckDiv" + GolferId + "' style='display:none;'>" + data.rows.length + "</p>");
+                    }
+                    else if (IsfirstTime == true) {
+                        $("#chat_" + GolferId).append("<p id='CountCheckDiv" + GolferId + "' style='display:none;'>" + data.rows.length + "</p>");
+                    }
+                    else { }
+                    // else if (IsfirstTime==true) {
+                    //        $("#chat_" + GolferId).append("<p id='CountCheckDiv" + GolferId + "' style='display:none;'>" + data.rows.length + "</p>");
+                    //  }
+                    //if (data.pages > 0) {
+
+                    //  //  if (elementExists) {
+                    //        $("#chat_" + GolferId).append("<div id='" + GolferId + "_pagDiv'><br/>Archive: " + PgNo + "&nbsp;&nbsp;... ");
+                    //        for (var i = 1; i <= totalrecords; i++) {
+                    //            if (i == PgNo) {
+                    //                $("#" + GolferId + "_pagDiv").append("<a class='pagelink' onclick='paging(" + GolferId + "," + i + ")' style='color:purple;' >" + i + "</a>&nbsp;");
+                    //            }
+                    //            else {
+                    //                $("#" + GolferId + "_pagDiv").append("<a class='pagelink' onclick='paging(" + GolferId + "," + i + ")' style='color:blue;' >" + i + "</a>&nbsp;");
+                    //            }
+                    //        
+                    // //   }
+                    //}
+                }
+                else {
+
+                    $("#img_" + GolferId).attr("alt", "no new msg");
+                    $("#img_" + GolferId).attr("src", "../../images/no-new-msg.png");
+
+                }
+
+
+            },
+            error: function (x, y, z) {
+
+            }
+        });
+    }
+    ////////////////////
+
+</script>
+<script type="text/javascript">
+    //window.setInterval(function ()
+    //{
+    //    $('#list').trigger('reloadGrid', [{ page: 1 }]);
+    //}, 50000);//
+    window.setInterval(function () {
+
+        if ($("#UserType").val() == "NU") {
+            //    alert("refreshing");
+            if (jqGridNuIDs.length > 0) {
+                for (var i = 0; i < jqGridNuIDs.length; i++) {
+                    if ($("#img_" + jqGridNuIDs[i]).attr("name") == "online") {
+                        var id = jqGridNuIDs[i];//.replace("chat_", "");
+                        GetMessage(id, 1, false);
+                    }
+
+                }
+            }
+        }
+        if ($("#UserType").val() == "CP") {
+            if (jqGridCPIDs.length > 0) {
+                for (var i = 0; i < jqGridCPIDs.length; i++) {
+                    if ($("#img_" + jqGridCPIDs[i]).attr("name") == "online") {
+                        var id = jqGridCPIDs[i];//.replace("chat_", "");
+                        GetMessage(id, 1, false);
+                    }
+
+                }
+            }
+        }
+        if ($("#UserType").val() == "CC") {
+            if (jqGridCCIDs.length > 0) {
+                for (var i = 0; i < jqGridCCIDs.length; i++) {
+                    if ($("#img_" + jqGridCCIDs[i]).attr("name") == "online") {
+                        var id = jqGridCCIDs[i];//.replace("chat_", "");
+                        GetMessage(id, 1, false);
+                    }
+
+                }
+            }
+        }
+        if ($("#UserType").val() == "CK") {
+            if (jqGridCKIDs.length > 0) {
+                for (var i = 0; i < jqGridCKIDs.length; i++) {
+                    if ($("#img_" + jqGridCKIDs[i]).attr("name") == "online") {
+                        var id = jqGridCKIDs[i];//.replace("chat_", "");
+                        GetMessage(id, 1, false);
+                    }
+
+                }
+            }
+        }
+        if ($("#UserType").val() == "SC") {
+            if (jqGridCPIDs.length > 0) {
+                for (var i = 0; i < jqGridCPIDs.length; i++) {
+                    if ($("#img_" + jqGridCPIDs[i]).attr("name") == "online") {
+                        var id = jqGridCPIDs[i];//.replace("chat_", "");
+                        GetMessage(id, 1, false);
+                    }
+
+                }
+            }
+        }
+    }, 10000);//5 min
+
+</script>
+<script>
+    $('#fbox_jqgAdminUser_search').click(function () {
+        if ($("#UserType").val() == '') {
+            showStickMessage('Please select course.');
+            return false;
+        }
+    });
+    $("#UserType, #CourseId, #ddlStatus").change(function () {
+        //   alert(jqGrigIDs);
+        HideOtherChatWindows();
+        $("#list").trigger("reloadGrid", [{ current: true }]);
+    });
+    function HideOtherChatWindows() {
+        // debugger;
+        var usertype = $("#UserType").val();
+        //   if (usertype == "NU") {
+        for (var i = 0; i < jqGrigIDs.length; i++) {
+            var chatWindowName = "chat_" + jqGrigIDs[i];//.replace("chat_", "");
+            if (document.getElementsByName(chatWindowName).length > 0) {
+                $('div[name^=' + chatWindowName + ']').hide();//css("dispaly", "none");
+            }
+        }
+        //for (var i = 0; i < jqGridCCIDs.length; i++) {
+        //    var chatWindowName = "chat_" + jqGridCCIDs[i];//.replace("chat_", "");
+        //    if (document.getElementsByName(chatWindowName).length > 0) {
+        //        $('div[name^=' + chatWindowName + ']').css("dispaly", "none");
+        //    }
+        //}
+        //for (var i = 0; i < jqGridCPIDs.length; i++) {
+        //    var chatWindowName = "chat_" + jqGridCPIDs[i];//.replace("chat_", "");
+        //    if (document.getElementsByName(chatWindowName).length > 0) {
+        //        $('div[name^=' + chatWindowName + ']').css("dispaly", "none");
+        //    }
+        //}
+        //  }
+        /*  if (usertype == "CK") {
+              for (var i = 0; i < jqGridNuIDs.length; i++) {
+                  var chatWindowName = "chat_" + jqGridNuIDs[i];//.replace("chat_", "");
+                  $('div[name^=' + chatWindowName + ']').css("dispaly", "none");
+              }
+              for (var i = 0; i < jqGridCCIDs.length; i++) {
+                  var chatWindowName = "chat_" + jqGridCCIDs[i];//.replace("chat_", "");
+                  $('div[name^=' + chatWindowName + ']').css("dispaly", "none");
+              }
+              for (var i = 0; i < jqGridCPIDs.length; i++) {
+                  var chatWindowName = "chat_" + jqGridCPIDs[i];//.replace("chat_", "");
+                  $('div[name^=' + chatWindowName + ']').css("dispaly", "none");
+              }
+          }
+          if (usertype == "CP") {
+              for (var i = 0; i < jqGridCKIDs.length; i++) {
+                  var chatWindowName = "chat_" + jqGridCKIDs[i];//.replace("chat_", "");
+                  $('div[name^=' + chatWindowName + ']').css("dispaly", "none");
+              }
+              for (var i = 0; i < jqGridCCIDs.length; i++) {
+                  var chatWindowName = "chat_" + jqGridCCIDs[i];//.replace("chat_", "");
+                  $('div[name^=' + chatWindowName + ']').css("dispaly", "none");
+              }
+              for (var i = 0; i < jqGridNuIDs.length; i++) {
+                  var chatWindowName = "chat_" + jqGridNuIDs[i];//.replace("chat_", "");
+                  $('div[name^=' + chatWindowName + ']').css("dispaly", "none");
+              }
+          }
+          if (usertype == "CC") {
+              for (var i = 0; i < jqGridCKIDs.length; i++) {
+                  var chatWindowName = "chat_" + jqGridCKIDs[i];//.replace("chat_", "");
+                  $('div[name^=' + chatWindowName + ']').css("dispaly", "none");
+              }
+              for (var i = 0; i < jqGridNuIDs.length; i++) {
+                  var chatWindowName = "chat_" + jqGridNuIDs[i];//.replace("chat_", "");
+                  $('div[name^=' + chatWindowName + ']').css("dispaly", "none");
+              }
+              for (var i = 0; i < jqGridCPIDs.length; i++) {
+                  var chatWindowName = "chat_" + jqGridCPIDs[i];//.replace("chat_", "");
+                  $('div[name^=' + chatWindowName + ']').css("dispaly", "none");
+              }
+  
+  
+          }*/
+    }
+</script>
+
+
+@*//open Pop Up*@
+<a href="#myModal" id="btnShowOrder" class="submit-btn update-btn" style="display: none;"></a>
+<div id="myModal" class="reveal-modal" style="display: none; top: 100px; height: 500px;">
+    <div align="right" id="pop_close_btn" class="center-button">
+        <input type="button" id="close" value="Close" class="cancel-btn blk-btn margin_bottom5" onclick="$.fancybox.close();" />
+    </div>
+    <div class="pop_detail">
+        <h1 id="titleHeader"></h1>
+
+        <div id="tableContainer" class="page-wrap" style="height: 490px; overflow-x: scroll; border: 1px solid #EAEAEA;">
+            <table id="selectedData" class="voucher-details-table"></table>
+        </div>
+    </div>
+    <div class="clr"></div>
+    <div class="margin-top15"></div>
+
+    <br />
+    <div class="clear"></div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $('a[href="#myModal"]').fancybox({
+            'scrolling': 'no',
+            'onStart': function () {
+                $('#myModal').css('width', '550px');
+                $('#myModal').css('height', '620px');
+                $("#myModal").css("display", "block");
+            },
+            'onClosed': function () {
+                $("#myModal").parent().css('overflow', 'hidden');
+                $("#myModal").hide();
+            }
+        });
+    });
+</script>
+@*//*@
+
+@*//Block / Un Block*@
+<script>
+    function BlockUnblockUsers(userId, blockedUserId) {
+        //debugger;
+        var linkId = "#" + userId + "-" + blockedUserId;
+        var isBlockedGolfer = false;
+        var userType = $("#UserType").val();
+        if (userType == "0") {
+            showStickMessage('Please select a User Type.');
+            return;
+        }
+        var existingHtml = $(linkId).html();
+        var confrimMsg = '';
+        if (existingHtml == "Block") {
+            block = 1;
+            confrimMsg = "Are you sure to block this user?";
+        }
+        else {
+            block = 0;
+            confrimMsg = "Are you sure to unblock this user?";
+        }
+
+        if (userType == 'NU') {
+            isBlockedGolfer = true;
+        }
+
+        if (confirm(confrimMsg)) {
+            $.ajax({
+                type: 'POST',
+                async: false,
+                url: '/Golfler/CourseAdmin/BlockUsers',
+                data: { UserId: userId, BlockedUserId: blockedUserId, IsBlockedGolfer: isBlockedGolfer, Block: block },
+                success: function (data) {
+                    //  debugger;
+                    if (data.result == "1") {
+                        var msg = "User blocked successfully ";
+                        showMessage(msg);
+                        $(linkId).html("Unblock");
+                    }
+                    else if (data.result == "2") {
+                        var msg = "User unblocked successfully ";
+                        showMessage(msg);
+                        $(linkId).html("Block");
+                    }
+                    else {
+                        showStickMessage('Some error occurs, please try again later.');
+
+                    }
+                }
+            });
+        }
+    }
+</script>

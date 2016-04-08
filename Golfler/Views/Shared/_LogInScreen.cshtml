@@ -1,0 +1,135 @@
+﻿@using Golfler.Models
+@model Golfler.Models.LogInModel
+@Html.ValidationSummary(true)
+<script language="javascript" type="text/javascript">
+    $(function () {
+        $('.feild_section span').css("color", "Red");
+        $('#txtEmail').focus();
+        $('#btnCancel').on("click", function () {
+            $('#txtEmail').val('');
+            $('#txtPassword').val('');
+            $('#KeepMeLogin').prop("checked", false);
+            $('#txtEmail').focus();
+            return false;
+        });
+    });
+
+    function AddPlaceHolder(selector) {
+        if ($.browser.msie != undefined && $.browser.msie == true) {
+            if (!$.support.placeholder) {
+                $.valHooks.input = {
+                    get: function (elem) {
+                        if ($(elem).attr('placeholder') == elem.value)
+                            return "";
+                        else
+                            return elem.value;
+                    },
+                    set: function (elem, value) {
+                        elem.value = value;
+                    }
+                };
+
+                $(document).delegate(selector, "focus", function () {
+                    if ($(this).attr('placeholder') != '' && $(this).val() == '') {
+                        $(this).val('').removeClass('hasPlaceholder');
+                        $(this).css("color", "");
+                    }
+                });
+
+                $(document).delegate(selector, "blur", function () {
+                    if ($(this).attr('placeholder') != '' && ($(this).val() == '' || $(this).val() == $(this).attr('placeholder'))) {
+                        $(this).val($(this).attr('placeholder')).addClass('hasPlaceholder');
+                        $(this).css("color", "#A4A3A2");
+                    }
+                });
+                $(document).on("mouseover mouseout", function () {
+                    $(selector).blur();
+                });
+            }
+        }
+    }
+</script>
+<script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/placeholders.min.js")" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="../../../../Content/css/style.css" />
+@{Golfler.Models.CommonFunctions.BindErrorLog();}
+@using (Html.BeginForm("LogIn", null, FormMethod.Post, new { id = "LogIn", defaultbutton = "btnLogin" }))
+{  
+    <div class="loginbg">
+        <div class="login_page">
+            <div class="login_left">
+                <a href="#">
+                    <img src="~/images/bears.png" border="0" alt="golfler" />
+
+                </a>
+                  @if (Model.UserType == UserType.Golfer)
+                  { <h1>Golfer Panel</h1>}
+                  else
+                  { <h1>Golfler Admin</h1> }
+            </div>
+            <div class="login_right">
+                <div class="blue-circle">
+                    <div class="blue-circle_inner">
+                        <div class="white-feild">
+                            <img src="../../../../Content/Images/icon_login.png" />
+                            @if (Model.UserType == UserType.Golfer)
+                            {
+                                @Html.TextBoxFor(m => m.Email, new { maxlength = "50", id = "txtEmail", @class = "login", @placeholder = "Email" })
+                                @Html.ValidationMessageFor(m => m.Email)
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(m => m.UserName, new { maxlength = "50", id = "txtEmail", @class = "login", @placeholder = "Username" })
+                                @Html.ValidationMessageFor(m => m.UserName)
+                            }
+                        </div>
+                        <div class="clr">
+                        </div>
+                        <div class="white-feild">
+                            <img src="../../../../Content/Images/icon_password.png" />
+                            @if (ViewBag.pwd == null)
+                            {
+                                @Html.PasswordFor(m => m.Password, new { maxlength = "50", id = "txtPassword", @class = "login", @placeholder = "Password" })
+                            }
+                            else
+                            {
+                                @Html.PasswordFor(m => m.Password, new { maxlength = "50", id = "txtPassword", value = Model.Password, @class = "login" })
+                            }
+                            @Html.ValidationMessageFor(m => m.Password)
+                        </div>
+                        <div class="clr">
+                        </div>
+                    </div>
+					<div class="login_btn">
+						<input id="btnLogin" class="login-btn" type="submit" value="Log In" />
+                    </div>
+                    <div class="black-circle">
+                        <div class="remember_me">
+                            @Html.CheckBoxFor(x => x.KeepMeLogin, new { @class = "checkbox" })
+                            Remember Me
+                     
+                        </div>
+                    
+                    <div class="forget_txt">
+                        <a href='@Url.Action("Forgot")/@Response.Cookies["logincourseuser"].Values["course"]'>
+                            Forgot your Password?</a>
+                    </div>
+					</div>
+					
+                </div>
+            </div>
+            <div class="clr">
+            </div>
+        </div>
+        <div class="clr">
+        </div>
+       <!-- <div class="footer clr">
+            Copyright &copy; @Golfler.Models.Params.SiteFooter @Golfler.Models.CommonFunctions.GetYear().
+                All rights reserved.</div> -->
+    </div>
+    <input type="hidden" value="@Response.Cookies["logincourseuser"].Values["course"]" id="hdOrg" />
+    @Html.HiddenFor(x => x.UserType)
+    @Html.HiddenFor(x => x.CourseID)
+}

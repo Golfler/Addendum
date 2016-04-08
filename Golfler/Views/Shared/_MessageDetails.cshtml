@@ -1,0 +1,142 @@
+﻿@model Golfler.Models.GF_MassMessages
+<style>
+    .spnMsg
+    {
+        width: 78%;
+        float: left;
+        line-height: 23px;
+        padding-left: 5px;
+    }
+
+    .spnLable
+    {
+        padding: 0px !important;
+        width: 20% !important;
+        line-height: normal !important;
+    }
+</style>
+
+<tr>
+    <td class="id_pathway" valign="middle">
+        <div class="breadcrumb">
+            <ul>
+                <li><a href='@Url.Action("Dashboard")'>Dashboard</a><img src="/Content/Images/arrow.png"
+                    class="arrow_position" /></li>
+
+                <li>Communications
+                    <img src="/Content/Images/arrow.png"
+                        class="arrow_position" /></li>
+
+
+
+                @if (ViewBag.RequestFrom == "CourseAdmin")
+                {
+                    <li><a href='@Url.Action("MassMessages", "CourseAdmin")'>Mass Messages</a><img src="/Content/Images/arrow.png"
+                        class="arrow_position" /></li>
+                    <li><a href='@Url.Action("MessageHistory", "CourseAdmin")'>View Message History</a><img src="/Content/Images/arrow.png"
+                        class="arrow_position" /></li>
+                    
+                }
+                else
+                {
+                    <li><a href='@Url.Action("MassMessages", "Admin")'>Mass Messages</a><img src="/Content/Images/arrow.png"
+                        class="arrow_position" /></li>
+                    <li><a href='@Url.Action("MessageHistory", "Admin")'>View Message History</a><img src="/Content/Images/arrow.png"
+                        class="arrow_position" /></li>
+                    
+                }
+                <li>@ViewBag.Title</li>
+            </ul>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+
+<tr>
+    <td id="content_center_td2" valign="top" align="center">
+        <div id="content_div" class="form_box organization_form">
+
+
+
+            <div>
+                <div class="organization_left" style="width: 100%">
+                    <p>
+                        <label class="spnLable">Title:</label>
+                        <span class="spnMsg">@Model.MessageTitle </span>
+                    </p>
+                </div>
+
+                <div class="clr">
+                </div>
+            </div>
+            <div>
+                <div class="organization_left" style="width: 100%">
+                    <p>
+                        <label class="spnLable">Comments:</label>
+                        <span class="spnMsg">@Model.Message </span>
+                    </p>
+                </div>
+
+
+                <div class="clr">
+                </div>
+            </div>
+
+
+
+            <div class="clr">
+            </div>
+            <div>
+                <div class="organization_left" style="width: 100%">
+                    <p>
+                        <label class="spnLable">Status:</label>
+                        <span class="spnMsg">@Model.EmailStatus </span>
+                    </p>
+                </div>
+
+
+                <div class="clr">
+                </div>
+            </div>
+            @if (Model.EmailStatus != "Success")
+            { 
+                <div>
+                    <div class="organization_left" style="width: 100%">
+                        <p>
+                            <label class="spnLable">Reason:</label>
+                            <span class="spnMsg">@Model.EmailStatusReason </span>
+                        </p>
+                    </div>
+
+
+                    <div class="clr">
+                    </div>
+                </div>
+            }
+            <div class="clr">
+            </div>
+            <div align="center" class="center-button">
+
+
+
+                <input type="button" id="btnCancel" class="submit-btn cancel-btn" value="Close" />
+                <input type="hidden" value="@ViewBag.RequestFrom" id="hdnRequestFrom"  />
+                <input type="hidden" id="hdnSiteUrl" value='@System.Web.Configuration.WebConfigurationManager.AppSettings["SITE_URL"]' />
+            </div>
+
+        </div>
+    </td>
+</tr>
+<script>
+    $("#btnCancel").click(function () {
+
+        if ($("#hdnRequestFrom").val() == "CourseAdmin") {
+            window.location.href = $("#hdnSiteUrl").val() + '@Url.Action("MessageHistory", "CourseAdmin")'
+        }
+        else {
+            window.location.href = $("#hdnSiteUrl").val() + '@Url.Action("MessageHistory", "Admin")'
+        }
+    });
+
+</script>

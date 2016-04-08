@@ -1,0 +1,7 @@
+﻿@{
+    ViewBag.Title = "Edit Template";
+    Layout = "~/Views/Shared/_LayoutAdminArea.cshtml";
+}
+@Html.Partial("~/Views/Shared/_Admintemplatedetail.cshtml")
+@Html.Partial("~/Views/Shared/_templatefieldsdetail.cshtml", (List<Golfler.Models.GF_EmailTemplatesFields>)ViewBag.fields)
+

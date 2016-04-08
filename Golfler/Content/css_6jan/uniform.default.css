@@ -1,0 +1,136 @@
+
+
+/* Uploader */
+
+div.uploader
+{
+    background-position: 0 -297px;
+    height: 37px;
+    
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+	float:left;
+}
+div.uploader span.action
+{
+    background-position: right -409px;
+    height: 33px;
+    line-height: 33px;
+    width: auto;
+    text-align: center;
+    float: left;
+    display: inline;
+    overflow: hidden;
+    cursor: pointer;
+	padding:0 9px;
+}
+div.uploader span.filename
+{
+    text-overflow: ellipsis;
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    float: left;
+    cursor: default;
+    height: 33px;
+    margin: 0px 0 2px 2px;
+    line-height: 33px;
+    padding: 0 10px;
+    width:130px;
+}
+div.uploader input
+{
+    opacity: 0;
+    filter: alpha(opacity=0);
+    -moz-opacity: 0;
+    border: none;
+    background: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    float: left;
+    cursor: default;
+    width: 100%;
+    height: 100%;
+	
+}
+
+div.uploader input.width78{ width:78px !important;}
+
+div.uploader span.action
+{
+    text-shadow:0;
+    background-color: #fff;
+    font-size: 13px;
+    font-weight: bold;
+	background:#06B1DC;
+	color:#ffffff;
+}
+div.uploader span.filename
+{
+    color: #777;
+    border-right:none;
+    font-size: 11px;
+    
+	border:1px solid #eee;
+}
+
+@media (max-width: 980px) {
+
+    div.uploader span.filename
+{
+    text-overflow: ellipsis;
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    float: left;
+    cursor: default;
+    height: 33px;
+    margin: 0px 0 2px 2px;
+    line-height: 33px;
+    padding: 0 10px;
+    width:75px;}
+
+  
+    }
+    
+    
+    
+    @media (max-width: 800px) {
+
+    div.uploader span.filename
+{
+    text-overflow: ellipsis;
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    float: left;
+    cursor: default;
+    height: 33px;
+    margin: 0px 0 2px 2px;
+    line-height: 33px;
+    padding: 0 10px;
+    width:275px;}
+
+    
+    }
+    
+    
+    @media (max-width: 640px) {
+    div.uploader span.filename
+{
+    text-overflow: ellipsis;
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    float: left;
+    cursor: default;
+    height: 33px;
+    margin: 0px 0 2px 2px;
+    line-height: 33px;
+    padding: 0 10px;
+    width:195px;
+}
+
+}

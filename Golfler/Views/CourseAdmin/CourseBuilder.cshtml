@@ -1,0 +1,12 @@
+﻿@{
+    ViewBag.Module = "Builder";
+    ViewBag.Title = "Course Builder";
+    ViewBag.pageTitle = "Course Builder";
+    Layout = "~/Views/Shared/_LayoutCourseArea.cshtml";
+
+    ViewBag.BuilderType = "CourseAdmin";
+
+
+    ViewBag.ParDetails = Golfler.Models.CommonFunctions.GetCoursePar(Convert.ToString(ViewBag.CourseId));
+}
+@Html.Partial("~/Views/Shared/_CourseBuilderScreen.cshtml")

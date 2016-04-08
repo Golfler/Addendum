@@ -1,0 +1,59 @@
+﻿@{
+    ViewBag.Title = "Compare Price";
+    Layout = "~/Views/Shared/_LayoutAdminArea.cshtml";
+    ViewBag.Module="Compare Price";
+}
+
+<tr>
+    <td class="id_pathway" valign="middle">
+        <div class="breadcrumb">
+            <ul>
+                <li><a href='@Url.Action("Dashboard")'>Dashboard</a><img src="/Content/Images/arrow.png" class="arrow_position" /></li>
+                 <li><a href=''>Analytics</a><img src="/Content/Images/arrow.png" class="arrow_position" /></li>
+                <li>@ViewBag.Module</li>
+            </ul>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td id="content_center_td2" valign="top" align="center">
+        <div class="form_box">
+            <div class="search-advertiser">
+                <label>
+                    Search</label>
+                  @Html.DropDownList("CourseIds", (SelectList)(ViewBag.CourseIds), "Select Course", new { @id = "CourseId", @class = "red-border" })
+                @* <br />  <br /> @Html.DropDownList("Country", (SelectList)(ViewBag.Country), "Select Country", new { @id = "Country", @class = "red-border" })*@
+                    <br />  <br /><label>
+                    Food Item</label> @Html.DropDownList("FoodItems", (SelectList)(ViewBag.FoodItems), "Select Food Items", new { @id = "FoodItem", @class = "red-border" })
+              
+              @*  <label>
+                    City</label>
+                  @Html.DropDownList("City", (SelectList)(ViewBag.City), "Select City", new { @id = "City", @class = "red-border" })
+                   <br />  <br /> @Html.DropDownList("State", (SelectList)(ViewBag.State), "Select State", new { @id = "State", @class = "red-border" })
+                *@
+                <img src="/Content/Images/search_icon.png" border="0" alt="search" class="go-btn floatleft jqGrid_refresh"
+                    id="fbox_jqgAdminUser_search" onclick="return BindData();" />
+                <div class="clr">
+                </div>
+
+            </div>
+            <div class="clr">
+            </div>
+        </div>
+       <div id="page-wrap">
+            <div id="divAverage">
+               
+            </div>
+            <div id="divGraph">
+             
+            </div>
+            
+        </div>
+    </td>
+</tr>
+
+
+
+

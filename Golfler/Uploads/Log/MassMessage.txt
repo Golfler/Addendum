@@ -1,0 +1,35 @@
+﻿---------------------------------------------------------------------
+4/22/2015 4:44:04 PM
+---------------------------------------------------------------------
+Total Messages: 2
+====================================
+Email: kalra@courseadmin.com
+Status: Fail
+Reason: Mailbox unavailable. The server response was: Authentication is required for relay
+====================================
+====================================
+Email: kalragophie@courseuser.com
+Status: Fail
+Reason: Mailbox unavailable. The server response was: Authentication is required for relay
+====================================
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+4/22/2015 4:44:12 PM
+---------------------------------------------------------------------
+Total Messages: 3
+====================================
+Email: lastranger@kalra.com
+Status: Fail
+Reason: Mailbox unavailable. The server response was: Authentication is required for relay
+====================================
+====================================
+Email: rkalra@cogniter.com
+Status: Success
+Reason: 
+====================================
+====================================
+Email: vdhiman@cogniter.com
+Status: Success
+Reason: 
+====================================
+---------------------------------------------------------------------

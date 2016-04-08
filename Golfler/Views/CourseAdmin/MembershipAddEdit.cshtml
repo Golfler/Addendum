@@ -1,0 +1,126 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutCourseArea.cshtml";
+}
+
+@model Golfler.Models.GF_CourseMemberShip
+<script language="javascript" type="text/javascript">
+
+    $(document).ready(
+        function () {
+  $('#btnCancel').click(function () {
+                window.location = '@Url.Action("MembershipList")';
+            });
+        });
+</script>
+<tr>
+    <td class="id_pathway">
+        <div class="breadcrumb">
+            <ul>
+                <li><a href='@Url.Action("Dashboard")'>Dashboard</a><img src="/Content/Images/arrow.png"
+                    class="arrow_position" /></li>
+                <li><a href='@Url.Action("MembershipList")'>Manage
+                   Membership</a><img src="/Content/Images/arrow.png" class="arrow_position" /></li>
+                <li>@ViewBag.Module</li>
+            </ul>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td id="content_center_td2" valign="top" align="center">
+        <div id="content_div" class="form_box organization_form">
+            @using (Html.BeginForm("MembershipAddEdit", null, FormMethod.Post, new { id = "frmSubmit", enctype = "multipart/form-data" }))
+            {
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(x => x.ID)
+             
+
+       
+
+                <div style="margin: 0px 0px 0px 0px;">
+                    <div class="organization_left">
+                        <p class="tpspacing">
+                            @if (Model.ID > 0)
+                            {
+                                @Html.LabelFor(x => x.FirstName,"First Name")
+                                @Html.TextBoxFor(x => x.FirstName, new { @class = "userfeilder red-border" })
+                            }
+                            else
+                            {
+                                @Html.LabelFor(x => x.FirstName,"First Name")
+                                @Html.TextBoxFor(x => x.FirstName, new { @class = "userfeilder red-border", @autocomplete = "off", @maxlength = "25" })
+                                @Html.ValidationMessageFor(x => x.FirstName)
+                            }
+                        </p>
+                    </div>
+                    <div class="organization_left">
+                        <p>
+                            @if (Model.ID > 0)
+                            {
+                                @Html.LabelFor(x => x.LastName,"Last Name")
+                                @Html.TextBoxFor(x => x.LastName, new { @class = "userfeilder red-border" })
+                            }
+                            else
+                            {
+                                @Html.LabelFor(x => x.LastName,"Last Name")
+                                @Html.TextBoxFor(x => x.LastName, new { @class = "userfeilder red-border", @maxlength = "250" })
+                                @Html.ValidationMessageFor(x => x.LastName)
+                            }
+                        </p>
+
+                    </div>
+                    <div class="clr">
+                    </div>
+                </div> 
+                
+                <div>
+                    <div class="organization_left">
+                        <p class="tpspacing">
+                            @if (Model.ID > 0)
+                            {
+                                @Html.LabelFor(x => x.Email,"Golfer Email Id")
+                                @Html.TextBoxFor(x => x.Email, new { @class = "userfeilder red-border" })
+                            }
+                            else
+                            {
+                                @Html.LabelFor(x => x.Email,"Golfer Email Id")
+                                @Html.TextBoxFor(x => x.Email, new { @class = "userfeilder red-border", @autocomplete = "off", @maxlength = "50" })
+                                @Html.ValidationMessageFor(x => x.Email)
+                            }
+                        </p>
+                    </div>
+                    <div class="organization_left">
+                        <p>
+                            @if (Model.ID > 0)
+                            {
+                                @Html.LabelFor(x => x.MemberShipId,"Membership Id")
+                                @Html.TextBoxFor(x => x.MemberShipId, new { @class = "userfeilder red-border" })
+                            }
+                            else
+                            {
+                                @Html.LabelFor(x => x.MemberShipId,"Membership Id")
+                                @Html.TextBoxFor(x => x.MemberShipId, new { @class = "userfeilder red-border" })
+                                @Html.ValidationMessageFor(x => x.MemberShipId)
+                            }
+                        </p>
+
+                    </div>
+                    <div class="clr">
+                    </div>
+                </div> 
+                
+                <div class="clr">
+                </div>
+                <div align="center" class="center-button">
+
+                    <a href="#myModal" id="btnConfirm" class="submit-btn update-btn" style="display: none;">Submit</a>
+                    <input type="submit" id="btnSubmit" class="submit-btn update-btn" name="btnSubmit" value="Submit" />
+                    <input type="button" id="btnCancel" class="submit-btn cancel-btn" value="Cancel" />
+                    <input type="button" id="btnPartial" class="submit-btn update-btn" name="btnPartial" value="Submit" style="display: none;" />
+                </div>
+                @Html.Hidden("hdnCourseUser", @Golfler.Models.UserType.CourseAdmin)
+            }
+        </div>
+    </td>
+</tr>

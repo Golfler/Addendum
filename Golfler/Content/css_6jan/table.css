@@ -1,0 +1,120 @@
+table { 	width: 100%; border-collapse: collapse; }
+/*tr:nth-of-type(odd) { background: #eee; 	}*/
+
+
+
+tr{ background:#fff; border:1px solid #eaeaea !important;}
+tr.row1{ border:1px solid #eaeaea !important;}
+tr.left_bder{ border:1px solid #eaeaea !important;}
+tr.selected-row{ background:#eee !important;}
+tr:hover{ background:#eee !important;}
+tr.trPaging{ /*border-top:2px solid #fff;*/ background:#f2f2f2;}
+tr.trPaging td{ padding:5px;}
+th {background: #06b1dc; padding:15px 12px 15px 15px; color: #fff; font-weight:normal;  font-size:16px; font-family:robotoregular;	}
+#advertiser_login th{ background: #15437B;}
+#advertiser_login tr td.ui-datepicker-unselectable span { background:none; color:#333;}
+th img { padding:0px 0px 0px 15px;}
+td {padding: 15px; border: 1px solid #eaeaea;  font-family:robotomedium; font-size:14px;}
+td.no-space_t { padding:5px !important;}
+/*#advertiser_login #page-wrap td{ background:#fff !important;}*/
+#advertiser_login #page-wrap tr:hover{ background:#ecfbff !important;}
+#advertiser_login #page-wrap tr.selected-row{ background:#ecfbff !important;}
+.page-wrap .case-view th { text-align:left; padding:15px 0 15px 15px; }
+#advertiser_login #page-wrap tr:hover td, #advertiser_login tr.tr_selected td { background:#ecfbff;}
+
+
+#advertiser_login #page-wrap tr.trPaging:hover td, #advertiser_login #page-wrap tr.trPaging:hover{ background:#fff !important;}
+td a { color:#06B1DC !important; display:inline-block;}
+td a:hover { color:#333; !important;}
+#page-wrap{ margin:0px;overflow-x:auto;overflow-y: hidden;}
+td.align-left{ text-align:left;}
+td input{ text-align:center !important;}
+td input.txtfeild{ width:96%; padding:5px 2%; text-align:left !important; outline:none; }
+td select.txtfeild{ width:100%; padding:5px 2%; text-align:left !important;  outline:none; }
+
+td input.txtfelds{ width:96%; padding:5px 2%; text-align:left !important; outline:none; }
+td select.txtfelds{ width:100%; padding:5px 2%; text-align:left !important;  outline:none; }
+td.text-center{text-align:center;}
+
+/*.voucher-details-table{ width:100%; border:none;}
+.voucher-details-table tr{}
+.voucher-details-table tr td{ font-size:16px; font-family:robotomedium; color:#06b1dc; padding:10px; width:33%;}
+.voucher-details-table tr td.right_border{ border-right:2px solid #fff;}
+.voucher-details-table tr td span{ color:#333; font-size:14px;}*/
+
+th.acl1{width:50%;}
+th.acl2{width:10%;}
+th.acl3{width:10%;}
+th.acl4{width:15%;}
+th.acl5{width:10%;}
+
+table.left_bod{ border-left:1px solid #eaeae;}
+
+@media (max-width: 1024px) 
+{
+table.left_bod{ border-left:1px solid #eaeaea !important;}
+}
+@media (max-width: 1280px) 
+{
+    th.acl1{width:32%;}
+th.acl2{width:16%;}
+th.acl3{width:16%;}
+th.acl4{width:20%;}
+th.acl5{width:16%;}
+    
+ tr.left_bder{ border:1px solid #EAEAEA !important;}   
+    }
+@media (max-width: 979px) 
+{
+    th.acl1{width:25%;}
+th.acl2{width:15%;}
+th.acl3{width:20%;}
+th.acl4{width:22%;}
+th.acl5{width:18%;}
+   tr.left_bder{ border:1px solid #EAEAEA !important;} 
+    
+    }
+
+@media (max-width: 800px) 
+{  th.acl1{width:20%;}
+th.acl2{width:16%;}
+th.acl3{width:21%;}
+th.acl4{width:24%;}
+th.acl5{width:19%;}
+    tr.left_bder{ border:1px solid #EAEAEA !important;}
+    
+    }
+
+
+@media (max-width: 640px) {
+
+table { 	width: 100%; border-collapse: collapse; }
+tr:nth-of-type(odd) { background: #eee; 	}
+th { 	background: #06b1dc; padding:5px; color: #fff; font-weight:normal;  font-size:13px; font-family:robotoregular;	}
+th img { padding:0px 0px 0px 5px;}
+td { 	padding: 5px; border: 1px solid #ccc; /*text-align: center;*/ font-family:robotoregular; font-size:13px;}
+#page-wrap{ margin:0px; overflow-x:auto;overflow-y: hidden;}
+
+}
+
+
+@media (max-width: 480px) 
+{
+    	
+
+table { 	width: 100%; border-collapse: collapse; }
+tr:nth-of-type(odd) { background: #eee; 	}
+th { 	background: #06b1dc; padding:5px; color: #fff; font-weight:normal;  font-size:13px; font-family:robotoregular;	}
+th img { padding:0px 0px 0px 5px;}
+td { 	padding: 5px; border: 1px solid #ccc; /*text-align: center;*/ font-family:robotoregular; font-size:13px;}
+#page-wrap{ margin:0px; overflow-x:auto;overflow-y: hidden;}
+}
+
+/* add on 4 december */
+
+/*.even-row{background:#eeeeee !important;}*/
+.odd-row{background:#fff !important;}
+
+@media (max-width: 320px) 
+{
+    	   .btm-blue-btn{ min-height:56px !important;}}

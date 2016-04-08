@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Module = "Users";
+    ViewBag.Title = "Manage Users";
+    ViewBag.pageTitle = "Manage Users";
+    Layout = "~/Views/Shared/_LayoutCourseArea.cshtml";
+     
+}
+<script language="javascript">
+    function UpdateRowStatus(id, status) {
+        try {
+            UpdateStatus('UpdateUserStatus', 'Golfler/CourseAdmin', id, status, 'list');
+        }
+        catch (ex) { alert(ex.message); }
+    };
+</script>
+@Html.Partial("~/Views/Shared/_UserListScreen.cshtml")

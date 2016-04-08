@@ -1,0 +1,98 @@
+﻿@Html.Partial("_jqGrid")
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        bindJqGridMin('list', 'pager', '/Golfler/Admin/GetMenuItemSubCatWiseList',
+                ['ID', 'Menu Item Name', 'Price', 'Active'],
+                [{ name: 'ID', index: 'ID', width: 10, hidden: true },
+                 { name: 'Name', index: 'Name', width: 50, formatter: SetEditLink, classes: 'zzz' },
+                 { name: 'Amount', index: 'Amount', width: 50 },
+                 { name: 'Status', index: 'Status', width: 20, sortable: false, formatter: SetActiveInActive, align: "center" }
+                ], 'ID', 'desc',
+                {
+                    "searchText": (function () {
+                        return $("#txtSearch").val();
+                    }),
+                    "sCatID": (function () {
+                        return $('#ID').val();
+                    })
+
+                }, '');
+    });
+
+    function SetEditLink(cellvalue, options, rowObject) {
+
+        try {
+            var Eid = rowObject["EID"];
+
+            //return "<a href='/Golfler/Admin/MenuItemAddEdit/" + Eid + "' >" + cellvalue + "</a>";
+            return "<a href='/Golfler/Admin/MenuItemAddEdit?eid=" + Eid + "&type=edit' >" + cellvalue + "</a>";
+        }
+        catch (ex) { alert(ex.message); }
+    }
+
+    function SetActiveInActive(cellvalue, options, rowObject) {
+        try {
+            var rowId = rowObject["ID"];
+            var type = rowObject["Type"];
+
+            var onclickCall = "onclick=javascript:UpdateRowStatus(" + rowId + ",&apos;" + cellvalue.trim() + "&apos;);";
+
+            if (cellvalue.trim() == "A" || cellvalue == true)
+                return "<a href='#'><img " + onclickCall + " alt='" + cellvalue + "' title='click to deactivate' src='/Content/images/nw_active.png'/></a>";
+            else
+                return "<a href='#'><img " + onclickCall + " alt='" + cellvalue + "' title='click to activate' src='/Content/images/nw_inactive.png'/></a>";
+        }
+        catch (ex) {
+            alert(ex.message);
+        }
+    }
+
+    function MenuItemOptionPopup(ele) {
+        $('#popupMenuOption').click();
+    }
+
+    function UpdateRowStatus(id, status) {
+        try {
+            UpdateStatus('UpdateMenuItemStatus', 'Golfler/Admin', id, status, 'list');
+        }
+        catch (ex) { alert(ex.message); }
+    };
+
+    function DeletePromoCodes() {
+        try {
+            DeleteMultiple('list', '@Url.Action("DeletePromoCode")');
+        }
+        catch (ex) { alert(ex.message); }
+    }
+</script>
+
+<style>
+    .width100per {
+        width: 100% !important;
+    }
+</style>
+
+<tr>
+    <td id="content_center_td3" valign="top" align="center">
+        <div class="form_box">
+            <div class="search-advertiser">
+                <label>
+                    Search</label>
+                <input type="text" placeholder="Menu Item Name" name="searchText" id="txtSearch"
+                    class="searchfeild jqGrid_refreshKey adname" value="" style="margin-bottom: 2px;"
+                    size="30" />
+                <img src="/Content/Images/search_icon.png" border="0" alt="search" class="go-btn floatleft jqGrid_refresh"
+                    id="fbox_jqgAdminUser_search" />
+            </div>
+            <div class="clr">
+            </div>
+        </div>
+        <div>
+            <table id="list" cellpadding="0" cellspacing="0" style="width: 100%;" class="jqgridTable">
+            </table>
+            <div id="pager" style="width: 100%;">
+            </div>
+        </div>
+    </td>
+</tr>

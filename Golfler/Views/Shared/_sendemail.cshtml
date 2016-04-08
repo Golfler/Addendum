@@ -1,0 +1,104 @@
+﻿<div id="myModal" class="reveal-modal" style="display: block; top: 100px;">
+    <div class="pop_detail">
+        <h1>
+            Send Test Email</h1>
+        <div class="page-wrap">
+            <table class="voucher-details-table">
+                <tr>
+                    <td class="align-left">
+                        From Email
+                    </td>
+                    <td class="align-left">
+                        <span id="spAdminEmail">@ViewBag.From</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        To Email
+                    </td>
+                    <td class="align-left">
+                        <input type="text" id="txtToEmail" class="txtfelds width_97" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        Subject
+                    </td>
+                    <td class="align-left">
+                        <input type="text" id="txtSubject" class="txtfelds width_97" /><input type="hidden" value='@ViewBag.templateid' id="templateid"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        Message
+                    </td>
+                    <td class="align-left">
+                        <textarea id="txtHTML" rows="5" cols="15" class="txtfelds width_97"></textarea>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="clr">
+    </div>
+    <div class="margin-top15">
+    </div>
+    <div class="clr">
+    </div>
+    <div align="center" class="center-button">
+        <input type="button" id="btnSendEmail" value="Send Email" class="submit-btn update-btn" />
+        <input type="button" id="close" value="Close" class="submit-btn cancel-btn" onclick="$.fancybox.close();" />
+        <input id="hdHost" type="hidden" value='@ViewBag.Host' />
+        <input id="hdPassword" type="hidden" value='@ViewBag.Password' />
+        <input id="hdPort" type="hidden" value='@ViewBag.Port' />
+        <input id="hdUserName" type="hidden" value='@ViewBag.UserName' />
+        <input id="hdEnableSsl" type="hidden" value='@ViewBag.EnableSsl' />
+        <input id="hdEnableTls" type="hidden" value='@ViewBag.EnableTls' />
+    </div>
+    <div class="clear">
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnSendEmail').click(function (e) {
+
+            var ToEmail = $("#txtToEmail").val();
+            var Subject = $("#txtSubject").val();
+            var Message = $("#txtHTML").val();
+            var Host = $("#hdHost").val();
+            var Password = $("#hdPassword").val();
+            var Port = $("#hdPort").val();
+            var from = $("#spAdminEmail").text();
+            var username = $("#hdUserName").val();
+            var EnableSsl = $("#hdEnableSsl").val();
+            var EnableTls = $("#hdEnableTls").val();
+            if (ToEmail == "" || Subject == "" || Message == "")
+                showStickMessage('All details are required.');
+            else
+                $.ajax({
+                    type: 'POST',
+                    url: '/Golfler/CourseAdmin/SendEmail',
+                    data: { username: username,
+                        from: from,
+                        to: ToEmail,
+                        subject: Subject,
+                        body: Message,
+                        host: Host,
+                        password: Password,
+                        port: Port,
+                        EnableSsl: EnableSsl,
+                        EnableTls: EnableTls
+                    },
+                    success: function (data) {
+                        if (data.msg == true) {
+                            $.fancybox.close();
+                            showMessage('Mail sent successfully.');
+                        }
+                        else {
+                            showStickMessage('Mail sending faliure. SMTP settings or To Email is not correct.');
+                        }
+                    }
+                });
+        });
+    });
+</script>

@@ -1,0 +1,591 @@
+
+@media only screen and (max-width:1280px) {
+.center_block { width:90%;}
+.without_add .app_review_rw{ margin:0;}
+	
+.without_lft_add .avail_apps_bx_innr { text-align:center;}
+.without_lft_add .avail_apps_pic {width: 100%;}
+.without_lft_add .avail_apps_info {width: 100%; padding:15px 0 0;}
+
+.without_rt_add .avail_apps_bx_innr { text-align:center;}
+.without_rt_add .avail_apps_pic {width: 100%;}
+.without_rt_add .avail_apps_info {width: 100%; padding:15px 0 0;}
+
+.search_block_form {width:76%;}
+.search_block span:after { background:none;}
+
+.avail_apps_bx_innr{ text-align:center;}
+
+abbr{ float:left; width:31.9%; display:block; margin:0px 19px 0px 0px; }
+abbr .jqTransformSelectWrapper{ height:41px !important; border:none; z-index:9999 !important;}
+abbr .jqTransformSelectWrapper a.jqTransformSelectOpen{ height:41px !important;}
+abbr .jqTransformSelectWrapper ul{ top:41px;}
+
+.without_rt_add .app_review_rw li { width:20% !important;} 
+.without_lft_add .app_review_rw li { width:20% !important;} 
+.without_add .app_review_rw li { width:16.5% !important;} 
+#CategoryList .without_add .app_review_rw li { width:25% !important;}
+.app_review_rw li {width:25%;}
+
+
+
+}
+
+@media only screen and (max-width:1199px) {
+.without_add .avail_apps_info {padding:0;}
+}
+@media only screen and (max-width:1150px) {
+.without_add .avail_apps_bx_innr {text-align:left;}
+.without_add .avail_apps_rw li{ padding:0 7% 0 0;}
+.without_add .avail_apps_pic {width:44%;}
+/*.without_add .avail_apps_pic img{width:100px; height:85px;}*/
+.without_add .avail_apps_info {width:54%; padding:0;}
+
+.without_add .avail_apps_rw li{ width:28%; min-height:212px;}
+.without_add .avail_apps_rw li:nth-of-type(2n+2){padding-right:7%;}
+.without_add .avail_apps_rw li:nth-of-type(3n+3){padding-right:0;}
+
+
+.avail_apps_info {padding-right:0;}
+.case_list_form p:after { content:""; display:block; clear:both; }
+.case_list_form p {width:50%;}
+.case_list_form p label {width:100%; padding:13px 15px 8px 0;}
+.case_list_form p label.case_lab { width:20%; float:left; padding:8px 5px 8px 0px;}
+.case_list_form p select {width:100%;}
+.case_list_btn {width:100%; float:left; padding:25px 0 0 0;}
+
+.avail_apps_bx_innr { text-align:center;}
+.avail_apps_pic { width:100%;}
+.avail_apps_info { width:100%;}
+
+.advance_search_col span.field-validation-error { float:none; padding:0;}
+.advance_search_col span.field-validation-error span{padding:0;}
+.advance_search_col .controls_innr {padding:0;}
+.register_terms { padding:0;}
+
+/*dashboard page css */
+.dashboard_apps a { width:33.3%; font-size:25px; margin:0 0 5px 0; min-height: 250px;}
+/*dashboard page css */
+
+
+
+.top_head_login:after { content:""; display:block; clear:both; }
+
+.test_block_l{width:100%;padding-bottom:25px; text-align:center;}
+.test_block_r{width:100%;}
+.app_ttl_rw span {font-size:35px;}
+.banner_bg h1 { font-size:55px;}
+.quote_txt_m { padding:15px 0;}
+
+/*advance_search style start*/
+.advance_search_col p{ width:50%;}
+.advance_search_col p label {width:100%; text-align:left;}
+.advance_search_col p input, .advance_search_col p select, .advance_search_col p textarea, .advance_search_col p span, .advance_search_col .jqTransformSelectWrapper{ width:94% !important;}
+.advance_search_col p .span_red_border {width:94%;}
+.advance_search_col p .password_bar_rw .password_bar_line {width:100%;}
+
+/*advance_search style ends*/
+
+/*--------------------------------------------------------------
+home_page_apps_css_starts
+---------------------------------------------------------------*/
+.without_rt_add .app_review_rw li { width:20%;} 
+.without_lft_add .app_review_rw li { width:20%;} 
+.without_add .app_review_rw li { width:16.5% !important;} 
+#CategoryList .without_add .app_review_rw li { width:25% !important;}
+.app_review_rw li {width:25%;}
+/*--------------------------------------------------------------
+home_page_apps_css_ends
+---------------------------------------------------------------*/
+}
+
+
+@media only screen and (max-width:1024px) 
+
+{
+.case_list_form p label.case_lab{ float: left;
+    padding: 8px 5px 10px 0;
+    width: 40%;}    
+.search_block_form {width:100% !important;} 
+    
+}
+
+
+
+@media only screen and (max-width:980px) {
+
+
+.search_block_form {width:100% !important;}
+
+
+/*dashboard page css */
+.dashboard_apps a { width:50%; font-size:25px; margin:0 0 5px 0; min-height: 250px;}
+.jcarousel{width:82%}
+/*dashboard page css */
+
+/*--------------------------------------------------------------
+advance_search_page_nav_css_starts
+---------------------------------------------------------------*/
+.phone_menu.advance_search_ph {
+display:block;
+padding:20px 42px; 
+font-size:18px;
+background:url(../../.../../images/phone_nav_bg.png) 95% center #ddd no-repeat;
+border: 1px solid #fff;
+display: block;
+cursor:pointer;
+}
+.nav.advance_search_nav { display:none;}
+.nav.advance_search_nav ul li { border-bottom:1px solid #00A1CA; width: 100%;}
+.nav.advance_search_nav ul li a{ display:block;}
+.center_block.phone {display:block; padding:0; width:100%;}
+
+/*--------------------------------------------------------------
+advance_search_page_nav_css_ends
+---------------------------------------------------------------*/
+
+.case_list_btn {width:100%; float:left; padding:25px 0 0 0;}
+
+
+
+
+}
+
+@media only screen and (max-width:960px) {
+.avail_apps_rw li{ width:46%; padding:0 7% 0 0;}
+.avail_apps_pic {width:100%;}
+.avail_apps_info {width:100%; padding:10px 0 0 0;}
+
+.avail_apps_rw li:nth-of-type(2n+2) {padding-right:0;}
+.avail_apps_rw li:nth-of-type(3n+3) {padding:0 7% 0 0;}
+
+.app_review_rw li {width:100%;}
+
+.app_ttl_rw span {float:left; width:100%;}
+.app_ttl_rw a { float:left; margin:17px 0 0;}
+.search_block .padd { width:100%; margin:2px 0;}
+.banner_l {width:100%; padding:35px 0 40px;}
+.banner_r{ width:100%;}
+
+/*--------------------------------------------------------------
+home_page_apps_css_starts
+---------------------------------------------------------------*/
+.without_rt_add .app_review_rw li, .without_lft_add .app_review_rw li, .without_add .app_review_rw li { width:33%;} 
+.app_review_rw li {width:50%;}
+/*--------------------------------------------------------------
+home_page_apps_css_ends
+---------------------------------------------------------------*/
+
+}
+
+
+@media only screen and (max-width:870px) 
+{
+	
+	.case_list_form p label.case_lab { width:40%; float:left; padding:8px 5px 8px 0px;}
+	abbr{ float:left; width:100%; display:block; margin:2px 0px 0px 0px; }
+abbr .jqTransformSelectWrapper{ height:41px !important; border:none;}
+abbr .jqTransformSelectWrapper a.jqTransformSelectOpen{ height:41px !important;}
+abbr .jqTransformSelectWrapper ul{ top:41px;}
+abbr .search_block span:after { height:10px;}
+
+#Homecontent{ background:#333; color:#fff; opacity:0.5; padding:10px; float:left; width:40%;}
+#Homecontent p{ color:#fff; font-size:14px;}
+
+.map_col_l { width:100%;}
+.map_col_info p label {width:100%; padding:0 0 8px 0;}
+
+.contact_col_r { width:100%; margin:40px 0 0 0;}
+.contact_col_r ul li label {width:100%; padding:0 0 8px 0; text-align:left;}
+.contact_col_r ul li input, .contact_col_r ul li select, .contact_col_r ul li textarea {width:100%; padding:10px;}
+.contact_col_r span.field-validation-error { padding:5px 0 0;}
+
+
+.nav ul li.dropdown ul.dropdown-menu {width:100%; position:static;}
+
+
+
+
+.dashboard_tbl { overflow:scroll;}
+
+.mobile_nav { display:block; margin:0 auto; width:100%;}
+.mobile_nav select{ width:100%; background:#eee; border:1p solid #eee; padding:15px;}
+.phone_menu {display:block;padding:20px 42px; font-size:18px;
+	background:url(../../.../../images/phone_nav_bg.png) 95% center #ddd no-repeat;
+    border: 1px solid #fff;
+    display: block;
+	cursor:pointer;
+}
+.center_block.phone {display:block; padding:0; width:100%;}
+.nav {display:none;}
+.nav ul li {width:100%; border-bottom:1px solid #00a1ca;}
+.nav ul li a{ display:block;}
+
+.quote_pic {width:100%; padding:0 0 30px 0;}
+.quote_txt {width:100%;}
+
+.advance_search_col p {width:100%;}
+.advance_search_col p input, .advance_search_col p select, .advance_search_col p textarea, .advance_search_col p span{ width:100%;}
+}
+
+@media only screen and (max-width:768px) 
+{
+
+    .case_list_form p label.case_lab { width:40%; float:left; padding:8px 5px 8px 0px;}
+	
+	abbr{ float:left; width:100%; display:block; margin:5px 0px 5px 0px; }
+abbr .jqTransformSelectWrapper{ height:41px !important; border:none;}
+abbr .jqTransformSelectWrapper a.jqTransformSelectOpen{ height:41px !important;}
+abbr .jqTransformSelectWrapper ul{ top:41px;}
+abbr .search_block span:after { height:10px !important;}
+    
+#Homecontent{ background:none; color:#fff; opacity:0.5; padding:10px; float:left; width:45%;}
+#Homecontent p{ color:#fff; font-size:14px;}
+    
+/*dashboard page css */
+.dashboard_apps a { width:50%; font-size:25px; margin:0 0 5px 0; min-height: 250px;}
+/*dashboard page css */
+
+.avail_apps_block_ttl.big_ttl { font-size:24px;}
+
+.app_ttl_rw span {font-size:28px;}
+.apps_block.app_5_without_add { width:100%; margin:0 auto; padding:0;}
+.apps_width_auto {width:auto;}
+
+.app_ttl_rw span {font-size:22px;}
+.app_ttl_rw {padding:0 0 20px 0;}
+.app_ttl_rw { text-align:center;}
+.app_ttl_rw a {float:right; display:inline-block; margin-top:0px;}
+.banner_bg h1 { text-align:left; padding:40px 0;}
+
+.advance_search_col p {width:50%;}
+.app_ttl_rw span{ float:left; width:auto;}
+.advance_search_col p input, .advance_search_col p select, .advance_search_col p textarea, .advance_search_col p span, .advance_search_col .jqTransformSelectWrapper{ width:94% !important;}
+.toast-container{ z-index:999999999;}
+}
+
+@media only screen and (max-width:767px) 
+{
+    
+    
+.avail_apps_bx_innr { text-align:left;}
+
+.avail_apps_rw li{ width:46%; padding:0 7% 0 0;}
+.without_add .avail_apps_rw li:nth-of-type(2n+2) {padding-right:0;}
+.without_add .avail_apps_rw li:nth-of-type(3n+3){padding-right:7%;}
+
+.avail_apps_block_ttl { text-align:left;}
+.top_head_logout {width:100%; text-align:center;}
+.user_name { padding:0 0 16px; text-align:center; width:100%;}
+
+.app_info_description select {max-width:none;}
+.request_input_rw input {max-width:none;}
+
+.registration_block_head h1 { width:100%; font-size:20px; text-align:center; padding:10px 0 12px;}
+.registration_btns{width:100%; text-align:center;}
+.registration_form_ttl { padding:15px 0;}
+.registration_form_rw p { width:100%;}
+.registration_form_rw p label{ width:100%; padding:0 0 10px 0; text-align:left;}
+.registration_form_rw p span{ width:100%;}
+
+.developer_registration_rw p {width:100%;}
+.developer_registration_rw p label{width:100%; text-align:left; padding:10px 0;}
+.developer_registration_rw p input{width:100%;}
+.developer_registration_rw p input, .developer_registration_rw p select, .developer_registration_rw p textarea{ width:100%;}
+
+.avail_apps_block {width:278px; float:none; margin:0 auto;}
+.avail_apps_rw li{width:100%; padding:0;}
+.avail_apps_pic {width:auto;}
+.avail_apps_info {width:auto; padding:0;}
+
+.without_add .avail_apps_block {width:100%; float:none; margin:0 auto;}
+.without_add .avail_apps_rw li{ width:auto;}
+
+
+.advance_search_col p input, .advance_search_col p select, .advance_search_col p textarea, .advance_search_col p .span_red_border{ width:100%;}
+.advance_search_col .controls {width:100%;}
+.advance_search_col .password-meter {width:100%;}
+
+.top_head_logo {width:100%;}
+.logo_bx {width:100%;}
+.top_head_login { float: none; margin:0 auto; width:455px; clear:both;}
+
+.all_categories { width:100%;}
+
+/*--------------------------------------------------------------
+home_page_apps_css_starts
+---------------------------------------------------------------*/
+.without_rt_add .app_review_rw li, .without_lft_add .app_review_rw li { width:100% !important;} 
+.without_add .app_review_rw li { width:33%;} 
+
+.app_review_rw li {width:100%;}
+.apps_block { width:230px; margin:0 auto; padding:0;}
+
+.without_add .apps_block, .without_rt_add .apps_block, .without_lft_add .apps_block { width:100%;}
+
+/*--------------------------------------------------------------
+home_page_apps_css_ends
+---------------------------------------------------------------*/
+
+.app_review_rw { margin:0;}
+.quote_txt_m { padding:0px 0;}
+.inner_pages_txt p {padding:0 0 15px;}
+
+.submit_rw{ text-align:center; padding:0;}
+
+.top_head_logout {width:100%; text-align:center;}
+
+.advance_search_col p {width:100%;}
+
+.app_info_ttl {width:100%; text-align:left;}
+.app_info_description {width:100%; border-left:none;}
+
+}
+
+@media only screen and (max-width:640px) 
+{
+    
+.case_list_form .jqTransformSelectWrapper , .developer_registration_rw .jqTransformSelectWrapper, .developer_registration_rw p .card_expiry{ float:left; width:100% !important;}
+.developer_registration_rw p .card_expiry .jqTransformSelectWrapper{ width:47% !important; float:right !important;}
+ .developer_registration_rw p .card_expiry .jqTransformSelectWrapper:first-child{ float:left !important; }
+
+    
+.case_list_form p {width:100%;}
+
+.registration_form_btns input {display:block; width:100%; margin-bottom:5px;}
+.developer_registration_head h1 { text-align:center; padding:0 0 20px 0; font-size:15px;}
+
+.developer_registration_head h1{width:100%; text-align:center; padding:0 0 10px 0;}
+.developer_registration_head a{width:100%;}
+/*advance_search style starts*/	
+.avail_apps_pic {width:auto;}
+.avail_apps_info {width:auto; padding:0;}
+/*advance_search style ends*/
+
+
+.without_add .apps_block { width:100%;}
+.without_add .app_review_rw li { width:50% !important;} 
+
+
+.without_add .avail_apps_block {/*width:278px;*/ width:100%; float:none; margin:0 auto;}
+.without_add .avail_apps_rw li{ width:100%;}
+
+.without_add .avail_apps_bx_innr{ text-align:left;}
+.without_add .avail_apps_pic{ width:44%; max-width:125px;}
+.without_add .avail_apps_info{ width:100$; padding:0;}
+
+
+.jcarousel{width:81%}
+.jcarousel-wrapper{ height: 140px;}
+.jcarousel li img {    border: medium none;    padding: 18px 24px;    width: 104px; height:auto;}
+.jcarousel-control-next{ height: 140px; background-position:left 50%;}
+.jcarousel-control-next:hover{ height: 140px; background-position:left 50%;}
+.jcarousel-control-prev{ height: 140px; background-position:left 50%;}
+.jcarousel-control-prev:hover{ height: 140px; background-position:left 50%;}
+.avail_apps_rw .avail_apps_info{ float:left;}
+.buypop-outerReview{ left:15% !important;}
+.caseliist_view.setting_pop{ top:90%;}
+.app_info_breif, .caseliist_view_tbl table tr th, .app_info_breif_info p, .caseliist_view_foot{ padding:5px;}
+}
+
+@media only screen and (max-width:480px) 
+{
+.jcarousel{width:70%}
+.width_heading{ width:100% !important;}
+.app_write_review{ float:left;}
+.app_info_breif_info h1{ padding-top:10px;}
+.app_write_review p{ text-align:left; padding:0px;}
+.avail_apps_block_ttl { text-align:left;}
+ .app_ttl_rw span{ width:100%; float:none; }
+.app_ttl_rw a {float:none; display:inline-block; margin-top:10px; width:100%;}
+.remember_me_l span{ display:inline; float:right;}
+.remember_me_l span:first-child{ float:left;}
+.register_block .advance_search_col p input, .register_block .advance_search_col p select, .register_block .advance_search_col p textarea, .register_block .advance_search_col p span, .register_block .advance_search_col .jqTransformSelectWrapper{ width:100% !important;}
+.register_block .advance_search_col p span input[type="radio"]{ width:auto !important;}
+.register_block .advance_search_ttl{ padding:10px 0px 0px 10px;}
+.register_block .advance_search_col{ padding:0px 10px;}
+.developer_registration_rw h1{ margin:0px;}
+.developer_registration_rw p .card_expiry{ width:100%;}
+.developer_registration_rw p.width-auto #rnewform, .developer_registration_rw p.width-auto #rexistform{ float:left; margin:2px 5px 0px 0px;}
+
+.banner_bg{min-height:50px;;}
+.banner_bg h1{padding:20px 0px; font-size:28px; }
+.without_add .app_review_rw li {width: 76.5% !important; display:inline-block; margin-left:10%;}
+.dashboard_apps a.tickets_apps_icn, .dashboard_apps a.offer_messages_icn, .dashboard_apps a.edit_details_icn, .dashboard_apps a.enroll_device, .dashboard_apps a.update_password_icn, .dashboard_apps a.app_reviews_icn, .dashboard_apps a.digital_locker{ min-height:auto; width:100%; background-image:none !important; height:auto !important; min-height:10px;}
+.dashboard_apps a *{ min-height:10px;  transition: all 0.0s ease 0s;}
+.dashboard_apps a:hover .app_label_innr{ padding:10px;}
+
+.dashboard_apps a span, .dashboard_apps a:hover span{ display:none !important;}
+.dashboard_apps a.tickets_apps_icn{ height:auto !important;}
+.dashboard_apps a .app_label{ height:auto !important;}
+.dashboard_apps a .app_label_innr{ padding:10px; text-align:left;}
+ abbr .jqTransformSelectWrapper div span{ font-size:12px; color:#a3a8ab; line-height:40px; padding:0px 2px;}
+    
+ .case_list_form .jqTransformSelectWrapper { float:left; width:100% !important;}   
+
+#Homecontent{ background:#333; color:#fff; opacity:0.5; padding:10px; float:left; width:100%;}
+#Homecontent p{ color:#fff; font-size:14px;}
+.avail_apps_bx_innr { text-align:center;}
+.avail_apps_info { width:100%;}
+.avail_apps_pic {width:100%;}
+
+.h_slide, .user_reveiw_pic, .user_reveiw_info, .user_comment{width:100%;}
+.user_comment { padding-left:0;}
+.h_slide { padding:0 0 15px 0;}
+
+.categoryList {max-width:none;}
+.modal-body .control-label {width:100%; padding:0 0 6px; text-align:left;}
+.modal-body .controls {width:100%;}
+
+
+.buyapp_popup_btn a {display:block; margin:0 0 1px;}
+
+.remember_me_r { width:100%; padding:0 0 20px;}
+.remember_me_l { width:100%;}
+
+.top_head_logo {width:100%; text-align:center;}
+
+/*dashboard page css */
+.dashboard_apps a { width:100%; font-size:25px; margin:0 0 5px 0;}
+/*dashboard page css */
+
+.adds_block{ padding:0 0 60px;}
+
+.without_rt_add .midd_block { width:100%;}
+.without_rt_add .midd_block_innr { width:100%; padding:0;}
+.without_add .midd_block_innr{padding:0;}
+
+.request_apps_btns{ padding:35px 0;}
+
+.banner_bg { height:auto;}
+
+/*--------------------------------------------------------------
+home_page_apps_css_starts
+---------------------------------------------------------------*/
+.without_add .app_review_rw li,.without_rt_add .app_review_rw li, .without_lft_add .app_review_rw li{ width:100%;} 
+
+.apps_block, .without_add .apps_block, .without_rt_add .apps_block, .without_lft_add .apps_block { width:230px; margin:0 auto; padding:0;}
+
+/*--------------------------------------------------------------
+home_page_apps_css_starts
+---------------------------------------------------------------*/
+
+.banner_l h1 {font-size:35px;}
+.lft_block {width:100%; text-align:center;}
+.nav {display:none;}
+.midd_block{width:100%; padding:25px 0 0 0;}
+.midd_block_innr {padding:0;}
+.rt_block {width:100%; text-align:center;}
+.test_block_l { width:100%; padding:0 16px 20px 16px; text-align:center;}
+.footer_rw li {float:left; width:100%;}
+
+.top_head_login { margin:15px 0 0; width:100%;}
+.top_head_login a {width:100%; border-bottom: 1px solid #444;}
+.top_head_login a.register {background-position: 13px 18px; padding-left:45px;}
+.login_or { display:none;}
+
+.app_review_rw { margin: 0;}
+
+.app_ttl_rw.small_ttl span {font-size:25px;}
+
+.without_lft_add .midd_block_innr { padding:0;}
+.without_lft_add .midd_block {width:100%;}
+
+.contact_col_r { padding:61px 25px 118px;}
+
+/*contact_us style start*/
+.contact_tp_pic {width:130px;}
+/*contact_us style ends*/
+
+/*advance_search style start*/
+.advance_search_rw{ padding:0;}
+.app_pager_rw { padding:10px 13px;}
+.app_pager_rt { font-size:11px;}
+.app_pager_rt .common_style { padding:0 7px;}
+.app_pager_no a{ padding:0 8px;}
+.previous_btn {margin:0 5px 0 0;}
+.app_select{margin:0 0 0 8px;}
+.next_btn{margin:0 0 0 8px;}
+
+.advance_search_col { padding:20px 10px;}
+.advance_search_col p {width:100%;}
+/*advance_search style ends*/
+
+
+/*--------------------------------------------------------------
+app_detail us of inner_pages css starts
+---------------------------------------------------------------*/
+.app_info_breif_pic { width:100%; padding:0; text-align:center;}
+.app_info_breif_info { width:100%; text-align:center; padding:15px 0 0 0;}
+.app_write_review {width:100%; text-align:center;}
+.app_write_review p {text-align:center; padding:10px 0;}
+/*--------------------------------------------------------------
+app_detail us of inner_pages css ends
+---------------------------------------------------------------*/
+
+
+#CategoryList .without_add .app_review_rw li { width:100% !important; margin-left:0px;}
+#myModal .developer_btns input{ margin-bottom:10px;}
+.buyapp_popup_btn a{ height:auto;}
+
+.app_info_breif{ margin:0 0 5px 0px;}
+#GetappsDetail .app_info_breif_info.width_heading.detail_wdith_headiang .floatrght{ width:100%;}
+.buypop-outerReview{ left:0px !important;}
+.buypop-outerReview{ left:0px !important; top:0px !important;}
+.buypop-outerReview .modal-body .controls{ padding:0px !important;}
+.divReviewPopUp{ margin:auto !important; top:0px;}
+.divReviewcontent{ margin-top:0px;}
+.modal-body{ padding: 5px 15px; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box;}
+.app_info_breif_pic, .app_info_breif_info{ width:auto;}
+.caseliist_view{ margin:0px; top:0px !important;}
+
+.app_info_breif_info h1{ padding-top:0px;}
+}
+
+@media only screen and (max-width:360px) {
+.app_info_breif_pic, .app_info_breif_info{ width:100%;}
+.divReviewcontent{ margin-top:150px;}
+.search_block .padd {margin:2px 0;}
+.app_page_view {width:100%;}
+.app_pager_rt {width:100%;}
+
+.top_head_login a.register {padding-left:48px;}
+
+.banner_bg h1 { font-size:45px; text-align:center;}
+.banner_l h1 {font-size:25px;}
+
+.app_review_pic p {padding-left:30px; padding-right:30px;}
+#fancybox-wrap{ width:100% !important;}
+div#fancybox-content{ width:85% !important;}
+
+.case_list_form p label.case_lab { width:95%; float:left; padding:8px 5px 8px 0px;}
+
+.midd_block_innr{ width:100%;  padding:0px 10px !important;}
+
+.without_add .app_review_rw li {
+    width: 76.5% !important;
+    display:inline-block;
+}
+
+
+.lft_block {    float: left;    width: 100%;    text-align: center;    margin-bottom: 20px;}
+.midd_block {    float: left;    width: 100%;}
+.rt_block {    float: right;    width: 100%;    text-align: center;    margin-top: 20px;}
+.request_apps_btns .blue_btn{ margin:0px 0px 10px 0px;}
+.caseliist_view.setting_pop{ top:30%;}
+}
+
+
+@media only screen and (max-width:320px) 
+{
+    
+    .lft_block {    float: left;    width: 100%;    text-align: center;    margin-bottom: 20px;}
+.midd_block {    float: left;    width: 100%;}
+.rt_block {    float: right;    width: 100%;    text-align: center;    margin-top: 20px;}
+.midd_block_innr{ width:100%;  padding:0px 0px !important;}    
+.divReviewcontent{ margin-top:75px;}
+
+}
+
+
+

@@ -1,0 +1,76 @@
+﻿<style type="text/css">
+    #ui-id-1 {
+        min-height:50px;
+        max-height:390px;
+        overflow-y:scroll;
+        background-color:#efefef;
+        z-index: 99999999;
+    }
+</style>
+<script type="text/javascript">
+    $(function () {
+        function split(val) {
+            return val.split(/,\s*/);
+        }
+        function extractLast(term) {
+            return split(term).pop();
+        }
+
+        $("#txtCourseName").bind("keydown", function (event) {
+            $("#hdnCourseID").val("0");
+        })
+
+        $("#txtCourseName").bind("keyup", function (event) {
+            if (event.keyCode === $.ui.keyCode.TAB &&
+                      $(this).data("autocomplete").menu.active) {
+               event.preventDefault();
+            }
+            
+            if ($("#hdnCourseID").val() == 0 && $(this).val() != '') {
+                $("#hdnCourseID").val("-1");
+            }
+        })
+
+        $("#txtCourseName").autocomplete({
+            source: function (request, response) {
+                //define a function to call your Action (assuming UserController)
+                $.ajax({
+                    url: '/Golfler/Golfer/GetCourseName', type: "GET", dataType: "json",
+                    //query will be the param used by your action method
+                    data: { query: request.term },
+                    term: extractLast(request.term),
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            console.log(item);
+                            return { label: item.Name, value: item.ID };
+                        }))
+                    }
+                })
+            },
+            search: function () {
+                // custom minLength
+                var term = extractLast(this.value);
+                if (term.length < 1) {
+                    return false;
+                }
+            },
+            focus: function () {
+                // prevent value inserted on focus
+                return false;
+            },
+            select: function (event, ui) {
+                $("#hdnCourseID").val(ui.item.value);
+                this.value = ui.item.label;
+                
+                return false;
+            }
+        });
+
+    });
+</script>
+
+<input type="hidden" id="hdnCourseID" />
+
+<input type="text" placeholder="Type Course Name" name="CourseName" id="txtCourseName"
+    class="searchfeild jqGrid_refreshKey adname" value="" style="margin-bottom: 2px;"
+    size="100" />

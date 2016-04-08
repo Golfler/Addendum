@@ -1,0 +1,9 @@
+D:\Amit\Golfler\Golfler\bin\commonlibrary.pdb
+D:\Amit\Golfler\Golfler\bin\EntityFramework.xml
+D:\Amit\Golfler\Golfler\bin\Newtonsoft.Json.xml
+D:\Amit\Golfler\Golfler\bin\Golfler.dll
+D:\Amit\Golfler\Golfler\bin\Golfler.pdb
+D:\Amit\Golfler\Golfler\bin\Stripe.net.dll
+D:\Amit\Golfler\Golfler\obj\Debug\Golfler.csprojResolveAssemblyReference.cache
+D:\Amit\Golfler\Golfler\obj\Debug\Golfler.dll
+D:\Amit\Golfler\Golfler\obj\Debug\Golfler.pdb

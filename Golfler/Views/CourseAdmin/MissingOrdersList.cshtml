@@ -1,0 +1,214 @@
+﻿@{
+    ViewBag.Module = "Missed Orders";
+    ViewBag.Title = "Manage Missed Orders List";
+    ViewBag.pageTitle = "Manage Missed Orders List";
+    Layout = "~/Views/Shared/_LayoutCourseArea.cshtml";
+}
+@Html.Partial("_jqGrid")
+<style>
+    .tempwidth
+    {
+        width: 40% !important;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+       
+        bindJqGridNoMultiSelect('list', 'pager', 'GetMissingOrdersList',
+                ['ID', 'Order Date', 'Order Time', 'Order No', 'Golfer Name', 'Email', 'Bill Amount', 'Tax Amount', 'Commission Amt.', 'Order Amount',
+                    'itemOrdered', 'OrderType', 'PaymentMode', 'Course', 'CourseAddress', 'Order Status', 'TransId', 'PromoCode'],
+                   [{ name: 'ID', index: 'ID', width: 10, hidden: true },
+                    { name: 'OrderDate', index: 'OrderDate', width: 50 },
+                    { name: 'time', index: 'time', width: 50, hidden: true },
+                    { name: 'ID', index: 'ID', width: 50, formatter: SetEditLink, classes: 'zzz' },
+                    { name: 'golferName', index: 'golferName', width: 50 },
+                    { name: 'golferEmail', index: 'golferEmail', width: 50 },
+                    { name: 'billAmount', index: 'billAmount', width: 50, hidden: true },
+                    { name: 'TaxAmount', index: 'TaxAmount', width: 50, hidden: true },
+                    { name: 'GolferPlatformFee', index: 'GolferPlatformFee', width: 50, hidden: true },
+                    { name: 'GrandTotal', index: 'GrandTotal', sortable: true, width: 40, formatter: SetAmountLink },
+                    { name: 'itemOrdered', index: 'itemOrdered', sortable: false, width: 40, hidden: true },
+                    { name: 'OrderType', index: 'OrderType', sortable: false, width: 40, hidden: true },
+                    { name: 'PaymentMode', index: 'PaymentMode', sortable: false, width: 40, hidden: true },
+                    { name: 'CourseInfo', index: 'CourseInfo', sortable: false, width: 40, hidden: true },
+                    { name: 'CourseAddress', index: 'CourseAddress', sortable: false, width: 40, hidden: true },
+                    { name: 'OrderStatus', index: 'OrderStatus', sortable: true, width: 40 },
+                    { name: 'TransId', index: 'TransId', sortable: false, width: 40, hidden: true },
+                    { name: 'PromoCode', index: 'PromoCode', width: 50, hidden: true }
+                ], 'ID', 'desc',
+                {
+                    "searchText": (function () {
+                        return $("#txtSearch").val();
+                    }),
+                    "fromDate": (function () {
+                        return $("#txtDate").val();
+                    }),
+                    "toDate": (function () {
+                        return $("#txtToDate").val();
+                    }),
+                    "type": (function () {
+                        return ($("#UserType").val() == "0" ? "" : $("#UserType").val());
+                    })
+
+                }, '');
+    });
+
+    function SetEditLink(cellvalue, options, rowObject) {
+        try {
+
+            return "<a class='viewOrder' onclick='javascript:ViewOrder(this)' style='text-decoration: underline; cursor:pointer;' >" + cellvalue + "</a>";
+        }
+        catch (ex) { alert(ex.message); }
+    }
+
+    function showActionInactMsg() {
+        showStickMessage('You are unautherized to perform this action.');
+        return false;
+    }
+
+    function SetAmountLink(cellvalue, options, rowObject) {
+        try {
+            return "$" + cellvalue;
+        }
+        catch (ex) { alert(ex.message); }
+    }
+
+    function ViewOrder(ele) {
+        var rowID = $(ele).parent().parent().attr('id');
+        var columnIndex = 3;
+        var cellValue = $("#" + rowID).find('td').eq(columnIndex).text();
+        var item = JSON.parse($("#" + rowID).find('td').eq(10).text());
+
+        var itemList = '';
+        var IDTitle = "Membership Id";
+        if ($("#" + rowID).find('td').eq(11).text() == "Payment by Card") {
+            IDTitle = "Transaction Id";
+        }
+
+        $('#selectedData').empty();
+        $('#selectedData').append('<tr><td>Course</td><td colspan="3">' + $("#" + rowID).find('td').eq(13).text() + '</td></tr>');
+        $('#selectedData').append('<tr><td>Order No.</td><td colspan="3">' + $("#" + rowID).find('td').eq(0).text() + '</td></tr>');
+        $('#selectedData').append('<tr><td>Order Date</td><td colspan="3">' + $("#" + rowID).find('td').eq(1).text() + '</td></tr>');
+        $('#selectedData').append('<tr><td>Golfer Name</td><td colspan="3">' + $("#" + rowID).find('td').eq(4).text() + '</td></tr>');
+        $('#selectedData').append('<tr><td>OrderType</td><td colspan="3">' + $("#" + rowID).find('td').eq(11).text() + '</td></tr>');
+        $('#selectedData').append('<tr><td>Payment Mode</td><td colspan="3">' + $("#" + rowID).find('td').eq(12).text() + '</td></tr>');
+        $('#selectedData').append('<tr><td>' + IDTitle + '</td><td colspan="3">' + $("#" + rowID).find('td').eq(16).text() + '</td></tr>');
+        $('#selectedData').append('<tr><th align="left">Items</th><th align="center">Qty.</th><th align="center">Price</th><th align="center">Amount</th></tr>');
+        for (var i = 0; i < item.length; i++) {
+            itemList = itemList + '<tr><td>' + item[i].Name;
+
+            var suboption = item[i].MenuOptionName;
+            for (var k = 0; k < suboption.length; k++) {
+                if (k == 0) {
+                    itemList = itemList + '<br /><b>Options:</b><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;' + suboption[k] + '';
+                }
+                else {
+                    itemList = itemList + '<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;' + suboption[k] + '';
+                }
+            }
+
+            itemList = itemList + '</td><td align="center">' + item[i].Quantity + '</td><td align="center">$' + item[i].UnitPrice.toFixed(2) + '</td><td align="center">$' + item[i].Amount.toFixed(2) + '</td></tr>';
+        }
+        $('#selectedData').append(itemList);
+        $('#selectedData').append('<tr><td align="right" colspan="4">Subtotal: $' + $("#" + rowID).find('td').eq(6).text() + '</td></tr>');
+        $('#selectedData').append('<tr><td align="right" colspan="4">Taxes: $' + $("#" + rowID).find('td').eq(7).text() + '</td></tr>');
+        $('#selectedData').append('<tr><td align="right" colspan="4">Promo Code Discount:$'+$("#" + rowID).find('td').eq(17).text()+'</td></tr>');
+        $('#selectedData').append('<tr><td align="right" colspan="4">Golfler Platform Fee: $' + $("#" + rowID).find('td').eq(8).text() + '</td></tr>');
+        $('#selectedData').append('<tr><td align="right" colspan="4">Total: ' + $("#" + rowID).find('td').eq(9).text() + '</td></tr>');
+
+        $('#btnShowOrder').click();
+    }
+</script>
+<tr>
+    <td class="id_pathway" valign="middle">
+        <div class="breadcrumb">
+            <ul>
+                <li><a href='@Url.Action("Dashboard")'>Dashboard</a><img src="/Content/Images/arrow.png"
+                    class="arrow_position" /></li>
+                <li>Manage @ViewBag.Module</li>
+            </ul>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td id="content_center_td2" valign="top" align="center">
+        <div class="form_box">
+            <div class="search-advertiser">
+                <label>
+                    Search</label>
+                <input type="text" placeholder="Golfer Name" name="searchText" id="txtSearch"
+                    class="searchfeild jqGrid_refreshKey adname" value="" style="margin-bottom: 2px;"
+                    size="30" />
+                <label class="width22 vacdate width19">
+                    From</label>
+                <input type="text" placeholder="Date From" id="txtDate" style="width: 7%;" class="datepicker spacingt5 adname-1  datefeild border_process adname calc_icon ">
+
+                <label class="width22 vacdate width19 width_auto">
+                    To</label>
+                <input placeholder="Date To" type="text" id="txtToDate" style="width: 7%;" class="datepicker spacingt5 adname-1  datefeild border_process adname calc_icon ">
+                <div class="drop_down1" id="ddlOrderType">
+
+                    <select id="UserType">
+                        <option value="0">Select Order Type</option>
+                        <option value="R">Rejected</option>
+                        <option value="C">Cancelled</option>
+                    </select>
+                </div>
+
+                <img src="/Content/Images/search_icon.png" border="0" alt="search" class="go-btn floatleft jqGrid_refresh"
+                    id="fbox_jqgAdminUser_search" />
+
+                <a href="/Golfler/CourseAdmin/ViewOrderList" class="btn_order_history" style="float:right">Go to App view</a>
+
+                <div class="clr">
+                </div>
+            </div>
+            <div class="clr">
+            </div>
+        <div id="page-wrap">
+            <table id="list" cellpadding="0" cellspacing="0" style="width: 100%;" class="jqgridTable">
+            </table>
+            <div id="pager" style="width: 100%;">
+            </div>
+            <input type="hidden" id="hdnId" value='@Golfler.Models.LoginInfo.UserId' />
+        </div>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+<a href="#myModal" id="btnShowOrder" class="submit-btn update-btn" style="display: none;"></a>
+<div id="myModal" class="reveal-modal" style="display: none; top: 100px; height: 500px;">
+    <div class="pop_detail">
+        <h1>Order Detail</h1>
+        <div id="tableContainer" class="page-wrap" style="height: 490px; overflow-x: scroll; border: 1px solid #EAEAEA;">
+            <table id="selectedData" class="voucher-details-table"></table>
+        </div>
+    </div>
+    <div class="clr"></div>
+    <div class="margin-top15"></div>
+    <div align="center" class="center-button">
+        <input type="button" id="close" value="Close" class="cancel-btn blk-btn margin_bottom5" onclick="$.fancybox.close();" />
+    </div>
+    <br />
+    <div class="clear"></div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $('a[href="#myModal"]').fancybox({
+            'scrolling': 'no',
+            'onStart': function () {
+                $('#myModal').css('width', '550px');
+                $('#myModal').css('height', '620px');
+                $("#myModal").css("display", "block");
+            },
+            'onClosed': function () {
+                $("#myModal").parent().css('overflow', 'hidden');
+                $("#myModal").hide();
+            }
+        });
+    });
+</script>
+

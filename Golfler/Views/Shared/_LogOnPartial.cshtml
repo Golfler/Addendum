@@ -1,0 +1,33 @@
+﻿@using Golfler.Models;
+<style>
+    .clsVer
+    {
+        background:none !important;
+        padding:0px 0px 0px 20px !important;
+        color:#491bc4 !important;
+    }
+</style>
+@if (@Golfler.Models.LoginInfo.IsLoginUser || @Golfler.Models.LoginInfo.IsGolferLoginUser)
+{
+    <text>
+    
+    @*varinder
+    to login back from organization to Superadmin*@
+
+    @if (LoginInfo.MasterUserId > 0)
+    {
+        if (LoginInfo.MasterType == UserType.Admin || LoginInfo.MasterType == UserType.SuperAdmin)
+        {
+            @:@Html.ActionLink("Back to Admin", "SuperAdminLoginByID", "Admin", new { adminId = LoginInfo.MasterUserId }, new { @class = "backto_admin logout" })
+        }
+    }
+        @Html.ActionLink("Logout", "LogOff", null, new { @class = "logout" })
+        @*@Html.ActionLink("version 1.0", "Version", null, new { @class = "clsVer" })*@
+    </text>
+}
+else
+{
+    @:@Html.ActionLink("Log On", "LogIn", null, new { @class = "logout" }) 
+
+    @Html.ActionLink("version 1.0", "Version", null, new { @class = "clsVer" })
+}

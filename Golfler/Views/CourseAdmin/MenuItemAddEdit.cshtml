@@ -1,0 +1,507 @@
+﻿@{
+    ViewBag.Module = "Menu Item";
+    ViewBag.Title = "Menu Item";
+    ViewBag.pageTitle = "Menu Item";
+    Layout = "~/Views/Shared/_LayoutCourseArea.cshtml";
+}
+@using Golfler.Models
+@model Golfler.Models.GF_CourseFoodItem
+<script language="javascript" type="text/javascript">
+
+    $(document).ready(
+        function () {
+
+            if ('@TempData["Message"]' != '') {
+                showMessage('@TempData["Message"]');
+            }
+
+            $('fieldset').addClass("bodD5D5D5");
+            $('.width_49 label').addClass("cat");
+            $('.datainner_box input[type="text"]').addClass("txtfelds");
+            $('.datainner_box input[type="password"]').addClass("txtfelds");
+            $('.datainner_box input[type="checkbox"]').addClass("checkbox-spacing5");
+            $('.datainner_box select').addClass("txtfelds");
+            $('.width_49 span:contains("*")').css("color", "Red").css("display", "none");
+            $('.width_49 span:contains("*")').parent().children('label').append('<span>*</span>');
+
+            $('#btnCancel').click(function () {
+                window.location = '@Url.Action("MenuItemList")';
+            });
+
+            $('#btnSubmit').on("click", function () {
+                var empty = false;
+                var msg = '';
+                var atleastOneChecked = false;
+                $.each($('input[id^=FoodItemActive][type=checkbox]'), function (key, value) {
+                    if (this.checked) {
+                        var price = parseFloat($(this).closest('td').next('td').next('td').next('td').next('td').find('input').val());
+                        var costPrice = parseFloat($(this).closest('td').next('td').next('td').next('td').find('input').val());
+                        var qty = parseInt($(this).closest('td').next('td').next('td').find('input').val());
+                        
+                        if (qty <= 0) {
+                            empty = true;
+                            $(this).closest('td').next('td').next('td').find('input').css({ "background-color": "#f6ced8" });
+                            //msg = 'Menu quantity should be greater than 1.';
+                        }
+
+                        if (costPrice <= 0.00) {
+                            empty = true;
+                            $(this).closest('td').next('td').next('td').next('td').find('input').css({ "background-color": "#f6ced8" });
+                            //msg = 'Menu cost price should be greater than $1.';
+                        }
+
+                        if (price <= 0.00) {
+                            empty = true;
+                            $(this).closest('td').next('td').next('td').next('td').next('td').find('input').css({ "background-color": "#f6ced8" });
+                            //msg = 'Menu price should be greater than $1.';
+                        }
+                        
+                        atleastOneChecked = true;
+                    }
+                });
+                
+                if (empty) {
+                    //showStickMessage(msg);
+                    showStickMessage('Please enter value in hilighted field.');
+                }
+                //else if (!atleastOneChecked) {
+                //    showStickMessage('Please select atleast one menu item.');
+                //    return atleastOneChecked;
+                //}
+
+                return !empty;
+            });
+
+            $('.adname1').change(function () {
+                $(this).css({ "background-color": "" });
+            });
+
+            $('#SelectAll').click(function (event) {
+                if (this.checked) {
+                    $('.menuItem').each(function () {
+                        this.checked = true;
+                    });
+                }
+                else {
+                    $('.menuItem').each(function () {
+                        this.checked = false;
+                    });
+                }
+            });
+        });
+</script>
+<script type="text/javascript">
+    $(document).ready(
+        function () {
+            $("#frmSubmit").validate();
+        });
+</script>
+
+<style>
+    .widthDatepicker {
+        width: 39% !important;
+    }
+
+    .adname {
+        width: 50% !important;
+    }
+
+    .adname1 {
+        width: 99% !important;
+    }
+
+    .search-advertiser label {
+        width: auto !important;
+    }
+</style>
+
+<tr>
+    <td class="id_pathway">
+        <div class="breadcrumb">
+            <ul>
+                <li><a href='@Url.Action("Dashboard")'>Dashboard</a><img src="/Content/Images/arrow.png"
+                    class="arrow_position" /></li>
+                <li><a href='@Url.Action("MenuItemList")'>Manage
+                    @ViewBag.Module List</a><img src="/Content/Images/arrow.png" class="arrow_position" /></li>
+                <li>@ViewBag.Title</li>
+            </ul>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td id="content_center_td2" valign="top" align="center">
+        <div id="content_div" class="form_box organization_form">
+            @using (Html.BeginForm("MenuItemAddEdit", null, FormMethod.Post, new { id = "frmSubmit" }))
+            {
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(x => x.ID)
+                @Html.Hidden("hdnIsLoginUser", (object)ViewBag.IsLoginUser)
+
+                <div style="margin: 0px 0px 0px 0px;">
+                    <div class="organization_left">
+                        <p class="tpspacing">
+                            @Html.Label("Food Item Category")
+                            @Html.HiddenFor(x => x.CategoryID)
+                            @Html.HiddenFor(x => x.CatName)
+                            @Html.TextBoxFor(x => x.CatName, new { @class = "userfeilder", @autocomplete = "off", @maxlength = "50", @disabled = "disabled" })
+                        </p>
+                    </div>
+                    <div class="organization_left">
+                        <p class="tpspacing">
+                            @Html.Label("Sub Category")
+                            @Html.HiddenFor(x => x.GF_SubCategory.ID)
+                            @Html.HiddenFor(x => x.GF_SubCategory.Name)
+                            @Html.TextBoxFor(x => x.GF_SubCategory.Name, new { @class = "userfeilder", @autocomplete = "off", @maxlength = "50", @disabled = "disabled" })
+                        </p>
+                    </div>
+                    <div class="clr">
+                    </div>
+                </div>
+                <div class="">
+                    <table>
+                        <thead>
+                            <tr style="text-align:left">
+                                <th width="10%">Add All
+                                    <input type="checkbox" id="SelectAll" /></th>
+                                <th width="15%">Menu Item Name</th>
+                                <th width="10%">Quantity</th>
+                                <th width="15%">Cost Price ($)</th>
+                                <th width="15%">Selling Price ($)</th>
+                                <th width="20%">Menu Item Option</th>
+                                <th width="15%">Add Menu Item Option</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                int count = 0;
+                int countOp = 0;
+                int countClassOp = 1;
+                foreach (var item in Model.FoodItemDetail)
+                {
+                                <tr>
+                                    <td>
+                                        @Html.HiddenFor(x => x.FoodItemDetail[count].ID)
+                                        @Html.CheckBoxFor(x => x.FoodItemDetail[count].Active, new { @class = "menuItem", @id="FoodItemActive"+count })
+                                    </td>
+                                    <td>
+                                        @Html.HiddenFor(x => x.FoodItemDetail[count].MenuItemID)
+                                        @Html.HiddenFor(x => x.FoodItemDetail[count].ItemName)
+                                        @Html.Raw(Model.FoodItemDetail[count].ItemName)
+                                    </td>
+                                    <td>
+                                        <div class="search-advertiser">
+                                            @Html.TextBoxFor(x => x.FoodItemDetail[count].Quantity, new { @class = "searchfeild adname adname1" })
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="search-advertiser">
+                                            @Html.TextBoxFor(x => x.FoodItemDetail[count].CostPrice, new { @class = "searchfeild adname adname1" })
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="search-advertiser">
+                                            @Html.TextBoxFor(x => x.FoodItemDetail[count].Price, new { @class = "searchfeild adname adname1" })
+                                        </div>
+                                    </td>
+                                    <td>
+                                        @if (Model.FoodItemDetail[count].Itemoption.Where(x => (x.CourseID ?? 0) == 0).Count() > 0)
+                                        {
+                                            <fieldset>
+                                                <legend style="color: green; font-size: 12px">Admin</legend>
+                                                @foreach (var option in Model.FoodItemDetail[count].Itemoption.Where(x => (x.CourseID ?? 0) == 0))
+                                                {
+                                                    @Html.CheckBoxFor(x => x.FoodItemDetail[count].Itemoption[countOp].IsSelected)
+                                                    @Html.HiddenFor(x => x.FoodItemDetail[count].Itemoption[countOp].ID)
+                                                    @Html.HiddenFor(x => x.FoodItemDetail[count].Itemoption[countOp].Name)
+                                                    @Html.Label(option.Name)<br />
+                                                    countOp++;
+                                                }
+                                            </fieldset>
+                                        }
+                                        @if (Model.FoodItemDetail[count].Itemoption.Where(x => (x.CourseID ?? 0) == LoginInfo.CourseId).Count() > 0)
+                                        {
+                                            <fieldset id="courseOptionContainer">
+                                                <legend style="color: green; font-size: 12px">Course</legend>
+                                                @foreach (var option in Model.FoodItemDetail[count].Itemoption.Where(x => (x.CourseID ?? 0) == LoginInfo.CourseId))
+                                                {
+                                                    @Html.CheckBoxFor(x => x.FoodItemDetail[count].Itemoption[countOp].IsSelected, new { @class="menuOption_" + countClassOp })
+                                                    @Html.HiddenFor(x => x.FoodItemDetail[count].Itemoption[countOp].ID, new { @class="menuOption_" + countClassOp })
+                                                    @Html.HiddenFor(x => x.FoodItemDetail[count].Itemoption[countOp].Name, new { @class="menuOption_" + countClassOp })
+                                                    @Html.Label(option.Name, new { @class="menuOption_" + countClassOp })
+                                                    <div class="clr menuOption_@(countClassOp)"></div>
+                                                    countOp++;
+                                                    countClassOp++;
+                                                }
+                                            </fieldset>
+                                        }
+                                    </td>
+                                    <td>
+                                        <input type="button" class="submit-btn update-btn" id="btnAddOption_@(count)" name="btnAddOption_@(count)" value="Add Option"
+                                            data-menu-name="@Model.FoodItemDetail[count].ItemName" data-menu-id="@Model.FoodItemDetail[count].MenuItemID" />
+                                        <a href="#myModel" id="aAddOption"></a>
+                                    </td>
+                                </tr>
+                                        count++;
+                                        countOp = 0;
+                                        countClassOp = 1;
+                                } 
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="clr">
+                </div>
+                <div align="center" class="center-button">
+                    <a href="#myModal" id="btnConfirm" class="submit-btn update-btn" style="display: none;">Submit</a>
+                    <input type="submit" id="btnSubmit" class="submit-btn update-btn" name="btnSubmit" value="Submit" />
+                    <input type="button" id="btnCancel" class="submit-btn cancel-btn" value="Cancel" />
+                    <input type="button" id="btnPartial" class="submit-btn update-btn" name="btnPartial" value="Submit" style="display: none;" />
+                </div>
+            }
+        </div>
+    </td>
+</tr>
+
+
+<div id="myModel" class="reveal-modal" style="display: none; top: 80px; height: 500px;">
+    <div class="pop_detail">
+        <h1>Add Menu Item Option(s)</h1>
+        <div id="tableContainer" class="page-wrap" style="height: 400px; width: 490px; overflow-x: scroll; border: 1px solid #EAEAEA;">
+            <div class="form_box input_fields_wrap">
+                <label style="padding-left: 5px; font-weight: bold; font-size: 16px">Menu Item Name: <span id="spnMenuName"></span></label>
+                <div class="search-advertiser" style="padding-top: 10px">
+                    <label>Option 1</label>
+                    <input type="text" id="menuOption_1" name="menuOption_1" value="" class="searchfeild adname defaultRow" maxlength="50" data-option-id="0" />
+                    <input type="button" value="Remove" class="remove_field_main blu-btn margin_bottom5" data-option-id="0" style="display:none" />
+                    <input type="button" id="addMore" value="Add More" class="add_field_button blu-btn margin_bottom5" data-option="0" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clr"></div>
+    <div align="center" class="center-button">
+        <input type="button" id="btnSaveOption" value="Save" class="submit-btn blu-btn margin_bottom5" />
+        <input type="button" id="close" value="Close" class="cancel-btn blk-btn margin_bottom5" onclick="$.fancybox.close();" />
+    </div>
+    <div class="clear"></div>
+</div>
+<script type="text/javascript">
+
+    $(function () {
+        var menuName = '';
+        var menuID = 0;
+        var x = 1; //initlal text box count
+
+        $(document).delegate('input[id^=btnAddOption]', 'click', function (e) {
+            menuName = $(this).attr('data-menu-name');
+            menuID = $(this).attr('data-menu-id');
+
+            $('#aAddOption').click();
+        });
+
+        $('a[href="#myModel"]').fancybox({
+            'scrolling': 'no',
+            'onStart': function () {
+                $("#myModel").css("display", "block");
+                $('#myModel').css('height', 'auto');
+                $('#tableContainer').css('height', 'auto');
+
+                $('#spnMenuName').text(menuName);
+                $('#menuOption_1').val('');
+                $('.dynamic').parent('div').remove();
+                x = 1;
+
+                getCourseMenuOption(menuID)
+            },
+            'onClosed': function () {
+                $("#myModel").parent().css('overflow', 'hidden');
+                $("#myModel").hide();
+            }
+        });
+
+        $(document).delegate('#btnSaveOption', 'click', function (e) {
+            var empty = false;
+            $.each($('input[name^=menuOption][type=text]'), function (key, value) {
+                if ($(this).val() == '') {
+                    empty = true;
+                }
+            });
+
+            if (empty) {
+                showStickMessage('Please enter empty option(s).');
+            }
+            else {
+                addOption(menuID);
+            }
+
+            return !empty;
+        });
+
+        var max_fields = 5; //maximum input boxes allowed
+        var wrapper = $(".input_fields_wrap"); //Fields wrapper
+        var add_button = $(".add_field_button"); //Add button ID
+
+        $(add_button).click(function (e) { //on add input button click
+            e.preventDefault();
+            if (x < max_fields) { //max input box allowed
+                x++; //text box increment
+                $(wrapper).append('<div class="search-advertiser"><label>Option ' + x + '</label><input type="text" id="menuOption_' + x + '" name="menuOption_' + x + '"  maxlength="50" class="searchfeild adname" data-option-id="0" /><input type="button" value="Remove" class="remove_field blu-btn margin_bottom5 dynamic" data-option-id="0" /></div>'); //add input box
+            }
+
+            if (x > 1) {
+                $('.remove_field_main').hide();
+            }
+        });
+
+        $(wrapper).on("click", ".remove_field_main", function (e) { //user click on remove main (i.e. Initial Record) text
+            if (confirm('Are you sure you want remove this menu item option.')) {
+                e.preventDefault();
+                var optionID = $(this).attr('data-option-id');
+
+                if (optionID > 0) {
+                    removeOption(optionID);
+                }
+
+                $(this).remove();
+                $('#menuOption_1').val('');
+                $('.menuOption_1').remove();
+                $('#courseOptionContainer').remove();
+            }
+        });
+
+        $(wrapper).on("click", ".remove_field", function (e) { //user click on remove text
+            if (confirm('Are you sure you want remove this menu item option.')) {
+                $('#divProgress').show();
+                e.preventDefault();
+                var optionID = $(this).attr('data-option-id');
+
+                var controlID = '.' + $(this).prev().attr('id');
+                $(controlID).remove();
+
+                $(this).parent('div').remove();
+                x--;
+
+                var optionIDs = [];
+                var optionName = [];
+                var k = 0;
+                $.each($('input[name^=menuOption_]'), function (key, value) {
+                    optionIDs[k] = $(this).attr('data-option-id');
+                    optionName[k] = $(this).val();
+                    k++;
+                    //alert($(this).attr('data-option-id') + ' -- ' + $(this).val() + ' -- ' + $(this).attr('data-option'));
+                });
+
+                //Remove all dynamic created div, and then regenerate the array index
+                $('.dynamic').parent('div').remove();
+
+                if (optionIDs.length > 0) {
+                    for (var i = 1; i < optionIDs.length; i++) {
+                        $(wrapper).append('<div class="search-advertiser"><label>Option ' + (i + 1) + '</label><input type="text" value="' + optionName[i] + '" name="menuOption_' + i + '" maxlength="50" id="menuOption_' + i + '" data-option-id="' + optionIDs[i] + '" class="searchfeild adname"><input type="button" value="Remove" class="remove_field add_field_button blu-btn margin_bottom5 dynamic" data-option-id="' + optionIDs[i] + '" /></div>'); //add input box
+                    }
+                    x = optionIDs.length;
+                }
+                else {
+                    for (var i = 1; i < x; i++) {
+                        $(wrapper).append('<div class="search-advertiser"><label>Option ' + (i + 1) + '</label><input type="text" value="" id="menuOption_' + (i + 1) + '" name="menuOption_' + (i + 1) + '" maxlength="50" class="searchfeild adname" data-option-id="0" /><input type="button" value="Remove" class="remove_field blu-btn margin_bottom5 dynamic" data-option-id="0" /></div>'); //add input box
+                    }
+                }
+
+                if (optionID > 0) {
+                    removeOption(optionID);
+                }
+                
+                if (x == 1) {
+                    $('.remove_field_main').show();
+                }
+                $('#divProgress').hide();
+            }
+        });
+
+        function addOption(mID) {
+
+            var optionDataset = [];
+
+            $.each($('input[name^=menuOption_]'), function (key, value) {
+                var option = new Object();
+                option.ID = $(this).attr('data-option-id');
+                option.Name = $(this).val();
+                optionDataset.push(option);
+
+                //alert($(this).val() + ' -- ' + $(this).attr('data-option-id'));
+            });
+
+            var menuItemOption = { menuID: mID, menuOption: optionDataset };
+            var json = JSON.stringify(menuItemOption);
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("AddMenuItemOption", "CourseAdmin")',
+                contentType: 'application/json; charset=utf-8',
+                data: json,
+                dataType: 'json',
+                success: function (data) {
+                    //console.log(data);
+                    showMessage(data.message);
+                    location.reload();
+                },
+                error: function (data) {
+                    //console.log(data);
+                    showStickMessage(data.message);
+                }
+            });
+
+            $.fancybox.close();
+        }
+
+        function removeOption(optionID) {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("RemoveMenuItemOption", "CourseAdmin")',
+                data: { optionID: optionID },
+                async: false,
+                success: function (data) {
+                    //console.log(data);
+                    showMessage(data.message);
+                },
+                error: function (data) {
+                    //console.log(data);
+                    showStickMessage(data.message);
+                }
+            });
+        }
+
+        function getCourseMenuOption(mID) {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetCourseMenuItemOption", "CourseAdmin")',
+                data: { menuID: mID },
+                async: false,
+                success: function (data) {
+                    //console.log(data);
+                    var result = data.json;
+                    if (result.data.length > 0) {
+                        for (var i = 0; i < result.data.length; i++) {
+                            if (i == 0) {
+                                $('#menuOption_1').val(result.data[i].Name);
+                                $('#menuOption_1').attr('data-option-id', result.data[i].ID);
+                                $('.remove_field_main').attr('data-option-id', result.data[i].ID);
+                                if (result.data.length == 1) {
+                                    $('.remove_field_main').show();
+                                }
+                            }
+                            else {
+                                $(wrapper).append('<div class="search-advertiser"><label>Option ' + (i + 1) + '</label><input type="text" id="menuOption_' + (i + 1) + '" name="menuOption_' + (i + 1) + '"  maxlength="50" class="searchfeild adname" data-option-id="' + result.data[i].ID + '" value="' + result.data[i].Name + '" /><input type="button" value="Remove" class="remove_field blu-btn margin_bottom5 dynamic" data-option-id="' + result.data[i].ID + '" /></div>'); //add input box
+                            }
+                        }
+                        x = result.data.length;
+                    }
+                },
+                error: function (data) {
+                    //console.log(data);
+                }
+            });
+        }
+    });
+</script>

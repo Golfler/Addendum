@@ -1,0 +1,7 @@
+﻿@{
+    ViewBag.Module = "Static Pages";
+    ViewBag.Title = (Model.ID > 0 ? "Edit" : "Add") + " Static Page";
+    ViewBag.pageTitle = (Model.ID > 0 ? "Edit" : "Add") + " Static Page";
+}
+
+@Html.Partial("~/Views/Shared/_StaticPageAddEditScreen.cshtml")

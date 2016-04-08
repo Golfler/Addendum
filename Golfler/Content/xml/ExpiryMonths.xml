@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<Months>
+<Month><MonthCode></MonthCode><MonthName>Month</MonthName></Month>
+<Month><MonthCode>1</MonthCode><MonthName>01 - JAN</MonthName></Month>
+<Month><MonthCode>2</MonthCode><MonthName>02 - FEB</MonthName></Month>
+<Month><MonthCode>3</MonthCode><MonthName>03 - MAR</MonthName></Month>
+<Month><MonthCode>4</MonthCode><MonthName>04 - APR</MonthName></Month>
+<Month><MonthCode>5</MonthCode><MonthName>05 - MAY</MonthName></Month>
+<Month><MonthCode>6</MonthCode><MonthName>06 - JUN</MonthName></Month>
+<Month><MonthCode>7</MonthCode><MonthName>07 - JUL</MonthName></Month>
+<Month><MonthCode>8</MonthCode><MonthName>08 - AUG</MonthName></Month>
+<Month><MonthCode>9</MonthCode><MonthName>09 - SEP</MonthName></Month>
+<Month><MonthCode>10</MonthCode><MonthName>10 - OCT</MonthName></Month>
+<Month><MonthCode>11</MonthCode><MonthName>11 - NOV</MonthName></Month>
+<Month><MonthCode>12</MonthCode><MonthName>12 - DEC</MonthName></Month>
+</Months>																				

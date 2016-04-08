@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<States>
+<State><StateCode>AK</StateCode><StateName>Alaska</StateName></State>
+<State><StateCode>AL</StateCode><StateName>Alabama</StateName></State>
+<State><StateCode>AR</StateCode><StateName>Arkansas</StateName></State>
+<State><StateCode>AZ</StateCode><StateName>Arizona</StateName></State>
+<State><StateCode>CA</StateCode><StateName>California</StateName></State>
+<State><StateCode>CO</StateCode><StateName>Colorado</StateName></State>
+<State><StateCode>CT</StateCode><StateName>Connecticut</StateName></State>
+<State><StateCode>DC</StateCode><StateName>District of Columbia</StateName></State>
+<State><StateCode>DE</StateCode><StateName>Delaware</StateName></State>
+<State><StateCode>FL</StateCode><StateName>Florida</StateName></State>
+<State><StateCode>GA</StateCode><StateName>Georgia</StateName></State>
+<State><StateCode>HI</StateCode><StateName>Hawaii</StateName></State>
+<State><StateCode>IA</StateCode><StateName>Iowa</StateName></State>
+<State><StateCode>ID</StateCode><StateName>Idaho</StateName></State>
+<State><StateCode>IL</StateCode><StateName>Illinois</StateName></State>
+<State><StateCode>IN</StateCode><StateName>Indiana</StateName></State>
+<State><StateCode>KS</StateCode><StateName>Kansas</StateName></State>
+<State><StateCode>KY</StateCode><StateName>Kentucky</StateName></State>
+<State><StateCode>LA</StateCode><StateName>Louisiana</StateName></State>
+<State><StateCode>MA</StateCode><StateName>Massachusetts</StateName></State>
+<State><StateCode>MD</StateCode><StateName>Maryland</StateName></State>
+<State><StateCode>ME</StateCode><StateName>Maine</StateName></State>
+<State><StateCode>MI</StateCode><StateName>Michigan</StateName></State>
+<State><StateCode>MN</StateCode><StateName>Minnesota</StateName></State>
+<State><StateCode>MO</StateCode><StateName>Missouri</StateName></State>
+<State><StateCode>MS</StateCode><StateName>Mississippi</StateName></State>
+<State><StateCode>MT</StateCode><StateName>Montana</StateName></State>
+<State><StateCode>NC</StateCode><StateName>North Carolina</StateName></State>
+<State><StateCode>ND</StateCode><StateName>North Dakota</StateName></State>
+<State><StateCode>NE</StateCode><StateName>Nebraska</StateName></State>
+<State><StateCode>NH</StateCode><StateName>New Hampshire</StateName></State>
+<State><StateCode>NJ</StateCode><StateName>New Jersey</StateName></State>
+<State><StateCode>NM</StateCode><StateName>New Mexico</StateName></State>
+<State><StateCode>NV</StateCode><StateName>Nevada</StateName></State>
+<State><StateCode>NY</StateCode><StateName>New York</StateName></State>
+<State><StateCode>OH</StateCode><StateName>Ohio</StateName></State>
+<State><StateCode>OK</StateCode><StateName>Oklahoma</StateName></State>
+<State><StateCode>OR</StateCode><StateName>Oregon</StateName></State>
+<State><StateCode>PA</StateCode><StateName>Pennsylvania</StateName></State>
+<State><StateCode>RI</StateCode><StateName>Rhode Island</StateName></State>
+<State><StateCode>SC</StateCode><StateName>South Carolina</StateName></State>
+<State><StateCode>SD</StateCode><StateName>South Dakota</StateName></State>
+<State><StateCode>TN</StateCode><StateName>Tennessee</StateName></State>
+<State><StateCode>TX</StateCode><StateName>Texas</StateName></State>
+<State><StateCode>UT</StateCode><StateName>Utah</StateName></State>
+<State><StateCode>VA</StateCode><StateName>Virginia</StateName></State>
+<State><StateCode>VT</StateCode><StateName>Vermont</StateName></State>
+<State><StateCode>WA</StateCode><StateName>Washington</StateName></State>
+<State><StateCode>WI</StateCode><StateName>Wisconsin</StateName></State>
+<State><StateCode>WV</StateCode><StateName>West Virginia</StateName></State>
+<State><StateCode>WY</StateCode><StateName>Wyoming</StateName></State>
+</States>																				

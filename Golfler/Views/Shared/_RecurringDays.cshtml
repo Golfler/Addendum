@@ -1,0 +1,232 @@
+﻿ 
+<table>
+    <tr>
+        <td>Start Date</td>
+        <td>
+              <select id="startMonth">
+                <option value="01">Jan</option>
+                <option value="02">Feb</option>
+                <option value="03">Mar</option>
+                <option value="04">Apr</option>
+                <option value="05">May</option>
+                <option value="06">Jun</option>
+                <option value="07">Jul</option>
+                <option value="08">Aug</option>
+                <option value="09">Sep</option>
+                <option value="10">Oct</option>
+                <option value="11">Nov</option>
+                <option value="12">Dec</option>            
+            </select>
+            <select id="startDate">
+                <option value="01">1</option>
+                <option value="02">2</option>
+                <option value="03">3</option>
+                <option value="04">4</option>
+                <option value="05">5</option>
+                <option value="06">6</option>
+                <option value="07">7</option>
+                <option value="08">8</option>
+                <option value="09">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+                <option value="15">15</option>
+                <option value="16">16</option>
+                <option value="17">17</option>
+                <option value="18">18</option>
+                <option value="19">19</option>
+                <option value="20">20</option>
+                <option value="21">21</option>
+                <option value="22">22</option>
+                <option value="23">23</option>
+                <option value="24">24</option>
+                <option value="25">25</option>
+                <option value="26">26</option>
+                <option value="27">27</option>
+                <option value="28">28</option>
+                <option value="29">29</option>
+                <option value="30">30</option>
+                <option value="31">31</option>
+
+            </select>
+
+          
+              <select id="startYear">
+                <option value="15">2015</option>
+                <option value="16">2016</option>
+                <option value="17">2017</option>
+                <option value="18">2018</option>
+                <option value="19">2019</option>
+                <option value="20">2020</option>
+               
+            </select>
+
+            <input id='start' type='text' value='05/15/15' style='display: none' />
+         @*   (format: mm/dd/yy)*@
+
+        </td>
+    </tr>
+    <tr>
+        <td>End Date</td>
+        <td>
+              <select id="endMonth">
+                <option value="01">Jan</option>
+                <option value="02">Feb</option>
+                <option value="03">Mar</option>
+                <option value="04">Apr</option>
+                <option value="05">May</option>
+                <option value="06">Jun</option>
+                <option value="07">Jul</option>
+                <option value="08">Aug</option>
+                <option value="09">Sep</option>
+                <option value="10">Oct</option>
+                <option value="11">Nov</option>
+                <option value="12">Dec</option>            
+            </select>
+             <select id="endDate">
+                <option value="01">1</option>
+                <option value="02">2</option>
+                <option value="03">3</option>
+                <option value="04">4</option>
+                <option value="05">5</option>
+                <option value="06">6</option>
+                <option value="07">7</option>
+                <option value="08">8</option>
+                <option value="09">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+                <option value="15">15</option>
+                <option value="16">16</option>
+                <option value="17">17</option>
+                <option value="18">18</option>
+                <option value="19">19</option>
+                <option value="20">20</option>
+                <option value="21">21</option>
+                <option value="22">22</option>
+                <option value="23">23</option>
+                <option value="24">24</option>
+                <option value="25">25</option>
+                <option value="26">26</option>
+                <option value="27">27</option>
+                <option value="28">28</option>
+                <option value="29">29</option>
+                <option value="30">30</option>
+                <option value="31">31</option>
+
+            </select>
+
+          
+              <select id="endYear">
+                <option value="15">2015</option>
+                <option value="16">2016</option>
+                <option value="17">2017</option>
+                <option value="18">2018</option>
+                <option value="19">2019</option>
+                <option value="20">2020</option>
+               
+            </select>
+            <input id='until' type='text' value='05/25/15' style='display: none' />
+          @*  (format: mm/dd/yy)*@ </td>
+    </tr>
+    <tr>
+        <td>Every</td>
+        <td>
+            <input id='every' type='text' value='1' size='2' />
+            &nbsp; 
+            <select id='unit' onchange="javascript:checkUnit();">
+                <option value='d'>day(s)</option>
+                <option value='w'>week(s)</option>
+                <option value='m'>month(s)</option>
+                @*<option value='y'>year(s)</option>*@
+            </select>
+
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="2">
+
+
+            <span id='month_span' style='display: none'>on the
+     &nbsp; &nbsp;  
+    <select id='nth'>
+        <option value='1'>first</option>
+        <option value='2'>second</option>
+        <option value='3'>third</option>
+        <option value='4'>fourth</option>
+        <option value='-1'>last</option>
+    </select>
+                <select id='occurrence_of'>
+                    <option value="0">Sunday</option>
+                    <option value="1">Monday</option>
+                    <option value="2">Tuesday</option>
+                    <option value="3">Wednesday</option>
+                    <option value="4">Thursday</option>
+                    <option value="5">Friday</option>
+                    <option value="6">Saturday</option>
+                    @*  <option value="-1">day</option>*@
+                </select>
+
+            </span>
+
+            <span id='week_span' style='display: none'>on
+      &nbsp; &nbsp; &nbsp; &nbsp;
+    <input class='week_days' type='checkbox' value='0'>
+                Sun
+     
+    <input class='week_days' type='checkbox' value='1'>
+                Mon
+     
+    <input class='week_days' type='checkbox' value='2'>
+                Tue
+     
+    <input class='week_days' type='checkbox' value='3'>
+                Wed
+     
+    <input class='week_days' type='checkbox' value='4'>
+                Thu
+     
+    <input class='week_days' type='checkbox' value='5'>
+                Fri
+     
+    <input class='week_days' type='checkbox' value='6'>
+                Sat
+    </span>
+
+
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" style="text-align: center">
+            <input type="button" id="btnGenerate" value="Save" onclick="javascript: generate_recurrence();" />
+            <input type="button" id="btnClose" value="Cancel" onclick="parent.jQuery.fancybox.close();" />
+        </td>
+
+    </tr>
+</table>
+
+
+
+
+<select id='end_condition' style="display: none;">
+    <option>for</option>
+    <option selected="selected">until</option>
+</select>
+<span id='for_span' style="display: none;">for
+    <input id='rfor' type='text' value='10' />
+    occurences</span>
+
+
+<br />
+
+<button style="display: none;">Generate all</button>
+<button value='10' style="display: none;">Generate sample (10)</button>
+
+<p style="display:none;" >
+    <textarea id='output' cols='60' rows='30'></textarea>
+</p>

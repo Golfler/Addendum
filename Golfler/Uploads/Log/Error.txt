@@ -1,0 +1,223 @@
+---------------------------------------------------------------------
+3/28/2015 12:27:25 AM
+---------------------------------------------------------------------
+Browser: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:36.0) Gecko/20100101 Firefox/36.0
+Referrer: http://localhost:2015/Golfler/CourseAdmin
+QueryString: 
+Message: Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+InnerException: 
+StackTrace:    at System.Data.Entity.Internal.InternalContext.SaveChanges()
+   at System.Data.Entity.Internal.LazyInternalContext.SaveChanges()
+   at System.Data.Entity.DbContext.SaveChanges()
+   at Golfler.Repositories.Users.CourseLogin(LogInModel obj) in d:\Amit\Project\Golfler\Golfler\Repositories\Users.cs:line 185
+TargetSite: Int32 SaveChanges()
+Data: System.Collections.ListDictionaryInternal
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+3/28/2015 12:28:14 AM
+---------------------------------------------------------------------
+Browser: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:36.0) Gecko/20100101 Firefox/36.0
+Referrer: http://localhost:2015/Golfler/CourseAdmin
+QueryString: 
+Message: Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+InnerException: 
+StackTrace:    at System.Data.Entity.Internal.InternalContext.SaveChanges()
+   at System.Data.Entity.Internal.LazyInternalContext.SaveChanges()
+   at System.Data.Entity.DbContext.SaveChanges()
+   at Golfler.Repositories.Users.CourseLogin(LogInModel obj) in d:\Amit\Project\Golfler\Golfler\Repositories\Users.cs:line 185
+TargetSite: Int32 SaveChanges()
+Data: System.Collections.ListDictionaryInternal
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+3/28/2015 12:32:26 AM
+---------------------------------------------------------------------
+Browser: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:36.0) Gecko/20100101 Firefox/36.0
+Referrer: http://localhost:2015/Golfler/CourseAdmin
+QueryString: 
+Message: Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+InnerException: 
+StackTrace:    at System.Data.Entity.Internal.InternalContext.SaveChanges()
+   at System.Data.Entity.Internal.LazyInternalContext.SaveChanges()
+   at System.Data.Entity.DbContext.SaveChanges()
+   at Golfler.Repositories.Users.CourseLogin(LogInModel obj) in d:\Amit\Project\Golfler\Golfler\Repositories\Users.cs:line 187
+TargetSite: Int32 SaveChanges()
+Data: System.Collections.ListDictionaryInternal
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+3/28/2015 12:32:34 AM
+---------------------------------------------------------------------
+Browser: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:36.0) Gecko/20100101 Firefox/36.0
+Referrer: http://localhost:2015/Golfler/CourseAdmin
+QueryString: 
+Message: Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+InnerException: 
+StackTrace:    at System.Data.Entity.Internal.InternalContext.SaveChanges()
+   at System.Data.Entity.Internal.LazyInternalContext.SaveChanges()
+   at System.Data.Entity.DbContext.SaveChanges()
+   at Golfler.Repositories.Users.CourseLogin(LogInModel obj) in d:\Amit\Project\Golfler\Golfler\Repositories\Users.cs:line 187
+TargetSite: Int32 SaveChanges()
+Data: System.Collections.ListDictionaryInternal
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+3/28/2015 12:34:18 AM
+---------------------------------------------------------------------
+Browser: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:36.0) Gecko/20100101 Firefox/36.0
+Referrer: http://localhost:2015/Golfler/CourseAdmin
+QueryString: 
+Message: Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+InnerException: 
+StackTrace:    at System.Data.Entity.Internal.InternalContext.SaveChanges()
+   at System.Data.Entity.Internal.LazyInternalContext.SaveChanges()
+   at System.Data.Entity.DbContext.SaveChanges()
+   at Golfler.Repositories.Users.CourseLogin(LogInModel obj) in d:\Amit\Project\Golfler\Golfler\Repositories\Users.cs:line 187
+TargetSite: Int32 SaveChanges()
+Data: System.Collections.ListDictionaryInternal
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+3/14/2016 11:11:56 PM
+---------------------------------------------------------------------
+Browser: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:44.0) Gecko/20100101 Firefox/44.0
+Referrer: http://localhost:2016/Golfler/admin/CoursesList
+QueryString: searchText=&cityName=&_search=false&nd=1457977316657&rows=30&page=1&sidx=ID&sord=desc
+Message: The parameterized query '(@CourseName nvarchar(4000),@PartnerType nvarchar(4000),@CityNam' expects the parameter '@PartnerType', which was not supplied.
+InnerException: 
+StackTrace:    at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   at System.Data.SqlClient.SqlDataReader.get_MetaData()
+   at System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean asyncWrite)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader()
+   at System.Data.Objects.ObjectContext.ExecuteStoreQueryInternal[TElement](String commandText, String entitySetName, MergeOption mergeOption, Object[] parameters)
+   at System.Data.Objects.ObjectContext.ExecuteStoreQuery[TElement](String commandText, Object[] parameters)
+   at System.Data.Entity.Internal.InternalContext.ExecuteSqlQuery[TElement](String sql, Object[] parameters)
+   at System.Data.Entity.Internal.InternalContext.ExecuteSqlQueryAsIEnumerable[TElement](String sql, Object[] parameters)
+   at System.Data.Entity.Internal.InternalContext.ExecuteSqlQuery(Type elementType, String sql, Object[] parameters)
+   at System.Data.Entity.Internal.InternalSqlNonSetQuery.GetEnumerator()
+   at System.Data.Entity.Internal.InternalSqlQuery`1.GetEnumerator()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at Golfler.Models.Course.GetCoursesInfo(String filterExpression, String cityName, String partnerType, String sortExpression, String sortDirection, Int32 pageIndex, Int32 pageSize, Int32& totalRecords) in d:\Amit\Golfler\Golfler\Models\Course.cs:line 185
+   at Golfler.Controllers.AdminController.GetCourseInfo(String searchText, String cityName, String partnerType, String sidx, String sord, Nullable`1 page, Nullable`1 rows) in d:\Amit\Golfler\Golfler\Controllers\AdminController.cs:line 993
+TargetSite: Void OnError(System.Data.SqlClient.SqlException, Boolean, System.Action`1[System.Action])
+Data: System.Collections.ListDictionaryInternal
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+3/16/2016 3:40:42 AM
+---------------------------------------------------------------------
+Browser: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:44.0) Gecko/20100101 Firefox/44.0
+Referrer: http://localhost:2016/Golfler/CourseAdmin/ManageRatings
+QueryString: searchText=&fromDate=&toDate=&_search=false&nd=1458079824703&rows=30&page=1&sidx=Id&sord=desc
+Message: LINQ to Entities does not recognize the method 'System.String ToString()' method, and this method cannot be translated into a store expression.
+InnerException: 
+StackTrace:    at System.Data.Objects.ELinq.ExpressionConverter.MethodCallTranslator.DefaultTranslator.Translate(ExpressionConverter parent, MethodCallExpression call)
+   at System.Data.Objects.ELinq.ExpressionConverter.MethodCallTranslator.TypedTranslate(ExpressionConverter parent, MethodCallExpression linq)
+   at System.Data.Objects.ELinq.ExpressionConverter.TypedTranslator`1.Translate(ExpressionConverter parent, Expression linq)
+   at System.Data.Objects.ELinq.ExpressionConverter.TranslateExpression(Expression linq)
+   at System.Data.Objects.ELinq.ExpressionConverter.TranslateLambda(LambdaExpression lambda, DbExpression input)
+   at System.Data.Objects.ELinq.ExpressionConverter.TranslateLambda(LambdaExpression lambda, DbExpression input, DbExpressionBinding& binding)
+   at System.Data.Objects.ELinq.ExpressionConverter.MethodCallTranslator.OneLambdaTranslator.Translate(ExpressionConverter parent, MethodCallExpression call, DbExpression& source, DbExpressionBinding& sourceBinding, DbExpression& lambda)
+   at System.Data.Objects.ELinq.ExpressionConverter.MethodCallTranslator.SelectTranslator.Translate(ExpressionConverter parent, MethodCallExpression call)
+   at System.Data.Objects.ELinq.ExpressionConverter.MethodCallTranslator.SequenceMethodTranslator.Translate(ExpressionConverter parent, MethodCallExpression call, SequenceMethod sequenceMethod)
+   at System.Data.Objects.ELinq.ExpressionConverter.MethodCallTranslator.TypedTranslate(ExpressionConverter parent, MethodCallExpression linq)
+   at System.Data.Objects.ELinq.ExpressionConverter.TypedTranslator`1.Translate(ExpressionConverter parent, Expression linq)
+   at System.Data.Objects.ELinq.ExpressionConverter.TranslateExpression(Expression linq)
+   at System.Data.Objects.ELinq.ExpressionConverter.Convert()
+   at System.Data.Objects.ELinq.ELinqQueryState.GetExecutionPlan(Nullable`1 forMergeOption)
+   at System.Data.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)
+   at System.Data.Objects.ObjectQuery`1.System.Collections.Generic.IEnumerable<T>.GetEnumerator()
+   at System.Data.Entity.Internal.Linq.InternalQuery`1.GetEnumerator()
+   at System.Data.Entity.Infrastructure.DbQuery`1.System.Collections.Generic.IEnumerable<TResult>.GetEnumerator()
+   at System.Linq.Buffer`1..ctor(IEnumerable`1 source)
+   at System.Linq.Enumerable.ToArray[TSource](IEnumerable`1 source)
+   at Golfler.Models.Order.GetRatingsList(String filterExpression, String sortExpression, String sortDirection, Int32 pageIndex, Int32 pageSize, Int32& totalRecords, String fromDate, String toDate) in d:\Amit\Golfler\Golfler\Models\Order.cs:line 1423
+   at Golfler.Controllers.CourseAdminController.GetRatingList(String searchText, String sidx, String sord, Nullable`1 page, Nullable`1 rows, String fromDate, String toDate) in d:\Amit\Golfler\Golfler\Controllers\CourseAdminController.cs:line 4480
+TargetSite: System.Data.Common.CommandTrees.DbExpression Translate(System.Data.Objects.ELinq.ExpressionConverter, System.Linq.Expressions.MethodCallExpression)
+Data: System.Collections.ListDictionaryInternal
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+3/16/2016 7:53:31 PM
+---------------------------------------------------------------------
+Browser: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:44.0) Gecko/20100101 Firefox/44.0
+Referrer: http://localhost:2016/Golfler/CourseAdmin/CourseBuilder
+QueryString: searchText=&cityName=&_search=false&nd=1458138209989&rows=30&page=1&sidx=ID&sord=desc
+Message: The cast to value type 'Int64' failed because the materialized value is null. Either the result type's generic parameter or the query must use a nullable type.
+InnerException: 
+StackTrace:    at System.Data.Common.Internal.Materialization.Shaper.ErrorHandlingValueReader`1.GetValue(DbDataReader reader, Int32 ordinal)
+   at System.Data.Common.Internal.Materialization.Shaper.GetColumnValueWithErrorHandling[TColumn](Int32 ordinal)
+   at lambda_method(Closure , Shaper )
+   at System.Data.Common.Internal.Materialization.Coordinator`1.ReadNextElement(Shaper shaper)
+   at System.Data.Common.Internal.Materialization.Shaper`1.SimpleEnumerator.MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at Golfler.Models.Course.GetCourseListInfo(String filterExpression, String cityName, String sortExpression, String sortDirection, Int32 pageIndex, Int32 pageSize, Int32& totalRecords) in d:\Amit\Golfler\Golfler\Models\Course.cs:line 228
+   at Golfler.Controllers.CourseAdminController.GetCourseListing(String searchText, String cityName, String sidx, String sord, Nullable`1 page, Nullable`1 rows) in d:\Amit\Golfler\Golfler\Controllers\CourseAdminController.cs:line 3184
+TargetSite: T GetValue(System.Data.Common.DbDataReader, Int32)
+Data: System.Collections.ListDictionaryInternal
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+3/16/2016 7:53:37 PM
+---------------------------------------------------------------------
+Browser: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:44.0) Gecko/20100101 Firefox/44.0
+Referrer: http://localhost:2016/Golfler/CourseAdmin/CourseBuilder
+QueryString: searchText=&cityName=&_search=false&nd=1458138216314&rows=30&page=1&sidx=ID&sord=desc
+Message: The cast to value type 'Int64' failed because the materialized value is null. Either the result type's generic parameter or the query must use a nullable type.
+InnerException: 
+StackTrace:    at System.Data.Common.Internal.Materialization.Shaper.ErrorHandlingValueReader`1.GetValue(DbDataReader reader, Int32 ordinal)
+   at System.Data.Common.Internal.Materialization.Shaper.GetColumnValueWithErrorHandling[TColumn](Int32 ordinal)
+   at lambda_method(Closure , Shaper )
+   at System.Data.Common.Internal.Materialization.Coordinator`1.ReadNextElement(Shaper shaper)
+   at System.Data.Common.Internal.Materialization.Shaper`1.SimpleEnumerator.MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at Golfler.Models.Course.GetCourseListInfo(String filterExpression, String cityName, String sortExpression, String sortDirection, Int32 pageIndex, Int32 pageSize, Int32& totalRecords) in d:\Amit\Golfler\Golfler\Models\Course.cs:line 228
+   at Golfler.Controllers.CourseAdminController.GetCourseListing(String searchText, String cityName, String sidx, String sord, Nullable`1 page, Nullable`1 rows) in d:\Amit\Golfler\Golfler\Controllers\CourseAdminController.cs:line 3184
+TargetSite: T GetValue(System.Data.Common.DbDataReader, Int32)
+Data: System.Collections.ListDictionaryInternal
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+3/16/2016 7:55:22 PM
+---------------------------------------------------------------------
+Browser: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:44.0) Gecko/20100101 Firefox/44.0
+Referrer: http://localhost:2016/Golfler/CourseAdmin/CourseBuilder
+QueryString: searchText=&cityName=&_search=false&nd=1458138298017&rows=30&page=1&sidx=ID&sord=desc
+Message: The cast to value type 'Int64' failed because the materialized value is null. Either the result type's generic parameter or the query must use a nullable type.
+InnerException: 
+StackTrace:    at System.Data.Common.Internal.Materialization.Shaper.ErrorHandlingValueReader`1.GetValue(DbDataReader reader, Int32 ordinal)
+   at System.Data.Common.Internal.Materialization.Shaper.GetColumnValueWithErrorHandling[TColumn](Int32 ordinal)
+   at lambda_method(Closure , Shaper )
+   at System.Data.Common.Internal.Materialization.Coordinator`1.ReadNextElement(Shaper shaper)
+   at System.Data.Common.Internal.Materialization.Shaper`1.SimpleEnumerator.MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at Golfler.Models.Course.GetCourseListInfo(String filterExpression, String cityName, String sortExpression, String sortDirection, Int32 pageIndex, Int32 pageSize, Int32& totalRecords) in d:\Amit\Golfler\Golfler\Models\Course.cs:line 228
+   at Golfler.Controllers.CourseAdminController.GetCourseListing(String searchText, String cityName, String sidx, String sord, Nullable`1 page, Nullable`1 rows) in d:\Amit\Golfler\Golfler\Controllers\CourseAdminController.cs:line 3184
+TargetSite: T GetValue(System.Data.Common.DbDataReader, Int32)
+Data: System.Collections.ListDictionaryInternal
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+3/16/2016 7:56:03 PM
+---------------------------------------------------------------------
+Browser: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:44.0) Gecko/20100101 Firefox/44.0
+Referrer: http://localhost:2016/Golfler/CourseAdmin/CourseBuilder
+QueryString: searchText=&cityName=&_search=false&nd=1458138329284&rows=30&page=1&sidx=ID&sord=desc
+Message: The cast to value type 'Int64' failed because the materialized value is null. Either the result type's generic parameter or the query must use a nullable type.
+InnerException: 
+StackTrace:    at System.Data.Common.Internal.Materialization.Shaper.ErrorHandlingValueReader`1.GetValue(DbDataReader reader, Int32 ordinal)
+   at System.Data.Common.Internal.Materialization.Shaper.GetColumnValueWithErrorHandling[TColumn](Int32 ordinal)
+   at lambda_method(Closure , Shaper )
+   at System.Data.Common.Internal.Materialization.Coordinator`1.ReadNextElement(Shaper shaper)
+   at System.Data.Common.Internal.Materialization.Shaper`1.SimpleEnumerator.MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at Golfler.Models.Course.GetCourseListInfo(String filterExpression, String cityName, String sortExpression, String sortDirection, Int32 pageIndex, Int32 pageSize, Int32& totalRecords) in d:\Amit\Golfler\Golfler\Models\Course.cs:line 228
+   at Golfler.Controllers.CourseAdminController.GetCourseListing(String searchText, String cityName, String sidx, String sord, Nullable`1 page, Nullable`1 rows) in d:\Amit\Golfler\Golfler\Controllers\CourseAdminController.cs:line 3184
+TargetSite: T GetValue(System.Data.Common.DbDataReader, Int32)
+Data: System.Collections.ListDictionaryInternal
+---------------------------------------------------------------------

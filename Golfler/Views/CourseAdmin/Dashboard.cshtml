@@ -1,0 +1,519 @@
+﻿@model Golfler.Models.GF_Roles
+@{
+    ViewBag.Title = "Dashboard";
+    ViewBag.pagetitle = "Welcome to your Dashboard";
+    Layout = "~/Views/Shared/_LayoutCourseArea.cshtml";
+}
+
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+<script>
+
+    google.load("visualization", "1", { packages: ["corechart"] });
+
+    $(document).ready(function () {
+        var newOrderCount = 0;
+        var newMissedOrderCount = 0;
+        setInterval(function () {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("NewIncommingOrderCount", "CourseAdmin")',
+                async: false,
+                success: function (data) {
+                    //console.log(data);
+                    newOrderCount = data.records;
+                    $('#spnActiveOrder').text('( ' + newOrderCount + ' )');
+                },
+                error: function (data) {
+                    console.log(data.statusText, data);
+                    newOrderCount = 0;
+                    $('#spnActiveOrder').text('( 0 )');
+                }
+            });
+
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("CurrentDayMissedOrderCount", "CourseAdmin")',
+                async: false,
+                success: function (data) {
+                    //console.log(data);
+                    newMissedOrderCount = data.records;
+                    $('#spnMissedOrder').text('( ' + newMissedOrderCount + ' )');
+                },
+                error: function (data) {
+                    console.log(data.statusText, data);
+                    newMissedOrderCount = 0;
+                    $('#spnMissedOrder').text('( 0 )');
+                }
+            });
+
+        }, 10000);
+
+        setInterval(function () {
+            if (newOrderCount > 0) {
+                $('#spnActiveOrder').animate({ backgroundColor: 'red' }, 300)
+                .animate({ backgroundColor: '#43b34a' }, 300);
+            }
+            else {
+                $('#spnActiveOrder').remove('style');
+            }
+        }, 1000);
+
+        setInterval(function () {
+            if (newMissedOrderCount > 0) {
+                $('#spnMissedOrder').animate({ backgroundColor: 'red' }, 300)
+                .animate({ backgroundColor: '#43b34a' }, 300);
+            }
+            else {
+                $('#spnMissedOrder').remove('style');
+            }
+        }, 1000);
+    });
+</script>
+<tr>
+    <td>
+        <div id="AllLinks">
+            <div class="summary margin-top15">
+                <h4>Our Dashboard</h4>
+                <div class="clr">
+                </div>
+            </div>
+            <div class="clr">
+            </div>
+            <div class="app_store">
+                <div class="app-blue sky-color equal_height min_ min_border" inrid="Apps" onclick="openDashboardLinks('Apps')">
+                    <img class="icon" src="/Content/images/icon_main_user.png">
+                    <div class="red_txt">
+                        <a href="/Golfler/CourseAdmin/UserList">Manage Users</a> <span class="dash_top_status"></span>
+                    </div>
+                    <div class="info_text"><a href="/Golfler/CourseAdmin/UserList" style="color: #a8b3bb;">No. Of Users <span>( @ViewBag.UserCount )</span></a></div>
+                    <div class="clr">
+                    </div>
+                </div>
+                @*  <div class="app-sky sky-color equal_height min_ min_border" inrid="users" onclick="openDashboardLinks('users')">
+                    <img class="icon" src="/Content/images/icon_main_course.png">
+                    <div class="red_txt">
+                        <a href="/Golfler/CourseAdmin/CoursesUpdate">Courses</a><span class="dash_top_status"></span>
+                    </div>
+                    <div class="info_text">No. Of Courses<span> ( @ViewBag.CourseCount )</span></div>
+                    <div class="clr">
+                    </div>
+                </div>*@
+                <div class="app-green dark-blue equal_height min_ min_border" inrid="Misc" onclick="openDashboardLinks('Misc')">
+                    <img class="icon" src="/Content/images/icon_main_food.png">
+                    <div class="red_txt">
+                        <a href="/Golfler/CourseAdmin/MenuItemList">Food Items</a><span class="dash_top_status"></span>
+                    </div>
+                    <div class="info_text"><a href="/Golfler/CourseAdmin/MenuItemList" style="color: #a8b3bb;">No. of Food Items<span> ( @ViewBag.FoodCount )</span></a></div>
+                    <div class="clr">
+                    </div>
+                </div>
+                <div class="orgnize_box blue equal_height min_ min_border" inrid="OrgMngmt" onclick="openDashboardLinks('OrgMngmt')">
+                    <img class="icon" src="/Content/Images/icon_main_manage.png">
+                    <div class="red_txt">
+                        <a href="/Golfler/CourseAdmin/OrderList">Orders</a><span class="dash_top_status"></span>
+                    </div>
+                    <div class="info_text"><a href="/Golfler/CourseAdmin/OrderList" style="color: #a8b3bb;">No. Of Orders<span> ( @ViewBag.OrderCount )</span></a></div>
+                    <div class="info_text"><a href="/Golfler/CourseAdmin/ViewOrderList" style="color: #a8b3bb;">Active Order(s) <span id="spnActiveOrder">( 0 )</span></a></div>
+                    <div class="info_text"><a href="/Golfler/CourseAdmin/MissingOrdersList" style="color: #a8b3bb;">Missed Order(s) <span id="spnMissedOrder">( 0 )</span></a></div>
+                    <div class="clr">
+                    </div>
+                </div>
+                <div class="orgnize_box blue equal_height min_ min_border" inrid="OrgMngmt" onclick="openDashboardLinks('OrgMngmt')">
+                    <img class="icon" src="/Content/Images/icon_main_golfer_view.png">
+                    <div class="red_txt">
+                        <a href="/Golfler/CourseAdmin/ViewGolfersOnMap">Gopher View</a><span class="dash_top_status"></span>
+                    </div>
+                    <div class="info_text"><a href="/Golfler/CourseAdmin/ViewGolfersOnMap" style="color: #a8b3bb;">Gopher View</a></div>
+                    <div class="clr">
+                    </div>
+                </div>
+                @*<div class="orgnize_box blue equal_height min_ min_border" inrid="OrgMngmt" onclick="openDashboardLinks('OrgMngmt')">
+                    <img class="icon" src="/Content/Images/icon_main_setting.png">
+                    <div class="red_txt">
+                        <a href="/Golfler/CourseAdmin/SettingAddEdit">Web Settings</a><span class="dash_top_status"></span>
+                    </div>
+                    <div class="info_text">Manage Settings</div>
+                    <div class="clr">
+                    </div>
+                </div>*@
+                <div class="app-green dark-blue equal_height min_ min_border" inrid="communication"
+                    onclick="openDashboardLinks('communication')">
+                    <img class="icon" src="/Content/Images/icon_main_enquiries.png">
+                    <div class="red_txt">
+                        <a href="/Golfler/CourseAdmin/EmailTemplates">Communications</a><span class="dash_top_status"></span>
+                    </div>
+                    <div class="info_text"><a href="/Golfler/CourseAdmin/EmailTemplates" style="color: #a8b3bb;">Email Templates<span></span></a></div>
+                    <div class="info_text"><a href="/Golfler/CourseAdmin/SMTPDetails" style="color: #a8b3bb;">SMTP Details<span></span></a></div>
+                    <div class="clr">
+                    </div>
+                </div>
+                <div id="divReminder" class="app-green dark-blue equal_height min_ min_border">
+                    <img class="icon" src="/Content/Images/icon_main_enquiries.png">
+                    <div class="red_txt" style="color: red;">
+                        Reminder
+                    </div>
+                    @if (!(Golfler.Models.CommonFunctions.IsCourseSettingsComplete(Convert.ToInt64(Golfler.Models.LoginInfo.CourseId))))
+                    {
+                        <div id="divCourseSettings" class="info_text" style="color: red;">&#8226; <a style="color: red;" href='/Golfler/CourseAdmin/CoursesUpdate'>Scorecard setup is pending.</a><span></span></div>
+                    }
+                    @if (!(Golfler.Models.CommonFunctions.IsCourseBuilderInitiate(Convert.ToInt64(Golfler.Models.LoginInfo.CourseId))))
+                    {
+                        <div id="divCourseBuilder" class="info_text" style="color: red;">&#8226; <a style="color: red;" href='/Golfler/CourseAdmin/CourseBuilder'>Course Builder settings are pending.</a> <span></span></div>
+                    }
+                    <div class="clr">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="dash_chart">
+            <div class="left_chart_cont graph" style="border: 1px solid #eaeaea; padding: 0 !important;">
+                <br />
+                <div style="float: right; padding: 1%" id="siteVisitGraph">
+                    <a onclick="GetVisitData(3)" class="chartLink activeGraph"><span class="chartspan">New</span></a>
+                    &nbsp;&nbsp;&nbsp;<a onclick="GetVisitData(2)" class="chartLink"><span class="chartspan">Returning</span></a>
+                </div>
+                <br />
+                <br />
+                <div id="barchart_material" class="chart_div" style="min-width: 1300px; min-height: 380px;">
+                </div>
+
+            </div>
+            <div class="right_chart_cont graph" style="border: 1px solid #eaeaea;">
+                <br />
+                <div style="float: right; padding: 1%">
+                    <select id="ddlRevenueFilter" onchange="RevenueChartFilters(this.value);" class="chartddl">
+                        @*<option value="0">Filter Range</option>*@
+                        <option value="1">Monthly</option>
+                        <option value="2">Weekly</option>
+                        <option value="3">Yearly</option>
+                    </select>
+                </div>
+                <br />
+                <br />
+                <div id="barchart_material_Revenue" class="chart_div" style="min-width: 1300px; min-height: 380px;"></div>
+            </div>
+        </div>
+    </td>
+</tr>
+
+
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('.chartLink').click(function () {
+            $('#siteVisitGraph a').removeClass('activeGraph');
+            $(this).addClass('activeGraph');
+        });
+
+        $('#ltrMessage').html('');
+        $('#ltrMessage').hide();
+
+        $("#content_center_td").each(function () {
+            var dvManage = $(this).find($("#dvSubManage"));
+            if ((dvManage).children().size() <= 1) {
+                $("#dvManage").hide();
+            }
+            var dvManage = $(this).find($("#dvSubUsers"));
+            if (dvManage.children().size() <= 1) {
+                $("#dvUsers").hide();
+            }
+            var dvManage = $(this).find($("#dvSubMis"));
+            if (dvManage.children().size() <= 1) {
+                $("#dvSubMis").hide();
+            }
+            var dvManage = $(this).find($("#dvSubAd"));
+            if (dvManage.children().size() <= 1) {
+                $("#dvAd").hide();
+            }
+            var dvManage = $(this).find($("#dvSubApp"));
+            if (dvManage.children().size() <= 1) {
+                $("#dvApp").hide();
+            }
+            var dvManage = $(this).find($("#dvSubStore"));
+            if (dvManage.children().size() <= 1) {
+                $("#dvStore").hide();
+            }
+        });
+
+        //hideEmptythumbs();
+        //logic for hiding divs that dont have content    
+        function hideEmptythumbs() {
+            var OrgMngmtSize, appStoreMngmtSize, AdvSize, AppsSize, communicationSize, usersSize, MiscSize, SpendSize, AssetsSize, MDMSize, CaseSize = 0;
+            OrgMngmtSize = $('#All div.OrgMngmt div.equal_height').size();
+            appStoreMngmtSize = $('#All div.appStoreMngmt div.equal_height').size();
+            AdvSize = $('#All div.Adv div.equal_height').size();
+            AppsSize = $('#All div.Apps div.equal_height').size();
+            communicationSize = $('#All div.communication div.equal_height').size();
+            usersSize = $('#All div.users div.equal_height').size();
+            MiscSize = $('#All div.Misc div.equal_height').size();
+            SpendSize = $('#All div.Spend div.equal_height').size();
+            AssetsSize = $('#All div.Assets div.equal_height').size();
+            MDMSize = $('#All div.MDM div.equal_height').size();
+            CaseSize = $('#All div.Case div.equal_height').size();
+            if (OrgMngmtSize <= 1) {
+                $('div[inrID="OrgMngmt"]').css('display', 'none');
+            }
+            if (appStoreMngmtSize <= 1) {
+                $('div[inrID="appStoreMngmt"]').css('display', 'none');
+            }
+            if (AdvSize <= 1) {
+                $('div[inrID="Adv"]').css('display', 'none');
+            }
+            if (AppsSize <= 1) {
+                $('div[inrID="Apps"]').css('display', 'none');
+            }
+            if (communicationSize <= 1) {
+                $('div[inrID="communication"]').css('display', 'none');
+            }
+            if (usersSize <= 1) {
+                $('div[inrID="users"]').css('display', 'none');
+            }
+            if (MiscSize <= 1) {
+                $('div[inrID="Misc"]').css('display', 'none');
+            }
+            if (SpendSize <= 1) {
+                $('div[inrID="Spend"]').css('display', 'none');
+            }
+            if (AssetsSize <= 1) {
+                $('div[inrID="Assets"]').css('display', 'none');
+            }
+            if (MDMSize <= 1) {
+                $('div[inrID="MDM"]').css('display', 'none');
+            }
+            if (CaseSize <= 1) {
+                $('div[inrID="Case"]').css('display', 'none');
+            }
+        }
+
+        var divCS = $("#divCourseSettings").html();
+        var divCB = $("#divCourseBuilder").html();
+
+        if ((divCS == null) && (divCB == null)) {
+            $("#divReminder").hide();
+        }
+        else {
+            $("#divReminder").show();
+        }
+    });
+    function openDashboardLinks(cls) {
+        //$("." + cls).show();
+        //$("#AllLinks").hide();
+    }
+    function openDashboard() {
+        $(".OrgMngmt").hide();
+        $(".appStoreMngmt").hide();
+        $(".Adv").hide();
+        $(".Apps").hide();
+        $(".communication").hide();
+        $(".users").hide();
+        $(".Misc").hide();
+        $(".Spend").hide();
+        $(".Assets").hide();
+        $(".MDM").hide();
+        $(".Case").hide();
+        $("#AllLinks").show();
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        // debugger;
+        GetVisitData(1);
+        GetRevenueData(1);
+
+    });
+    function GetVisitData(type) {
+
+
+        $.ajax({
+            type: 'POST',
+            async: false,
+            url: '/Golfler/CourseAdmin/GetChartResult',
+            data: { Type: type },
+            success: function (data) {
+
+                if (data.result.SiteVisitResult != null) {
+                    CreateVisitChart(data.result.SiteVisitResult);
+                }
+
+                //if (data.result.RevenueResult != null)
+                //{
+                //    CreateRevenueChart(data.result.RevenueResult);
+                //}
+
+
+            }
+
+        })
+    }
+    function GetRevenueData(type) {
+
+
+        $.ajax({
+            type: 'POST',
+            async: false,
+            url: '/Golfler/CourseAdmin/GetRevenueResult',
+            data: { Type: type },
+            success: function (data) {
+                if (data.result.RevenueResult != null) {
+                    CreateRevenueChart(data.result.RevenueResult);
+                }
+
+
+            }
+
+        })
+    }
+    function CreateVisitChart(jsondata) {
+
+
+        var courseArr = new Array();
+        courseArr[0] = new Array("Dates", "Site Visits");
+
+        for (var i = 0; i < jsondata.length; i++) {
+
+            courseArr[i + 1] = new Array();
+            courseArr[i + 1].push(jsondata[i].Date);
+            var stringData = jsondata[i].NoOfVisits;
+            var decimalData = parseFloat(stringData);
+            courseArr[i + 1].push(decimalData);
+
+        }
+
+        var data = google.visualization.arrayToDataTable(
+          courseArr
+         //[
+         // ['Dates', 'Site Visits'],
+         // ['06/04/2015', 5],
+         // ['06/05/2015', 2],
+         // ['06/09/2015', 3],
+         // ['06/15/2015', 3]
+         // ]
+            );
+        var width = data.getNumberOfRows() * 200;
+
+        if (width < 800) {
+            width = 800;
+        }
+        var options = {
+            //title: "SITE VISITS monthly stats...",
+            hAxis: { title: "", showTextEvery: 1 },
+            //width: width,
+            vAxis: { title: "", format: '#.##', baselineColor: "none", minValue: 3 },
+            legend: { position: 'top' },
+            colors: ['#E9967A', 'pink'],
+            pointSize: 5,
+            chartArea: { left: '6%', width: '90%' }//, width: "100%" }
+        };
+
+        var chart = new google.visualization.AreaChart(document.getElementById('barchart_material'));
+        chart.draw(data, options);
+
+    }
+    function CreateRevenueChart(jsondata) {
+
+
+        var courseArr = new Array();
+        courseArr[0] = new Array("Month", "Revenue");
+
+        for (var i = 0; i < jsondata.length; i++) {
+
+            courseArr[i + 1] = new Array();
+            courseArr[i + 1].push(jsondata[i].Month);
+            var stringData = jsondata[i].Revenue;
+            var decimalData = parseFloat(stringData);
+            courseArr[i + 1].push(decimalData);
+
+        }
+
+        var data = google.visualization.arrayToDataTable(
+          courseArr
+
+            );
+        var width = data.getNumberOfRows() * 200;
+
+        if (width < 800) {
+            width = 800;
+        }
+        var options = {
+            //title: "REVENUE monthly stats...",
+            hAxis: { title: "", showTextEvery: 1 },
+            //width: width,
+            vAxis: { title: "", format: '#.##', baselineColor: "none", minValue: 3 },
+            legend: { position: 'top' },
+            colors: ['#6495ED', 'blue'],
+            pointSize: 5,
+            chartArea: { left: '6%', width: '90%' }//, width: "100%" }
+        };
+
+        var chart = new google.visualization.AreaChart(document.getElementById('barchart_material_Revenue'));
+        chart.draw(data, options);
+
+    }
+    function RevenueChartFilters(val) {
+        // alert(val);
+        if (val == 1) {
+            GetRevenueData(1);//monthly
+        }
+        else if (val == 2) {
+            GetRevenueData(2);
+        }
+        else if (val == 3) {
+            GetRevenueData(3);
+        }
+        else {
+            GetRevenueData(1);
+        }
+    }
+
+
+</script>
+<style>
+    /*.chart_div {
+        overflow-x: scroll;
+        overflow-y: hidden;
+        height: 380px;
+    }*/
+
+    .chartLink {
+        background-color: gray;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+        .chartLink:hover {
+            background-color: #43b34a;
+        }
+
+    .activeGraph {
+        background-color: #43b34a;
+    }
+
+    .chartspan {
+        font-size: 13px;
+        color: #fff;
+        margin: 5px;
+    }
+
+    .chartddl {
+        border: 1px solid #eaeaea;
+        border-radius: 5px;
+        padding: 2%;
+        background-color: gray;
+        color: #fff;
+    }
+
+    .right_chart_cont {
+        padding-left: 0 !important;
+    }
+
+    .graph {
+        overflow-x: scroll;
+        overflow-y: hidden;
+        width: 49%;
+    }
+</style>

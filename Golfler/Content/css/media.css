@@ -1,0 +1,7 @@
+﻿body {
+}
+
+  
+    @media (min-width: 768px) and (max-width: 1024px) {  body{ border:2px solid red !important;}}    
+    @media (min-width: 768px) and (max-width: 980px){  body{ border:2px solid yellow !important;}}
+    @media (min-width: 981px) and (max-width: 1280px){  body{ border:2px solid green !important;}}

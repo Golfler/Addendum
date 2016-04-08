@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="71c494d913fa4de8916bfcfc0cbc2625" Name="Diagram1" ZoomLevel="77">
+        <EntityTypeShape EntityType="GolflerModel.GF_Category" Width="1.5" PointX="1.5" PointY="13.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="GolflerModel.GF_CourseMenu" Width="1.5" PointX="8.75" PointY="13" IsExpanded="true" />
+        <EntityTypeShape EntityType="GolflerModel.GF_Courses" Width="1.5" PointX="5.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GolflerModel.GF_CourseSuggest" Width="1.5" PointX="7.75" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="GolflerModel.GF_CourseUsers" Width="1.5" PointX="8" PointY="8.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="GolflerModel.GF_GolferWallet" Width="1.5" PointX="9.75" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="GolflerModel.GF_MenuItems" Width="1.5" PointX="3" PointY="8.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="GolflerModel.GF_OrderAcceptReject" Width="1.5" PointX="5.25" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="GolflerModel.GF_OrderDetails" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="GolflerModel.FK_GF_CourseMenu_GF_Category" ManuallyRouted="false" />
+        <AssociationConnector Association="GolflerModel.FK_SSAS_OrganizationUsers_SSAS_Organizations" ManuallyRouted="false" />
+        <AssociationConnector Association="GolflerModel.FK_GF_OrderDetails_GF_MenuItems" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="GolflerModel.GF_Modules_Group" Width="1.5" PointX="7.0793232969377762" PointY="20.852870578343452" />
+        <EntityTypeShape EntityType="GolflerModel.GF_RoleModules" Width="1.5" PointX="8.875" PointY="21.875" />
+        <EntityTypeShape EntityType="GolflerModel.GF_Settings" Width="1.5" PointX="9.63206814119223" PointY="13.67778672914849" />
+        <EntityTypeShape EntityType="GolflerModel.GF_EmailTemplatesFields" Width="1.5" PointX="0.5" PointY="9.125" />
+        <EntityTypeShape EntityType="GolflerModel.GF_EmailTemplates" Width="1.5" PointX="5.0426723030594509" PointY="11.926627164672421" />
+        <EntityTypeShape EntityType="GolflerModel.GF_SMTPSettings" Width="1.5" PointX="2.3746318548799641" PointY="16.426602177520564" />
+        <EntityTypeShape EntityType="GolflerModel.GF_Templates" Width="1.5" PointX="12.375" PointY="4.25" />
+        <EntityTypeShape EntityType="GolflerModel.GF_SubCategory" Width="1.5" PointX="4.48503004037078" PointY="7.8747621811343178" />
+        <AssociationConnector Association="GolflerModel.FK_GF_SubCategory_GF_Category" />
+        <AssociationConnector Association="GolflerModel.FK_GF_MenuItems_GF_SubCategory" />
+        <EntityTypeShape EntityType="GolflerModel.GF_CourseInfo" Width="1.5" PointX="10.84677185064497" PointY="13.381400174173248" />
+        <AssociationConnector Association="GolflerModel.FK_GF_CourseMenu_GF_CourseInfo" />
+        <AssociationConnector Association="GolflerModel.FK_GF_CourseUsers_GF_CourseInfo" />
+        <EntityTypeShape EntityType="GolflerModel.GF_Messages" Width="1.5" PointX="3.8746045920413943" PointY="10.379474778836348" />
+        <EntityTypeShape EntityType="GolflerModel.GF_PromoCode" Width="1.5" PointX="5.4232214304726671" PointY="18.675481924170388" />
+        <AssociationConnector Association="GolflerModel.FK_GF_PromoCode_GF_CourseInfo" />
+        <EntityTypeShape EntityType="GolflerModel.GF_CourseBuilder" Width="1.5" PointX="2.25" PointY="4.875" />
+        <EntityTypeShape EntityType="GolflerModel.GF_CourseBuilderHolesDetail" Width="1.5" PointX="13.5" PointY="0.875" />
+        <AssociationConnector Association="GolflerModel.FK_GF_CourseBuilder_GF_CourseInfo" />
+        <AssociationConnector Association="GolflerModel.FK_GF_CourseBuilderHolesDetail_GF_CourseBuilder" />
+        <EntityTypeShape EntityType="GolflerModel.GF_StaticPages" Width="1.5" PointX="14.25" PointY="6.625" />
+        <EntityTypeShape EntityType="GolflerModel.GF_IncomeSlab" Width="1.5" PointX="9.6973784331685753" PointY="28.414446322440376" />
+        <EntityTypeShape EntityType="GolflerModel.GF_WeatherDetails" Width="1.5" PointX="0.875" PointY="2.625" />
+        <EntityTypeShape EntityType="GolflerModel.GF_COUNTRY" Width="1.5" PointX="7.75" PointY="5.5" />
+        <EntityTypeShape EntityType="GolflerModel.GF_STATE" Width="1.5" PointX="0.75" PointY="22.875" />
+        <EntityTypeShape EntityType="GolflerModel.GF_Order" Width="1.5" PointX="11.80223325258225" PointY="25.827905219899446" />
+        <AssociationConnector Association="GolflerModel.FK_GF_Order_GF_CourseInfo" />
+        <AssociationConnector Association="GolflerModel.FK_GF_OrderAcceptReject_GF_Order" />
+        <AssociationConnector Association="GolflerModel.FK_GF_OrderDetails_GF_Order" />
+        <EntityTypeShape EntityType="GolflerModel.GF_ResolutionCenter" Width="1.5" PointX="3.8894319384775273" PointY="13.411860397742997" />
+        <AssociationConnector Association="GolflerModel.FK_GF_ResolutionCenter_GF_CourseInfo" />
+        <EntityTypeShape EntityType="GolflerModel.GF_GolferUser" Width="1.5" PointX="8.1032815333936732" PointY="12.093484049706479" />
+        <AssociationConnector Association="GolflerModel.FK_GF_GolferUser_GF_CourseInfo" />
+        <AssociationConnector Association="GolflerModel.FK_GF_Order_GF_PromoCode" />
+        <EntityTypeShape EntityType="GolflerModel.GF_ResolutionMessageHistory" Width="1.5" PointX="2.5" PointY="28" />
+        <AssociationConnector Association="GolflerModel.FK_GF_ResolutionMessageHistory_GF_ResolutionCenter" />
+        <EntityTypeShape EntityType="GolflerModel.GF_MassMessages" Width="1.5" PointX="10.221442428520621" PointY="7.3504813496724148" />
+        <EntityTypeShape EntityType="GolflerModel.GF_FoodCommission" Width="1.5" PointX="11.341848777300607" PointY="3.1068066075010257" />
+        <AssociationConnector Association="GolflerModel.FK_GF_FoodCommission_GF_Category" />
+        <AssociationConnector Association="GolflerModel.FK_GF_FoodCommission_GF_CourseInfo" />
+        <EntityTypeShape EntityType="GolflerModel.GF_CourseFoodItem" Width="1.5" PointX="2.9100688355556077" PointY="6.4504399180647169" />
+        <EntityTypeShape EntityType="GolflerModel.GF_CourseFoodItemDetail" Width="1.5" PointX="6.375" PointY="1.375" />
+        <AssociationConnector Association="GolflerModel.FK_GF_CourseFoodItem_GF_CourseInfo" />
+        <AssociationConnector Association="GolflerModel.FK_GF_CourseFoodItem_GF_SubCategory" />
+        <AssociationConnector Association="GolflerModel.FK_GF_CourseFoodItemDetail_GF_CourseFoodItem" />
+        <AssociationConnector Association="GolflerModel.FK_GF_CourseFoodItemDetail_GF_MenuItems" />
+        <AssociationConnector Association="GolflerModel.FK_GF_CourseFoodItem_GF_CourseMenu" />
+        <EntityTypeShape EntityType="GolflerModel.GF_SuggestCourseCoordinate" Width="1.5" PointX="10.943463233738889" PointY="5.7996608492916737" />
+        <AssociationConnector Association="GolflerModel.FK_GF_SuggestCourseCoordinate_GF_CourseInfo" />
+        <EntityTypeShape EntityType="GolflerModel.GF_SuggestCoordinateDetail" Width="1.5" PointX="10.471460149842995" PointY="6.1455046116120666" />
+        <AssociationConnector Association="GolflerModel.FK_GF_SuggestCoordinateDetail_GF_SuggestCourseCoordinate" />
+        <EntityTypeShape EntityType="GolflerModel.GF_CourseVisitLog" Width="1.5" PointX="7.2624812700145327" PointY="11.698738327109599" />
+        <AssociationConnector Association="GolflerModel.FK_GF_CourseVisitLog_GF_CourseInfo" />
+        <EntityTypeShape EntityType="GolflerModel.GF_CourseEmailTemplates" Width="1.5" PointX="3.0839708126541092" PointY="12.715142717917981" />
+        <EntityTypeShape EntityType="GolflerModel.GF_OrderRefund" Width="1.5" PointX="10.118693952503937" PointY="19.005707481413012" />
+        <AssociationConnector Association="GolflerModel.FK_GF_OrderRefund_GF_Order" />
+        <EntityTypeShape EntityType="GolflerModel.GF_GolferRating" Width="1.5" PointX="0.36297847347472723" PointY="26.307797354789358" />
+        <EntityTypeShape EntityType="GolflerModel.GF_COUNTY" Width="1.5" PointX="0.92371426193216544" PointY="28.501157073537428" />
+        <EntityTypeShape EntityType="GolflerModel.GF_CourseBuilderRecDates" Width="1.5" PointX="5.0579127320358124" PointY="4.8352117113933017" />
+        <EntityTypeShape EntityType="GolflerModel.GF_GolferPaceofPlay" Width="1.5" PointX="6.9514623763745007" PointY="30.102726145695303" />
+        <EntityTypeShape EntityType="GolflerModel.GF_MenuItemOption" Width="1.5" PointX="10.023429856646541" PointY="18.844359734488819" />
+        <AssociationConnector Association="GolflerModel.FK_GF_MenuItemOption_GF_MenuItems" />
+        <EntityTypeShape EntityType="GolflerModel.GF_ContactList" Width="1.5" PointX="6.0826612869662515" PointY="29.35049521799688" />
+        <EntityTypeShape EntityType="GolflerModel.GF_Feedback" Width="1.5" PointX="5.6668709673298849" PointY="10.724044521676397" />
+        <EntityTypeShape EntityType="GolflerModel.GF_GamePlayPlayerInfo" Width="1.5" PointX="10.009025868963928" PointY="21.883231903371975" />
+        <EntityTypeShape EntityType="GolflerModel.GF_GamePlayScoreCard" Width="1.5" PointX="8.3842514047325825" PointY="21.375569562136928" />
+        <EntityTypeShape EntityType="GolflerModel.GF_GolferChangingLocation" Width="1.5" PointX="8.9763026595936637" PointY="26.369341251612333" />
+        <EntityTypeShape EntityType="GolflerModel.GF_OrderMenuOptionDetail" Width="1.5" PointX="0.11466042889033463" PointY="29.798033281135389" />
+        <EntityTypeShape EntityType="GolflerModel.GF_UserCurrentPosition" Width="1.5" PointX="1.9710920331865045" PointY="9.9726528720802872" />
+        <AssociationConnector Association="GolflerModel.FK_GF_Feedback_GF_CourseInfo" />
+        <AssociationConnector Association="GolflerModel.FK_GF_UserCurrentPosition_GF_CourseInfo" />
+        <AssociationConnector Association="GolflerModel.FK_GF_OrderMenuOptionDetail_GF_MenuItemOption" />
+        <AssociationConnector Association="GolflerModel.FK_GF_OrderMenuOptionDetail_GF_OrderDetails" />
+        <EntityTypeShape EntityType="GolflerModel.GF_BlockUserList" Width="1.5" PointX="3.8631765655536094" PointY="16.339257367113259" />
+        <EntityTypeShape EntityType="GolflerModel.GF_CourseBlockUserList" Width="1.5" PointX="3.4548654125327549" PointY="29.199679582007079" />
+        <EntityTypeShape EntityType="GolflerModel.GF_CourseMemberShip" Width="1.5" PointX="0.6989731475240426" PointY="20.741897473457222" />
+        <EntityTypeShape EntityType="GolflerModel.GF_GamePlayRound" Width="1.5" PointX="7.8955927583834127" PointY="8.6135081986959587" />
+        <EntityTypeShape EntityType="GolflerModel.GF_Golfer" Width="1.5" PointX="5.8198281888942365" PointY="23.123199160733819" />
+        <AssociationConnector Association="GolflerModel.FK_GF_GamePlayRound_GF_CourseInfo" />
+        <AssociationConnector Association="GolflerModel.FK_GF_CourseVisitLog_GF_Golfer" />
+        <AssociationConnector Association="GolflerModel.FK_GF_Feedback_GF_Golfer" />
+        <AssociationConnector Association="GolflerModel.FK_GF_GamePlayPlayerInfo_GF_GamePlayRound" />
+        <AssociationConnector Association="GolflerModel.FK_GF_GamePlayRound_GF_Golfer" />
+        <AssociationConnector Association="GolflerModel.FK_GF_GamePlayScoreCard_GF_GamePlayRound" />
+        <AssociationConnector Association="GolflerModel.FK_GF_Golfer_GF_IncomeSlab" />
+        <AssociationConnector Association="GolflerModel.FK_GF_GolferRating_GF_Golfer" />
+        <AssociationConnector Association="GolflerModel.FK_GF_GolferUser_GF_Golfer" />
+        <AssociationConnector Association="GolflerModel.FK_GF_GolferWallet_GF_Golfer" />
+        <AssociationConnector Association="GolflerModel.FK_GF_Order_GF_Golfer" />
+        <AssociationConnector Association="GolflerModel.FK_GF_ResolutionCenter_GF_Golfer" />
+        <EntityTypeShape EntityType="GolflerModel.GF_CourseFoodItemOption" Width="1.5" PointX="9.0035284054482023" PointY="19.783320927891562" />
+        <AssociationConnector Association="GolflerModel.FK_GF_CourseFoodItemOption_GF_CourseFoodItemDetail" />
+        <AssociationConnector Association="GolflerModel.FK_GF_CourseFoodItemOption_GF_CourseInfo" />
+        <AssociationConnector Association="GolflerModel.FK_GF_CourseFoodItemOption_GF_MenuItemOption" />
+        <EntityTypeShape EntityType="GolflerModel.GF_Timezone" Width="1.5" PointX="11.838097549899526" PointY="28.698417691839122" />
+        <EntityTypeShape EntityType="GolflerModel.GF_AdminUsers" Width="1.5" PointX="1.7690959115368758" PointY="16.674821652786257" />
+        <AssociationConnector Association="GolflerModel.FK_GF_CourseUsers_GF_AdminUsers" />
+        <EntityTypeShape EntityType="GolflerModel.GF_Roles" Width="1.5" PointX="0.09298092131176075" PointY="29.966041698104721" />
+        <AssociationConnector Association="GolflerModel.FK_GF_AdminUsers_GF_Roles" />
+        <AssociationConnector Association="GolflerModel.FK_GF_RoleModules_GF_Roles" />
+        <EntityTypeShape EntityType="GolflerModel.GF_Modules" Width="1.5" PointX="10.725292922335349" PointY="8.7308346222764044" />
+        <AssociationConnector Association="GolflerModel.FK_GF_Role_Module_GF_Module" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

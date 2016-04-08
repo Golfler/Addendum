@@ -1,0 +1,196 @@
+﻿@model Golfler.Models.GF_StaticPages
+<script type="text/javascript" src="@Url.Content("~/content/CKEditorJavascript/ckeditor/ckeditor.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/content/CKEditorJavascript/ckeditor/adapters/jquery.js")"></script>
+<script type="text/javascript">
+    $(function () {
+        $('#btnCancel').click(function () {
+            window.location = '@Url.Action("StaticPageList")';
+        });
+
+        //Design classes
+        $('fieldset').addClass("bodD5D5D5");
+        $('.width_49 label').addClass("cat");
+        $('.content_div table').css("width", "100%").css("bgcolor", "#f2f1e4").css("padding", "10px 0px;");
+        $('.datainner_box input[type="text"]').addClass("txtfelds");
+        $('.datainner_box input[type="checkbox"]').addClass("checkbox-spacing_rght");
+        $('.datainner_box select').addClass("txtfelds txtfelds2");
+        $('textarea').addClass("txtfelds");
+        $('.width_49 span:contains("*")').css("color", "Red").css("display", "none");
+        $('.width_49 span:contains("*")').parent().children('label').append('<span>*</span>');
+
+        //Confirmation Page
+        if ($("#ID").val() == 0) {
+
+            $("#btnConfirm").fancybox({
+                'scrolling': 'no',
+                'onStart': function () {
+                    $("#lblName").text($('#txtPageName').val());
+                    $("#lblTitle").text($('#MetaTitle').val());
+                    $("#lblKeyword").text($('#MetaKeywords').val());
+                    $("#lblDesc").text($('#MetaDescription').val() == "" ? "-" : $('#MetaDescription').val());
+                    $("#lblStatus").text($('#Active').is(':checked') ? "Active" : "Inactive");
+                    $("#lblMenu").text($('#ddlMenu').val() == "" ? "-" : $('#ddlMenu :selected').text());
+                    $("#myModal").css("display", "block");
+
+
+
+                },
+                'onClosed': function () { $("#myModal").css("display", "none"); }
+            });
+            $('#btnSubmit').on("click", function () {
+                if (!$('#btnSubmit').hasClass('unaccess') && $('#frmSubmit').valid()) {
+                    if ($('#hdnConfirm').val() != "1") {
+                        $("#btnConfirm").click();
+                        return false;
+                    }
+                }
+            });
+        }
+    });
+</script>
+<tr>
+    <td class="id_pathway">
+        <div class="breadcrumb">
+            <ul>
+                <li><a href='@Url.Action("Dashboard")'>Dashboard</a><img src="/Content/Images/arrow.png"
+                    class="arrow_position" /></li>
+                <li><a href='@Url.Action("StaticPageList")'>Manage @ViewBag.Module</a><img src="/Content/Images/arrow.png"
+                    class="arrow_position" /></li>
+                <li>@ViewBag.pageTitle</li>
+            </ul>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td id="content_center_td2" valign="top" align="center">
+        <div id="content_div" class="form_box">
+            @using (Html.BeginForm("StaticPageAddEdit", null, FormMethod.Post, new { id = "frmSubmit" }))
+            {
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(x => x.ID)
+                <div class="organization_left">
+                    <p>
+                        @Html.LabelFor(x => x.PageName)
+                        @Html.TextBoxFor(x => x.PageName, new { id = "txtPageName", @class = "red-border" })
+                        @Html.ValidationMessageFor(x => x.PageName)
+                    </p>
+                    <p>
+                        @Html.LabelFor(x => x.MetaTitle)
+                        @Html.TextBoxFor(x => x.MetaTitle, new { @class = "red-border" })
+                        @Html.ValidationMessageFor(x => x.MetaTitle)
+                    </p>
+                    <p>
+                        @Html.LabelFor(x => x.MetaDescription)
+                        @Html.TextAreaFor(x => x.MetaDescription)
+                    </p>
+                </div>      
+                <div class="organization_left">
+                    <p>
+                        @Html.LabelFor(x => x.MetaKeywords)
+                        @Html.TextBoxFor(x => x.MetaKeywords, new { @class = "red-border" })
+                        @Html.ValidationMessageFor(x => x.MetaKeywords)
+                    </p>
+                    <p>
+                       @Html.LabelFor(x => x.Active)
+                       @*@Html.CheckBoxFor(x => x.Active)*@
+                        <span class="selected-row">
+                            <span class="switch">
+                                <input id="cmn-toggle-1" data-result-id="Active" class="cmn-toggle cmn-toggle-round" type="checkbox" data-value="@(Model.Active ? "1" : "0")" @(Model.Active ? "checked='checked'" : "" ) />
+                                <label for="cmn-toggle-1"></label>
+                                @Html.HiddenFor(x => x.Active)
+                            </span>
+                        </span>
+
+
+
+                    </p>
+                </div>       
+                
+                <div class="organization_left-100">
+                    <p>
+                        @Html.LabelFor(x => x.PageHTML)
+                        @Html.TextAreaFor(x => x.PageHTML, new { @class = "jquery_ckeditor", @width = "650px" })
+                    </p>
+                </div>  
+                <div align="center" class="center-button">
+                    <a href="#myModal" id="btnConfirm" class="submit-btn" style="display: none;">Submit</a>
+                    <input type="submit" id="btnSubmit" class="blu-btn" name="btnSubmit" value="Submit"
+                        action="add" />
+                    <input type="button" id="btnCancel" class="blk-btn" value="Cancel" />
+                </div> 
+            }
+        </div>
+        <input type="hidden" id="hdnConfirm" />
+        <div id="myModal" class="reveal-modal" style="display: none; top: 100px;">
+            <div>
+                <div class="pop_detail">
+                    <h1>Confirm Details</h1>
+                    <div class="page-wrap">
+                        <table class="voucher-details-table">
+                            <tr>
+                                <td class="align-left" colspan="2">
+                                    <strong>Dear @Golfler.Models.LoginInfo.UserName,</strong><br />
+                                    <br />
+                                    @String.Format(Resources.Resources.confirm, "Page")<br />
+                                    <br />
+                                    <strong>Thanks</strong><br />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="align-left">
+                                    <strong>Page Name</strong>
+                                </td>
+                                <td class="align-left" id="lblName"></td>
+                            </tr>
+                            <tr>
+                                <td class="align-left">
+                                    <strong>Meta Title</strong>
+                                </td>
+                                <td class="align-left" id="lblTitle"></td>
+                            </tr>
+                            <tr>
+                                <td class="align-left">
+                                    <strong>Meta Keyword</strong>
+                                </td>
+                                <td class="align-left" id="lblKeyword"></td>
+                            </tr>
+                            <tr>
+                                <td class="align-left">
+                                    <strong>Meta Description</strong>
+                                </td>
+                                <td class="align-left" id="lblDesc"></td>
+                            </tr>
+                            <tr>
+                                <td class="align-left">
+                                    <strong>Status</strong>
+                                </td>
+                                <td class="align-left" id="lblStatus"></td>
+                            </tr>
+                            <tr>
+                                <td class="align-left" colspan="2">
+                                    <div class="margin-top15">
+                                    </div>
+                                    <div class="clr">
+                                    </div>
+                                    <div align="center" class="center-button">
+                                        <input id="close" type="button" value="Edit" onclick="$.fancybox.close();" class="submit-btn cancel-btn" />
+                                        <input type="button" value="Confirm" onclick="javascript: $('#hdnConfirm').val('1'); $('#btnSubmit').click();"
+                                            class="submit-btn update-btn" id="btnSave" />
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="clear">
+                </div>
+            </div>
+    </td>
+</tr>
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        $(".jquery_ckeditor").ckeditor(function () { /* callback code */ }, { skin: 'v2' });
+    });
+</script>

@@ -1,0 +1,16 @@
+﻿.PopParent:hover .PopChildHide, .PopParent:hover .PopChildHide:hover
+{
+    display: none;
+}
+.PopParent .PopChildHide
+{
+    display: inherit;
+}
+.PopParent:hover .PopChildShow, .PopParent:hover .PopChildShow:hover
+{
+    display: inherit;
+}
+.PopParent .PopChildShow
+{
+    display: none;
+}

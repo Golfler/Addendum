@@ -1,0 +1,149 @@
+﻿@{
+    ViewBag.Module = "Coordinates Suggestion List";
+    ViewBag.Title = "Course Coordinate Suggestion List";
+    ViewBag.pageTitle = "Course Coordinate Suggestion List";
+}
+@Html.Partial("_jqGrid")
+<style>
+   
+    .status {
+        width:100% !important;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        
+        $("#ddlPartnerType").val("N");
+
+        bindJqGridNoMultiSelect('list', 'pager', 'GetCourseInfo',
+                   ['ID', 'Course Name', 'Country', 'State', 'City', 'Login as Admin', 'Partnership Status', 'ADDRESS', 'Status', 'Suggestion Status', 'DoActive'],
+                   [{ name: 'ID', index: 'ID', width: 10, hidden: true },
+                    { name: 'COURSE_NAME', index: 'COURSE_NAME', width: 50, formatter: SetEditLink },
+                    { name: 'Country', index: 'Country', width: 50 },
+                    { name: 'STATE', index: 'STATE', width: 50 },
+                    { name: 'CITY', index: 'CITY', width: 50 },
+                    { name: 'ID', index: 'ID', width: 50, hidden:true },
+                    { name: 'PartnershipStatus', index: 'PartnershipStatus', width: 50, hidden: true },
+                    { name: 'ADDRESS', index: 'ADDRESS', width: 50, classes: 'zzz', hidden: true },
+                    { name: 'Status', index: 'Status', width: 50, sortable: false,  align: "center", hidden: true },
+                    { name: 'CoordStatus', index: 'CoordStatus', width: 50, sortable: false   }, 
+                    { name: 'DoActive', index: 'DoActive', hidden: true }
+                   ], 'ID', 'desc',
+                {
+                    "searchText": (function () {
+                        return $("#txtSearch").val();
+                    }),
+                    "CourseType": (function () {
+                        return $("#ddlSuggestionType").val();
+                    }),
+                    "partnerType": (function () {
+                        return $("#ddlPartnerType").val();
+                    })
+
+                }, '');
+    });
+     
+
+    function SetEditLink(cellvalue, options, rowObject) {
+
+        try {
+            var Eid = rowObject["EID"];
+            var type = rowObject["Type"];
+            var doActive = rowObject["DoActive"];
+            //if ($('#UpdateFlag').size() != 0 && $('#UpdateFlag').val() != "true")
+            //    return cellvalue;
+            //else
+            return "<a href='CourseCoordinateSuggestion/" + Eid + "' >" + cellvalue + "</a>";
+        }
+        catch (ex) { alert(ex.message); }
+    }
+
+  
+    function SetActiveInActive(cellvalue, options, rowObject) {
+        try {
+
+            if (cellvalue == "I") {
+
+                return "Pending";
+            }
+            if (cellvalue == "A") {
+
+                return "Accepted";
+            }
+            if (cellvalue == "D") {
+                return "Rejected";
+            }
+            //var rowId = rowObject["ID"];
+            //var type = rowObject["Type"];
+
+            ////var onclickCall = "onclick=javascript:UpdateRowStatus(" + rowId + ",&apos;" + cellvalue.trim() + "&apos;);";
+            ////if (($('#UpdateFlag').size() != 0 && $('#UpdateFlag').val() != "True") && !notadminpanel) {
+            ////    onclickCall = 'onclick="javascript:showStickMessage(unaccess); return false;"';
+            ////}
+
+            //if (cellvalue.trim() == "A" || cellvalue == true)
+            //    return "<img alt='" + cellvalue + "' title='click to deactivate' src='/Content/images/nw_active.png'/>";
+            //else
+            //    return "<img alt='" + cellvalue + "' title='click to activate' src='/Content/images/nw_inactive.png'/>";
+        }
+        catch (ex) {
+            alert(ex.message);
+        }
+    }
+      
+</script>
+<tr>
+    <td class="id_pathway" valign="middle">
+        <div class="breadcrumb">
+            <ul>
+                <li><a href='@Url.Action("Dashboard")'>Dashboard</a><img src="/Content/Images/arrow.png"
+                    class="arrow_position" /></li>
+                <li>Manage @ViewBag.Module</li>
+            </ul>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td id="content_center_td2" valign="top" align="center">
+        <div class="form_box">
+            <div class="search-advertiser">
+                <div class="search-advertiser_box">
+                    <label>
+                        Search</label>
+                    <input type="text" placeholder="Course Name, Country, State, City" name="searchText" id="txtSearch"
+                        class="searchfeild jqGrid_refreshKey adname" value="" style="margin-bottom: 2px;"
+                        size="30" />
+                      <div class="drop_down1">
+                        @Html.DropDownList("SuggestionType", (SelectList)(ViewBag.SuggestionType), "Select", new { id = "ddlSuggestionType", @class = "status" })
+                    </div>
+                    <div class="drop_down1" style="display:none;">
+                        @Html.DropDownList("PartnershipStatus", (SelectList)(ViewBag.Partner), "Select", new { id = "ddlPartnerType", @class = "status" })
+                    </div>
+                    <img src="/Content/Images/search_icon.png" border="0" alt="search" class="go-btn floatleft jqGrid_refresh"
+                        id="fbox_jqgAdminUser_search" />
+                    <div class="clr">
+                    </div>
+                    <div class="em nop">
+                        <label>
+                        </label>
+                        Use blank search to see all records
+                    </div>
+                    <div class="clr">
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+        <div id="page-wrap">
+            <table id="list" cellpadding="0" cellspacing="0" style="width: 100%;" class="jqgridTable">
+            </table>
+            <div id="pager" style="width: 100%;">
+            </div>
+            <input type="hidden" id="hdnId" value='@Golfler.Models.LoginInfo.UserId' />
+        </div>
+    </td>
+</tr>
+<input type="hidden" id="hdnConfirm" />
+

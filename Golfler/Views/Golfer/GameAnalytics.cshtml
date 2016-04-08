@@ -1,0 +1,605 @@
+﻿@{
+    ViewBag.Module = "Game Analytics";
+    ViewBag.Title = "Game Analytics";
+    ViewBag.pageTitle = "Game Analytics";
+}
+
+<style>
+    .status {
+        width: 100% !important;
+    }
+
+    #gbox_listGolfer {
+         overflow-y: visible !important;
+    }
+
+    
+.search-advertiser label {
+    width: 3% !important;
+}
+    .table_header .date_range_bi {  padding: 7px 0 6px 10px !important;
+    }
+</style>
+@Html.Partial("_jqGrid")
+<script type="text/javascript">
+    $(document).ready(function () {
+        bindJqGridNoMultiSelect('listGolfer', 'pagerGolfer', '@Url.Action("GetGolpherPlayingHistory", "CourseAdmin")',
+             ['GolpherId', 'CourseId', 'Course Name', 'No. of time played', 'Avg. time for one hole', 'Avg. time for 9 holes', 'Avg. time for 18 holes', 'Last Game Date'],
+             [{ name: 'GolpherId', index: 'GolpherId', width: 10, hidden: true },
+              { name: 'CourseId', index: 'CourseId', width: 10, hidden: true },
+              { name: 'CourseName', index: 'CourseName', width: 50, formatter: GetCourseDetails, classes: 'zzz' },
+              { name: 'TotalPlay', index: 'TotalPlay', width: 50 },
+              { name: 'OneHoleAvgTime', index: 'OneHoleAvgTime', width: 50 },
+              { name: 'NineHoleAvgTime', index: 'NineHoleAvgTime', width: 50 },
+              { name: 'EighteenHoleAvgTime', index: 'EighteenHoleAvgTime', width: 50 },
+              { name: 'LastGameDate', index: 'LastGameDate', width: 50, formatter: 'date', formatoptions: { srcformat: 'U', newformat: 'm/d/Y' } }
+             ], 'GolpherId', 'desc',
+             {
+                 "searchText": (function () {
+                     return "";
+                 }),
+                 "golferid": (function () {
+                     return '@Golfler.Models.LoginInfo.GolferUserId';
+                 }),
+                 "CourseId": (function () {
+                     return "0";
+                 }),
+                 "HistoryFrom": (function () {
+                     return "";
+                 }),
+                 "HistoryTo": (function () {
+                     return "";
+                 })
+
+             }, '');
+    });
+
+    function GetCourseDetails(cellvalue, options, rowObject) {
+
+        try {
+            var gid = rowObject["GolpherId"];
+            var cid = rowObject["CourseId"];
+            return "<a href='javascript:void(0)' data-course-id='" + cid + "' data-course-name='" + cellvalue + "' onclick='javascript:SelectCourse(this);' >" + cellvalue + "</a>";
+        }
+        catch (ex) { alert(ex.message); }
+    }
+
+    function SelectCourse(ele) {
+        $('#hdnCourseID').val($(ele).attr('data-course-id'));
+        $('#lblCourseName').text('Course Selected: ' + $(ele).attr('data-course-name'));
+    }
+</script>
+
+<tr>
+    <td class="id_pathway" valign="middle">
+        <div class="breadcrumb">
+            <ul>
+                <li><a href='@Url.Action("Dashboard")'>Dashboard</a><img src="/Content/Images/arrow.png"
+                    class="arrow_position" /></li>
+                <li>@ViewBag.Module</li>
+            </ul>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td id="content_center_td2" valign="top" align="center">
+        <div class="form_box">
+            <div class="search-advertiser">
+                <div>
+                    <table id="listGolfer" cellpadding="0" cellspacing="0" style="width: 100%;" class="jqgridTable">
+                    </table>
+                    <div id="pagerGolfer" style="width: 100%;">
+                    </div>
+                </div>
+                <div class="clear"></div>
+                <div class="search-advertiser_box">
+                    <label id="lblCourseName" style="width:100% !important">Course Selected: Please select course</label>
+                    <div class="clear">
+                    </div>
+                    <label>
+                        Search</label>
+                    @*@Html.Partial("~/Views/Tools/CourseOnlyAutoComplete.cshtml")*@
+                    <input type="hidden" id="hdnCourseID" value="-1" />
+                    <div class="drop_down1">
+                        <select class="status" id="ddlCampareParameter">
+                            <option value="">Select Campare Parameter</option>
+                            <option value="Country">Country</option>
+                            <option value="State">State</option>
+                            <option value="City">City</option>
+                            <option value="Zip">Zip</option>
+                        </select>
+                    </div>
+                    <div class="drop_down1">
+                        <select class="status" id="ddlRange" disabled="disabled">
+                            <option value="">Select Range</option>
+                            <option value="8">8 Miles</option>
+                            <option value="10">10 Miles</option>
+                            <option value="20">20 Miles</option>
+                            <option value="25">25 Miles</option>
+                        </select>
+                    </div>
+                    <div class="drop_down1">
+                        <select class="status" id="ddlReportType">
+                            <option value="">Select Report Type</option>
+                            <option value="All">All Rounds</option>
+                            <option value="Last">Last 5 Round</option>
+                            <option value="Course">Course Report</option>
+                        </select>
+                    </div>
+                    <img src="/Content/Images/search_icon.png" border="0" alt="search" class="go-btn floatleft jqGrid_refresh"
+                        id="fbox_jqgAdminUser_search" />
+                   
+                </div> 
+                 
+            </div>
+             <div class="">@Html.Partial("~/Views/Tools/TimeSpanFilter.cshtml")</div>
+            <div class="clr">
+            </div>
+            <div>
+                <div style="border-top: 1px solid silver; padding-top: 12px; margin-top: 12px; margin-right: 0">
+                    <input id="btnFrontNine" type="button" value="Front 9" class="blu-btn margin_bottom5" />
+                    <input id="btnBackNine" type="button" value="Back 9" class="blu-btn margin_bottom5" />
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Hole</th>
+                            <th>Par</th>
+                            <th>Average Score</th>
+                            <th>Average Time (HH:MM)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ScoreAverageResult">
+                        <tr>
+                            <td colspan="4">No record(s) found
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="clr">
+            </div>
+            <div id="barchart_material" style="width: 100%; height: 300px"></div>
+            <div class="clr">
+            </div>
+            <div>
+                <div style="border-top: 1px solid silver; padding-top: 12px; margin-top: 12px; margin-right: 0">
+                    <input id="btnFront" type="button" value="Front 9" class="blu-btn margin_bottom5" />
+                    <input id="btnBack" type="button" value="Back 9" class="blu-btn margin_bottom5" />
+                    <input id="btnPrev" type="button" value="Prev" data-page="0" class="blu-btn margin_bottom5" style="display: none" />
+                    <input id="btnNext" type="button" value="Next" data-page="1" class="blu-btn margin_bottom5" />
+                </div>
+                <div>
+                    <label id="lblRoundName"></label>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Hole</th>
+                            <th>Dist</th>
+                            <th>Par</th>
+                            <th class="player1">Player 1</th>
+                            <th class="player2">Player 2</th>
+                            <th class="player3">Player 3</th>
+                            <th class="player4">Player 4</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ScoreCardResult">
+                        <tr>
+                            <td colspan="7">No record(s) found
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="clr">
+            </div>
+            <div id="barchart_round" style="width: 100%; height: 300px"></div>
+            <div class="clr">
+            </div>
+    </td>
+</tr>
+
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#fbox_jqgAdminUser_search").live("click", function () {
+            ScoreAverageInfo();
+            ScoreCardInfo(1);
+            drawChart();
+            roundComparison();
+        });
+
+        $('#btnFrontNine').click(function () {
+            $('.frontAvg').show();
+            $('.backAvg').hide();
+        });
+
+        $('#btnBackNine').click(function () {
+            $('.frontAvg').hide();
+            $('.backAvg').show();
+        });
+
+        $('#btnFront').click(function () {
+            $('.frontScore').show();
+            $('.backScore').hide();
+        });
+
+        $('#btnBack').click(function () {
+            $('.frontScore').hide();
+            $('.backScore').show();
+        });
+
+        $('#btnPrev').click(function () {
+            var pageNum = parseInt($(this).attr('data-page'));
+
+            if ((pageNum - 1) <= 0) {
+                $(this).hide();
+            }
+
+            ScoreCardInfo(pageNum);
+
+            //alert($(this).attr('data-page') + '-' + $('#btnNext').attr('data-page'));
+        });
+
+        $('#btnNext').click(function () {
+            var pageNum = parseInt($(this).attr('data-page'));
+
+            if ((pageNum + 1) >= 1) {
+                $('#btnPrev').show();
+            }
+
+            ScoreCardInfo(pageNum);
+
+            //alert($(this).attr('data-page') + '-' + $('#btnPrev').attr('data-page'));
+        });
+
+        $('#ddlCampareParameter').change(function () {
+            if ($(this).val() == 'Zip') {
+                $('#ddlRange').removeAttr('disabled');
+            }
+            else {
+                $('#ddlRange').val('');
+                $('#ddlRange').attr('disabled', 'disabled');
+            }
+        });
+    });
+
+    function ScoreAverageInfo() {
+
+        var courseID = parseInt($("#hdnCourseID").val());
+
+        if (courseID <= 0 || isNaN(courseID)) {
+            alert('Please select course');
+            return false;
+        }
+
+        $('#ScoreAverageResult').empty();
+
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("GetScoreAverageInfo", "Golfer")',
+            data: {
+                courseID: courseID,
+                DateFrom: $('#txtFromDate').val(),
+                DateTo: $('#txtToDate').val(),
+                campareParameter: $('#ddlCampareParameter').val(),
+                range: $('#ddlRange').val() != '' ? $('#ddlRange').val() : 0,
+                reportType: $('#ddlReportType').val()
+            },
+            async: false,
+            success: function (data) {
+                //console.log(data);
+                if (data.data.length > 0) {
+                    var scoreTable = '';
+                    for (var i in data.data) {
+                        scoreTable = scoreTable + '<tr class=' + (data.data[i].HoleNo <= 9 ? "frontAvg" : "backAvg") + ' ><td>' + data.data[i].HoleNo + '</td>';
+                        scoreTable = scoreTable + '<td>' + data.data[i].Par + '</td>';
+                        scoreTable = scoreTable + '<td>' + data.data[i].PlayerOneScore + '</td>';
+                        scoreTable = scoreTable + '<td>' + (Math.floor(parseInt(data.data[i].Time) / 60) < 10 ? '0' + Math.floor(parseInt(data.data[i].Time) / 60) : Math.floor(parseInt(data.data[i].Time) / 60)) + ':' + ((parseInt(data.data[i].Time) % 60) < 10 ? '0' + (parseInt(data.data[i].Time) % 60) : (parseInt(data.data[i].Time) % 60)) + '</td></tr>';
+                        //alert(data.data[i].HoleNo);
+                    }
+                    if (scoreTable != '') {
+                        $('#ScoreAverageResult').append(scoreTable);
+                        $('.backAvg').hide();
+                    }
+                    else {
+                        $('#ScoreAverageResult').append('<tr><td colspan="4">No record(s) found</td></tr>');
+                    }
+                }
+                else {
+                    $('#ScoreAverageResult').append('<tr><td colspan="4">No record(s) found</td></tr>');
+                }
+            },
+            error: function (data) {
+                //console.log(data);
+                $('#ScoreAverageResult').append('<tr><td colspan="4">No record(s) found</td></tr>');
+            }
+        });
+    }
+
+    google.load("visualization", "1.1", { packages: ["bar"] });
+    //google.setOnLoadCallback(drawChart);
+    function drawChart() {
+
+        var courseID = parseInt($("#hdnCourseID").val());
+
+        if (courseID <= 0 || isNaN(courseID)) {
+            alert('Please select course');
+            return false;
+        }
+
+        var jsonData = $.ajax({
+            url: "/Golfler/Golfer/GetWeatherReportInfo",
+            data: {
+                courseID: courseID,
+                DateFrom: $('#txtFromDate').val(),
+                DateTo: $('#txtToDate').val(),
+                campareParameter: $('#ddlCampareParameter').val(),
+                range: $('#ddlRange').val() != '' ? $('#ddlRange').val() : 0,
+                reportType: $('#ddlReportType').val()
+            },
+            dataType: "json",
+            async: false
+        }).responseText;
+
+        var data = google.visualization.arrayToDataTable($.parseJSON(jsonData));
+
+        var options = {
+            chart: {
+                title: 'Weather Information'
+            },
+            vAxis: {
+                title: "",
+                format: '#.##',
+                baselineColor: "none"
+            }
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('barchart_material'));
+
+        chart.draw(data, options);
+    }
+
+    function roundComparison() {
+
+        var courseID = parseInt($("#hdnCourseID").val());
+
+        if (courseID <= 0 || isNaN(courseID)) {
+            alert('Please select course');
+            return false;
+        }
+
+        //var jsonData = $.ajax({
+        //    url: "/Golfler/Golfer/GetRoundComparison",
+        //    data: { courseID: courseID, DateFrom: $('#txtFromDate').val(), DateTo: $('#txtToDate').val() },
+        //    dataType: "json",
+        //    async: false
+        //}).responseText;
+
+        $.ajax({
+            type: 'POST',
+            url: "/Golfler/Golfer/GetRoundComparison",
+            data: {
+                courseID: courseID,
+                DateFrom: $('#txtFromDate').val(),
+                DateTo: $('#txtToDate').val(),
+                campareParameter: $('#ddlCampareParameter').val(),
+                range: $('#ddlRange').val() != '' ? $('#ddlRange').val() : 0,
+                reportType: $('#ddlReportType').val()
+            },
+            success: function (data) {
+                var data = google.visualization.arrayToDataTable($.parseJSON(data.result));
+                var options = {
+                    chart: {
+                        title: 'Round Comparison'
+                    },
+                    vAxis: {
+                        title: "",
+                        format: '#.##',
+                        baselineColor: "none"
+                    }
+                };
+
+                var chart = new google.charts.Bar(document.getElementById('barchart_round'));
+
+                chart.draw(data, options);
+            },
+            error: function (data) {
+
+            }
+        });
+    }
+
+    function ScoreCardInfo(pageNum) {
+
+        var courseID = parseInt($("#hdnCourseID").val());
+
+        if (courseID <= 0 || isNaN(courseID)) {
+            alert('Please select course');
+            return false;
+        }
+
+        $('#btnPrev').attr('data-page', (pageNum - 1));
+        $('#btnNext').attr('data-page', (pageNum + 1));
+
+        $('#ScoreCardResult').empty();
+
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("GetScoreCardInfo", "Golfer")',
+            data: {
+                courseID: courseID,
+                DateFrom: $('#txtFromDate').val(),
+                DateTo: $('#txtToDate').val(),
+                pageNo: pageNum,
+                campareParameter: $('#ddlCampareParameter').val(),
+                range: $('#ddlRange').val() != '' ? $('#ddlRange').val() : 0,
+                reportType: $('#ddlReportType').val()
+            },
+            async: false,
+            success: function (data) {
+                //console.log(data);
+                if (data.data.length > 0) {
+                    var scoreTable = '';
+
+                    var parTotal = 0;
+                    var playerOneTotal = 0;
+                    var playerTwoTotal = 0;
+                    var playerThreeTotal = 0;
+                    var playerFourTotal = 0;
+
+                    var frontParTotal = 0;
+                    var frontPlayerOneTotal = 0;
+                    var frontPlayerTwoTotal = 0;
+                    var frontPlayerThreeTotal = 0;
+                    var frontPlayerFourTotal = 0;
+
+                    var backParTotal = 0;
+                    var backPlayerOneTotal = 0;
+                    var backPlayerTwoTotal = 0;
+                    var backPlayerThreeTotal = 0;
+                    var backPlayerFourTotal = 0;
+
+                    var resultTotal = 0;
+                    var resultPlayerOneTotal = 0;
+                    var resultPlayerTwoTotal = 0;
+                    var resultPlayerThreeTotal = 0;
+                    var resultPlayerFourTotal = 0;
+
+                    var isPlayerOne = false;
+                    var isPlayerTwo = false;
+                    var isPlayerThree = false;
+                    var isPlayerFour = false;
+
+                    for (var i in data.PlayerInfo) {
+                        $('.player' + data.PlayerInfo[i].PlayerNo).text(data.PlayerInfo[i].PlayerName);
+
+                        if (data.PlayerInfo[i].PlayerNo == 2) {
+                            isPlayerTwo = true;
+                        }
+                        else if (data.PlayerInfo[i].PlayerNo == 3) {
+                            isPlayerThree = true;
+                        }
+                        else if (data.PlayerInfo[i].PlayerNo == 4) {
+                            isPlayerFour = true;
+                        }
+                        else {
+                            isPlayerOne = true;
+                        }
+                    }
+
+                    var backTotal = 0;
+                    for (var i in data.data) {
+                        if (i == 0) {
+                            var courseName = $('#lblCourseName').text();
+                            $('#lblRoundName').html('Course Name: ' + courseName.replace('Course Selected: ', '') + ' <br/> Round ID: ' + data.data[i].RoundID + ' - ' + data.data[i].RoundDate);
+                        }
+                        scoreTable = scoreTable + '<tr class=' + (data.data[i].HoleNo <= 9 ? "frontScore" : "backScore") + ' ><td style="background-color:#D8D8D8">' + data.data[i].HoleNo + '</td>';
+                        scoreTable = scoreTable + '<td style="background-color:#D8D8D8">' + data.data[i].Distance + '</td>';
+                        scoreTable = scoreTable + '<td style="background-color:#D8D8D8">' + data.data[i].Par + '</td>';
+                        scoreTable = scoreTable + '<td>' + data.data[i].PlayerOneScore + '</td>';
+                        scoreTable = scoreTable + '<td>' + data.data[i].PlayerTwoScore + '</td>';
+                        scoreTable = scoreTable + '<td>' + data.data[i].PlayerThreeScore + '</td>';
+                        scoreTable = scoreTable + '<td>' + data.data[i].PlayerFourScore + '</td></tr>';
+                        //alert(data.data[i].HoleNo);
+
+                        if (data.data[i].HoleNo <= 9) {
+                            frontParTotal = frontParTotal + parseInt(data.data[i].Par);
+                            frontPlayerOneTotal = frontPlayerOneTotal + parseInt(data.data[i].PlayerOneScore);
+                            frontPlayerTwoTotal = frontPlayerTwoTotal + parseInt(data.data[i].PlayerTwoScore);
+                            frontPlayerThreeTotal = frontPlayerThreeTotal + parseInt(data.data[i].PlayerThreeScore);
+                            frontPlayerFourTotal = frontPlayerFourTotal + parseInt(data.data[i].PlayerFourScore);
+                        }
+                        else {
+                            backParTotal = backParTotal + parseInt(data.data[i].Par);
+                            backPlayerOneTotal = backPlayerOneTotal + parseInt(data.data[i].PlayerOneScore);
+                            backPlayerTwoTotal = backPlayerTwoTotal + parseInt(data.data[i].PlayerTwoScore);
+                            backPlayerThreeTotal = backPlayerThreeTotal + parseInt(data.data[i].PlayerThreeScore);
+                            backPlayerFourTotal = backPlayerFourTotal + parseInt(data.data[i].PlayerFourScore);
+                        }
+
+                        parTotal = parTotal + parseInt(data.data[i].Par);
+                        playerOneTotal = playerOneTotal + parseInt(data.data[i].PlayerOneScore);
+                        playerTwoTotal = playerTwoTotal + parseInt(data.data[i].PlayerTwoScore);
+                        playerThreeTotal = playerThreeTotal + parseInt(data.data[i].PlayerThreeScore);
+                        playerFourTotal = playerFourTotal + parseInt(data.data[i].PlayerFourScore);
+
+                        resultTotal = parTotal + parseInt(data.data[i].Par);
+                        resultPlayerOneTotal = resultPlayerOneTotal + (parseInt(data.data[i].PlayerOneScore) - parseInt(data.data[i].Par));
+                        resultPlayerTwoTotal = resultPlayerTwoTotal + (parseInt(data.data[i].PlayerTwoScore) - parseInt(data.data[i].Par));
+                        resultPlayerThreeTotal = resultPlayerThreeTotal + (parseInt(data.data[i].PlayerThreeScore) - parseInt(data.data[i].Par));
+                        resultPlayerFourTotal = resultPlayerFourTotal + (parseInt(data.data[i].PlayerFourScore) - parseInt(data.data[i].Par));
+                    }
+
+                    scoreTable = scoreTable + '<tr style="background-color:#D8D8D8" class="frontScore"><td>Front</td>';
+                    scoreTable = scoreTable + '<td></td>';
+                    scoreTable = scoreTable + '<td>' + frontParTotal + '</td>';
+                    scoreTable = scoreTable + '<td>' + frontPlayerOneTotal + '</td>';
+                    scoreTable = scoreTable + '<td>' + frontPlayerTwoTotal + '</td>';
+                    scoreTable = scoreTable + '<td>' + frontPlayerThreeTotal + '</td>';
+                    scoreTable = scoreTable + '<td>' + frontPlayerFourTotal + '</td></tr>';
+
+                    scoreTable = scoreTable + '<tr style="background-color:#D8D8D8" class="backScore"><td>Back</td>';
+                    scoreTable = scoreTable + '<td></td>';
+                    scoreTable = scoreTable + '<td>' + backParTotal + '</td>';
+                    scoreTable = scoreTable + '<td>' + backPlayerOneTotal + '</td>';
+                    scoreTable = scoreTable + '<td>' + backPlayerTwoTotal + '</td>';
+                    scoreTable = scoreTable + '<td>' + backPlayerThreeTotal + '</td>';
+                    scoreTable = scoreTable + '<td>' + backPlayerFourTotal + '</td></tr>';
+
+                    scoreTable = scoreTable + '<tr style="background-color:#D8D8D8"><td>Total</td>';
+                    scoreTable = scoreTable + '<td></td>';
+                    scoreTable = scoreTable + '<td>' + parTotal + '</td>';
+                    scoreTable = scoreTable + '<td>' + playerOneTotal + '</td>';
+                    scoreTable = scoreTable + '<td>' + playerTwoTotal + '</td>';
+                    scoreTable = scoreTable + '<td>' + playerThreeTotal + '</td>';
+                    scoreTable = scoreTable + '<td>' + playerFourTotal + '</td></tr>';
+
+                    scoreTable = scoreTable + '<tr style="background-color:#D8D8D8"><td>+/- Par</td>';
+                    scoreTable = scoreTable + '<td></td>';
+                    scoreTable = scoreTable + '<td></td>';
+                    if (isPlayerOne)
+                        scoreTable = scoreTable + '<td>' + resultPlayerOneTotal + '</td>';
+                    else
+                        scoreTable = scoreTable + '<td></td>';
+
+                    if (isPlayerTwo)
+                        scoreTable = scoreTable + '<td>' + resultPlayerTwoTotal + '</td>';
+                    else
+                        scoreTable = scoreTable + '<td></td>';
+
+                    if (isPlayerThree)
+                        scoreTable = scoreTable + '<td>' + resultPlayerThreeTotal + '</td>';
+                    else
+                        scoreTable = scoreTable + '<td></td>';
+
+                    if (isPlayerFour)
+                        scoreTable = scoreTable + '<td>' + resultPlayerFourTotal + '</td></tr>';
+                    else
+                        scoreTable = scoreTable + '<td></td>';
+
+                    if (scoreTable != '') {
+                        $('#ScoreCardResult').append(scoreTable);
+                        $('.backScore').hide();
+                    }
+                    else {
+                        $('#ScoreCardResult').append('<tr><td colspan="7">No record(s) found</td></tr>');
+                    }
+                }
+                else {
+                    $('#ScoreCardResult').append('<tr><td colspan="7">No record(s) found</td></tr>');
+                }
+            },
+            error: function (data) {
+                //console.log(data);
+                $('#ScoreCardResult').append('<tr><td colspan="7">No record(s) found</td></tr>');
+                $('#btnNext').hide();
+                $('#btnPrev').hide();
+            }
+        });
+    }
+</script>

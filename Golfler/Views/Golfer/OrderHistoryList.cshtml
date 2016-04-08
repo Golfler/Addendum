@@ -1,0 +1,281 @@
+﻿@{
+    ViewBag.Module = "Order History";
+    ViewBag.Title = "Manage Order List";
+    ViewBag.pageTitle = "Manage Order List";
+}
+@Html.Partial("_jqGrid")
+<style>
+    .tempwidth
+    {
+        width: 40% !important;
+    }
+
+    #pop_close_btn
+    {
+        position: absolute;
+        top: 5px;
+        right: 15px;
+    }
+
+    .input.blk-btn:hover
+    {
+        background: #219628;
+    }
+     
+    .search-advertiser select 
+    {
+        width: auto;
+        padding: 8px 1% 7px 1%;
+        margin-right: 10px;
+    }
+    #fancybox-wrap {
+        z-index: 99999999 !important;
+    }
+    #txtCourseName {
+        width: 22.7% !important;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".choose_inner_department").addClass("tempwidth");
+        bindJqGridNoMultiSelect('list', 'pager', 'GetOrderHistoryList',
+                ['ID', 'Order Date', 'Order Time', 'Order No', 'Golfer Name', 'Cartie Name', 'Bill Amount', 'Tax Amount', 'Commission Amt.',
+                    'Order Amount', 'itemOrdered', 'Payment Type', 'PopOrderGolferName', 'PopOrderStatus', 'Course', 'CourseAddress',
+                    'WeatherDetails', 'PreparedByType', 'PreparedBy', 'TransId', 'OrderTypeHeader', 'PaymentMode', 'PromoCode', 'Resolve Problem',
+                    'Trans ID', 'Membership ID', 'BT_ResponseText'],
+                [{ name: 'ID', index: 'ID', width: 10, hidden: true },
+                     //{ name: 'OrderDate', index: 'OrderDate', width: 50, formatter: 'date', formatoptions: { srcformat: 'U', newformat: 'm/d/Y' } },
+                     { name: 'OrderDate', index: 'OrderDate', width: 50 },
+                     { name: 'time', index: 'time', width: 50, hidden: true },
+                     { name: 'ID', index: 'ID', width: 50, formatter: SetEditLink, classes: 'zzz'},
+                     { name: 'golferName', index: 'golferName', width: 50, hidden: true },
+                     { name: 'cartieName', index: 'cartieName', width: 50, hidden: true },
+                     { name: 'billAmount', index: 'billAmount', width: 50, hidden: true },
+                     { name: 'TaxAmount', index: 'TaxAmount', width: 50, hidden: true },
+                     { name: 'GolferPlatformFee', index: 'GolferPlatformFee', width: 50, hidden: true },
+                     { name: 'GrandTotal', index: 'GrandTotal', sortable: false, width: 40 },
+                     { name: 'itemOrdered', index: 'itemOrdered', sortable: false, width: 40, hidden: true },
+                     { name: 'OrderType', index: 'OrderType', width: 50 },
+                     { name: 'PopOrderGolferName', index: 'PopOrderGolferName', sortable: false, width: 40, hidden: true },
+                     { name: 'PopOrderStatus', index: 'PopOrderStatus', sortable: false, width: 40, hidden: true },
+                     { name: 'CourseInfo', index: 'CourseInfo', sortable: false, width: 40},
+                     { name: 'CourseAddress', index: 'CourseAddress', sortable: false, width: 40, hidden: true },
+                     { name: 'WeatherDetails', index: 'WeatherDetails', sortable: false, width: 40, hidden: true },
+                     { name: 'PreparedByType', index: 'PreparedByType', sortable: false, width: 40, hidden: true },
+                     { name: 'PreparedBy', index: 'PreparedBy', sortable: false, width: 40, hidden: true },
+                     { name: 'TransId', index: 'TransId', sortable: false, width: 40, hidden: true },
+                     { name: 'OrderTypeHeader', index: 'OrderType', sortable: false, width: 40, hidden: true },
+                     { name: 'PaymentMode', index: 'PaymentMode', sortable: false, width: 40, hidden: true },
+                     { name: 'PromoCode', index: 'PromoCode', width: 50, hidden: true },
+                     { name: 'Resolve Problem', index: 'Resolve Problem', width: 50, formatter: SetResolveLink },
+                     { name: 'TransID', index: 'TransID', width: 50, hidden: true },
+                     { name: 'MembershipID', index: 'MembershipID', width: 50, hidden: true },
+                     { name: 'BT_ResponseText', index: 'BT_ResponseText', width: 50, hidden: true }
+                ], 'ID', 'desc',
+                {
+                    "searchText": (function () {
+                        return $("#txtSearch").val();
+                    }),
+                    "fromDate": (function () {
+                        return $("#txtDate").val();
+                    }),
+                    "toDate": (function () {
+                        return $("#txtToDate").val();
+                    }),
+                    "orderType": (function () {
+                        return $("#OrderType").val();
+                    }),
+                    "courseID": (function () {
+                        return $("#hdnCourseID").val();
+                    }),
+                    "orderAmount": (function () {
+                        return $("#txtOrderAmount").val();
+                    }),
+                    "ccNumber": (function () {
+                        return $("#txtCCNumber").val();
+                    })
+                }, '');
+    });
+
+    function SetEditLink(cellvalue, options, rowObject) {
+
+        try
+        {
+            return "<a class='viewOrder' onclick='javascript:ViewOrder(this)'  style='cursor:pointer;'>" + cellvalue + "</a>";
+        }
+        catch (ex) { alert(ex.message); }
+    }
+    
+    function SetResolveLink(cellvalue, options, rowObject) {
+
+        try {
+            var eid = rowObject["EID"];
+
+            return "<a class='viewOrder' href='/Golfler/Golfer/AddResolutionMessages/" + eid + "' style='cursor:pointer;'>" + "Resolve Problem" + "</a>";
+        }
+        catch (ex) { alert(ex.message); }
+    }
+    function ViewOrder(ele) {
+        var rowID = $(ele).parent().parent().attr('id');
+        var columnIndex = 3;
+        var cellValue = $("#" + rowID).find('td').eq(columnIndex).text();
+        var item = JSON.parse($("#" + rowID).find('td').eq(10).text());
+        //var itemWeather = JSON.parse($("#" + rowID).find('td').eq(16).text());
+        var itemList = '';
+        var itemListWeather = '';
+        var IDTitle = "Membership Id";
+        var IDTransMem = $("#" + rowID).find('td').eq(25).text();
+        if ($("#" + rowID).find('td').eq(21).text() == "Payment by Card")
+        {
+            IDTitle = "Transaction Id";
+            IDTransMem = $("#" + rowID).find('td').eq(24).text();
+        }
+            
+        $('#selectedData').empty();
+        
+        $('#selectedData').append('<tr><td>Order No.</td><td colspan="3">' + $("#" + rowID).find('td').eq(0).text() + '</td></tr>');
+        $('#selectedData').append('<tr><td>Order Date</td><td colspan="3">' + $("#" + rowID).find('td').eq(1).text() + '</td></tr>');
+        $('#selectedData').append('<tr><td>Golfer Name</td><td colspan="3">' + $("#" + rowID).find('td').eq(4).text() + '</td></tr>');
+        $('#selectedData').append('<tr><td>Order Type</td><td colspan="3">' + $("#" + rowID).find('td').eq(20).text() + '</td></tr>');
+        $('#selectedData').append('<tr><td>Payment Mode</td><td colspan="3">' + $("#" + rowID).find('td').eq(21).text() + '</td></tr>');
+        $('#selectedData').append('<tr><td>' + IDTitle + '</td><td colspan="3">' + IDTransMem + '</td></tr>');
+        $('#selectedData').append('<tr><td>Course Name</td><td colspan="3">' + $("#" + rowID).find('td').eq(14).text() + '</td></tr>');
+        $('#selectedData').append('<tr><td>Course Address.</td><td colspan="3">' + $("#" + rowID).find('td').eq(15).text() + '</td></tr>');
+        $('#selectedData').append('<tr><th align="left">Items</th><th align="center">Qty.</th><th align="center">Price</th><th align="center">Amount</th></tr>');
+        for (var i = 0; i < item.length; i++) {
+            //alert(item[i].Name + ' ---- ' + item[i].UnitPrice + ' ---- ' + item[i].Quantity + ' ---- ' + item[i].Amount);
+            itemList = itemList + '<tr><td align="left">' + item[i].Name + '</td><td align="center">' + item[i].Quantity + '</td><td align="center">$' + item[i].UnitPrice.toFixed(2) + '</td><td align="center">$' + item[i].Amount.toFixed(2) + '</td></tr>';
+            var suboption = item[i].MenuOptionName;
+            for (var k = 0; k < suboption.length; k++)
+            {
+                if (k == 0) {
+                    itemList = itemList + '<tr><th colspan="4" align="left" style="float:left; width:79%;">Options</th></tr><tr><td colspan="4" style="padding-left:27%;">' + suboption[k] + '</td></tr>';
+                }
+                else
+                {
+                    itemList = itemList + '<tr><td colspan="4" align="left" style="padding-left:27%;">' + suboption[k] + '</td></tr>';
+                }
+            }
+          
+        }
+        $('#selectedData').append(itemList);
+        $('#selectedData').append('<tr><td align="right" colspan="4">Subtotal: $' + $("#" + rowID).find('td').eq(6).text() + '</td></tr>');
+        $('#selectedData').append('<tr><td align="right" colspan="4">Taxes: $' + $("#" + rowID).find('td').eq(7).text() + '</td></tr>');
+        $('#selectedData').append('<tr><td align="right" colspan="4">Promo Code Discount: $' + $("#" + rowID).find('td').eq(22).text() + '</td></tr>');
+        $('#selectedData').append('<tr><td align="right" colspan="4">Golfler Platform Fee: $' + $("#" + rowID).find('td').eq(8).text() + '</td></tr>');
+        $('#selectedData').append('<tr><td align="right" colspan="4">Total: ' + $("#" + rowID).find('td').eq(9).text() + '</td></tr>');
+        //if (itemWeather.length > 0) {
+        //    $('#selectedData').append('<tr style="background-color:#eaeaea;"><td colspan="4"><b>Weather Info</b></td></tr>');
+        //}
+        //for (var i = 0; i < itemWeather.length; i++) {
+
+        //    itemListWeather = itemListWeather + '<tr><td colspan="4">' + itemWeather[i].WeatherDescription + '</td></tr><tr><td colspan="4">Temp : ' + itemWeather[i].Temp + '</td><tr><tr><td colspan="4">TempMin : ' + itemWeather[i].TempMin + '</td></tr><tr><td colspan="4">TempMax : ' + itemWeather[i].TempMax + '</td></tr><tr><td colspan="4">Pressure : ' + itemWeather[i].Pressure + '</td></tr><tr><td colspan="4">WindSpeed : ' + itemWeather[i].WindSpeed + '</td></tr><tr><td colspan="4">Humidity : ' + itemWeather[i].Humidity + '</td></tr>';
+        //}
+        //  $('#selectedData').append(itemListWeather);
+        
+        $('#selectedData').append('<tr style="background-color:#eaeaea;"><td colspan="4"><b>Other Information</b></td></tr>');
+        $('#selectedData').append('<tr><td align="right" colspan="4">Order Status: ' + $("#" + rowID).find('td').eq(13).text() + '</td></tr>');
+        if ($("#" + rowID).find('td').eq(13).text().indexOf("Failed") >= 0) {
+            $('#selectedData').append('<tr><td align="right" colspan="4">Reason for Fail: ' + $("#" + rowID).find('td').eq(26).text() + '</td></tr>');
+        }
+        $('#selectedData').append('<tr><td align="right" colspan="4">Received by Gophie: ' + $("#" + rowID).find('td').eq(5).text() + '</td></tr>');
+        $('#selectedData').append('<tr><td align="right" colspan="4">Prepared by ' + $("#" + rowID).find('td').eq(17).text() + ': ' + $("#" + rowID).find('td').eq(18).text() + '</td></tr>');
+        $('#btnShowOrder').click();
+    }
+</script>
+<tr>
+    <td class="id_pathway" valign="middle">
+        <div class="breadcrumb">
+            <ul>
+                <li><a href='@Url.Action("Dashboard")'>Dashboard</a><img src="/Content/Images/arrow.png"
+                    class="arrow_position" /></li>
+                <li>Manage @ViewBag.Module</li>
+            </ul>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td id="content_center_td2" valign="top" align="center">
+        <div class="form_box">
+            <div class="search-advertiser">
+                <label class="width22 vacdate width19">
+                    Search</label>
+                <input type="text" placeholder="Order Number , MembershipId" name="searchText" id="txtSearch"
+                    class="searchfeild jqGrid_refreshKey adname" value="" style="margin-bottom: 2px; width:17% !important;"
+                    size="30" />
+                <input type="text" placeholder="Order Amount" name="OrderAmount" id="txtOrderAmount"
+                    class="searchfeild jqGrid_refreshKey adname" value="" style="margin-bottom: 2px; width:10% !important;"
+                    size="30" />
+                @Html.Partial("~/Views/Tools/CourseOnlyAutoComplete.cshtml")
+                @*<label class="width22 vacdate width19">
+                    From</label>*@
+                <input type="text" placeholder="Credit card last 4 digit" name="OrderAmount" id="txtCCNumber"
+                    class="searchfeild jqGrid_refreshKey adname" value="" style="margin-bottom: 2px; width:15% !important;"
+                    size="30" />
+                <input type="text" placeholder="Date From" id="txtDate" style="width: 7%;" class="datepicker spacingt5 adname-1  datefeild border_process adname calc_icon ">
+
+                @*<label class="width22 vacdate width19 width_auto">
+                    To</label>*@
+                <input placeholder="Date To" type="text" id="txtToDate" style="width: 7%;" class="datepicker spacingt5 adname-1  datefeild border_process adname calc_icon ">
+                <div class="clr"></div>
+                <label class="width22 vacdate width19">
+                    Payment Type</label>
+                <select id="OrderType">
+                    <option value="" selected="selected">Select Payment Type</option>
+                    <option value="P">Card</option>
+                    <option value="M">Membership</option>
+                </select>
+                <img src="/Content/Images/search_icon.png" border="0" alt="search" class="go-btn floatleft jqGrid_refresh"
+                    id="fbox_jqgAdminUser_search" />
+                <div class="clr">
+                </div>
+            </div>
+            <div class="clr">
+            </div>
+        </div>
+        <div id="page-wrap">
+            <table id="list" cellpadding="0" cellspacing="0" style="width: 100%;" class="jqgridTable">
+            </table>
+            <div id="pager" style="width: 100%;">
+            </div>
+            <input type="hidden" id="hdnId" value='@Golfler.Models.LoginInfo.UserId' />
+        </div>
+    </td>
+</tr>
+<a href="#myModal" id="btnShowOrder" class="submit-btn update-btn" style="display: none;"></a>
+<div id="myModal" class="reveal-modal" style="display: none; top: 100px; height: 500px;">
+    <div align="right" id="pop_close_btn" class="center-button">
+        <input type="button" id="close" value="Close" class="cancel-btn blk-btn margin_bottom5" onclick="$.fancybox.close();" />
+    </div>
+    <div class="pop_detail">
+        <h1>Order Detail</h1>
+
+        <div id="tableContainer" class="page-wrap" style="height: 490px; overflow-x: scroll; border: 1px solid #EAEAEA;">
+            <table id="selectedData" class="voucher-details-table"></table>
+        </div>
+    </div>
+    <div class="clr"></div>
+    <div class="margin-top15"></div>
+
+    <br />
+    <div class="clear"></div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $('a[href="#myModal"]').fancybox({
+            'scrolling': 'no',
+            'onStart': function () {
+                $('#myModal').css('width', '550px');
+                $('#myModal').css('height', '620px');
+                $("#myModal").css("display", "block");
+            },
+            'onClosed': function () {
+                $("#myModal").parent().css('overflow', 'hidden');
+                $("#myModal").hide();
+            }
+        });
+    });
+</script>
+

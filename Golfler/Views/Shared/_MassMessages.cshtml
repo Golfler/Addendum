@@ -1,0 +1,481 @@
+﻿@Html.Partial("_jqGrid")
+<style>
+    .tempwidthForDdl
+    {
+        width: 96% !important;
+    }
+
+    .center-button
+    {
+        padding: 0 11px !important;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#CourseId").change(function(){
+
+            if($(this).val()=="")
+            {
+                $("#dvRangeParameter").hide();            
+            }
+            else
+            {
+                $("#dvRangeParameter").show();
+            }
+        });
+
+        var showCourseName="false";
+        if( $("#hdnRequestFrom").val()=="CourseAdmin")
+        {
+            $("#divCourseList").hide();
+            //showCourseName=0;
+            $("#dvRangeParameter").hide();
+            $("#CourseId").val($("#hdnCourseId").val());
+        }
+        else
+        {
+            $("#divCourseList").show();
+            // $("#dvRangeParameter").show();
+            //  showCourseName=1;
+        }
+
+        bindJqGridMin('list', 'pager', '@Url.Action("GetUserListForMassMsgs", "Admin")',
+                ['ID', 'User Name', 'Email', 'User Type',   'Course Name','userid' ],
+                [   { name: 'ID', index: 'ID', width: 10, hidden: true },
+                   
+                    { name: 'UserName', index: 'UserName', width: 50  },
+                  //  { name: 'FirstName', index: 'FirstName', width: 50 },
+                    //{ name: 'LastName', index: 'LastName', width: 50 },
+                    { name: 'Email', index: 'Email', width: 50 },
+                    { name: 'UserType', index: 'UserType', sortable: false, width: 40 },
+                   // { name: 'Role', index: 'Role', sortable: false, width: 30, align: 'center' },
+                    { name: 'CourseName', index: 'CourseName', sortable: false, width: 30    } ,
+                      { name: 'userid', index: 'userid', width: 10, hidden: true }
+                   // { name: 'Active', index: 'Active', width: 50, sortable: false, formatter: SetActiveInActive, align: "center" },
+                   // { name: 'DoActive', index: 'DoActive', hidden: true }
+                ], 'Id', 'desc',
+                {
+                    "searchText": (function () {
+                        return $("#txtSearch").val();
+                    }),
+                    "CourseId": (function () {
+                        return $("#CourseId").val();
+                    }),
+                    "strUserType": (function () {
+                        return $("#ddlUserType").val();
+                    }),
+                    "strRequestFrom": (function () {
+                        return  $("#hdnRequestFrom").val(); 
+                    }),
+                    "RangeParameter": (function () {
+                        return $("#RangeParameter").val();
+                    })
+
+                }, '');
+    });
+
+    //SetActions = function (cellvalue, options, rowObject) {
+    //    try {
+    //        var id = rowObject["EID"];
+    //        if ($('#UpdateFlag').size() != 0 && $('#UpdateFlag').val() != "True") {
+    //            return "<a href='#' onclick='showStickMessage(&quot;You are unautherized to perform this action.&quot;)'>Send Message</a>";
+    //        }
+    //        else if (rowObject["DoActive"] == false || rowObject["DoActive"] == 'false')
+    //            return "";
+    //        else {
+    //            return "<a href='SendAdminMessage/" + id + "'>Send Message</a>";
+    //        }
+    //    }
+    //    catch (ex) {
+    //        alert(ex.message);
+    //    }
+    //}
+
+    function SendMesssages() {
+        try {
+            var multipleIds = [];
+            for (var i in jsonCheckData) {
+                multipleIds.push(jsonCheckData[i].Id);
+            }
+            var message="";
+
+            if( $("#hdnRequestFrom").val()=="SuperAdmin")
+            {
+                if($("#CourseId").val()=="")
+                {
+                    if (message != "") {
+                        message = message + "\n Please select Course."
+                    }
+                    else {
+                        message = "Please select Course.";
+                    }
+                }
+            }
+           
+
+            if(multipleIds.length<=0)
+            {
+                if (message != "") {
+                    message = message + "\n Please select User(s)."
+                }
+                else {
+                    message = "Please select User(s).";
+                }
+            }
+            if($("#txtMsgTitle").val()=="")
+            {
+                if (message != "") {
+                    message = message + "\n Please enter Message Title."
+                }
+                else {
+                    message = "Please enter Message Title.";
+                }
+            }
+            if($("#txtMsgDesc").val()=="")
+            {
+                if (message != "") {
+                    message = message + "\n Please enter Message."
+                }
+                else {
+                    message = "Please enter Message.";
+                }
+            }
+            if(message=="")
+            {
+                //alert("here");
+                //alert("msgtitle "+$('#txtMsgTitle').val());
+                //alert("msg "+$('#txtMsgDesc').val());
+                //alert("courseid "+$('#CourseId').val());
+                //alert("strRequestFrom "+$('#hdnRequestFrom').val());
+
+
+                $('#divProgress').show();
+                
+                var intCourseId=$('#CourseId').val();
+                if(intCourseId=='')
+                {
+                    intCourseId=$("#hdnCourseId").val();
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("SendMassMessages", "Admin")',
+                    datatype: "json",
+                    traditional: true,
+                    data: { Ids: multipleIds,msgtitle:  $('#txtMsgTitle').val(), msg: $('#txtMsgDesc').val(), courseid: intCourseId,strRequestFrom:$("#hdnRequestFrom").val()},
+                    async: false,
+                    success: function (data) {
+                        //alert(data.statusText);
+
+                        if (data.statusText == "success") {
+                            jsonCheckData = [];
+                            $('#recordCount').text(parseInt(jsonCheckData.length));
+                            $("#list").trigger("reloadGrid", [{ current: true}]);
+                            $.fancybox.close();                        
+                            //showMessage('Send Message process has been started.');
+                            showMessage('Your request is under process, you can view the status of this request in "View Message History".');
+                        }
+                        else {
+                            $.fancybox.close();
+                            showStickMessage(data.statusText);
+                        }
+                    },
+                    error: function (data) {
+                        console.log(data.statusText);
+                    }
+                });
+                $('#divProgress').hide();
+               
+                ActionDone();
+            }
+            else
+            {
+                //showStickMessage(message);
+                // NEED TO SET DESIGN IF USE showStickMessage INSTEAD OF ALERT
+                alert(message);
+                return false;
+            }
+        }
+        catch (ex) { alert(ex.message); }
+    }
+
+    function ActionDone() {
+        if (parseInt(jsonCheckData.length) === 0) {
+            $('#recordCount').text(parseInt(jsonCheckData.length));
+            $.fancybox.close();
+        }
+    }
+      
+
+    function checkSearch()
+    {
+        if( $("#hdnRequestFrom").val()=="CourseAdmin")
+        {
+            $('#list').trigger('reloadGrid', [{ page: 1}]);
+        }
+        else
+        {
+            if($("#CourseId").val()=="")
+            {
+                showStickMessage("Please select Course.");
+                return false;
+            }
+            else
+            {            
+                $('#list').trigger('reloadGrid', [{ page: 1}]);
+            }
+        }
+    }
+</script>
+<tr>
+    <td class="id_pathway" valign="middle">
+        <div class="breadcrumb">
+            <input type="hidden" id="hdnRequestFrom" value="@ViewBag.RequestFrom" />
+            <ul>
+                <li><a href='@Url.Action("Dashboard")'>Dashboard</a><img src="/Content/Images/arrow.png"
+                    class="arrow_position" /></li>
+                <li>@ViewBag.Module<img src="/Content/Images/arrow.png"
+                    class="arrow_position" /></li>
+                <li>@ViewBag.Title</li>
+            </ul>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td id="content_center_td2" valign="top" align="center">
+        <div class="form_box">
+            <div class="search-advertiser">
+                <label>
+                    Search</label>
+
+                <input type="text" placeholder="Username/ Email address" name="searchText" id="txtSearch"
+                    class="searchfeild jqGrid_refreshKey adname" value="" style="margin-bottom: 2px; width: 20% !important;"
+                    size="30" />
+                <div class="drop_down1" id="divCourseList">
+                    @Html.DropDownList("CourseIds", (SelectList)(ViewBag.CourseIds), "Select Course", new { @id = "CourseId", @class = "red-border status tempwidthForDdl" })
+                </div>
+                <div id="dvRangeParameter" class="drop_down1" style="display: none;">
+                    <select id="RangeParameter" class="status tempwidthForDdl">
+                        <option value="0">Select Range</option>
+                        <option value="5">5 Miles</option>
+                        <option value="10">10 Miles</option>
+                        <option value="20">20 Miles</option>
+                        <option value="25">25 Miles</option>
+
+                    </select>
+                </div>
+                <div class="drop_down1">
+                    @Html.DropDownList("ddlUserType", (SelectList)(ViewBag.Type), "Select User Type", new { id = "ddlUserType", @class = "status tempwidthForDdl" })
+                </div>
+
+                <img src="/Content/Images/search_icon.png" border="0" alt="search" class="go-btn floatleft"
+                    id="fbox_jqgAdminUser_search" onclick="javascript: return checkSearch();" />
+                <div class="clr">
+                </div>
+                <div style="border-top: 1px solid silver; padding-top: 12px; margin-top: 12px;">
+                    <input id="btnSendMessage" type="button" value="Send Message" class="newuser blu-btn margin_bottom5" onclick="javascript:void();" />
+
+                    <input id="btnMsgHistory" type="button" value="View Message History" class="newuser blu-btn margin_bottom5" />
+
+                </div>
+            </div>
+            <div class="clr">
+            </div>
+            <div class="em nop" style="display: none;">
+                <label>
+                </label>
+                Use blank search to see all records
+            </div>
+            <div style="float: right; margin-top: -23px;">
+                <a href="#myModelSelected" id="SelectedRecords" style="color: black">
+                    <label id="recordCount">
+                        0</label>
+                    Record(s) Selected</a>
+            </div>
+            <div class="clr">
+            </div>
+            <div id="page-wrap">
+                <table id="list" cellpadding="0" cellspacing="0" style="width: 100%;" class="jqgridTable">
+                </table>
+                <div id="pager" style="width: 100%;">
+                </div>
+
+            </div>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+<input type="hidden" id="hdnConfirm" />
+<input type="hidden" id="hdnCourseId" value="@Golfler.Models.LoginInfo.CourseId" />
+
+<div id="myModelSelected" class="reveal-modal" style="display: none; top: 100px;">
+</div>
+<script type="text/javascript">
+
+    $(function () {
+
+        $(document).delegate('#btnMsgHistory', 'click', function (e) {
+            if ($('#UpdateFlag').size() != 0 && $('#UpdateFlag').val() != "True") {
+                showStickMessage("You are unautherized to perform this action.") ;
+                return false;
+            }
+            else {
+                
+                if ($('#ReadFlag').size() != 0 && $('#ReadFlag').val() != "True") {
+                    showStickMessage("You are unautherized to perform this action.") ;
+                    return false;
+                }
+                else
+                {
+                    if($("#hdnRequestFrom").val()=="CourseAdmin")
+                    {
+                        window.location='@Url.Action("MessageHistory", "CourseAdmin")';
+                    }
+                    else
+                    {
+                        window.location='@Url.Action("MessageHistory", "Admin")';
+                    }}
+            }
+        });
+
+        var actionName = '';
+
+        $(document).delegate('#btnSendMessage', 'click', function (e) {
+            if ($('#UpdateFlag').size() != 0 && $('#UpdateFlag').val() != "True") {
+                showStickMessage("You are unautherized to perform this action.") ;
+                return false;
+            }
+            else {
+                actionName = 'sendmsg';
+                $('#SelectedRecords').click();
+            }
+        });
+
+        $('a[href="#myModelSelected"]').fancybox({
+            'scrolling': 'no',
+            'onStart': function () {
+                $('#selectedData').empty();
+                $('#myModelSelected').empty();
+
+                var divContent = '<div class="pop_detail"><h1>Selected User Details</h1><div id="tableContainer" class="page-wrap" style="max-height: 280px; overflow-x: scroll;border: 1px solid #EAEAEA;">';
+                divContent = divContent + '<table id="selectedData" class="voucher-details-table"></table></div></div>';
+                divContent = divContent + '<div class="clr"></div><div class="margin-top15"></div><div align="center" class="center-button">';
+                if (actionName == 'sendmsg' && jsonCheckData.length > 0) {
+                    divContent = divContent + ' <div><div class="organization_left"> <p><label style="width:55% !important;text-align:left;" >Message Title</label> <input id="txtMsgTitle" type="textbox" value="" style="width:150% !important;" class="userfeilder red-border"  /></p></div></div>';
+                    divContent = divContent + '<div class="clr"><div><div class="organization_left"> <p><label style="width:50% !important;text-align:left;">Message</label> <textarea id="txtMsgDesc" rows="4" value="" style="width:150% !important;"  class="userfeilder red-border"  /></p></div></div>';
+                    divContent = divContent + '<div class="clr"></div><div align="center" class="center-button"><input id="aSendMesssages" type="button" value="Send Message" class="delete blk-btn margin_bottom5" onclick="javascript:SendMesssages();" action="delete" /><input type="button" id="close" value="Close" class="cancel-btn blk-btn margin_bottom5" onclick="$.fancybox.close();" /></div>';
+                }
+                else {
+                    divContent = divContent + '<input type="button" id="close" value="Close" class="cancel-btn blk-btn margin_bottom5" onclick="$.fancybox.close();" />';
+               
+                }
+                divContent = divContent + '</div><br /><div class="clear"></div>'
+
+                $('#myModelSelected').append(divContent);
+
+                if (jsonCheckData.length > 0) {
+                    $("#myModelSelected").css("display", "block");
+                    if (actionName == 'aGroup') {
+                        $('#myModelSelected').css('height', '660px');
+                    }
+                    else {
+                        $('#myModelSelected').css('max-height', '660px');
+                    }
+                    $('#selectedData').append('<tr><td class="align-left"><strong>User name</strong></td><td class="align-left"><strong>Email</strong></td><td class="align-left"></td></tr>');
+                    for (var i in jsonCheckData) {
+                        $('#selectedData').append('<tr><td class="align-left">' + jsonCheckData[i].UserName + '</td><td class="align-left">' + jsonCheckData[i].Email + '</td><td class="align-left"><input id="aRemove" value="Unselect" class="delete blk-btn margin_bottom5" type="button" data-record="' + jsonCheckData[i].Id + '" /></td></tr>');
+                    }
+                }
+                else {
+                    $("#myModelSelected").css("display", "block");
+                    $('#myModelSelected').css('height', 'auto');
+                    $('#tableContainer').css('height', 'auto');
+                    $('#selectedData').append('<tr><td class="align-left">No Record(s) selected.</td></tr>');
+                }
+
+                actionName = '';
+            },
+            'onClosed': function () {
+                $("#myModelSelected").parent().css('overflow', 'hidden');
+                $("#myModelSelected").hide();
+            }
+        });
+
+        //jsonCheckData this json variable is declare in JqGridCommonFunctions.js script file
+        $(document).delegate('input:checkbox[name*=jqg_list_]', 'click', function (e) {
+
+            var data = $(this).parents('tr:eq(0)');
+
+            for (var i in jsonCheckData) {
+                if (jsonCheckData[i].Id === $(data).find('td:eq(1)').text()) {
+                    jsonCheckData.splice(i, 1);
+                }
+            }
+
+            if ($(this).is(':checked')) {
+                item = {};
+                item["CheckBoxId"] = $(this).attr('id');
+                item["Id"] = $(data).find('td:eq(1)').text();
+                item["UserName"] = $(data).find('td:eq(2)').text();
+                item["Email"] = $(data).find('td:eq(3)').text();
+                jsonCheckData.push(item);
+            }
+            $('#recordCount').text(parseInt(jsonCheckData.length));
+            console.log(jsonCheckData);
+        });
+
+        $(document).delegate('#cb_list', 'click', function (e) {
+
+            $.each($('input:checkbox[name*=jqg_list_]'), function () {
+
+                var data = $(this).parents('tr:eq(0)');
+
+                for (var i in jsonCheckData) {
+                    if (jsonCheckData[i].Id === $(data).find('td:eq(1)').text()) {
+                        jsonCheckData.splice(i, 1);
+                    }
+                }
+
+                if ($(this).is(':checked')) {
+                    item = {};
+                    item["CheckBoxId"] = $(this).attr('id');
+                    item["Id"] = $(data).find('td:eq(1)').text();
+                    item["UserName"] = $(data).find('td:eq(2)').text();
+                    item["Email"] = $(data).find('td:eq(3)').text();
+                    jsonCheckData.push(item);
+                }
+            });
+
+            $('#recordCount').text(jsonCheckData.length);
+            console.log(jsonCheckData);
+        });
+
+        $(document).delegate('#aRemove', 'click', function (e) {
+
+            if (confirm('Are you sure you want to unselect user.')) {
+                for (var i in jsonCheckData) {
+                    if (jsonCheckData[i].Id === $(this).attr('data-record')) {
+                        $(this).closest('tr').remove();
+                        jsonCheckData.splice(i, 1);
+                        $('#recordCount').text(jsonCheckData.length);
+                        $("#list").trigger("reloadGrid", [{ current: true}]);
+                    }
+                }
+            }
+
+            if (jsonCheckData.length === 0) {
+                $('#selectedData').empty();
+                $('#selectedData').append('<tr><td class="align-left">No Record(s) selected.</td></tr>');
+                $('#aSendMesssages').remove();
+                $('#aAssign').remove();
+                $('#aUnassign').remove();
+            }
+
+        });
+
+    });
+</script>

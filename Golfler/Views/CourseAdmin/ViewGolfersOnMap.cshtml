@@ -1,0 +1,860 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutCourseArea.cshtml";
+}
+
+@Html.Partial("_jqGrid")
+@using Golfler.Models;
+<script>
+
+    var showListglobal = new Array();
+    var markers = "";
+    var Googlemarkers = [];
+    var markersdata = '@Html.Raw(Json.Encode(@ViewBag.viewEmployee))';
+    if (markersdata != "") {
+        markers = JSON.parse(markersdata);
+    }
+    else { }
+
+</script>
+<style>
+    .gmnoprint img {
+        max-width: none;
+    }
+
+    #myModal {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: 30em;
+        height: 19em;
+        margin-top: -3em; /*set to a negative number 1/2 of your height*/
+        margin-left: -12em; /*set to a negative number 1/2 of your width*/
+        border: 1px solid #ccc;
+        background-color: #f3f3f3;
+    }
+
+    .pagelink {
+        cursor: pointer;
+        font-size: 12px;
+    }
+
+    #pagDiv {
+        float: left;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        font-size: 12px;
+    }
+</style>
+
+<script language="javascript">
+    $(document).ready(function () {
+
+        $("#list").fluidGrid({ example: "parentdiv", offset: -10 });
+
+    });
+</script>
+
+<script language="javascript">
+    $(document).ready(
+        function () {
+            if ('@ViewBag.viewGolferLength' > "0") {
+                CreateMarkerMap();
+                $("#divoffline").hide();
+                bindGrid();
+                creteFlagsNTees();
+                $("#btnRefreshMap").show();
+            }
+            else {
+                CreateMarkerMap();
+                creteFlagsNTees();
+                // $("#map-canvas").hide();
+                // $("#divoffline").show();
+                $("#btnRefreshMap").hide();
+
+            }
+            //alert(jqGrigIDs.length);
+        });
+    function bindGrid() {
+        //   debugger;
+        //  loadonce: false,
+        bindJqGridNoMultiSelect('list', 'pager', 'GetGophieViewList',
+                        ['Id', 'Golfer', 'Notification', 'Orders'],
+                        [{ name: 'Id', index: 'Id', width: 10, hidden: true },
+                            { name: 'Name', index: 'Name', width: 90, sortable: false, formatter: SetEditLink },
+                            { name: 'Notification', index: 'Id', width: 90, sortable: false, formatter: SetNotificationLink },
+                        { name: 'Order_Details', index: 'Order_Details', width: 90, sortable: false, title: false }
+
+
+                        ], 'Id', 'desc',
+                        {
+                            "searchText": (function () {
+                                return $("#txtSearch").val();
+                            })
+                        }, '');
+    }
+    function SetEditLink(cellvalue, options, rowObject) {
+        var Name = rowObject["Name"];
+        var id = rowObject["Id"];
+        //   alert(rowObject["id"]);
+        var CourseLoginId = $("#hdnCourseLoginId").val();
+        try {
+            return "<a onclick='openChat(\"" + Name + "\"," + id + "," + CourseLoginId + ")' style='cursor:pointer;'>" + cellvalue + "</a>";
+        }
+        catch (ex) { alert(ex.message); }
+    }
+    function SetNotificationLink(cellvalue, options, rowObject) {
+        var ID = rowObject["Id"];
+
+        try {
+
+            return "<img src='../../images/new-msg.png' alt='New Msgs'  id='img_" + ID + "'/>";
+
+        }
+        catch (ex) { alert(ex.message); }
+    }
+
+</script>
+
+<div class="breadcrumb">
+    <ul>
+        <li><a href='@Url.Action("Dashboard")'>Dashboard</a><img src="../../../../Content/Images/Admin/arrow.png"
+            class="arrow_position" /></li>
+        <li>Gopher view</li>
+    </ul>
+    <div class="clr">
+    </div>
+
+</div>
+<div class="form_box chatappend">
+    <div class="search-advertiser" style="display: none;">
+        <label>
+            Search</label>
+        <input type="text" placeholder="Name" name="searchText" id="txtSearch" class="adname jqGrid_refreshKey"
+            value="" />
+        <input id="fbox_jqgAdminUser_search" type="image" src="../../../../Content/images/search_icon.png"
+            class="floatleft jqGrid_refresh" alt="Search" style="border: 0" name="image" />
+
+        <div class="clr">
+        </div>
+        <div class="em nop">
+            <label>
+            </label>
+            Use blank search to see all records
+        </div>
+    </div>
+    <div id="divmap">
+        <div class="distric_box">
+            <h1>Gopher View
+            </h1>
+            <h4>Single Click on pin to view the status.</h4>
+            <h4>Double Click on pin to initiate the chat.</h4>
+            <div class="add_box width_97">
+                <input type="button" value="Refresh Map" id="btnRefreshMap" class="submit-btn" onclick="RefreshManual();" />
+                <div class="add_box width_97 padtop10">
+                    <div class="clr">
+                    </div>
+                    <div class="width_49">
+                        <div id="map-canvas" style="height: 520px; width: 100%; border: 2px solid #fff; box-shadow: 0px 0px 5px 0px #A7A7A7;">
+                        </div>
+                    </div>
+                    <div class="clr">
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <div id="divoffline" style="display: none;">
+        <h2>No Online Golfer on this Course !!</h2>
+    </div>
+    <div id="page-wrap">
+        <div class="clr">
+        </div>
+        <table id="list" cellpadding="0" cellspacing="0" style="width: 100%;" class="jqgridTable">
+        </table>
+        <div id="pager" style="width: 100%;">
+        </div>
+    </div>
+
+    @*  <div class="search-advertiser">
+        Today's Messages sent by you.<br />
+    </div>
+    <div class="clr">
+    </div>*@
+
+</div>
+<div id="myModal" class="reveal-modal" style="display: none; top: 100px; z-index: 9999999999;">
+    <div class="pop_detail">
+        <h1>Message Box</h1>
+        <div class="page-wrap">
+            <table class="voucher-details-table">
+
+                <tr>
+                    <td class="align-left" colspan="2">
+                        <strong>Message To: </strong>
+                        <label id="lblGolferName"></label>
+                        <input type="hidden" value="1" id="hdnGolferId" />
+                    </td>
+
+                </tr>
+                <tr>
+                    <td class="align-left" colspan="2">
+                        <strong>Send message</strong>
+                        <br />
+                        @Html.TextArea("msgToGolfer", new { @id = "msgToGolfer" })
+                    </td>
+
+                </tr>
+
+                <tr>
+                    <td class="align-center" colspan="2">
+
+                        <input type="button" value="Send" id="btnSendMsg" class="submit-btn" />&nbsp;
+                          <input type="button" value="Close" id="btnClose" class="submit-btn" />
+                        <input type="hidden" value="@ViewBag.CourseLoginId" id="hdnCourseLoginId" />
+                        <input type="hidden" value="@ViewBag.CourseLoginName" id="hdnCourseLoginName" />
+
+
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="clr">
+    </div>
+
+</div>
+
+<div id="chat_div">
+</div>
+<div id="divChatOuterParent">
+    <div id="divChatParent">
+    </div>
+</div>
+@*start chat*@
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js"></script>
+
+<link type="text/css" href="@Url.Content("~/Content/css/JqueryChat/jquery.ui.chatbox.css")" rel="stylesheet" />
+<script type="text/javascript" src="@Url.Content("~/Content/css/JqueryChat/jquery.ui.chatbox.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Content/css/JqueryChat/chatboxManager.js")"></script>
+<script type="text/javascript">
+    //  var box = null;
+
+    //$("input[type='button']").click(function (event, ui) {
+    //function openChat(golfername){
+    //    debugger;
+    //    GetMessage($("#hdnGolferId").val(),1);
+    //    if (box) {
+    //       // alert(box.option.title);
+    //    box.chatbox("option", "boxManager").toggleBox();
+
+    //     }
+    //    else {
+
+    //    box = $("#chat_div").chatbox({ id:  $("#hdnCourseLoginName").val(),
+    //        user: { key: "value" },
+    //       //  title:   golfername +" - "+"Message Window",
+    //         title:  "Message Window",
+
+    //        messageSent: function (id, user, msg) {
+    //            $("#chat_div").html();
+    //            $("#chat_div").chatbox("option", "boxManager").addMsg(id, msg),
+    //            //call service to send msg
+    //            SendMessage(msg);
+    //            setTimeout(function () {
+    //                // Do something after 1 Minute=60*1000 
+    //                GetMessage($("#hdnGolferId").val(),1);
+    //                // call service to get msg
+    //            }, 1000)
+    //        }
+
+    //    });
+    //     }
+    //}    
+    //////////////  
+    var counter = 0; var idList = new Array();
+    $(document).ready(function () {
+        var broadcastMessageCallback = function (from, msg) {
+            for (var i = 0; i < idList.length; i++) {
+                chatboxManager.addBox(idList[i]);
+                $("#" + idList[i]).chatbox("option", "boxManager").addMsg(from, msg);
+            }
+        }
+    });
+
+    // chatboxManager is excerpt from the original project
+    // the code is not very clean, I just want to reuse it to manage multiple chatboxes
+    // chatboxManager.init({messageSent : broadcastMessageCallback});
+
+    function openChat(golfername, golferid, SenderCourseId) {
+        // alert(golferid);
+        var CourseLogin = '@ViewBag.CourseLogin'
+        GetMessage(golferid, 1);
+        counter++;
+        var id = "chat_" + golferid;
+        idList.push(golferid);
+        chatboxManager.addBox(id,
+                                {
+                                    dest: "dest" + counter, // not used in demo
+                                    title: golfername,
+                                    user: golfername,
+                                    first_name: golfername,
+                                    last_name: CourseLogin
+                                    //messageSent: function (SenderCourseId, user, msg) {
+                                    //    alert("kkk");
+                                    //    debugger;
+                                    //    $("#" + GolferId).chatbox("option", "boxManager").addMsg(SenderCourseId, msg);
+                                    //    //call service to send msg
+                                    //    SendMessage(msg,golferid);
+                                    //    setTimeout(function () {
+                                    //        // Do something after 1 Minute=60*1000 
+                                    //        GetMessage(golferid,1);
+                                    //        // call service to get msg
+                                    //    }, 1000)}
+
+                                    //you can add your own options too
+                                });
+
+        // event.preventDefault();
+    }
+    /////////////
+</script>
+@*end chat *@
+@*start Google map*@
+<script type="text/javascript" src="https://maps-api-ssl.google.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false"></script>
+@*<script type="text/javascript" src="../Scripts/markerwithlabel.js"></script>*@
+<script type="text/javascript">
+  @*  $('#btnSendMsg').on("click", function () {
+           
+        var msg = $("#msgToGolfer").val();
+        var msgfrom = $("#hdnCourseLoginId").val();
+        var msgto = $("#hdnGolferId").val();
+        var params = '{"msgfrom":"' + msgfrom + '","msgto":"' + msgto + '","msg":"' + msg + '","IsMessagesFromGolfer":"' + "0" + '","IsMessagesToGolfer":"1"}';
+      
+        $.ajax({
+            type: 'POST',
+            url:  '@Url.Action("GetGolferData", "CourseAdmin")',
+            data:params,    
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                alert("Message sent successfully.");
+                $("#myModal").css("display", "none");
+
+            },
+            error: function (x, y, z) {
+                alert("Message sent successfully.");
+                $("#myModal").css("display", "none");
+            }
+        });
+       
+      
+    });*@
+
+    //  var jsontext = '{"firstname":"Jesper","surname":"Aaberg","phone":"555-0100"}';
+    //  var contact = JSON.parse(jsontext);
+    // alert(contact);
+
+
+    //  markers = $.json(markers);//.replace('/', '')
+
+    //  var hmarkers = [{ "title": "golfer2", "lat": "19.1737704", "lng": "72.86062400000003", "description": "2", "type": "10" }];
+    // {\"golfers\":[{\"Name\": arun kumar, \"lat\": 30.722584, \"lng\": 76.767639, \"type\": 5},{\"Name\": veera4 verma4, \"lat\": 28.6139, \"lng\": 77.2090, \"type\": 10}]}
+
+
+    //alert(markers.golfers[0].Name);
+    //window.onload = function () {
+    //   debugger;
+
+    //$(document).ready(function () {
+
+    //    CreateMarkerMap();
+    //});
+
+
+    function SendMessage(msg, golferid) {
+        //    debugger;
+        //var msg = $("#msgToGolfer").val(); 
+        var msgfrom = $("#hdnCourseLoginId").val();
+        // alert(golferid);
+        var msgto = golferid.replace("chat_", "");//$("#hdnGolferId").val();
+        var params = '{"msgfrom":"' + msgfrom + '","msgto":"' + msgto + '","msg":"' + msg + '","IsMessagesFromGolfer":"' + "0" + '","IsMessagesToGolfer":"1"}';
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetGolferData", "Golfer")',
+            data: params,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                // alert("Message sent successfully.");
+                //$("#myModal").css("display", "none");
+
+            },
+            error: function (x, y, z) {
+                //  alert("Message sent successfully.");
+                //  $("#myModal").css("display", "none");
+            }
+        });
+
+    }
+    function paging(GolferId, PgNo) {
+        //  alert(PgNo);
+        GetMessage(GolferId, PgNo);
+    }
+    function GetMessage(GolferId, PgNo) {
+        //if(GolferId.indexOf("chat_"))
+        //{
+        //  var GolferId = GolferId.replace("chat_","")
+        // }
+        //  debugger;
+        var params = '{"id":"' + GolferId + '","PgNo":"' + PgNo + '","MsgTo":"' + "1" + '","Type":"' + "0" + '"}';
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetGolferMessages", "Golfer")',
+            data: params,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+
+                var chkid = "#CountCheckDiv" + GolferId;
+                var oldRecCount = $(chkid).html();
+                // alert(oldRecCount);
+                // alert(data.rows.length);
+                if (oldRecCount != data.rows.length) {
+                    $("#chat_" + GolferId).html("");
+                    if (oldRecCount == null) {
+
+                        $("#img_" + GolferId).attr("alt", "New Msg");
+                        $("#img_" + GolferId).attr("src", "../../images/new-msg.png");
+                    }
+                    else {
+                        $("#img_" + GolferId).attr("alt", "New Msg");
+                        $("#img_" + GolferId).attr("src", "../../images/new-msg.png");
+                    }
+                    var totalrecords = 0;
+                    for (var i = 0; i < data.rows.length; i++) {
+                        // debugger;
+                        totalrecords = data.pages + 1;
+                        // alert(data.rows.length);
+                        // $("#chat_div").chatbox("option", "boxManager").addMsg(data.rows[i].Name, data.rows[i].Message);
+                        if (data.rows[i].Name == $("#hdnCourseLoginName").val()) {
+                            $("#chat_" + GolferId).chatbox("option", "boxManager").addMsg(data.rows[i].Name + " ( " + data.rows[i].MsgDate + " ) ", data.rows[i].Message, 1);
+                        }
+                        else {
+                            $("#chat_" + GolferId).chatbox("option", "boxManager").addMsg(data.rows[i].Name + " ( " + data.rows[i].MsgDate + " ) ", data.rows[i].Message, 0);
+                        }
+
+                        //  //  $( "#chat_div").append("<div id='pagDiv'><br/>Archive: "+PgNo+"&nbsp;&nbsp;... ");
+                    }
+                    $("#chat_" + GolferId).append("<p id='CountCheckDiv" + GolferId + "' style='display:none;'>" + data.rows.length + "</p>");
+
+                    if (data.pages > 0) {
+                        //alert("hi"+ data.pages);
+                        //  $( "#chat_div").append("<div id='pagDiv'><br/>Archive: "+PgNo+"&nbsp;&nbsp;... ");
+                        // debugger;
+
+                        //$("#chat_" + GolferId).append("<div id='"+GolferId+"_pagDiv'><br/>Archive: "+PgNo+"&nbsp;&nbsp;... ");
+                        //for (var i = 1; i <= totalrecords; i++) 
+                        //{
+                        //    if(i==PgNo)
+                        //    {
+                        //        $( "#"+GolferId+"_pagDiv").append("<a class='pagelink' onclick='paging("+GolferId+","+i+")' style='color:purple;' >"+i+"</a>&nbsp;");
+                        //    }
+                        //    else
+                        //    {
+                        //        $( "#"+GolferId+"_pagDiv").append("<a class='pagelink' onclick='paging("+GolferId+","+i+")' style='color:blue;' >"+i+"</a>&nbsp;");
+                        //    }
+                        //}
+                    }
+                }
+                else {
+
+                    $("#img_" + GolferId).attr("alt", "no new msg");
+                    $("#img_" + GolferId).attr("src", "../../images/no-new-msg.png");
+
+                }
+
+                //$("#myModal").css("display", "none");
+
+            },
+            error: function (x, y, z) {
+                //  alert("Message sent successfully.");
+                //  $("#myModal").css("display", "none");
+            }
+        });
+    }
+
+    //$('#btnClose').on("click", function () {
+    //    $("#myModal").css("display", "none");
+    //});
+
+</script>
+@*end Google map*@
+
+<script type="text/javascript">
+
+    window.setInterval(function () {
+
+        if (jqGrigIDs.length > 0) {
+            for (var i = 0; i < jqGrigIDs.length; i++) {
+                var id = jqGrigIDs[i].replace("chat_", "");
+
+                GetMessage(id, 1);
+
+            }
+        }
+
+
+
+        RefreshManual();
+
+    }, 60000);//5 min
+
+    // 
+    var $map;
+
+    function CreateMarkerMap() {
+        // debugger;
+        if (markers != "") {
+            var mapOptions = {
+                center: new google.maps.LatLng(markers.golfers[0].lat, markers.golfers[0].lng),
+                zoom: 18,
+                mapTypeId: google.maps.MapTypeId.SATELLITE
+            };
+            var infowindow = new google.maps.InfoWindow();
+            var latlngbounds = new google.maps.LatLngBounds();
+            $map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+            var i = 0;
+            var count = '@ViewBag.viewGolferLength';
+            //var infowindow = new google.maps.InfoWindow(), marker, i;
+            // var interval = setInterval(function () {
+
+
+            for (var j = 0; j < count; j++) {
+                var data = markers.golfers[j]
+                var title = markers.golfers[j].Name
+                var holeDesc = markers.golfers[j].Title
+                // alert(holeDesc);
+                var usertype = markers.golfers[j].type
+                var myLatlng = new google.maps.LatLng(data.lat, data.lng);
+                var icon = "";
+                switch (data.type) {
+                    case "red":
+                        icon = "https://maps-api-ssl.google.com/mapfiles/ms/icons/red.png"; //"red"; //20mis
+                        break;
+                    case "orange":
+                        icon = "https://maps-api-ssl.google.com/mapfiles/ms/icons/orange.png"; //"yellow";//10 mins
+                        break;
+                    case "green":
+                        icon = "https://maps-api-ssl.google.com/mapfiles/ms/icons/green.png"; //"blue";//5 mins
+                        break;
+                    case "blue":
+                        icon = "https://maps-api-ssl.google.com/mapfiles/ms/icons/blue.png"; //"blue";//5 mins
+                        break;
+                    case "CC":
+                        icon = "/images/CourseImage/gophie.png"; //"blue";//5 mins
+                        break;
+                    case "CP":
+                        icon = "/images/CourseImage/proshop.png"; //"blue";//5 mins
+                        break;
+                    case "CR":
+                        icon = "/images/CourseImage/ranger.png"; //"blue";//5 mins
+                        break;
+                    case "CK":
+                        icon = "/images/CourseImage/kitchen.png"; //"blue";//5 mins
+                        break;
+                    case "CA":
+                        icon = "https://maps-api-ssl.google.com/mapfiles/ms/icons/blue.png"; //"blue";//5 mins
+                        break;
+                    default:
+                        icon = "https://maps-api-ssl.google.com/mapfiles/ms/icons/blue.png"; //"green";//5 mins
+                }
+
+                //  icon = "https://maps-api-ssl.google.com/mapfiles/ms/icons/" + icon + ".png";
+                var marker = new google.maps.Marker({
+                    position: myLatlng,
+                    map: $map,
+                    title: markers.golfers[j].Name,
+                    usertype: usertype,
+                    icon: new google.maps.MarkerImage(icon),
+                    id: markers.golfers[j].Id,
+                    holeDesc: holeDesc,
+                    animation: google.maps.Animation.DROP
+                    //  label:"1"
+                });
+                Googlemarkers.push(marker);
+
+                google.maps.event.addListener(marker, 'click', function () {
+                    $("#hdnGolferId").val(this.id);
+                    $("#lblGolferName").html(this.title);
+                    $("#msgToGolfer").val("");
+                    infowindow.setContent(this.holeDesc);
+                    infowindow.open($map, this);
+                });
+
+
+                google.maps.event.addListener(marker, 'dblclick', function () {
+                    $("#hdnGolferId").val(this.id);
+                    $("#lblGolferName").html(this.title);
+                    $("#msgToGolfer").val("");
+                    //alert("m");
+                    //alert(this.usertype);
+                    if (this.usertype != "CC" && this.usertype != "CP" && this.usertype != "CK" && this.usertype != "CR" && this.usertype != "CA") {
+                        openChat(this.title, this.id, $("#hdnGolferId").val());
+                    }
+                });
+                //
+
+            }
+        }
+        else {
+            //  debugger;
+            var CourseLatitude = '@ViewBag.CourseLatitude';
+            var CourseLongitude = '@ViewBag.CourseLongitude';
+            var CoursemapOptions = {
+                center: new google.maps.LatLng(CourseLatitude, CourseLongitude),
+                zoom: 18,
+                mapTypeId: google.maps.MapTypeId.SATELLITE
+            };
+
+            var latlngbounds = new google.maps.LatLngBounds();
+            $map = new google.maps.Map(document.getElementById("map-canvas"), CoursemapOptions);
+        }
+
+
+
+        //latlngbounds.extend(marker.position);
+        //i++;
+        //if (i == markers.length) {
+        //   // clearInterval(interval);
+        //    var bounds = new google.maps.LatLngBounds();
+        //    map.setCenter(latlngbounds.getCenter());
+        //    map.fitBounds(latlngbounds);
+        //}
+        //}, 80);
+    }
+    function DeleteMarkers() {
+        //Loop through all the markers and remove
+        for (var i = 0; i < Googlemarkers.length; i++) {
+            Googlemarkers[i].setMap(null);
+        }
+        Googlemarkers = [];
+    };
+    function RefreshMarkerMap(d, jsonlength) {
+        var refreshdata = d;
+        //  alert(d);
+        //  debugger;
+        DeleteMarkers();
+        markersdata = refreshdata;
+        if (markersdata != "") {
+            markers = JSON.parse(markersdata);
+        }
+
+
+        var infowindow = new google.maps.InfoWindow();
+        // var latlngbounds = new google.maps.LatLngBounds();
+        //var mapOptions = {
+        //    center: new google.maps.LatLng(markers.golfers[0].lat, markers.golfers[0].lng),
+        //    zoom: 18,
+        //    mapTypeId: google.maps.MapTypeId.SATELLITE
+        //};
+        //$map = document.getElementById("map-canvas");
+        //  var map= Ext.getCmp('map-canvas').getMap();
+        //var map = $map;
+        var i = 0;
+        var count = '@ViewBag.viewGolferLengthRefresh';
+
+
+        for (var j = 0; j < jsonlength; j++) {
+            var data = markers.golfers[j]
+            var title = markers.golfers[j].Name
+            var holeDesc = markers.golfers[j].Title
+
+            var usertype = markers.golfers[j].type
+            var myLatlng = new google.maps.LatLng(data.lat, data.lng);
+            var icon = "";
+            //  alert(data.type);
+            switch (data.type) {
+                case "red":
+                    icon = "https://maps-api-ssl.google.com/mapfiles/ms/icons/red.png"; //"red"; //20mis
+                    break;
+                case "orange":
+                    icon = "https://maps-api-ssl.google.com/mapfiles/ms/icons/orange.png"; //"yellow";//10 mins
+                    break;
+                case "green":
+                    icon = "https://maps-api-ssl.google.com/mapfiles/ms/icons/green.png"; //"blue";//5 mins
+                    break;
+                case "CC":
+                    icon = "/images/CourseImage/gophie.png"; //"blue";//5 mins
+                    break;
+                case "CP":
+                    icon = "/images/CourseImage/proshop.png"; //"blue";//5 mins
+                    break;
+                case "CR":
+                    icon = "/images/CourseImage/ranger.png"; //"blue";//5 mins
+                    break;
+                case "CK":
+                    icon = "/images/CourseImage/kitchen.png"; //"blue";//5 mins
+                    break;
+                case "CA":
+                    icon = "https://maps-api-ssl.google.com/mapfiles/ms/icons/blue.png"; //"blue";//5 mins
+                    break;
+                default:
+                    icon = "https://maps-api-ssl.google.com/mapfiles/ms/icons/blue.png"; //"green";//5 mins
+            }
+
+            //  icon = "https://maps-api-ssl.google.com/mapfiles/ms/icons/" + icon + ".png";
+
+            var marker = new google.maps.Marker({
+                position: myLatlng,
+                map: $map,
+                title: markers.golfers[j].Name,
+                usertype: usertype,
+                icon: new google.maps.MarkerImage(icon),
+                id: markers.golfers[j].Id,
+                holeDesc: holeDesc,
+                animation: google.maps.Animation.DROP
+            });
+            Googlemarkers.push(marker);
+            //  marker.setMap(map);
+            google.maps.event.addListener(marker, 'click', function () {
+                $("#hdnGolferId").val(this.id);
+                $("#lblGolferName").html(this.title);
+                $("#msgToGolfer").val("");
+                infowindow.setContent(this.holeDesc);
+                infowindow.open($map, this);
+            });
+            google.maps.event.addListener(marker, 'dblclick', function () {
+                $("#hdnGolferId").val(this.id);
+                $("#lblGolferName").html(this.title);
+                $("#msgToGolfer").val("");
+                //alert("t");
+                //alert(this.usertype);
+                if (this.usertype != "CC" && this.usertype != "CP" && this.usertype != "CK" && this.usertype != "CR" && this.usertype != "CA") {
+                    openChat(this.title, this.id, $("#hdnGolferId").val());
+                }
+            })
+        }
+    }
+    function creteFlagsNTees() {
+        var infowindow = new google.maps.InfoWindow();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetCourseHoleDetails", "CourseAdmin")',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {  //debugger;
+                if (data.rows != null) {
+                    for (var j in data.rows) {
+                        //
+                        var location = new google.maps.LatLng(data.rows[j].Latitude, data.rows[j].Longitude);
+
+                        //var icon = '';
+                        var icon = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=' + data.rows[j].HoleNo + '|FFFFFF|000000';
+
+                        //if (data.rows[j].DragItemType.toLowerCase().indexOf("white") >= 0) {
+                        //    icon = '/images/CourseImage/tee_white.png';
+                        //}
+                        //if (data.rows[j].DragItemType.toLowerCase().indexOf("red") >= 0) {
+                        //    icon = '/images/CourseImage/tee_red.png';
+                        //}
+                        //if (data.rows[j].DragItemType.toLowerCase().indexOf("blue") >= 0) {
+                        //    icon = '/images/CourseImage/tee_blue.png';
+                        //}
+                        if (data.rows[j].DragItemType.toLowerCase().indexOf("flag") >= 0) {
+                            //icon = '/images/CourseImage/flag_white.png';
+                            //}
+                            var markerTees = new google.maps.Marker({
+                                position: location,
+                                map: $map,
+                                icon: icon,
+                                animation: google.maps.Animation.DROP,
+                                holeDesc: data.rows[j].HoleNumber
+
+                            });
+                            //   debugger;
+                            //var markerTees = new MarkerWithLabel({
+                            //    position: location,
+                            //    map: $map,
+                            //    draggable: true,
+                            //    raiseOnDrag: true,
+                            //    labelContent: "A",
+                            //    labelAnchor: new google.maps.Point(3, 30),
+                            //    labelClass: "labels", // the CSS class for the label
+                            //    labelInBackground: false
+                            //    //animation: google.maps.Animation.DROP
+                            //});
+                            google.maps.event.addListener(markerTees, 'click', function () {
+
+                                infowindow.setContent(this.holeDesc);
+                                infowindow.open($map, this);
+                            });
+                        }
+                    }
+                }
+
+            },
+            error: function (x, y, z) {
+
+            }
+        });
+
+
+
+    }
+    function RefreshManual() {
+        // debugger;
+
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("RefreshGolfersOnMap", "CourseAdmin")',
+
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+
+                RefreshMarkerMap(data.jsonstring, data.jlength);
+                $('#list').trigger('reloadGrid', [{ page: 1 }]);
+            },
+            error: function (x, y, z) {
+
+            }
+        });
+
+    }
+</script>
+<style type="text/css">
+    .labels {
+        color: red;
+        background-color: white;
+        font-family: "Lucida Grande", "Arial", sans-serif;
+        font-size: 10px;
+        font-weight: bold;
+        text-align: center;
+        width: 40px;
+        border: 2px solid black;
+        white-space: nowrap;
+    }
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        if (jqGrigIDs.length > 0) {
+            for (var i = 0; i < jqGrigIDs.length; i++) {
+                var id = jqGrigIDs[i].replace("chat_", "");
+
+                GetMessage(id, 1);
+
+            }
+        }
+
+
+
+        RefreshManual();
+    });
+
+</script>

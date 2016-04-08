@@ -1,0 +1,245 @@
+﻿@model Golfler.Models.GF_SubCategory
+@{
+    ViewBag.Title = "Golfer Add Update";
+}
+<script type="text/javascript">
+    $(document).ready(
+            function () {
+
+
+
+                $('#btnCancel').click(function () {
+                    window.location = '@Url.Action("MenuItemsList")';
+                });
+
+                //Confirmation Page
+                //if ($("#ID").val() == 0) {
+
+                $("#btnConfirm").fancybox({
+                    'scrolling': 'no',
+                    'onStart': function () {
+                        $("#lblUserName").text($('#Name').val());
+                        $("#lblFirstName").text($('#Type  option:selected').text());
+                        $("#lblStatus").text($('#Active').is(':checked') ? "Active" : "Inactive");
+                        $("#myModal").css("display", "block");
+                    },
+                    'onClosed': function () { $("#myModal").css("display", "none"); }
+                });
+                $('#btnSubmit').on("click", function () {
+                    if (!$('#btnSubmit').hasClass('unaccess') && $('#frmSubmit').valid()) {
+                        if ($('#hdnConfirm').val() != "1") {
+                            $("#btnConfirm").click();
+                            return false;
+                        }
+                    }
+                });
+                //}
+            }
+    );
+
+
+</script>
+<script type="text/javascript">
+    $(document).ready(
+        function () {
+            $("#frmSubmit").validate();
+            $("#txtpassword").valid();
+        });
+</script>
+
+<tr>
+    <td class="id_pathway">
+        <div class="breadcrumb">
+            <ul>
+                <li><a href='@Url.Action("Dashboard")'>Dashboard</a><img src="/Content/Images/arrow.png"
+                    class="arrow_position" /></li>
+                <li><a href='@Url.Action("MenuItemsList")'>Manage
+                    @ViewBag.Module</a><img src="/Content/Images/arrow.png" class="arrow_position" /></li>
+                <li>@ViewBag.Title</li>
+            </ul>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td id="content_center_td2" valign="top" align="center">
+        <div id="content_div" class="form_box organization_form">
+            @using (Html.BeginForm("MenuItemsAddUpdate", null, FormMethod.Post, new { id = "frmSubmit" }))
+            {
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(x => x.ID)
+                @Html.Hidden("hdnIsLoginUser", (object)ViewBag.IsLoginUser)       
+                
+                <div style="margin: 0px 0px 0px 0px;">
+                    <div class="organization_left">
+                        <p class="tpspacing">
+                            @Html.LabelFor(x => x.Name)
+                            @Html.TextBoxFor(x => x.Name, new { @class = "userfeilder red-border", @maxlength = "50" })
+                            @Html.ValidationMessageFor(x => x.Name)
+                        </p>
+                    </div>
+                    <div class="organization_left">
+                        <p class="tpspacing">
+                            <label>Parent category:</label>
+                            @Html.DropDownListFor(x => x.CategoryID, (SelectList)(ViewBag.Category), "Select", new { @id = "Type", @class = "red-border" })
+                            @Html.ValidationMessageFor(x => x.CategoryID)
+                        </p>
+                    </div>
+                    <div class="clr">
+                    </div>
+                </div> 
+                <div>
+                    <div class="organization_left">
+
+
+                        @{if (Model.lstItems != null && Model.lstItems.Count > 0)
+                          {
+                              for (int i = 0; i < Model.lstItems.Count; i++)
+                              { 
+                           
+                                @Html.Hidden("lstItems.Index", (@i))
+                             <div id="divAdd">
+                                <div class="organization_left clone" id="divCourseHead">
+                                    <p>
+                                        <label>Name</label>
+                                        @Html.TextBox("lstItems[" + @i + "].Name", @Model.lstItems[i].Name, new { @class = "form-control", maxlength = "50" })
+                                    </p>
+                                    <p>
+                                        <label>Commission</label>
+                                        @Html.TextBox("lstItems[" + @i + "].Commission", @Model.lstItems[i].Commission, new { @class = "form-control", maxlength = "5" })
+                                    </p>
+                                    <p>
+                                        <label>Price</label>
+                                        @Html.TextBox("lstItems[" + @i + "].Amount", @Model.lstItems[i].Amount, new { @class = "form-control", maxlength = "5" })
+                                    </p>
+                                </div>
+                                <input type="button" value="Add More" onclick="AddMore();" />
+                                @if (i > 0)
+                                      {
+                                <br />
+
+                                <a href="javascript:void(0);" onclick="DeleteItem(this);"><b>X</b></a>
+                                }
+                                <div class="clr">
+                                </div>
+                            </div>
+                              }
+                          }
+                     
+                        }
+
+
+                    </div>
+
+                    <div class="organization_left">
+                        <p>
+                          <label>Is Active:</label> 
+                        @Html.CheckBoxFor(x => x.Active)
+
+                        </p>
+                    </div>
+                    <div class="clr">
+                    </div>
+                </div>
+                <div align="center" class="center-button">
+                    @Html.HiddenFor(x => x.Active)
+                    <a href="#myModal" id="btnConfirm" class="submit-btn update-btn" style="display: none;">Submit</a>
+                    <input type="submit" id="btnSubmit" class="submit-btn update-btn" name="btnSubmit" value="Submit" action="add" />
+                    <input type="button" id="btnCancel" class="submit-btn cancel-btn" value="Cancel" />
+                    <input type="button" id="btnPartial" class="submit-btn update-btn" name="btnPartial" value="Submit" style="display: none;" />
+                </div>
+              
+            }
+        </div>
+    </td>
+</tr>
+<input type="hidden" id="hdnConfirm" />
+@Html.Hidden("hdnP", 100);
+<div id="myModal" class="reveal-modal" style="display: none; top: 100px;">
+    <div class="pop_detail">
+        <h1>Confirm Details</h1>
+        <div class="page-wrap">
+            <table class="voucher-details-table">
+                <tr>
+                    <td class="align-left" colspan="2">
+                        <p>
+                            <strong>Dear @Golfler.Models.LoginInfo.UserName,</strong><br />
+                            @String.Format("Please confirm User details to save.")<br />
+                            <strong>Thanks</strong>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>Sub category</strong>
+                    </td>
+                    <td class="align-left" id="lblUserName"></td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>Category</strong>
+                    </td>
+                    <td class="align-left" id="lblFirstName"></td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>Status</strong>
+                    </td>
+                    <td class="align-left" id="lblStatus"></td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+    <div class="clr">
+    </div>
+    <div class="margin-top15">
+    </div>
+    <div class="clr">
+    </div>
+    <div align="center" class="center-button">
+        <input type="button" id="close" value="Edit" class="submit-btn cancel-btn" onclick="$.fancybox.close();" />
+        <input type="button" id="btnSave" onclick="javascript: showAfterPopup(); $('#hdnConfirm').val('1'); $('#btnSubmit').click(); $('#divProgress').show();"
+            value="Confirm" class="submit-btn update-btn" />
+    </div>
+    <div class="clear">
+    </div>
+</div>
+<script language="javascript" type="text/javascript">
+    function showAfterPopup() {
+        $("#fancybox-overlay").css("z-index", "99999999");
+    }
+
+    function AddMore() {
+        $("#hdnP").val(parseInt($("#hdnP").val()) + 1);
+        var i = parseInt($("#hdnP").val());
+        var html = " <input type='hidden' name='lstItems.Index' value=" + i + "><div id=divAdd><div class='organization_left clone' id='divCourseHead'>" +
+                           "<p>" +
+                               "  <label> Name </label>" +
+                       "<input type='text' name='lstItems[" + i + "].Name' id='lstItems_" + i + "_Name' class='form-control' maxlength='50' /> " +
+                                "&nbsp; &nbsp;" +
+         " <label> Commission </label>" +
+                       "<input type='text' name='lstItems[" + i + "].Commission' id='lstItems_" + i + "_Commission' class='form-control' maxlength='50' /> " +
+                                "&nbsp; &nbsp;" +
+                        "  <label>Price </label>" +
+        "<input type='text' name='lstItems[" + i + "].Amount' id='lstItems_" + i + "_Amount' class='form-control' maxlength='50' /> " +
+                            "</p>" +
+                        "</div>" +
+                        "<input type='button' value='Add More' onclick='AddMore();' /><br/>" +
+                         "<a href='javascript:void(0);' onclick='DeleteItem(this);'><b>X</b></a>" +
+                        "<div class='clr'>" +
+                        "</div></div>";
+
+        $("#divAdd").append(html);
+    }
+
+    function DeleteItem(element) {
+        $(element).parent().remove();
+
+    }
+
+
+
+
+</script>

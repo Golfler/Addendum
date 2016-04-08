@@ -1,0 +1,88 @@
+﻿<script type="text/javascript">
+    $(document).ready(function () {
+        
+        bindJqGridNoMultiSelect('listGames', 'pagerGames', '@Url.Action("GetGolpherPlayingHistoryForCourse", "CourseAdmin")',
+             ['CourseId', 'Game Id', 'Total Time', 'Number of Holes', 'Avg. time for one hole', 'Total time for 9 holes', 'Total time for 18 holes', 'Game Date'],
+             [{ name: 'CourseId', index: 'CourseId', width: 10, hidden: true },
+                 { name: 'GameRoundId', index: 'GameRoundId', width: 10 },
+                  { name: 'TotalTimePlay', index: 'TotalTimePlay', width: 50 },
+                    { name: 'TotalHoles', index: 'TotalHoles', width: 50 },
+                   { name: 'OneHoleAvgTime', index: 'OneHoleAvgTime', width: 50 },
+                    { name: 'NineHoleAvgTime', index: 'NineHoleAvgTime', width: 50 },
+                     { name: 'EighteenHoleAvgTime', index: 'EighteenHoleAvgTime', width: 50 },
+
+                  { name: 'strLastGameDate', index: 'strLastGameDate', width: 50  }
+             ], 'CourseId', 'desc',
+             {
+                 "searchText": (function () {
+                     return "";
+                 }),
+                 "golferid": (function () {
+                     return $("#hdnGolferId").val();
+                 }),
+                 "CourseId": (function () {
+                     return $("#hdnCourseId").val();
+                 }),
+                 "HistoryFrom": (function () {
+                     return $("#hdnHistoryFrom").val();
+                 }),
+                 "HistoryTo": (function () {
+                     return $("#hdnHistoryTo").val();
+                 })
+
+             }, '');
+
+
+    });
+
+
+
+</script>
+
+
+<tr>
+    <td id="content_center_td2" valign="top" align="center">
+        <div class="form_box">
+            <div class="search-advertiser">
+
+                <div class="clr">
+                </div>
+                <div>
+                    <label  style="width:15% !important;color:#43b34a;">
+                        Course Name
+                    </label>
+                    <span style="display: inline-block; padding: 1%;">@ViewBag.coursename </span>
+                </div>
+                <div class="clr">
+                </div>
+                <div>
+                    <label  style="width:15% !important;color:#43b34a;">
+                        Golfer Name
+                    </label>
+                    <span style="display: inline-block; padding: 1%;">@ViewBag.golfername </span>
+                </div>
+                <div class="clr">
+                </div>
+            </div>
+
+            <br />
+        </div>
+        <div class="form_box">
+            <table id="listGames" cellpadding="0" cellspacing="0" style="width: 100%;" class="jqgridTable">
+            </table>
+            <div id="pagerGames" style="width: 100%;">
+            </div>
+
+            <div align="center" class="center-button">
+                <input type="hidden" id="hdnCourseId" value="@ViewBag.courseid" />
+                <input type="hidden" id="hdnGolferId" value="@ViewBag.golferid" />
+                <input type="hidden" id="hdnCourseName" value="@ViewBag.coursename" />
+                <input type="hidden" id="hdnGolferName" value="@ViewBag.golfername" />
+                  <input type="hidden" id="hdnHistoryFrom" value="@ViewBag.HistoryFrom" />
+                <input type="hidden" id="hdnHistoryTo" value="@ViewBag.HistoryTo" />
+
+                <input type="button" value="Close" class="submit-btn cancel-btn" onclick="$.fancybox.close();" />
+            </div>
+        </div>
+    </td>
+</tr>

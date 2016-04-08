@@ -1,0 +1,81 @@
+/* style sheets */
+.ui-chatbox {
+   /* position: fixed;
+    bottom:0;
+	right:auto;*/
+    padding: 0px;
+    background: #f2f2f2;
+	border:1px solid #7d7d7d;
+	width:400px;
+	float:left;
+	margin:0px 5px;
+}
+
+.ui-chatbox-titlebar {
+    padding: 3px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.ui-chatbox-content {
+    padding: 0px;
+    margin: 0px;
+    border: 0px;
+}
+
+.ui-chatbox-log {
+    padding: 0px;
+    height: 250px;
+	width:100% !important; 
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: #FFFFFF;
+}
+
+.ui-chatbox-input {
+    border-top: 10px solid #fff;
+    overflow: hidden;
+	max-width:100% !important; 
+	width:96%;
+	padding:8px 2% !important;
+}
+
+.ui-chatbox-input-box {
+   
+    border: 1px solid #7d7d7d;/* #6699FF */
+    height: 50px;
+	width:98% !important;
+	padding:1%;
+}
+
+.ui-chatbox-icon {
+    float: right;
+}
+
+.ui-chatbox-input-focus {
+    border-color: #6699FF;
+}
+
+.ui-chatbox-msg {
+    margin-top: 5px;
+    float: left;
+    clear: both;
+	font-size:13px;
+	width:400px !important;
+	padding:0px 2% !important;
+    /* Source: http://snipplr.com/view/10979/css-cross-browser-word-wrap */
+    white-space: pre-wrap;      /* CSS3 */
+    white-space: -moz-pre-wrap; /* Firefox */
+    white-space: -pre-wrap;     /* Opera <7 */
+    white-space: -o-pre-wrap;   /* Opera 7 */
+    word-wrap: break-word;      /* IE */
+}
+/* start custom code for chat*/
+.ui-chatbox-titlebar{ background:#1b1d1e; color:#fff; font-weight:normal !important; padding:8px 2%; width:400pxf !important; font-size:17px; height:auto !important; border:none; text-transform:capitalize; -webkit-box-sizing: border-box; -moz-box-sizing: border-box;  box-sizing: border-box;}
+#divChatOuterParent{  float:left; max-width:100%; width:auto; position:fixed; bottom:0px; right:0px; overflow:auto;}
+#divChatParent{ /*float:right;*/ direction:rtl;}
+    #divChatParent div {direction:ltr;}
+.ui-chatbox-icon{ margin-top:5px;}
+.ui-chatbox-icon .ui-icon.ui-icon-close{ height:12px; width:12px; background:url(../../images/icon_chat_close.png) center center no-repeat; margin-left:10px;}
+.ui-chatbox-icon .ui-icon.ui-icon-minus{ height:12px; width:12px; background:url(../../images/icon_chat_min.png) center center no-repeat; margin-left:10px;}
+.ui-chatbox-min{ position:fixed; bottom:0px;}

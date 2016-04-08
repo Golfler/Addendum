@@ -1,0 +1,154 @@
+﻿@model Golfler.Models.GF_Settings
+
+@{
+    ViewBag.Title = "Setting";
+    ViewBag.pageTitle = "Manage Setting";
+    Layout = "~/Views/Shared/_LayoutAdminArea.cshtml";
+}
+<script>
+    $(document).ready(function () {
+        if ('@TempData["Message"]' != '') {
+            showMessage('@TempData["Message"]');
+        }
+    });
+</script>
+<div id="divSecond" class="organization_form form_box">
+    @using (Html.BeginForm("SettingAddEdit", "", FormMethod.Post, new { id = "formSettings" }))
+    { 
+        <div class="breadcrumb">
+        <ul>
+            <li><a href='@Url.Action("Dashboard")'>Dashboard</a><img src="/Content/Images/arrow.png"
+                class="arrow_position" /></li>
+            <li>Manage Settings</li>
+        </ul>
+        <div class="clr">
+        </div>
+    </div>
+        
+        <div id="divSettings">
+            @{foreach (var item in Model.lstSettings)
+              {        
+                <div>
+                    <div class="organization_left">
+                        <p>
+                            @if (item.CourseID == 0)
+                            {
+                                if (item.Name.Contains("Login"))
+                                {
+                                <label>
+                                    @item.Name (in Minutes) <a class="ToolTipIcon" message="This value represent the number of minutes account will be locked, if user try 3 fail attempt of login."></a>
+                                </label>
+                                }
+                                else if (item.Name.Contains("Host"))
+                                {
+                                <label>
+                                    @item.Name<a class="ToolTipIcon" message="Outgoing Mail Server (pop3)"></a>
+                                </label>
+                                }
+                                else if (item.Name.Contains("Port"))
+                                {
+                                <label>
+                                    @item.Name<a class="ToolTipIcon" message="Outgoing mail port"></a>
+                                </label>
+                                }
+                                else if (item.Name.Contains("Username"))
+                                {
+                                <label>
+                                    @item.Name<a class="ToolTipIcon" message="Email address by which Email will sent to users"></a>
+                                </label>
+                                }
+                                else if (item.Name.Contains("StripeAccount"))
+                                {
+                                <label>
+                                    @item.Name<a class="ToolTipIcon" message="Stripe Account to which users will sent payment"></a>
+                                </label>
+                                }
+                                else if (item.Name.Contains("StripeApiKey"))
+                                {
+                                <label>
+                                    @item.Name<a class="ToolTipIcon" message="Stripe Publishable Api Key to which users will sent payment"></a>
+                                </label>
+                                }
+                                else if (item.Name.Contains("StripeSecretApiKey"))
+                                {
+                                <label>
+                                    @item.Name<a class="ToolTipIcon" message="Stripe Secret Api Key to which users will sent payment"></a>
+                                </label>
+                                }
+                                else if (item.Name.Contains("Golfler Platform Fee"))
+                                {
+                                <label>
+                                    @item.Name<a class="ToolTipIcon" message="Golfler Platform Fee"></a>
+                                </label>
+                                }
+                                else if (item.Name.Contains("Time Zone"))
+                                {
+                                <label>
+                                    @item.Name<a class="ToolTipIcon" message="This value represent that, in which time zone course data will be saved. Report time will be effected with this settings."></a>
+                                </label>
+                                }
+                                else
+                                {
+                                <label>
+                                    @item.Name<a class="ToolTipIcon" message="This is a password of an authenticated email address"></a>
+                                </label>
+                                }
+                           
+                                @Html.TextBox("txtName", item.Name, new { @maxlength = "50", @Style = "display:none;" })
+
+                                if (item.Name.Contains("Time Zone"))
+                                {
+                                    @Html.DropDownList("txtValue", (SelectList)(ViewBag.TimeZone), "Select Time Zone", new { @id = "ddlTimeZone", @class = "red-border" })
+                                }
+                                else
+                                {
+                                    @Html.TextBox("txtValue", item.Value, new { @id = item.Name, @class = "red-border", @maxlength = "50" })
+                                }
+                            }
+                        </p>
+                    </div>
+                    <div class="clr">
+                    </div>
+                </div>
+
+              }
+            }
+        </div>
+        <div class="clr">
+        </div>
+        <div align="center" class="center-button">
+            <input type="button" id="btnSubmit" value="Update Settings"  onclick="return Validate();" class="blk-btn on" />
+        </div>
+    }
+</div>
+<script type="text/javascript">
+    function Validate() {
+
+        if ($('#UpdateFlag').size() != 0 && $('#UpdateFlag').val() != "True") {
+            NonAccessMsg();
+            return false;
+        }
+
+
+
+        var i = 0;
+        $("#divSettings").find("input.red-border").each(function () {
+
+            if ($(this).val() == "") {
+                i = 1;
+            }
+
+        });
+
+        if (i == 1) {
+            alert("All fields are required.")
+            return false;
+        }
+        else {
+            $("#formSettings").submit();
+        }
+
+    }
+
+
+</script>

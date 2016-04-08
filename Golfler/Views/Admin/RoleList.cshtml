@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Title = "Manage Roles";
+    ViewBag.pageTitle = "Manage Roles";
+}
+
+<script language="javascript">
+    function UpdateRowStatus(id, status) {
+        try {
+            UpdateStatus('UpdateRoleStatus', 'Golfler/Admin', id, status, 'list');
+        }
+        catch (ex) { alert(ex.message); }
+    };
+</script>
+
+@Html.Partial("~/Views/Shared/_RoleListScreen.cshtml")

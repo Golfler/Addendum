@@ -1,0 +1,441 @@
+﻿@{
+    ViewBag.Title = "Food Item Report";
+    ViewBag.Module = "Food Item Report";
+    ViewBag.pageTitle = "Food Item Report";
+    Layout = "~/Views/Shared/_LayoutCourseArea.cshtml";   
+}
+@Html.Partial("_jqGrid")
+
+<style>
+    .tempwidth {
+        width: 40% !important;
+    }
+
+    .tempwidthForDdl {
+        width: 96% !important;
+    }
+
+    #FoodItem {
+        width: 17%;
+        padding: 0.6%;
+    }
+
+    img.floatleft {
+        margin: 0 2px 0 4px !important;
+    }
+
+    #page-wrap {
+        overflow-x: visible !important;
+        overflow-y: visible !important;
+    }
+
+    .graph {
+        overflow-x: scroll;
+        overflow-y: hidden;
+        width: 100%;
+    }
+
+    .trPaging {
+        display: none !important;
+    }
+
+    #rs_mlist {
+        display: none !important;
+    }
+</style>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        //BindHotItems();
+
+        //$('#fbox_jqgAdminUser_search').click(function () {
+        //    if ($('#FoodItem').val() == '') {
+        //        showStickMessage('Please select category.');
+        //        return false;
+        //    }
+        //});
+    });
+    function BindHotItems() {
+
+        bindJqGridNoMultiSelect('list', 'pager', '@Url.Action("GetHotItems")',
+                 ['MenuID', 'Hot List Item Name (Trend)', 'Price', 'QTY'],
+                 [
+                     { name: 'ID', index: 'ID', width: 10, hidden: true },
+                     { name: 'Name', index: 'Name', width: 50, sortable: false },
+                     { name: 'UnitPrice', index: 'UnitPrice', width: 50, sortable: false },
+                     { name: 'Quantity', index: 'Quantity', width: 50, sortable: false }
+                 ], 'Quantity', 'desc',
+                 {
+                     "trend": (function () {
+                         return $("input[type=radio]:checked").val();
+                     }),
+                     "trendin": (function () {
+                         return $("#ddlTrendIn").val();
+                     }),
+                     "catID": (function () {
+                         return $("#FoodItem").val();
+                     })
+                 }, '');
+    }
+
+</script>
+<script type="text/javascript">
+    function FoodItemChange() {
+        //   alert("FoodItemChange");
+
+
+        $("#SubFoodItem").val("");
+        $("#SubFoodItem").html("");
+
+        $("#SubFoodItem").append($("<option></option>").val("").html("Select Food Sub Category"));
+        //fill city list 
+        if ($('#FoodItem').val() != '') {
+            $.ajax({
+                type: 'POST',
+                async: false,
+                url: '/Golfler/Golfer/SubFoodItemList',
+                data:
+                   {
+                       FoodItem: $("#FoodItem").val()
+                   },
+                success: function (data) {
+                    $("#SubFoodItem").prop("disabled", false);
+
+                    for (var i = 0; i < data.result.length; i++) {
+
+                        $("#SubFoodItem").append($("<option></option>").val(data.result[i].CatID).html(data.result[i].Name));
+                    }
+
+
+                }
+            });
+        }
+        //
+
+    }
+
+
+    function checkSearch() {
+
+        if ($('#FoodItem').val() == '') {
+            showStickMessage('Please select category.');
+            return false;
+        }
+
+        var multipleIds = '';
+        var multipleName = '';
+        var status = 0;
+        $(".ui-jqgrid-htable tr").not(":first").not(":last").each(function () {
+            if ($(this).find("td:eq(0)").find("input[type=checkbox]").prop("checked") == true) {
+                multipleIds += $(this).find("td:eq(1)").text() + ",";
+                multipleName += "[" + $(this).find("td:eq(2)").text() + "],";
+                status = 1;
+            }
+
+        });
+
+        if (status == 0) {
+            $(".ui-jqgrid-htable tr").not(":first").not(":last").each(function () {
+                multipleIds += $(this).find("td:eq(1)").text() + ",";
+                multipleName += "[" + $(this).find("td:eq(2)").text() + "],";
+
+            });
+
+        }
+        if ($("#txtFromDate").val() != "")
+            var stdate = $("#txtFromDate").val();
+
+        if ($("#txtToDate").val() != "") {
+            var eddate = $("#txtToDate").val();
+        }
+
+        if ($("#txtFromDate").val() != "" && $("#txtToDate").val() != "") {
+            if (stdate > eddate) {
+                alert("From date can not be greater than To date");
+                return false;
+            }
+
+        }
+
+        // multipleName = multipleName.slice(0, multipleName.length - 1);
+        // multipleIds = multipleIds.slice(0, multipleIds.length - 1);
+        BindHotItems();
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetFoodItemGraphData")',
+            data: { range: $("#ddlRange").val(), fromdate: stdate, todate: eddate, category: $("#FoodItem").val(), subcategory: $("#SubFoodItem").val() },
+            success: function (data) {
+
+                if (data.result == "failed") {
+                    $("#trGraph").hide();
+                    $("#lblError").show();
+                    $("#lblError").text("No record found for Graph data.");
+                }
+                else {
+                    $("#lblError").hide();
+                    $("#trGraph").show();
+                    drawChart(data);
+                    drawChartLine(data);
+                }
+            },
+            error: function (data) {
+            }
+        });
+
+        comparativeWeatherComplaints();
+    }
+
+
+    function ExprotToExcelGameplay() {
+
+        var range = $("#ddlRange").val();
+        var fromdt = $("#txtFromDate").val();
+        var todate = $("#txtToDate").val();
+        var cat = $("#FoodItem").val();
+        var subcat = $("#SubFoodItem").val();
+        var url = '@Url.Action("ExportToExcelGraphReport")' + '?range=' + range + '&fromdate=' + fromdt + '&todate=' + todate + '&category=' + cat + '&subcategory=' + subcat;
+        window.location = url;
+    }
+
+
+    function ExprotToExcelLineGraph() {
+
+        var range = $("#ddlRange").val();
+        var fromdt = $("#txtFromDate").val();
+        var todate = $("#txtToDate").val();
+        var cat = $("#FoodItem").val();
+        var subcat = $("#SubFoodItem").val();
+        var url = '@Url.Action("ExportToExcelLineGraphReport")' + '?range=' + range + '&fromdate=' + fromdt + '&todate=' + todate + '&category=' + cat + '&subcategory=' + subcat;
+        window.location = url;
+    }
+
+
+    $("#btnPrint").live("click", function () {
+        var divContents = $("#gameplay").html();
+        var printWindow = window.open('', '', 'height=400,width=800');
+        printWindow.document.write('<html><head><title>Employee Graph</title>');
+        printWindow.document.write('</head><body >');
+        printWindow.document.write(divContents);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        printWindow.print();
+    });
+    $("#btnPrint1").live("click", function () {
+        var divContents = $("#line").html();
+        var printWindow = window.open('', '', 'height=400,width=800');
+        printWindow.document.write('<html><head><title>Employee Graph</title>');
+        printWindow.document.write('</head><body >');
+        printWindow.document.write(divContents);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        printWindow.print();
+    });
+</script>
+
+
+
+
+<tr>
+    <td class="id_pathway" valign="middle">
+
+        <div class="breadcrumb">
+            <ul>
+                <li><a href='@Url.Action("Dashboard")'>Dashboard</a><img src="/Content/Images/arrow.png"
+                    class="arrow_position" /></li>
+                <li>Manage @ViewBag.Module</li>
+            </ul>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td id="content_center_td2" valign="top" align="center">
+        <div class="form_box">
+            <div class="search-advertiser">
+                <label class="width22 vacdate width19">
+                    Search</label>
+                @Html.DropDownList("FoodItem", (SelectList)(ViewBag.CategoryList), "Select Category", new { @id = "FoodItem", @onchange = "FoodItemChange();" })
+                <select id="SubFoodItem" style="width: 17%; padding: 0.6%;">
+                    <option value="">Select Sub Category</option>
+                </select>
+                <select id="ddlRange" style="width: 17%; padding: 0.6%;">
+                    <option value="10">Select Course Range</option>
+                    <option value="10">10 Miles</option>
+                    <option value="20">200 Miles</option>
+                    <option value="40">500 Miles</option>
+                </select>
+                <input type="text" placeholder="Date From" id="txtFromDate" style="width: 10%;" class="datepicker spacingt5 adname-1  datefeild border_process adname calc_icon ">
+                <input placeholder="Date To" type="text" id="txtToDate" style="width: 10%;" class="datepicker spacingt5 adname-1  datefeild border_process adname calc_icon ">
+                <div class="clr">
+                </div>
+                <label class="width22 vacdate width19">Trend</label>
+                <div>
+                    <label class="width22 vacdate width19 width_auto clear-new">
+                        <input type="radio" value="0" name="trend" checked="true" />Increased</label>
+                    <label class="width22 vacdate width19 width_auto clear-new">
+                        <input type="radio" value="1" name="trend" />Decreased</label>
+                </div>
+                <select id="ddlTrendIn" style="width: 17%; padding: 0.6%; float: left; margin-left: 0.3%;">
+                    <option value="">Select Trend In</option>
+                    <option value="Own">@Golfler.Models.LoginInfo.CourseName</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <img src="/Content/Images/search_icon.png" border="0" alt="search" class="go-btn floatleft jqGrid_refresh"
+                id="fbox_jqgAdminUser_search" onclick="javascript: return checkSearch();" />
+
+            <div class="clr">
+            </div>
+
+            <div id="page-wrap">
+                <table id="list" cellpadding="0" cellspacing="0" style="width: 100%;" class="jqgridTable">
+                </table>
+                <div id="pager" style="width: 100%;">
+                </div>
+                <input type="hidden" id="hdnId" value='@Golfler.Models.LoginInfo.UserId' />
+            </div>
+            <div class="clr">
+            </div>
+            <div style="padding-top: 3%">
+            </div>
+            <label id="lblError" style="color: red; font-weight: bold"></label>
+            <div id="trGraph" style="display: none;">
+
+                <div class="graph" style="border: 2px solid black; padding-bottom: 10px; padding-top: 10px">
+                    <div id="weatherGraph" style="width: 100%; height: 300px;"></div>
+                </div>
+                <br />
+                <div style="padding-top: 3%">
+                </div>
+
+                <input type="submit" id="btnExportExcelGameplay" class="submit-btn update-btn" name="btnExportExcel" value="Export to Excel" onclick="ExprotToExcelGameplay();" />
+                <input type="button" value="Print" name="btnPrint" class="submit-btn update-btn" id="btnPrint">
+                <div class="graph" id="gameplay" style="border: 2px solid black; padding-bottom: 10px; padding-top: 10px">
+                    @*<div id="visualization" style="width: 1900px; height: 300px; overflow-x:auto; overflow-y:hidden"></div>*@
+                    <div id="visualization" style="min-height: 350px; min-width: 1800px;"></div>
+                </div>
+                <br />
+                <div style="padding-top: 3%">
+                </div>
+                <input type="submit" id="btnExportExcelGameplay1" class="submit-btn update-btn" name="btnExportExcel" value="Export to Excel" onclick="ExprotToExcelLineGraph();" />
+                <input type="button" value="Print" name="btnPrint1" class="submit-btn update-btn" id="btnPrint1">
+                <div class="graph" id="line" style="border: 2px solid black; padding-bottom: 10px; padding-top: 10px">
+                    @*<div id="visualization1" style="width: 1900px; height: 320px; overflow-x:auto; overflow-y:hidden"></div>*@
+                    <div id="visualization1" style="min-height: 400px; min-width: 1800px;"></div>
+                </div>
+
+            </div>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+<script>
+    google.load("jquery", "1.4.4");
+    google.load("jqueryui", "1.8.7");
+</script>
+<script>
+    jQuery.noConflict();
+</script>
+<script>
+    google.load("visualization", "1", { packages: ["corechart"] });
+</script>
+
+<script type="text/javascript">
+
+    function drawChart(data) {
+
+        var obj = $.parseJSON(data.result);
+
+        var jsondata = google.visualization.arrayToDataTable(obj);
+
+        var options = {
+            title: 'Menu Item in food order',
+            vAxis: { title: "Unit(s) Sold" },
+            hAxis: { title: "Course Name", showTextEvery: 1 },
+            seriesType: "bars",
+            series: { 5: { type: "line" } },
+            legend: { position: 'top' },
+            chartArea: { left: '5%', width: '92%' }//, width: "100%" }
+        };
+        // Create and draw the visualization.
+
+        var ac = new google.visualization.ComboChart(document.getElementById('visualization'));
+        ac.draw(jsondata, options);
+
+    }
+
+    function drawChartLine(data) {
+
+        var options = {
+            title: 'Menu Item in food order In Trend',
+            vAxis: { title: "Unit(s) Sold" },
+            hAxis: {
+                title: "Menu Item Name",
+                count: -1,
+                viewWindowMode: 'pretty',
+                slantedText: true,
+                //slantedTextAngle: 90,
+                showTextEvery: 1
+            },
+            //hAxis: {
+            //    showTextEvery: 1,
+            //    slantedText: true,  /* Enable slantedText for horizontal axis */
+            //    slantedTextAngle: 90 /* Define slant Angle */
+            //},
+            curveType: 'function',
+            legend: { position: 'top' },
+            chartArea: { left: '5%', width: '92%', height: '50%' }//, width: "100%" }
+        };
+
+        var obj = $.parseJSON(data.lineresult);
+
+        var jsondata = google.visualization.arrayToDataTable(obj);
+
+        var chart = new google.visualization.LineChart(document.getElementById('visualization1'));
+
+        chart.draw(jsondata, options);
+    }
+
+    function comparativeWeatherComplaints() {
+        var currDate = $.datepicker.formatDate('mm/dd/yy', new Date());
+        var jsonData = $.ajax({
+            url: '@Url.Action("GetComparativeOrderWeather", "CourseAdmin")',
+            data: {
+                golferEmail: 0,
+                DateFrom: $('#txtFromDate').val() == '' ? '01/01/1950' : $('#txtFromDate').val(),
+                DateTo: $('#txtToDate').val() == '' ? currDate : $('#txtToDate').val(),
+                viewIN: 'Own'
+            },
+            dataType: "json",
+            async: false
+        }).responseText;
+
+        var data = google.visualization.arrayToDataTable($.parseJSON(jsonData));
+
+        var options = {
+            title: 'Weather Information',
+            hAxis: {
+                format: '#.##',
+                count: -1,
+                viewWindowMode: 'pretty',
+                slantedText: true,
+                showTextEvery: 1
+            },
+            curveType: 'function',
+            legend: { position: 'top' },
+            chartArea: { left: '5%', width: '92%', height: '50%' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('weatherGraph'));
+
+        chart.draw(data, options);
+    }
+</script>

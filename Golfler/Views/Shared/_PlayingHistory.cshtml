@@ -1,0 +1,205 @@
+﻿<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+    google.load("visualization", "1", { packages: ["corechart"] });
+
+</script>
+<style>
+    .tempwidthForDdl {
+        width: 100% !important;
+    }
+</style>
+
+@Html.Partial("_jqGrid")
+<script type="text/javascript">
+    $(document).ready(function () {
+
+    });
+
+
+    function bindMainGrid() {
+        bindJqGridNoMultiSelect('list', 'pager', '@Url.Action("GetGolpherforplayinghistory", "CourseAdmin")',
+                 ['GolpherId', 'Golfer Name', 'Email', 'Course Name', 'Device Type'],
+                 [{ name: 'GolpherId', index: 'GolpherId', width: 10, hidden: true },
+                   //  { name: 'ModifyDate', index: 'ModifyDate', width: 50, formatter: 'date', formatoptions: { srcformat: 'U', newformat: 'm/d/Y' } },
+                     { name: 'GolpherName', index: 'GolpherName', width: 50, formatter: SetSelectLink, classes: 'zzz' },
+                     { name: 'Email', index: 'Email', width: 50 },
+                     { name: 'CourseName', index: 'CourseName', width: 50, hidden: true },
+                     { name: 'DeviceType', index: 'DeviceType', width: 50 }
+                 ], 'GolpherId', 'desc',
+                 {
+                     "searchText": (function () {
+                         return $("#txtName").val();
+                     }),
+                     "CourseId": (function () {
+                         return $("#hdnCourseID").val();
+                     }),
+                     "HistoryFrom": (function () {
+                         return $("#txtFromDate").val();
+                     }),
+                     "HistoryTo": (function () {
+                         return $("#txtToDate").val();
+                     }),
+                     "CompareParameter": (function () {
+                         return $("#CompareParameter").val();
+                     }),
+                     "RangeParameter": (function () {
+                         return $("#RangeParameter").val();
+                     })
+
+                 }, '');
+    }
+
+    function SetSelectLink(cellvalue, options, rowObject) {
+
+        try {
+            var gid = rowObject["GolpherId"];
+            //var type = rowObject["Type"];
+            //var doActive = rowObject["DoActive"];
+            // if ($('#UpdateFlag').size() != 0 && $('#UpdateFlag').val() != "True")
+            return "<a href='javascript:void(0)' onclick=javascript:ShowGolferDetails(&apos;" + gid + "&apos;); >" + cellvalue + "</a>";
+            //  else
+            //     return ((type == true || type == "true") || (doActive == "false" || doActive == false)) ? "<a href='UserAddEdit/" + Eid + "' >" + cellvalue + "</a>" : cellvalue;
+
+            //return "<a href='UserAddEdit/" + Eid + "' >" + cellvalue + "</a>";
+        }
+        catch (ex) { alert(ex.message); }
+    }
+
+    function CompareChange() {
+        if ($("#CompareParameter").val() != "4") {
+            $("#RangeParameter").val("0");
+            $("#RangeParameter").hide();
+            $("#dvRange").hide();
+        }
+        else {
+            $("#RangeParameter").show();
+            $("#dvRange").show();
+        }
+    }
+
+    function ShowGolferDetails(gid) {
+        $('#divProgress').show();
+
+        var cid = 0;
+        if ($("#hdnCourseID").val() != "" && $("#hdnCourseID").val() != "undefined") {
+            cid = $("#hdnCourseID").val();
+        }
+
+        $.ajax({
+            type: "POST",
+            url: '/Golfler/CourseAdmin/GolferPlayingHistory/',
+            data: { GolferId: gid, CourseId: cid },
+            async: false,
+            success: function (arg) {
+                // alert(arg);
+                $('#divProgress').hide();
+                $('#GolferDetails').html('');
+                $('#GolferDetails').html(arg);
+            }
+        });
+        $('#divProgress').hide();
+
+    }
+
+    function SearchData() {
+        $('#GolferDetails').html('');
+        if (($("#hdnCourseID").val() == "") || ($("#hdnCourseID").val() == "0") || ($("#hdnCourseID").val() == "undefined")) {
+
+            showStickMessage('Please enter Course.');
+            return false;
+        }
+        else {
+            if (($("#CompareParameter").val() == "4") && ($("#RangeParameter").val() == "0")) {
+                showStickMessage('Please Select Range.');
+                return false;
+            }
+            else {
+                bindMainGrid();
+                //$("#list").trigger("reloadGrid", [{ current: true }]);
+                return true;
+            }
+        }
+    }
+</script>
+<tr>
+    <td class="id_pathway" valign="middle">
+        <div class="breadcrumb">
+            <input type="hidden" id="hdnRequestFrom" value="@ViewBag.RequestFrom" />
+            <ul>
+                <li><a href='@Url.Action("Dashboard")'>Dashboard</a><img src="/Content/Images/arrow.png"
+                    class="arrow_position" /></li>
+                <li>@ViewBag.Module<img src="/Content/Images/arrow.png"
+                    class="arrow_position" /></li>
+                <li>@ViewBag.Title</li>
+            </ul>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td id="content_center_td2" valign="top" align="center">
+        <div class="form_box">
+            <div class="search-advertiser">
+                <div class="clear"></div>
+                <input type="hidden" id="hdnCourseID" name="hdnCourseID" value="@Golfler.Models.LoginInfo.CourseId" />
+                @*<div>
+
+                    <label>
+                        Enter Course
+                    </label>
+                    @Html.Partial("~/Views/Tools/CourseOnlyAutoComplete.cshtml")
+                </div>*@
+
+                <div class="clr">
+                </div>
+                <label class="width22 vacdate width19">
+                    Search:
+                </label>
+                <input type="text" placeholder="Golfer Name, Email" name="searchText" id="txtName" class="searchfeild jqGrid_refreshKey adname"
+                    value="" style="margin-bottom: 2px;" size="30" />
+
+                <div class="drop_down1">
+                    <select id="CompareParameter" class="status tempwidthForDdl" onchange="CompareChange();">
+                        <option value="">Select Compare Parameter</option>
+                        <option value="1">County</option>
+                        <option value="2">State</option>
+                        <option value="3">City</option>
+                        <option value="4">ZIP</option>
+                    </select>
+                </div>
+                <div class="drop_down1" id="dvRange" style="display: none;">
+                    <select id="RangeParameter" style="display: none;" class="status tempwidthForDdl">
+                        <option value="0">Select Range</option>
+                        <option value="5">5 Miles</option>
+                        <option value="10">10 Miles</option>
+                        <option value="20">20 Miles</option>
+                        <option value="25">25 Miles</option>
+                    </select>
+                </div>
+                <img src="/Content/Images/search_icon.png" border="0" alt="search" style="margin-left: -1px;" class="go-btn  jqGrid_refresh"
+                    id="fbox_jqgAdminUser_search" onclick="return SearchData();" />
+            <div class="clr">
+            </div>
+        </div>
+
+        @Html.Partial("~/Views/Tools/TimeSpanFilter.cshtml")
+
+        <div class="clr">
+        </div>
+        <br />
+        <div>
+            <table id="list" cellpadding="0" cellspacing="0" style="width: 100%;" class="jqgridTable">
+            </table>
+            <div id="pager" style="width: 100%;">
+            </div>
+            <div class="clr">
+            </div>
+        </div>
+        </div>
+    </td>
+</tr>
+
+<div id="GolferDetails">
+</div>
+

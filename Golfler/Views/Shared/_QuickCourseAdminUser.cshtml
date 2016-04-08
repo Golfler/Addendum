@@ -1,0 +1,144 @@
+﻿<script type="text/javascript">
+
+
+    function savedata() {
+        var message = "";
+
+        if ($("#UserName").val() == "") {
+            message = message + "Please enter User Name.<br>"
+
+        }
+        if ($("#Email").val() == "") {
+            message = message + "Please enter Email.<br>"
+
+        }
+        if ($("#txtPassword").val() == "") {
+            message = message + "Please enter Password.<br>"
+
+        }
+        if ($("#txtRePassword").val() == "") {
+            message = message + "Please enter Confirm Password.<br>"
+
+        }
+        if ($("#FirstName").val() == "") {
+            message = message + "Please enter First Name.<br>"
+
+        }
+        if ($("#LastName").val() == "") {
+            message = message + "Please enter Last Name.<br>"
+
+        }
+        if (message == "") {
+            $.ajax({
+                type: 'POST',
+                url: '/Golfler/Admin/QuickAddCourseAdmin',
+                data: {
+                    UserName: $("#UserName").val(),
+                    Email: $("#Email").val(),
+                    FirstName: $("#FirstName").val(),
+                    LastName: $("#LastName").val(),
+                    Password: $("#txtPassword").val()
+                },
+                success: function (data) {
+                    alert(data.newid);
+                    if (data.newid==0) {                     
+                        showStickMessage(data.uname);
+                    }
+                    else {
+
+                        $.fancybox.close();                     
+                    }
+                }
+            });
+            return false;
+        }
+        else {
+            showStickMessage(message);
+            return false;
+        }
+    }
+
+</script>
+<div id="content_div" class="form_box organization_form">
+
+
+    <div style="margin: 0px 0px 0px 0px;">
+        <div class="organization_left">
+            <p class="tpspacing">
+
+                <label>User Name</label>
+
+                <input type="text" id="UserName" name="UserName" class="userfeilder red-border" autocomplete="off" maxlength="25" />
+            </p>
+        </div>
+        <div class="organization_left">
+            <p>
+                <label>Email</label>
+
+                <input type="text" id="Email" name="Email" class="userfeilder red-border" maxlength="50" />
+            </p>
+
+        </div>
+        <div class="clr">
+        </div>
+        <div class="organization_left">
+            <p class="tpspacing">
+                <label>Password</label>
+                <input type="password" id="txtPassword" name="txtPassword" class="userfeilder password red-border" autocomplete="off" maxlength="50" />
+
+                <div class="password-meter" width="100%" style="float: right; margin-right: 75px; height: auto;">
+                    <div class="password-meter-message">
+                        &nbsp;
+                    </div>
+                    <div class="password-meter-bg">
+                        <div class="password-meter-bar">
+                        </div>
+                    </div>
+                </div>
+            </p>
+        </div>
+        <div class="organization_left">
+            <p class="tpspacing">
+                <label>Confirm Password</label>
+                <input type="password" id="txtRePassword" name="txtRePassword" class="userfeilder password1 red-border" autocomplete="off" maxlength="50" />
+
+
+            </p>
+        </div>
+        <div class="clr">
+        </div>
+    </div>
+
+    <div>
+        <div class="organization_left">
+            <p>
+                <label>First Name</label>
+                <input type="text" id="FirstName" name="FirstName" class="userfeilder red-border" maxlength="50" />
+
+            </p>
+        </div>
+        <div class="organization_left">
+            <p>
+                <label>Last Name</label>
+
+                <input type="text" id="LastName" name="LastName" class="userfeilder red-border" maxlength="50" />
+
+            </p>
+        </div>
+        <div class="clr">
+        </div>
+    </div>
+
+    <div class="clr">
+    </div>
+    <div align="center" class="center-button">
+        <input type="button" id="btnSubmit" class="submit-btn update-btn" onclick="javascript: showAfterPopup(); savedata();" name="btnSubmit" value="Submit" />
+        <input type="button" id="btnCancel" class="submit-btn cancel-btn" value="Cancel" />
+    </div>
+
+</div>
+<script language="javascript" type="text/javascript">
+    function showAfterPopup() {
+        $("#fancybox-overlay").css("z-index", "99999999");
+    }
+</script>

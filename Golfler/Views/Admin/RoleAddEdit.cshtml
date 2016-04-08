@@ -1,0 +1,8 @@
+﻿@{
+    ViewBag.Title = (Model.ID > 0 ? "Edit" : "Add") + " Role";
+    ViewBag.pageTitle = (Model.ID > 0 ? "Edit" : "Add") + " Role";
+
+    ViewBag.CallFrom = "SuperAdmin";
+}
+
+@Html.Partial("~/Views/Shared/_RoleAddEditScreen.cshtml")

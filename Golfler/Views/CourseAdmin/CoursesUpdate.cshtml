@@ -1,0 +1,1499 @@
+﻿@model Golfler.Models.GF_CourseInfo
+@{
+    ViewBag.Title = "Edit Course";
+    Layout = "~/Views/Shared/_LayoutCourseArea.cshtml";
+}
+<style type="text/css">
+    #map-canvas
+    {
+        height: 100%;
+        margin: 0px;
+        padding: 0px;
+    }
+
+    .organization_left input
+    {
+        background: #f5f5f5;
+        border: 1px solid #ccc;
+    }
+
+    .form_box table tr:hover input
+    {
+        background: #fff;
+    }
+</style>
+<script>
+
+    function ManageCountry() {
+
+        if ($('#ddlCountry').val() == "United States") {//if USA is selected
+
+            $('#ddlState').show();
+            $('#txtState').hide();
+            //$('#ddlCounty').show();
+            //$('#lblCounty').show();
+        }
+        else {
+            $('#ddlState').hide();
+            $('#txtState').show();
+            //$('#ddlCounty').hide();
+            //$('#lblCounty').hide();
+            //  $('#txtState').val() = "";
+        }
+    }
+
+    function ManageStateDDL() {
+        var state = $('#ddlState').val();
+        if ($('#ddlState').val() != "") {
+
+            $('#txtState').val(state);
+        }
+    }
+</script>
+
+<script type="text/javascript">
+
+    //$(document).ready(function () {
+    //    alert('doc');
+    //});
+
+    //$(document).ready(  function () {
+    $(window).load(function () {
+        $("#btnSetting").click(function () {
+
+            var SettingsMsg = "";
+
+            ///////// PAR INFORMATION START
+            var FirstParFill = "";
+            var SecParFill = "";
+            var checkAllFirstParFill = "";
+            var checkAllSecParFill = "";
+
+
+
+            $(".clsFirstNinePar").each(function () {
+                if ($(this).val().trim() != "") {
+                    FirstParFill = "fill";
+                }
+            });
+
+            $(".clsSecNinePar").each(function () {
+                if ($(this).val().trim() != "") {
+                    SecParFill = "fill";
+                }
+            });
+
+            if (FirstParFill == "" && SecParFill == "") {
+                SettingsMsg = SettingsMsg + "Please fill Par Information." + "\n";
+            }
+            else {
+                if (FirstParFill == "fill") {
+                    $(".clsFirstNinePar").each(function () {
+                        if ($(this).val().trim() == "") {
+                            checkAllFirstParFill = "empty";
+                        }
+                    });
+                }
+                if (SecParFill == "fill") {
+                    $(".clsSecNinePar").each(function () {
+                        if ($(this).val().trim() == "") {
+                            checkAllSecParFill = "empty";
+                        }
+                    });
+                }
+                if (checkAllFirstParFill == "empty") {
+                    SettingsMsg = SettingsMsg + "Please fill Par information for all first nine holes." + "\n";
+                }
+                if (checkAllSecParFill == "empty") {
+                    SettingsMsg = SettingsMsg + "Please fill Par information for all  last nine holes." + "\n";
+                }
+            }
+            //////// PAR INFORMATION END
+
+            var checkAllTee = "";
+            $(".clsTee").each(function () {
+                if ($(this).val().trim() != "") {
+                    checkAllTee = "fill";
+                }
+            });
+
+            if (checkAllTee == "fill") {
+                //////// blue information start
+                var FirstBlueFill = "";
+                var SecBlueFill = "";
+                var checkAllFirstBlueFill = "";
+                var checkAllSecBlueFill = "";
+
+                $(".clsFirstNineBlue").each(function () {
+                    if ($(this).val().trim() != "") {
+                        FirstBlueFill = "fill";
+                    }
+                });
+
+                $(".clsSecNineBlue").each(function () {
+                    if ($(this).val().trim() != "") {
+                        SecBlueFill = "fill";
+                    }
+                });
+
+                if (FirstBlueFill == "" && SecBlueFill == "") {
+                    // SettingsMsg = SettingsMsg + "Please fill Blue Tee Information." + "\n";
+                }
+                else {
+                    if (FirstBlueFill == "fill") {
+                        $(".clsFirstNineBlue").each(function () {
+                            if ($(this).val().trim() == "") {
+                                checkAllFirstBlueFill = "empty";
+                            }
+                        });
+                    }
+                    if (SecBlueFill == "fill") {
+                        $(".clsSecNineBlue").each(function () {
+                            if ($(this).val().trim() == "") {
+                                checkAllSecBlueFill = "empty";
+                            }
+                        });
+                    }
+                    if (checkAllFirstBlueFill == "empty") {
+                        SettingsMsg = SettingsMsg + "Please fill Blue Tee information for all first nine holes." + "\n";
+                    }
+                    if (checkAllSecBlueFill == "empty") {
+                        SettingsMsg = SettingsMsg + "Please fill Blue Tee information for all  last nine holes." + "\n";
+                    }
+                }
+
+                //////// blue information end
+
+                //////// white information start
+                var FirstwhiteFill = "";
+                var SecwhiteFill = "";
+                var checkAllFirstwhiteFill = "";
+                var checkAllSecwhiteFill = "";
+
+                $(".clsFirstNinewhite").each(function () {
+                    if ($(this).val().trim() != "") {
+                        FirstwhiteFill = "fill";
+                    }
+                });
+
+                $(".clsSecNinewhite").each(function () {
+                    if ($(this).val().trim() != "") {
+                        SecwhiteFill = "fill";
+                    }
+                });
+
+                if (FirstwhiteFill == "" && SecwhiteFill == "") {
+                    //  SettingsMsg = SettingsMsg + "Please fill White Tee Information." + "\n";
+                }
+                else {
+                    if (FirstwhiteFill == "fill") {
+                        $(".clsFirstNinewhite").each(function () {
+                            if ($(this).val().trim() == "") {
+                                checkAllFirstwhiteFill = "empty";
+                            }
+                        });
+                    }
+                    if (SecwhiteFill == "fill") {
+                        $(".clsSecNinewhite").each(function () {
+                            if ($(this).val().trim() == "") {
+                                checkAllSecwhiteFill = "empty";
+                            }
+                        });
+                    }
+                    if (checkAllFirstwhiteFill == "empty") {
+                        SettingsMsg = SettingsMsg + "Please fill White Tee information for all first nine holes." + "\n";
+                    }
+                    if (checkAllSecwhiteFill == "empty") {
+                        SettingsMsg = SettingsMsg + "Please fill White Tee information for all  last nine holes." + "\n";
+                    }
+                }
+                //////// white information end
+
+                //////// red information start
+                var FirstredFill = "";
+                var SecredFill = "";
+                var checkAllFirstredFill = "";
+                var checkAllSecredFill = "";
+
+                $(".clsFirstNinered").each(function () {
+                    if ($(this).val().trim() != "") {
+                        FirstredFill = "fill";
+                    }
+                });
+
+                $(".clsSecNinered").each(function () {
+                    if ($(this).val().trim() != "") {
+                        SecredFill = "fill";
+                    }
+                });
+
+                if (FirstredFill == "" && SecredFill == "") {
+                    //  SettingsMsg = SettingsMsg + "Please fill Red Tee Information." + "\n";
+                }
+                else {
+                    if (FirstredFill == "fill") {
+                        $(".clsFirstNinered").each(function () {
+                            if ($(this).val().trim() == "") {
+                                checkAllFirstredFill = "empty";
+                            }
+                        });
+                    }
+                    if (SecredFill == "fill") {
+                        $(".clsSecNinered").each(function () {
+                            if ($(this).val().trim() == "") {
+                                checkAllSecredFill = "empty";
+                            }
+                        });
+                    }
+                    if (checkAllFirstredFill == "empty") {
+                        SettingsMsg = SettingsMsg + "Please fill Red Tee information for all first nine holes." + "\n";
+                    }
+                    if (checkAllSecredFill == "empty") {
+                        SettingsMsg = SettingsMsg + "Please fill Red Tee information for all  last nine holes." + "\n";
+                    }
+                }
+                //////// red information end
+
+
+            }
+            else {
+                SettingsMsg = SettingsMsg + "Please fill atleast one Tee information." + "\n";
+            }
+
+            if (SettingsMsg == "") {
+                return true;
+            }
+            else {
+                alert(SettingsMsg);
+                return false;
+            }
+        });
+
+        $("#divProgress").hide();
+
+        $('#ddlCountry').val($('#hdnCountry').val());
+        $('#ddlState').val($('#hdnState').val());
+        //$('#ddlCounty').val($('#hdnCounty').val());
+
+        ManageCountry();
+
+
+
+        //alert($("#hdnActiveDiv").val());
+        if ($("#hdncoursedetMessage").val() != "") {
+            alert($("#hdncoursedetMessage").val());
+
+        }
+        if ($("#hdncourseSetting").val() != "") {
+            alert($("#hdncourseSetting").val());
+
+        }
+
+        //if ($("#hdnHoleDetails").val() != "") {
+        //    alert($("#hdnHoleDetails").val());
+
+        //}
+        //if ($("#hdncourseHandicap").val() != "") {
+        //    alert($("#hdncourseHandicap").val());
+
+        //}
+        //if ($("#hdncourseParMessage").val() != "") {
+        //    alert($("#hdncourseParMessage").val());
+
+        //}
+
+
+        $('#btnCancel').click(function () {
+            window.location = '@Url.Action("CoursesUpdate")';
+        });
+
+        if ('@(Model.IsPlateformFeeActive ?? false)' == 'True') {
+            $('#IsPlateformFeeActive').val(true);
+            $('#PlateformFee').removeAttr('readonly');
+        }
+        else {
+            $('#IsPlateformFeeActive').val(false);
+            $('input[name="PlatFormFeeActive"]').removeAttr('checked');
+            $('#PlateformFee').attr('readonly', 'readonly');
+            $('#PlateformFee').val('0.00');
+        }
+
+        $('input[name="PlatFormFeeActive"]').change(function () {
+            if ($(this).is(':checked') == true) {
+                $('#PlateformFee').removeAttr('readonly');
+                $('#PlateformFee').val('');
+                $('#IsPlateformFeeActive').val(true);
+            }
+            else {
+                $('#PlateformFee').attr('readonly', 'readonly');
+                $('#PlateformFee').val('0.00');
+                $('#IsPlateformFeeActive').val(false);
+            }
+        });
+
+       
+        showStep($("#hdnActiveDiv").val());
+
+    });
+
+
+    function showStep(divID) {
+      
+        if (divID == "course") {
+            // alert('course');
+            $("#dvCourse").show();
+            $("#dvCourseSetting").hide();
+
+            //$("#dvHole").hide();
+            //$("#dvHandicapped").hide();
+            //$("#dvPar").hide();
+        }
+        else if (divID == "coursesetting") {
+            // alert('course');
+            if ($('#frmSubmit').valid()) {
+                $("#dvCourse").hide();
+                $("#dvCourseSetting").show();
+            }
+            else {
+                alert('Please fill all required information and submit to save in "Update Course" section before Scorecard setup.');
+            }
+            //$("#dvHole").hide();
+            //$("#dvHandicapped").hide();
+            //$("#dvPar").hide();
+        }
+
+        //else if (divID == "hole") {
+        //    // alert('hole');
+        //    $("#dvCourse").hide();
+        //    $("#dvHole").show();
+        //    $("#dvHandicapped").hide();
+        //    $("#dvPar").hide();
+        //}
+        //else if (divID == "handicapped") {
+        //    // alert('handicapped');
+        //    $("#dvCourse").hide();
+        //    $("#dvHole").hide();
+        //    $("#dvHandicapped").show();
+        //    $("#dvPar").hide();
+        //}
+        //else if (divID == "par") {
+        //    //  alert('par');
+        //    $("#dvCourse").hide();
+        //    $("#dvHole").hide();
+        //    $("#dvHandicapped").hide();
+        //    $("#dvPar").show();
+        //}
+    }
+
+
+</script>
+<script type="text/javascript">
+    $(document).ready(
+        function () {
+            //$("#frmSubmit").validate();
+            //$("#txtpassword").valid();
+        });
+</script>
+<tr>
+    <td class="id_pathway">
+        <div id="divProgress">
+            <div align="center" style="width: 100%; position: fixed; z-index: 100001; top: 0px; left: 0px; vertical-align: middle; text-align: center; _height: expression(document.body.offsetHeight + 'px');">
+                <div style="margin-top: 250px">
+                    <img src="../../../images/loading.gif" alt="loading" />
+                </div>
+            </div>
+            <div id="backgroundElement" style="position: fixed; left: 0px; top: 0px; z-index: 10000; width: 100%; height: 1800px; background-color: #666666; opacity: 0.4; filter: alpha(opacity=40);">
+            </div>
+        </div>
+        <div class="breadcrumb">
+            <input type="hidden" id="hdncoursedetMessage" value="@ViewBag.coursedetMessage" />
+            @*    <input type="hidden" id="hdnHoleDetails" value="@ViewBag.HoleDetails" />
+            <input type="hidden" id="hdncourseHandicap" value="@ViewBag.courseHandicap" />
+            <input type="hidden" id="hdncourseParMessage" value="@ViewBag.courseParMessage" />*@
+
+            <input type="hidden" id="hdncourseSetting" value="@ViewBag.CourseSetting" />
+
+
+            <ul>
+                <li><a href='@Url.Action("Dashboard")'>Dashboard</a><img src="/Content/Images/arrow.png"
+                    class="arrow_position" /></li>
+                <li>@ViewBag.Title</li>
+            </ul>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td valign="top" align="center">
+        <div align="center" class="center-button">
+            <div>
+                <input type="button" id="dvCourseTop" value="Update Course" onclick="showStep('course')" class="submit-btn update-btn" />
+                <input type="button" id="dvCourseSettingTop" value="Scorecard setup" onclick="showStep('coursesetting')" class="submit-btn  update-btn" />
+
+                @*  <input type="button" id="dvHoleTop" value="Update Hole" onclick="showStep('hole')" class="submit-btn  update-btn" />
+                <input type="button" id="dvHandyCapTop" value="Update Handicapped" onclick="showStep('handicapped')" class="submit-btn update-btn" />
+                <input type="button" id="dvParTop" value="Update Par" onclick="showStep('par')" class="submit-btn update-btn" />*@
+                <input type="hidden" id="hdnActiveDiv" value="@ViewBag.ActiveDive" />
+                <br />
+                &nbsp;
+            </div>
+    </td>
+</tr>
+<tr>
+    <td id="content_center_td2" valign="top" align="center">
+        <div style="text-align: left;">
+            @if (!(Golfler.Models.CommonFunctions.IsCourseSettingsComplete(Convert.ToInt64(Golfler.Models.LoginInfo.CourseId))))
+            {
+                <div id="divCourseSettings" class="info_text" style="color: red;">&#8226; Scorecard setup is pending.<span></span></div>
+            }
+            @if (!(Golfler.Models.CommonFunctions.IsCourseBuilderInitiate(Convert.ToInt64(Golfler.Models.LoginInfo.CourseId))))
+            {
+                <div id="divCourseBuilder" class="info_text" style="color: red;">&#8226; <a style="color: red;" href='/Golfler/CourseAdmin/CourseBuilder'>Course Builder settings are pending.</a> <span></span></div>
+            }
+        </div>
+        <div class="datainner_box" id="dvCourse">
+            <div id="content_div" class="form_box organization_form">
+                @using (Html.BeginForm("CoursesUpdate", null, FormMethod.Post, new { id = "frmSubmit" }))
+                {
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(x => x.ID)
+                    @Html.Hidden("hdnIsLoginUser", (object)ViewBag.IsLoginUser)              
+                    <div style="margin: 0px 0px 0px 0px;">
+                        <div class="organization_left">
+                            <p class="tpspacing">
+
+                                @Html.LabelFor(x => x.COURSE_NAME, "Course Name")
+                                @Html.TextBoxFor(x => x.COURSE_NAME, new { @class = "userfeilder red-border" })
+
+
+                            </p>
+                        </div>
+                        <div class="organization_left">
+                            <p class="tpspacing">
+
+                                @Html.LabelFor(x => x.TYPE, "Type")
+                                @Html.DropDownListFor(x => x.TYPE, Model.CourseType)
+
+
+                            </p>
+                        </div>
+                        <div class="clr">
+                        </div>
+                    </div>                 
+                    <div>
+                        
+                        <div class="organization_left" style="display:none">
+                            <p class="tpspacing">
+                                <label>Green Grass Type:</label>
+                                @Html.DropDownListFor(x => x.GREENGRASSTYPE, Model.CourseGREENGRASSTYPE)
+
+                            </p>
+                        </div>
+                        <div class="clr">
+                        </div>
+                    </div> 
+                    <div>
+                        <div class="organization_left" style="display:none">
+                            <p class="tpspacing">
+
+                                <label>Sand Bunkers:</label>
+                                @Html.DropDownListFor(x => x.SANDBUNKERS, Model.CourseSANDBUNKERS)
+
+
+                            </p>
+                        </div>
+                        <div class="organization_left" style="display:none">
+                            <p class="tpspacing">
+                                <label>Yard Age Markers:</label>
+                                @Html.DropDownListFor(x => x.YARDAGEMARKERS, Model.CourseYARDAGEMARKERS)
+
+                            </p>
+                        </div>
+                        <div class="clr">
+                        </div>
+                    </div>                
+                    <div>
+                        <div class="organization_left">
+                            <p class="tpspacing">
+
+                                <label>Public Access?:</label>
+                                @Html.DropDownListFor(x => x.ACCESS, Model.CourseAccess)
+
+
+                            </p>
+                        </div>
+                        <div class="organization_left">
+                            <p class="tpspacing">
+                                <label>Discount:</label>
+                                @Html.DropDownListFor(x => x.DISCOUNTS, Model.CourseDisCont)
+
+                            </p>
+                        </div>
+                        <div class="clr">
+                        </div>
+                    </div>                  
+                    <div>
+                        <div class="organization_left">
+                            <p class="tpspacing">
+
+                                <label>Rental Clubs:</label>
+                                @Html.DropDownListFor(x => x.RENTALCLUBS, Model.CourseRENTALCLUBS)
+
+
+                            </p>
+                        </div>
+                        <div class="organization_left">
+                            <p class="tpspacing">
+
+                                <label>Bar:</label>
+                                @Html.DropDownListFor(x => x.BAR, Model.CourseBAR)
+
+
+                            </p>
+                        </div>
+                        <div class="organization_left" style="display:none">
+                            <p class="tpspacing">
+                                <label>Pull Carts:</label>
+                                @Html.DropDownListFor(x => x.PULLCARTS, Model.CoursePULLCARTS)
+
+                            </p>
+                        </div>
+                        <div class="clr">
+                        </div>
+                    </div>                
+                    <div>
+                        <div class="organization_left">
+                            <p class="tpspacing">
+
+                                <label>Walking:</label>
+                                @Html.DropDownListFor(x => x.WALKING, Model.CourseWALKING)
+
+
+                            </p>
+                        </div>
+                        <div class="organization_left">
+                            <p class="tpspacing">
+                                <label>Restaurant:</label>
+                                @Html.DropDownListFor(x => x.RESTAURANT, Model.CourseRESTAURANT)
+
+                            </p>
+                        </div>
+                        <div class="clr">
+                        </div>
+                    </div>                 
+                    <div>
+                        <div class="organization_left">
+                            <p class="tpspacing">
+
+                                <label>Food:</label>
+                                @Html.DropDownListFor(x => x.Food, Model.CourseFOOD)
+
+
+                            </p>
+                        </div>
+                        <div class="organization_left">
+                            <p class="tpspacing">
+                                <label>Available Products:</label>
+                                @Html.DropDownListFor(x => x.AVAILABLEPRODUCTS, Model.CourseAVAILABLEPRODUCTS)
+
+                            </p>
+                        </div>
+                        <div class="clr">
+                        </div>
+                    </div> 
+                    <div>
+                        
+                        <div class="organization_left" style="display:none">
+                            <p class="tpspacing">
+                                <label>Hours:</label>
+                                @Html.DropDownListFor(x => x.HOURS, Model.CourseHOURS)
+
+                            </p>
+                        </div>
+                        <div class="clr">
+                        </div>
+                    </div>                 
+                    <div>
+                        <div class="organization_left" style="display: none;">
+                            <p class="tpspacing">
+
+                                <label>Homes On Course:</label>
+                                @Html.DropDownListFor(x => x.HOMESONCOURSE, Model.CourseHOMESONCOURSE)
+
+
+                            </p>
+                        </div>
+                        <div class="organization_left">
+                            <p class="tpspacing">
+                                @Html.LabelFor(x => x.ADDRESS, "Address")
+                                @Html.TextBoxFor(x => x.ADDRESS, new { @class = "userfeilder  red-border" })
+                                @Html.ValidationMessageFor(x => x.ADDRESS)
+                            </p>
+                        </div>
+                        <div class="organization_left">
+                            <p>
+                                @Html.LabelFor(x => x.CITY, "City")
+                                @Html.TextBoxFor(x => x.CITY, new { @class = "userfeilder red-border", @maxlength = "50" })
+                                @Html.ValidationMessageFor(x => x.CITY)
+                            </p>
+                        </div>
+                        <div class="clr">
+                        </div>
+                    </div>                 
+                    <div>
+                        <div class="organization_left">
+                            <p>
+                                @Html.LabelFor(x => x.ZIPCODE, "Zip code")
+                                @Html.TextBoxFor(x => x.ZIPCODE, new { @class = "userfeilder red-border", @maxlength = "50" })
+                                @Html.ValidationMessageFor(x => x.ZIPCODE)
+                            </p>
+                        </div>
+                        <div class="organization_left">
+                            <p>
+                                <label>Country:</label>
+
+
+                                @Html.DropDownListFor(x => x.Country, (SelectList)(ViewBag.CountryLIST), "Select", new { @id = "ddlCountry", @class = "red-border", onchange = "ManageCountry();" })
+
+                                <input id="hdnCountry" type="hidden" value="@Model.Country" />
+                            </p>
+                        </div>
+
+
+                        <br />
+
+                        <div class="clr">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="organization_left">
+                            <p>
+                                @Html.LabelFor(x => x.STATE, "State")
+                                @Html.TextBoxFor(x => x.STATE, new { id = "txtState", @class = "userfeilder red-border", @maxlength = "50" })
+
+                                @Html.DropDownListFor(x => x.STATE,
+                  new List<SelectListItem> { 
+                        new SelectListItem { Value = "" , Text = "Select" },
+                       new SelectListItem { Value = "Alaska" , Text = "Alaska" },
+                       new SelectListItem { Value = "Alabama" , Text = "Alabama" }, 
+                       new SelectListItem { Value = "Arkansas" , Text = "Arkansas" },
+                       new SelectListItem { Value = "Arizona" , Text = "Arizona" },
+                       new SelectListItem { Value = "California" , Text = "California" },
+                       new SelectListItem { Value = "Colorado" , Text = "Colorado" },
+                       new SelectListItem { Value = "Connecticut" , Text = "Connecticut" },
+                       new SelectListItem { Value = "District of Columbia" , Text = "District of Columbia" },
+                       new SelectListItem { Value = "Delaware" , Text = "Delaware" },
+                       new SelectListItem { Value = "Florida" , Text = "Florida" },
+                       new SelectListItem { Value = "Georgia " , Text = "Georgia " },
+                       new SelectListItem { Value = "Hawaii" , Text = "Hawaii" },
+                       new SelectListItem { Value = "Iowa" , Text = "Iowa" },
+                       new SelectListItem { Value = "Idaho" , Text = "Idaho" },
+                       new SelectListItem { Value = "Illinois" , Text = "Illinois" },
+                       new SelectListItem { Value = "Indiana" , Text = "Indiana" },
+                       new SelectListItem { Value = "Kansas" , Text = "Kansas" },  
+                       new SelectListItem { Value = "Kentucky" , Text = "Kentucky" },
+                       new SelectListItem { Value = "Louisiana" , Text = "Louisiana" },
+                       new SelectListItem { Value = "Massachusetts" , Text = "Massachusetts" },
+                       new SelectListItem { Value = "Maryland" , Text = "Maryland" },
+                       new SelectListItem { Value = "Maine" , Text = "Maine" },
+                       new SelectListItem { Value = "Michigan" , Text = "Michigan" },                       
+                       new SelectListItem { Value = "Minnesota" , Text = "Minnesota" },
+                       new SelectListItem { Value = "Missouri" , Text = "Missouri" },
+                       new SelectListItem { Value = "Mississippi" , Text = "Mississippi" },
+                       new SelectListItem { Value = "Montana" , Text = "Montana" },
+                       new SelectListItem { Value = "North Carolina" , Text = "North Carolina" },
+                       new SelectListItem { Value = "North Dakota" , Text = "North Dakota" },                       
+                       new SelectListItem { Value = "Nebraska" , Text = "Nebraska" },
+                       new SelectListItem { Value = "New Hampshire" , Text = "New Hampshire" },
+                       new SelectListItem { Value = "New Jersey" , Text = "New Jersey" },
+                       new SelectListItem { Value = "New Mexico" , Text = "New Mexico" },  
+                       new SelectListItem { Value = "Nevada" , Text = "Nevada" },
+                       new SelectListItem { Value = "New York" , Text = "New York" },
+                       new SelectListItem { Value = "Ohio" , Text = "Ohio" },
+                       new SelectListItem { Value = "Oklahoma" , Text = "Oklahoma" },
+                       new SelectListItem { Value = "Oregon" , Text = "Oregon" },
+                       new SelectListItem { Value = "Pennsylvania" , Text = "Pennsylvania" },                       
+                       new SelectListItem { Value = "Rhode Island" , Text = "Rhode Island" },
+                       new SelectListItem { Value = "South Carolina" , Text = "South Carolina" },
+                       new SelectListItem { Value = "South Dakota" , Text = "South Dakota" },
+                       new SelectListItem { Value = "Tennessee" , Text = "Tennessee" },
+                       new SelectListItem { Value = "Texas" , Text = "Texas" },
+                       new SelectListItem { Value = " Utah" , Text = " Utah" },
+                       new SelectListItem { Value = "Virginia" , Text = "Virginia" },
+                       new SelectListItem { Value = "Vermont" , Text = "Vermont" },
+                       new SelectListItem { Value = " Washington" , Text = " Washington" },
+                       new SelectListItem { Value = "Wisconsin" , Text = "Wisconsin" },
+                       new SelectListItem { Value = "West Virginia" , Text = "West Virginia" },
+                       new SelectListItem { Value = " Wyoming" , Text = " Wyoming" }
+                       
+                    },
+                  new { id = "ddlState", name = "ddlState", @class = "red-border", onchange = "ManageStateDDL();" })
+
+
+                                <input id="hdnState" type="hidden" value="@Model.STATE" />
+
+                                @Html.ValidationMessageFor(x => x.STATE)
+
+                            </p>
+                        </div>
+                        <div class="organization_left">
+                            @*<p>
+                                <label id="lblCounty">County:</label>
+                                @Html.DropDownListFor(x => x.COUNTY, (SelectList)(ViewBag.county), new { @id = "ddlCounty", @class = "red-border" })
+
+                                <input id="hdnCounty" type="hidden" value="@Model.COUNTY" />
+                            </p>*@
+                            <p>
+                                <label>Contact Number:</label>
+
+                                @Html.TextBoxFor(x => x.PHONE, new { @class = "userfeilder red-border", @maxlength = "100" })
+                                @Html.ValidationMessageFor(x => x.PHONE)
+                            </p>
+                        </div>
+                        <br />
+                        <div class="clr">
+                        </div>
+
+
+                    </div>                 
+                    <div>
+
+
+                        <br />
+                        <div class="clr">
+                        </div>
+                        <div class="buttons-new">
+                            <input type="button" value="Validate Address" id="btnadd" class="submit-btn" />
+                        </div>
+                    </div> 
+                    <div>
+
+                        <div class="organization_left">
+                            <p>
+
+                                <label>
+                                    Latitude</label>
+                                @Html.TextBoxFor(x => x.LATITUDE, new { @id = "txtLatitude", @class = "red-border", @maxlength = "50" })
+                                @Html.ValidationMessageFor(x => x.LATITUDE)
+                            </p>
+                        </div>
+
+                        <div class="organization_left">
+                            <p>
+                                <label>
+                                    Longitude</label>
+                                @Html.TextBoxFor(x => x.LONGITUDE, new { @id = "txtLongitude", @class = "red-border", @maxlength = "50" })
+                                @Html.ValidationMessageFor(x => x.LONGITUDE)
+                                @*<label class="cat">
+                                Radius (In meter)</label>
+                            @Html.TextBoxFor(model => model.Radius, new { @style = "width:150px !important", @class = "txtfelds", @maxlength = "5" })*@
+
+                            </p>
+                        </div>
+
+
+                        <div class="clr">
+                        </div>
+                    </div> 
+                    <div style="margin: 20px 0 10px 0;">
+                        <div class="map_left">
+
+                            <label>Mark Location</label>
+                            <div class="map">
+                                <div id="divmap">
+                                    <div id="map-canvas" style="height: 350px; width: 100%; border: 2px solid #fff; box-shadow: 0px 0px 5px 0px #A7A7A7;">
+                                    </div>
+                                </div>
+                                <div class="clr">
+                                </div>
+
+
+                            </div>
+                        </div>
+
+
+                        <div class="clr">
+                        </div>
+                    </div>
+                    <div>
+                        @*<div class="organization_left">
+                        <p>
+                            <label>Select Course User:</label>
+
+                            @Html.DropDownListFor(x => x.UserID, (SelectList)(ViewBag.Users), "Select", new { @id = "Type", @class = "red-border" })
+                            @Html.ValidationMessageFor(x => x.UserID)
+                        </p>
+                    </div>*@
+                        <div class="organization_left">
+                            <p>
+                                <label>Description:</label>
+
+                                @Html.TextAreaFor(x => x.Description, new { @class = "red-border" })
+                                @Html.ValidationMessageFor(x => x.Description)
+                            </p>
+                        </div>
+                        <div class="organization_left">
+                            <p>
+                                <label>
+                                    Apply Platform Fee:&nbsp;
+                                    <input type="checkbox" name="PlatFormFeeActive" checked='@(Model.IsPlateformFeeActive ?? false ? "checked" : "")' disabled="disabled" />
+                                    @Html.HiddenFor(x => x.IsPlateformFeeActive)
+                                </label>
+                                @Html.HiddenFor(x => x.PlateformFee)
+                                @Html.TextBoxFor(x => x.PlateformFee, new { @class = "red-border", @maxlength = "5", @disabled = "disabled" })
+                                @Html.ValidationMessageFor(x => x.PlateformFee)
+                            </p>
+                        </div>
+                        @*<div class="organization_left">
+                        <p>
+                            <label>PartnerShip Status:</label>
+
+                            @Html.DropDownListFor(x => x.PartnershipStatus, (SelectList)(ViewBag.Partner), "Select", new { @id = "Partner", @class = "red-border" })
+                            @Html.ValidationMessageFor(x => x.PartnershipStatus)
+                        </p>
+                    </div>*@
+                        <div class="clr">
+                        </div>
+                    </div>
+                    <div style="display: none">
+                        <div class="organization_left">
+                            <p id="divCourseHead">
+                                @Html.LabelFor(x => x.Tax)
+                                @Html.TextBoxFor(x => x.Tax, new { @class = "red-border", @maxlength = "5" })
+                                @Html.ValidationMessageFor(x => x.Tax)
+                            </p>
+                        </div>
+                        @*<div class="organization_left">
+                        <p>
+                            @Html.LabelFor(x => x.Status)
+                            @Html.CheckBoxFor(x => x.Active, new { @class = "noleft_space" })
+                        </p>
+
+                    </div>*@
+                        <div class="clr">
+                        </div>
+                    </div>
+                    <div id="divFoodCommission">
+                        <div class="organization_left">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Food Menu</th>
+                                        <th>Tax (%)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                    int count = 0;
+                    foreach (var item in Model.CourseMenu)
+                    {
+                                        <tr>
+                                            <td>@item.CategoryName</td>
+                                            <td>
+                                                @Html.HiddenFor(x => x.CourseMenu[count].CategoryID)
+                                                @Html.TextBoxFor(x => x.CourseMenu[count].TaxPercentage)
+                                            </td>
+                                        </tr>
+                        count++;
+                    }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="clr">
+                    </div>
+                    <div align="center" class="center-button">
+                        @Html.HiddenFor(x => x.Status)
+                        <a href="#myModal" id="btnConfirm" class="submit-btn update-btn" style="display: none;">Submit</a>
+                        <input type="submit" id="btnSubmit" class="submit-btn update-btn" name="btnSubmit" value="Submit" onclick="return ClickSubmit();" />
+                        @*<input type="button" id="btnCancel" class="submit-btn cancel-btn" value="Cancel" />*@
+                        <input type="button" id="btnPartial" class="submit-btn update-btn" name="btnPartial" value="Submit" style="display: none;" />
+                    </div>              
+                }
+            </div>
+        </div>
+        <script>
+
+            function ClickSubmit() {
+                if ($('#UpdateFlag').size() != 0 && $('#UpdateFlag').val() != "True") {
+                    alert('You are unautherized to perform this action.')
+                    //  showStickMessage('You are unautherized to perform this action.');
+                    return false;
+                }
+
+            }
+            function ClickSEtting() {
+                if ($('#UpdateFlag').size() != 0 && $('#UpdateFlag').val() != "True") {
+                    alert('You are unautherized to perform this action.')
+                    //  showStickMessage('You are unautherized to perform this action.');
+                    return false;
+                }
+
+            }
+        </script>
+    </td>
+
+</tr>
+<tr>
+    <td id="content_center_td2" valign="top" align="center">
+        <div class="datainner_box" id="dvCourseSetting" style="display: none;">
+            <div id="content_div" class="form_box organization_form">
+                @using (Html.BeginForm("CourseSetting", null, FormMethod.Post, new { id = "frmbtnSetting" }))
+                {
+                  
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(x => x.ID)
+                    @Html.Hidden("hdnIsLoginUser", (object)ViewBag.IsLoginUser)   
+                    <div class="organization_left tee-setting" style="width: 100%;">
+                        <table>
+                            <thead>
+                                <tr align="center">
+                                    <th rowspan="2" valign="top">Hole</th>
+                                    <th colspan="3" valign="top">Yards</th>
+                                    <th rowspan="2" valign="top">Handicapped</th>
+                                    <th rowspan="2" valign="top">Par</th>
+                                </tr>
+                                <tr align="center">
+                                    <th>
+                                        <img src="../../images/CourseImage/tee_blue.png" alt="Blue Tee" style="height: 27px; vertical-align: middle;" />
+                                        Blue Tee</th>
+                                    <th>
+                                        <img src="../../images/CourseImage/tee_white.png" alt="White Tee" style="height: 27px; vertical-align: middle;" />
+                                        White Tee</th>
+                                    <th>
+                                        <img src="../../images/CourseImage/tee_red.png" alt="Red Tee" style="height: 27px; vertical-align: middle;" />
+                                        Red Tee</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="align-left">Hole 1</td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_1_Blue, new { @style = "margin-bottom:30px;", @id = "txtHole1Blue", @maxlength = "10", @class = "clsFirstNineBlue clsTee" })
+                                    </td>
+                                    <td class="align-left">
+                                        @Html.TextBoxFor(x => x.Hole_1, new { @style = "margin-bottom:30px;", @id = "txtHole1", @maxlength = "10", @class = "clsFirstNinewhite clsTee" })</td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_1_Red, new { @style = "margin-bottom:30px;", @id = "txtHole1Red", @maxlength = "10", @class = "clsFirstNinered clsTee" })
+                                    </td>
+
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hdcp_1, new { @style = "margin-bottom:30px;", @id = "txtHandicapped1", @maxlength = "10" })
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Par_1, new { @style = "margin-bottom:30px;", @id = "txtPar1", @maxlength = "10", @class = "clsFirstNinePar" })</td>
+                                </tr>
+                                <tr align="center">
+                                    <td class="align-left">Hole 2</td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_2_Blue, new { @style = "margin-bottom:30px;", @id = "txtHole2Blue", @maxlength = "10", @class = "clsFirstNineBlue clsTee" }) </td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_2, new { @style = "margin-bottom:30px;", @id = "txtHole2", @maxlength = "10", @class = "clsFirstNinewhite clsTee" }) </td>
+
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_2_Red, new { @style = "margin-bottom:30px;", @id = "txtHole2Red", @maxlength = "10", @class = "clsFirstNinered clsTee" }) </td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hdcp_2, new { @style = "margin-bottom:30px;", @id = "txHandicapped2", @maxlength = "10" })</td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Par_2, new { @style = "margin-bottom:30px;", @id = "txPar2", @maxlength = "10", @class = "clsFirstNinePar" })</td>
+                                </tr>
+                                <tr align="center">
+                                    <td class="align-left">Hole 3</td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_3_Blue, new { @style = "margin-bottom:30px;", @id = "txtHole3Blue", @maxlength = "10", @class = "clsFirstNineBlue clsTee" }) </td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_3, new { @style = "margin-bottom:30px;", @id = "txtHole3", @maxlength = "10", @class = "clsFirstNinewhite clsTee" }) </td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_3_Red, new { @style = "margin-bottom:30px;", @id = "txtHole3Red", @maxlength = "10", @class = "clsFirstNinered clsTee" }) </td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hdcp_3, new { @style = "margin-bottom:30px;", @id = "txtHandicapped3", @maxlength = "10" })</td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Par_3, new { @style = "margin-bottom:30px;", @id = "txtPar3", @maxlength = "10", @class = "clsFirstNinePar" })</td>
+                                </tr>
+                                <tr align="center">
+                                    <td class="align-left">Hole 4</td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_4_Blue, new { @style = "margin-bottom:30px;", @id = "txtHole4Blue", @maxlength = "10", @class = "clsFirstNineBlue clsTee" }) </td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_4, new { @style = "margin-bottom:30px;", @id = "txtHole4", @maxlength = "10", @class = "clsFirstNinewhite clsTee" }) </td>
+
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_4_Red, new { @style = "margin-bottom:30px;", @id = "txtHole4Red", @maxlength = "10", @class = "clsFirstNinered clsTee" }) </td>
+
+
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hdcp_4, new { @style = "margin-bottom:30px;", @id = "txtHandicapped4", @maxlength = "10" })</td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Par_4, new { @style = "margin-bottom:30px;", @id = "txtPar4", @maxlength = "10", @class = "clsFirstNinePar" })</td>
+                                </tr>
+                                <tr align="center">
+                                    <td class="align-left">Hole 5</td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_5_Blue, new { @style = "margin-bottom:30px;", @id = "txtHole5Blue", @maxlength = "10", @class = "clsFirstNineBlue clsTee" }) </td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_5, new { @style = "margin-bottom:30px;", @id = "txtHole5", @maxlength = "10", @class = "clsFirstNinewhite clsTee" }) </td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_5_Red, new { @style = "margin-bottom:30px;", @id = "txtHole5Red", @maxlength = "10", @class = "clsFirstNinered clsTee" }) </td>
+
+
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hdcp_5, new { @style = "margin-bottom:30px;", @id = "txtHandicapped5", @maxlength = "10" })</td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Par_5, new { @style = "margin-bottom:30px;", @id = "txtPar5", @maxlength = "10", @class = "clsFirstNinePar" })</td>
+                                </tr>
+                                <tr align="center">
+                                    <td class="align-left">Hole 6</td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_6_Blue, new { @style = "margin-bottom:30px;", @id = "txtHole6Blue", @maxlength = "10", @class = "clsFirstNineBlue clsTee" }) </td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_6, new { @style = "margin-bottom:30px;", @id = "txtHole6", @maxlength = "10", @class = "clsFirstNinewhite clsTee" }) </td>
+
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_6_Red, new { @style = "margin-bottom:30px;", @id = "txtHole6Red", @maxlength = "10", @class = "clsFirstNinered clsTee" }) </td>
+
+
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hdcp_6, new { @style = "margin-bottom:30px;", @id = "txtHandicapped6", @maxlength = "10" })</td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Par_6, new { @style = "margin-bottom:30px;", @id = "txtPar6", @maxlength = "10", @class = "clsFirstNinePar" })</td>
+                                </tr>
+                                <tr align="center">
+                                    <td class="align-left">Hole 7</td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_7_Blue, new { @style = "margin-bottom:30px;", @id = "txtHole7Blue", @maxlength = "10", @class = "clsFirstNineBlue clsTee" }) </td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_7, new { @style = "margin-bottom:30px;", @id = "txtHole7", @maxlength = "10", @class = "clsFirstNinewhite clsTee" }) </td>
+
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_7_Red, new { @style = "margin-bottom:30px;", @id = "txtHole7Red", @maxlength = "10", @class = "clsFirstNinered clsTee" }) </td>
+
+
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hdcp_7, new { @style = "margin-bottom:30px;", @id = "txtHandicapped7", @maxlength = "10" })</td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Par_7, new { @style = "margin-bottom:30px;", @id = "txtPar7", @maxlength = "10", @class = "clsFirstNinePar" })
+                                    </td>
+                                </tr>
+                                <tr align="center">
+                                    <td class="align-left">Hole 8</td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_8_Blue, new { @style = "margin-bottom:30px;", @id = "txtHole8Blue", @maxlength = "10", @class = "clsFirstNineBlue clsTee" }) </td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_8, new { @style = "margin-bottom:30px;", @id = "txtHole8", @maxlength = "10", @class = "clsFirstNinewhite clsTee" }) </td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_8_Red, new { @style = "margin-bottom:30px;", @id = "txtHole8Red", @maxlength = "10", @class = "clsFirstNinered clsTee" }) </td>
+
+
+
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hdcp_8, new { @style = "margin-bottom:30px;", @id = "txtHandicapped8", @maxlength = "10" })</td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Par_8, new { @style = "margin-bottom:30px;", @id = "txtPar8", @maxlength = "10", @class = "clsFirstNinePar" })</td>
+                                </tr>
+                                <tr align="center">
+                                    <td class="align-left">Hole 9</td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_9_Blue, new { @style = "margin-bottom:30px;", @id = "txtHole9Blue", @maxlength = "10", @class = "clsFirstNineBlue clsTee" }) </td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_9, new { @style = "margin-bottom:30px;", @id = "txtHole9", @maxlength = "10", @class = "clsFirstNinewhite clsTee" }) </td>
+
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_9_Red, new { @style = "margin-bottom:30px;", @id = "txtHole9Red", @maxlength = "10", @class = "clsFirstNinered clsTee" }) </td>
+
+
+
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hdcp_9, new { @style = "margin-bottom:30px;", @id = "txtHandicapped9", @maxlength = "10" })</td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Par_9, new { @style = "margin-bottom:30px;", @id = "txtPar9", @maxlength = "10", @class = "clsFirstNinePar" })</td>
+                                </tr>
+                                <tr align="center">
+                                    <td class="align-left">Hole 10</td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_10_Blue, new { @style = "margin-bottom:30px;", @id = "txtHole10Blue", @maxlength = "10", @class = "clsSecNineBlue clsTee" })
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_10, new { @style = "margin-bottom:30px;", @id = "txtHole10", @maxlength = "10", @class = "clsSecNinewhite clsTee" })
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_10_Red, new { @style = "margin-bottom:30px;", @id = "txtHole10Red", @maxlength = "10", @class = "clsSecNinered clsTee" })
+                                    </td>
+
+
+
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hdcp_10, new { @style = "margin-bottom:30px;", @id = "txtHandicapped10", @maxlength = "10" })</td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Par_10, new { @style = "margin-bottom:30px;", @id = "txtPar10", @maxlength = "10", @class = "clsSecNinePar" })</td>
+                                </tr>
+                                <tr align="center">
+                                    <td class="align-left">Hole 11</td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_11_Blue, new { @style = "margin-bottom:30px;", @id = "txtHole11Blue", @maxlength = "10", @class = "clsSecNineBlue clsTee" }) </td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_11, new { @style = "margin-bottom:30px;", @id = "txtHole11", @maxlength = "10", @class = "clsSecNinewhite clsTee" }) </td>
+
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_11_Red, new { @style = "margin-bottom:30px;", @id = "txtHole11Red", @maxlength = "10", @class = "clsSecNinered clsTee" }) </td>
+
+
+                                    <td>@Html.TextBoxFor(x => x.Hdcp_11, new { @style = "margin-bottom:30px;", @id = "txtHandicapped11", @maxlength = "10" })</td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Par_11, new { @style = "margin-bottom:30px;", @id = "txtPar11", @maxlength = "10", @class = "clsSecNinePar" })</td>
+                                </tr>
+                                <tr align="center">
+
+                                    <td class="align-left">Hole 12</td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_12_Blue, new { @style = "margin-bottom:30px;", @id = "txtHole12Blue", @maxlength = "10", @class = "clsSecNineBlue clsTee" }) </td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_12, new { @style = "margin-bottom:30px;", @id = "txtHole12", @maxlength = "10", @class = "clsSecNinewhite clsTee" }) </td>
+
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_12_Red, new { @style = "margin-bottom:30px;", @id = "txtHole12Red", @maxlength = "10", @class = "clsSecNinered clsTee" }) </td>
+
+
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hdcp_12, new { @style = "margin-bottom:30px;", @id = "txtHandicapped12", @maxlength = "10" })</td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Par_12, new { @style = "margin-bottom:30px;", @id = "txtPar12", @maxlength = "10", @class = "clsSecNinePar" })</td>
+                                </tr>
+                                <tr align="center">
+                                    <td class="align-left">Hole 13</td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_13_Blue, new { @style = "margin-bottom:30px;", @id = "txtHole13Blue", @maxlength = "10", @class = "clsSecNineBlue clsTee" }) </td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_13, new { @style = "margin-bottom:30px;", @id = "txtHole13", @maxlength = "10", @class = "clsSecNinewhite clsTee" }) </td>
+
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_13_Red, new { @style = "margin-bottom:30px;", @id = "txtHole13Red", @maxlength = "10", @class = "clsSecNinered clsTee" }) </td>
+
+
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hdcp_13, new { @style = "margin-bottom:30px;", @id = "txtHandicapped13", @maxlength = "10" })</td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Par_13, new { @style = "margin-bottom:30px;", @id = "txtPar13", @maxlength = "10", @class = "clsSecNinePar" })</td>
+                                </tr>
+                                <tr align="center">
+                                    <td class="align-left">Hole 14</td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_14_Blue, new { @style = "margin-bottom:30px;", @id = "txtHole14Blue", @maxlength = "10", @class = "clsSecNineBlue clsTee" }) </td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_14, new { @style = "margin-bottom:30px;", @id = "txtHole14", @maxlength = "10", @class = "clsSecNinewhite clsTee" }) </td>
+
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_14_Red, new { @style = "margin-bottom:30px;", @id = "txtHole14Red", @maxlength = "10", @class = "clsSecNinered clsTee" }) </td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hdcp_14, new { @style = "margin-bottom:30px;", @id = "txtHandicapped14", @maxlength = "10" })</td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Par_14, new { @style = "margin-bottom:30px;", @id = "txtPar14", @maxlength = "10", @class = "clsSecNinePar" })</td>
+                                </tr>
+                                <tr align="center">
+                                    <td class="align-left">Hole 15</td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_15_Blue, new { @style = "margin-bottom:30px;", @id = "txtHole15Blue", @maxlength = "10", @class = "clsSecNineBlue clsTee" }) </td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_15, new { @style = "margin-bottom:30px;", @id = "txtHole15", @maxlength = "10", @class = "clsSecNinewhite clsTee" }) </td>
+
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_15_Red, new { @style = "margin-bottom:30px;", @id = "txtHole15Red", @maxlength = "10", @class = "clsSecNinered clsTee" }) </td>
+
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hdcp_15, new { @style = "margin-bottom:30px;", @id = "txtHandicapped15", @maxlength = "10" })</td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Par_15, new { @style = "margin-bottom:30px;", @id = "txtPar15", @maxlength = "10", @class = "clsSecNinePar" })</td>
+                                </tr>
+                                <tr align="center">
+                                    <td class="align-left">Hole 16</td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_16_Blue, new { @style = "margin-bottom:30px;", @id = "txtHole16Blue", @maxlength = "10", @class = "clsSecNineBlue clsTee" }) </td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_16, new { @style = "margin-bottom:30px;", @id = "txtHole16", @maxlength = "10", @class = "clsSecNinewhite clsTee" }) </td>
+
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_16_Red, new { @style = "margin-bottom:30px;", @id = "txtHole16Red", @maxlength = "10", @class = "clsSecNinered clsTee" }) </td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hdcp_16, new { @style = "margin-bottom:30px;", @id = "txtHandicapped16", @maxlength = "10" })</td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Par_16, new { @style = "margin-bottom:30px;", @id = "txtPar16", @maxlength = "10", @class = "clsSecNinePar" })</td>
+                                </tr>
+                                <tr align="center">
+                                    <td class="align-left">Hole 17</td>
+
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_17_Blue, new { @style = "margin-bottom:30px;", @id = "txtHole17Blue", @maxlength = "10", @class = "clsSecNineBlue clsTee" }) </td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_17, new { @style = "margin-bottom:30px;", @id = "txtHole17", @maxlength = "10", @class = "clsSecNinewhite clsTee" }) </td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_17_Red, new { @style = "margin-bottom:30px;", @id = "txtHole17Red", @maxlength = "10", @class = "clsSecNinered clsTee" }) </td>
+
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hdcp_17, new { @style = "margin-bottom:30px;", @id = "txtHandicapped17", @maxlength = "10" })</td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Par_17, new { @style = "margin-bottom:30px;", @id = "txtPar17", @maxlength = "10", @class = "clsSecNinePar" })</td>
+                                </tr>
+                                <tr align="center">
+                                    <td class="align-left">Hole 18</td>
+
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_18_Blue, new { @style = "margin-bottom:30px;", @id = "txtHole18Blue", @maxlength = "10", @class = "clsSecNineBlue clsTee" }) </td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_18, new { @style = "margin-bottom:30px;", @id = "txtHole18", @maxlength = "10", @class = "clsSecNinewhite clsTee" }) </td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hole_18_Red, new { @style = "margin-bottom:30px;", @id = "txtHole18Red", @maxlength = "10", @class = "clsSecNinered clsTee" }) </td>
+
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Hdcp_18, new { @style = "margin-bottom:30px;", @id = "txtHandicapped18", @maxlength = "10" })
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.Par_18, new { @style = "margin-bottom:30px;", @id = "txtPar18", @maxlength = "10", @class = "clsSecNinePar" })</td>
+                                </tr>
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="clr">
+                    </div>
+                    <div align="center" class="center-button">
+
+                        <input type="submit" id="btnSetting" class="submit-btn update-btn" name="btnPar" value="Submit" onclick="return ClickSEtting();" />
+                    </div>
+                    <div align="center" class="center-button">
+                    </div>
+                        
+                }
+            </div>
+        </div>
+    </td>
+
+</tr>
+
+
+
+
+<input type="hidden" id="hdnConfirm" />
+<div id="myModal" class="reveal-modal" style="display: none; top: 100px;">
+    <div class="pop_detail">
+        <h1>Confirm Details</h1>
+        <div class="page-wrap">
+            <table class="voucher-details-table">
+                <tr>
+                    <td class="align-left" colspan="2">
+                        <p>
+                            <strong>Dear @Golfler.Models.LoginInfo.UserName,</strong><br />
+                            @String.Format("Please confirm User details to save.")<br />
+                            <strong>Thanks</strong>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>Course Name</strong>
+                    </td>
+                    <td class="align-left" id="lblUserName"></td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>Address</strong>
+                    </td>
+                    <td class="align-left" id="lblFirstName"></td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>City</strong>
+                    </td>
+                    <td class="align-left" id="lblLastname"></td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>State</strong>
+                    </td>
+                    <td class="align-left" id="lblState"></td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>Phone Number</strong>
+                    </td>
+                    <td class="align-left" id="lblPhone"></td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>APP Status</strong>
+                    </td>
+                    <td class="align-left" id="lblStatus"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="clr">
+    </div>
+    <div class="margin-top15">
+    </div>
+    <div class="clr">
+    </div>
+    <div align="center" class="center-button">
+        <input type="button" id="close" value="Edit" class="submit-btn cancel-btn" onclick="$.fancybox.close();" />
+        <input type="button" id="btnSave" onclick="javascript: showAfterPopup(); $('#hdnConfirm').val('1'); $('#btnSubmit').click(); $('#divProgress').show();"
+            value="Confirm" class="submit-btn update-btn" />
+    </div>
+    <div class="clear">
+    </div>
+</div>
+<script language="javascript" type="text/javascript">
+    function showAfterPopup() {
+        $("#fancybox-overlay").css("z-index", "99999999");
+    }
+
+</script>
+@*<script src="~/Scripts/jquery-1.7.1.min.js"></script>*@
+<script type="text/javascript" src="https://maps-api-ssl.google.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript">
+    var geocoder;
+    var count = 0;
+    var map, state;
+    var marker;
+
+    $(document).ready(function () {
+        initialize();
+
+        $("#btnadd").click(function () {
+
+            if ($("#ADDRESS").val() == "") {
+                alert("Please fill all mandatory address details.");
+                return false;
+            }
+
+            //var address = $("#ADDRESS").val() + ',' + $("#CITY").val() + ',' + $("#STATE").val() + ',' + $("#COUNTY").val() + ',' + $("#ZIPCODE").val();
+            var address = $("#ADDRESS").val() + ',' + $("#CITY").val() + ',' + $("#STATE").val() + ',' + $("#ZIPCODE").val();
+            codeAddress(address);
+        });
+
+        $('#Radius').on('keydown paste drop', function (e) {
+            if (e.shiftKey || e.ctrlKey || e.altKey) {
+                e.preventDefault();
+            } else {
+                var key = e.keyCode;
+                if (!((key == 8) || (key == 9) || (key == 46) || (key >= 35 && key <= 40) || (key >= 48 && key <= 57) || (key >= 96 && key <= 105))) {
+                    e.preventDefault();
+                }
+            }
+        });
+
+
+    });
+
+
+    function initialize() {
+        geocoder = new google.maps.Geocoder();
+        var latlng;
+
+        if ($("#ID").val() != "0") {
+            latlng = new google.maps.LatLng($("#txtLatitude").val(), $("#txtLongitude").val());
+
+        } else {
+            latlng = new google.maps.LatLng(14.5833, 120.9667);
+        }
+        var mapOptions = {
+            zoom: 18,
+            center: latlng,
+            mapTypeId: google.maps.MapTypeId.SATELLITE,
+            zoomControl: true,
+            zoomControlOptions: {
+                style: google.maps.ZoomControlStyle.LARGE,
+                position: google.maps.ControlPosition.LEFT_TOP
+            },
+            scaleControl: true,
+            scaleControlOptions: {
+                position: google.maps.ControlPosition.TOP_LEFT
+            },
+            streetViewControl: false,
+
+            panControl: false,
+        }
+        map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+        if ($("#ID").val() != "0") {
+            marker = new google.maps.Marker({
+                map: map,
+                draggable: true,
+                position: latlng
+            });
+
+            map.setZoom(15);
+            google.maps.event.addListener(marker, 'dragend', function (event) {
+                posset = 1;
+                if (map.getZoom() < 10) { map.setZoom(10); }
+                map.setCenter(event.latLng);
+
+                $("#txtLatitude").val(event.latLng.lat());
+                $("#txtLongitude").val(event.latLng.lng());
+                drag = true;
+                setTimeout(function () { drag = false; }, 250);
+            });
+        }
+    }
+
+    function codeAddress(address) {
+
+        geocoder.geocode({ 'address': address }, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                map.setCenter(results[0].geometry.location);
+
+                //marker = new google.maps.Marker({
+                //    map: map,
+                //    draggable: true,
+                //    position: results[0].geometry.location
+                //});
+
+                placeMarker(results[0].geometry.location);
+
+                $("#txtLatitude").val(results[0].geometry.location.lat());
+                $("#txtLongitude").val(results[0].geometry.location.lng());
+
+            } else {
+                $("#hdnStatus").val("0");
+                //alert("Geocode was not successful for the following reason: " + status);
+                alert("Unable to find address, please try again");
+            }
+        });
+    }
+
+    function placeMarker(location) {
+        if (marker) {
+            marker.setPosition(location);
+
+        } else {
+            marker = new google.maps.Marker({
+                position: location,
+                map: map,
+                draggable: true
+            });
+        }
+
+        google.maps.event.addListener(marker, 'dragend', function (event) {
+            posset = 1;
+            if (map.getZoom() < 10) { map.setZoom(10); }
+
+            //map.checkResize();
+            //map.setCenter(event.latLng);
+
+            $("#txtLatitude").val(event.latLng.lat());
+            $("#txtLongitude").val(event.latLng.lng());
+            drag = true;
+            setTimeout(function () { drag = false; }, 250);
+        });
+    }
+
+    //function checkext(element) {
+    //    var fileExtension = ['jpeg', 'jpg', 'png', 'gif'];
+    //    if ($.inArray($(element).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+    //        alert("Only '.jpeg','.jpg', '.png', '.gif' formats are allowed.");
+    //        $(element).val('');
+    //        return false;
+    //    }
+    //}
+
+
+</script>

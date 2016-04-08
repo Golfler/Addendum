@@ -1,0 +1,144 @@
+﻿@model Golfler.Models.ResolutionMessages
+<script language="javascript" type="text/javascript">
+
+    $(document).ready(
+        function () {
+            $('#btnCancel').click(function () {
+                window.location = '@Url.Action("ResolutionMessages")';
+            });
+
+            //$('#txtCourseName').attr('disabled', 'disabled');
+
+            @*$('#ResolutionSendToType').change(function () {
+                if ($('#ResolutionSendToType').val() == '@Golfler.Models.UserType.SuperAdmin' || $('#ResolutionSendToType').val() == '') {
+                    $('#txtCourseName').attr('disabled', 'disabled');
+                    $('#txtCourseName').val();
+                    $('#hdnCourseID').val('-1');
+                }
+                else {
+                    $('#txtCourseName').removeAttr('disabled');
+                    $('#hdnCourseID').val('0');
+                }
+            });*@
+
+            $('#btnSubmit').click(function () {
+                @*if ($('#ResolutionSendToType').val() == '@Golfler.Models.UserType.SuperAdmin') {
+                    $('#CourseID').val(0);
+                }
+                else {*@
+                if ('@Golfler.Models.LoginInfo.Type' != '@Golfler.Models.UserType.CourseAdmin' ||
+                    '@Golfler.Models.LoginInfo.Type' != '@Golfler.Models.UserType.Kitchen' ||
+                    '@Golfler.Models.LoginInfo.Type' != '@Golfler.Models.UserType.Proshop' ||
+                    '@Golfler.Models.LoginInfo.Type' != '@Golfler.Models.UserType.Cartie' ||
+                    '@Golfler.Models.LoginInfo.Type' != '@Golfler.Models.UserType.Ranger' ||
+                    ('@Golfler.Models.LoginInfo.Type' != '@Golfler.Models.UserType.SuperAdmin' && '@Golfler.Models.LoginInfo.IsGolferLoginUser' != 'True') ||
+                    ('@Golfler.Models.LoginInfo.Type' != '@Golfler.Models.UserType.Admin' && '@Golfler.Models.LoginInfo.IsGolferLoginUser' != 'True')) {
+                    if ($('#hdnCourseID').val() == '0' || $('#hdnCourseID').val() == '-1' || $('#hdnCourseID').val() == '') {
+                        showStickMessage('Please select course.');
+                        return false;
+                    }
+                    else {
+                        $('#CourseID').val($('#hdnCourseID').val());
+                    }
+                }
+                //}
+            });
+
+            if ('@Golfler.Models.LoginInfo.Type' == '@Golfler.Models.UserType.CourseAdmin' ||
+                '@Golfler.Models.LoginInfo.Type' == '@Golfler.Models.UserType.Kitchen' ||
+                '@Golfler.Models.LoginInfo.Type' == '@Golfler.Models.UserType.Proshop' ||
+                '@Golfler.Models.LoginInfo.Type' == '@Golfler.Models.UserType.Cartie' ||
+                '@Golfler.Models.LoginInfo.Type' == '@Golfler.Models.UserType.Ranger' ||
+                ('@Golfler.Models.LoginInfo.Type' != '@Golfler.Models.UserType.SuperAdmin' && '@Golfler.Models.LoginInfo.IsGolferLoginUser' != 'True' && '@Golfler.Models.LoginInfo.CourseId' > 0) ||
+                ('@Golfler.Models.LoginInfo.Type' != '@Golfler.Models.UserType.Admin' && '@Golfler.Models.LoginInfo.IsGolferLoginUser' != 'True' && '@Golfler.Models.LoginInfo.CourseId' > 0)) {
+                $('#ResolutionSendToType').val('@Golfler.Models.UserType.SuperAdmin');
+                $('#ResolutionSendToType').attr('disabled', 'disabled');
+                $('#hdnCourseID').val('@Golfler.Models.LoginInfo.CourseId');
+                $('#txtCourseName').val('@Golfler.Models.LoginInfo.CourseName');
+                $('#txtCourseName').attr('disabled', 'disabled');
+            }
+
+            if (('@Golfler.Models.LoginInfo.Type' == '@Golfler.Models.UserType.SuperAdmin' && '@Golfler.Models.LoginInfo.IsGolferLoginUser' != 'True' && '@Golfler.Models.LoginInfo.CourseId' <= 0) ||
+                ('@Golfler.Models.LoginInfo.Type' == '@Golfler.Models.UserType.Admin' && '@Golfler.Models.LoginInfo.IsGolferLoginUser' != 'True' && '@Golfler.Models.LoginInfo.CourseId' <= 0)) {
+                $('#ResolutionSendToType').val('@Golfler.Models.UserType.CourseAdmin');
+                $('#ResolutionSendToType').attr('disabled', 'disabled');
+            }
+
+            if ('@ViewBag.CourseID' != '') {
+                $('#hdnCourseID').val('@ViewBag.CourseID');
+                $('#txtCourseName').val('@ViewBag.CourseName');
+                $('#FeedbackTest').val('@ViewBag.Complaint');
+            }
+        });
+</script>
+<style>
+    #fileToUpload {
+        width: 44% !important;
+    }
+</style>
+<tr>
+    <td class="id_pathway">
+        <div class="breadcrumb">
+            <ul>
+                <li><a href='@Url.Action("Dashboard")'>Dashboard</a><img src="/Content/Images/arrow.png"
+                    class="arrow_position" /></li>
+                <li><a href='@Url.Action("ResolutionMessages")'>Manage Inbox
+                    </a><img src="/Content/Images/arrow.png" class="arrow_position" /></li>
+                <li>@ViewBag.Title</li>
+            </ul>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td id="content_center_td2" valign="top" align="center">
+        <div id="content_div" class="form_box organization_form">
+            @using (Html.BeginForm("AddResolutionMessages", null, FormMethod.Post, new { id = "frmSubmit" }))
+            {
+                @Html.HiddenFor(x => x.CourseID)
+                <div>
+                    <div class="organization_left">
+                        <p>
+                            @Html.Label("Send To")
+                            @Html.DropDownListFor(x => x.SendTo, (SelectList)(ViewBag.ResolutionSendToType), "Select", new { @id = "ResolutionSendToType", @class = "red-border" })
+                            @Html.ValidationMessageFor(x => x.SendTo)
+                        </p>
+                    </div>
+                    <div class="organization_left">
+                        <p>
+                            @Html.Label("Course Name")
+                            @Html.Partial("~/Views/Tools/CourseOnlyAutoComplete.cshtml")
+                        </p>
+                    </div>
+                    <div class="clr">
+                    </div>
+                </div> 
+                <div>
+                    <div class="organization_left">
+                        <p>
+                            @Html.Label("Comment")
+                            @Html.TextAreaFor(x => x.FeedbackTest, new { @class = "userfeilder red-border", @maxlength = "1000" })
+                            @Html.ValidationMessageFor(x => x.FeedbackTest)
+                        </p>
+                    </div>
+                    <div class="organization_left">
+                        <p>
+                            @Html.Label("Resolution Type")
+                            @Html.DropDownListFor(x => x.ResolutionType, (SelectList)(ViewBag.ResolutionCenterType), "Select", new { @id = "ResolutionType", @class = "red-border" })
+                            @Html.ValidationMessageFor(x => x.ResolutionType)
+                        </p>
+                    </div>
+                    <div class="clr">
+                    </div>
+                </div> 
+                <div class="clr">
+                </div>
+                <div align="center" class="center-button">
+                    <input type="submit" id="btnSubmit" class="submit-btn update-btn" name="btnSubmit" value="Submit" />
+                    <input type="button" id="btnCancel" class="submit-btn cancel-btn" value="Cancel" />
+                </div>
+            }
+        </div>
+    </td>
+</tr>

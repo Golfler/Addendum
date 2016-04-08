@@ -1,0 +1,434 @@
+﻿@model Golfler.Models.GF_AdminUsers
+<script language="javascript" type="text/javascript">
+
+    $(document).ready(
+        function () {
+
+            if ($('#hdnIsLoginUser').val() == "True") {
+                $('#RoleId option:not(:selected)').remove();
+                $('#RoleId').prop('disabled', 'disabled');
+                $('#Active').prop('disabled', 'disabled');
+                $('#Type').prop('disabled', 'disabled');
+                $('#IsCourseUser').prop('disabled', 'disabled');
+            }
+            if (document.URL.toLowerCase().indexOf('/admin/') != -1) {
+                $('#divType').hide();
+                $("#cmn-toggle-1").click(function () {
+                    ShowHideRole();
+                });
+            }
+            else {
+                $('#divCourseHead').hide();
+                $("#Type").change(function () {
+                    ShowHideRole();
+                });
+            }
+
+            ShowHideRole();
+
+            $('fieldset').addClass("bodD5D5D5");
+            $('.width_49 label').addClass("cat");
+            $('.datainner_box input[type="text"]').addClass("txtfelds");
+            $('.datainner_box input[type="password"][id="txtPassword"]').addClass("txtfelds");
+            $('.datainner_box input[type="checkbox"]').addClass("checkbox-spacing5");
+            $('.datainner_box select').addClass("txtfelds");
+            $('.width_49 span:contains("*")').css("color", "Red").css("display", "none");
+            $('.width_49 span:contains("*")').parent().children('label').append('<span>*</span>');
+
+            $('#btnCancel').click(function () {
+                window.location = '@Url.Action("UserList")';
+            });
+
+            //Confirmation Page
+            if ($("#ID").val() == 0) {
+                $('#Active').prop("checked", true);
+                $("#btnConfirm").fancybox({
+                    'scrolling': 'no',
+                    'onStart': function () {
+                        $("#lblUserName").text($('#UserName').val());
+                        $("#lblFirstName").text($('#FirstName').val());
+                        $("#lblEmail").text($('#Email').val());
+                        $("#lblLastname").text($("#LastName").val() == "" ? "-" : $("#LastName").val());
+                        $("#lblPhone").text($("#Phone").val() == "" ? "-" : $("#Phone").val());
+                        $("#lblUserType").text($('#Type :selected').text());
+                        if ($('#Type').val() == "OS") {
+                            $('#divrole').hide();
+                        }
+                        else {
+                            $('#divrole').show();
+                            $("#lblRole").text($('#RoleId').val() == "0" ? "-" : $('#RoleId :selected').text());
+                        }
+
+                        //$("#lblStatus").text($('#Active').is(':checked') ? "Active" : "Inactive");
+                        $("#lblStatus").text($('#Active').val() == 'True' ? "Active" : "Inactive");
+
+                        $("#myModal").css("display", "block");
+                    },
+                    'onClosed': function () { $("#myModal").css("display", "none"); }
+                });
+                $('#btnSubmit').on("click", function () {
+                    if (($("#ID").val() == "") || ($("#ID").val() == "0")) {
+
+                        if (!$('#btnSubmit').hasClass('unaccess') && $('#frmSubmit').valid()) {
+                            if ($('#hdnConfirm').val() != "1") {
+                                $("#btnConfirm").click();
+                                return false;
+                            }
+                        }
+                    }
+                    else {
+
+                        if ($('#UpdateFlag').size() != 0 && $('#UpdateFlag').val() != "True") {
+                            showStickMessage("You are not authorized to perform this action.");
+                            return false;
+                        }
+                    }
+                });
+
+
+            }
+        });
+
+        function ShowHideRole() {
+            if (document.URL.toLowerCase().indexOf('/admin/') != -1) {
+                // Super Admin 
+                if ($("#IsCourseUser").val() == 'True') {
+                    //if ($("#IsCourseUser").is(':checked')) {
+                    $("#p_RoleID").hide();
+                    $("#divReceiveResolutionMails").hide();
+                    $('#Type').val('CA');
+                }
+                else {
+                    $("#p_RoleID").show();
+                    $("#divReceiveResolutionMails").show();
+                    $('#Type').val('A');
+                }
+            }
+            else {
+                // Course
+                $("#divReceiveResolutionMails").hide();
+                if ($("#Type").val() == $('#hdnCourseUser').val()) {
+                    $("#p_RoleID").hide();
+                }
+                else {
+                    $("#p_RoleID").show();
+                }
+                if ($("#Type").val() == "CP") {
+                    if ('@Model.ID' <= 0) {
+                        $("#ReceiveResolutionMails").val("True");
+                        $("#cmn-toggle-3").attr('data-value', '1');
+                    }
+                    $("#divReceiveResolutionMails").show();
+                }
+                else {
+                   
+                        $("#ReceiveResolutionMails").val("False");
+                        $("#cmn-toggle-3").attr('data-value', '0');
+                   
+                    $("#divReceiveResolutionMails").hide();
+                }
+
+            }
+        }
+</script>
+<script type="text/javascript">
+    $(document).ready(
+        function () {
+            $("#frmSubmit").validate();
+            $("#txtpassword").valid();
+        });
+</script>
+<style>
+    #fileToUpload
+    {
+        width: 44% !important;
+    }
+</style>
+<tr>
+    <td class="id_pathway">
+        <div class="breadcrumb">
+            <ul>
+                <li><a href='@Url.Action("Dashboard")'>Dashboard</a><img src="/Content/Images/arrow.png"
+                    class="arrow_position" /></li>
+                <li><a href='@Url.Action("UserList")'>Manage
+                    @ViewBag.Module</a><img src="/Content/Images/arrow.png" class="arrow_position" /></li>
+                <li>@ViewBag.Title</li>
+            </ul>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td id="content_center_td2" valign="top" align="center">
+        <div id="content_div" class="form_box organization_form">
+            @using (Html.BeginForm("UserAddEdit", null, FormMethod.Post, new { id = "frmSubmit", enctype = "multipart/form-data" }))
+            {
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(x => x.ID)
+                @Html.Hidden("hdnIsLoginUser", (object)ViewBag.IsLoginUser)
+
+                @Html.HiddenFor(x => x.CourseId)
+                <div style="margin: 0px 0px 0px 0px;">
+                    <div class="organization_left">
+                        <p class="tpspacing">
+                            @if (Model.ID > 0)
+                            {
+                                @Html.LabelFor(x => x.UserName)
+                                @Html.TextBoxFor(x => x.UserName, new { @class = "userfeilder red-border", @readonly = "true" })
+                            }
+                            else
+                            {
+                                @Html.LabelFor(x => x.UserName)
+                                @Html.TextBoxFor(x => x.UserName, new { @class = "userfeilder red-border", @autocomplete = "off", @maxlength = "25" })
+                                @Html.ValidationMessageFor(x => x.UserName)
+                            }
+                        </p>
+                    </div>
+                    <div class="organization_left">
+                        <p>
+                            @if (Model.ID > 0)
+                            {
+                                @Html.LabelFor(x => x.Email)
+                                @Html.TextBoxFor(x => x.Email, new { @class = "userfeilder red-border", @readonly = "true" })
+                            }
+                            else
+                            {
+                                @Html.LabelFor(x => x.Email)
+                                @Html.TextBoxFor(x => x.Email, new { @class = "userfeilder red-border", @maxlength = "50" })
+                                @Html.ValidationMessageFor(x => x.Email)
+                            }
+                        </p>
+
+                    </div>
+                    <div class="clr">
+                    </div>
+                    <div class="organization_left">
+                        <p class="tpspacing">
+                            @Html.LabelFor(x => x.Password)
+                            @Html.PasswordFor(x => x.Password, new { id = "txtPassword", @autocomplete = "off", value = Model.Password, @class = "userfeilder password red-border" })
+                            @Html.ValidationMessageFor(x => x.Password)
+                            <div class="password-meter" width="100%" style="float: right; margin-right: 75px; height: auto;">
+                                <div class="password-meter-message">
+                                    &nbsp;
+                                </div>
+                                <div class="password-meter-bg">
+                                    <div class="password-meter-bar">
+                                    </div>
+                                </div>
+                            </div>
+                        </p>
+                    </div>
+                    <div class="organization_left">
+                        <p class="tpspacing">
+                            @Html.LabelFor(x => x.RePassword)
+                            @Html.PasswordFor(x => x.RePassword, new { id = "txtRePassword", @autocomplete = "off", value = Model.RePassword, @class = "userfeilder password1 red-border" })
+                            @Html.ValidationMessageFor(x => x.RePassword)
+                        </p>
+                    </div>
+                    <div class="clr">
+                    </div>
+                </div> 
+                
+                <div>
+                    <div class="organization_left">
+                        <p>
+                            @Html.LabelFor(x => x.FirstName)
+                            @Html.TextBoxFor(x => x.FirstName, new { @class = "userfeilder red-border", @maxlength = "50" })
+                            @Html.ValidationMessageFor(x => x.FirstName)
+                        </p>
+                    </div>
+                    <div class="organization_left">
+                        <p>
+                            @Html.LabelFor(x => x.LastName)
+                            @Html.TextBoxFor(x => x.LastName, new { @class = "userfeilder red-border", @maxlength = "50" })
+                            @Html.ValidationMessageFor(x => x.LastName)
+                        </p>
+                    </div>
+                    <div class="clr">
+                    </div>
+                </div> 
+                <div>
+                    <div class="organization_left">
+                        <p>
+                            @Html.LabelFor(x => x.Phone)
+                            @Html.TextBoxFor(x => x.Phone, new { @class = "userfeilder", @maxlength = "20" })
+                            @Html.ValidationMessageFor(x => x.Phone)
+                        </p>
+                    </div>
+
+                    <div class="organization_left">
+                        <p>
+                            <label>Image</label>
+                            <input type="file" id="fileToUpload" name="profileImage" />
+                            @if (Model.Image != "")
+                            {                              
+                                <a href='@Url.Content("~/" + Model.Image)' target="_blank" style="display:block !important; float: left;">
+                                    <img src='@Url.Content("~/" + Model.Image)'  alt="" width="30" height="30" style="display:block !important" />
+                                </a>
+                            }
+                        </p>
+                    </div>
+                    <div class="clr">
+                    </div>
+                </div>@*
+                 <div>
+                    <div class="organization_left">
+                        <p>
+                            <label>Created Date</label>
+                            @Html.TextBoxFor(x => x.CreatedOn, new { id = "txtCreatedOn", @class = "userfeilder", @readonly = "true" })
+                        </p>
+                    </div>
+                    <div class="organization_left">
+                        <label>Last Login</label>
+                        @Html.TextBoxFor(x => x.LastLoginAttempt, new { id = "txtLastLogin", @class = "userfeilder", @readonly = "true" })
+                    </div>
+                    <div class="clr">
+                    </div>
+                </div>*@
+                <div class="organization_left">
+                    <p id="divCourseHead">
+                        <label>Course Admin</label>
+                        @*@Html.CheckBoxFor(x => x.IsCourseUser, new { @class = "noleft_space" })*@
+                        <span class="selected-row">
+                            <span class="switch">
+                                <input id="cmn-toggle-1" data-result-id="IsCourseUser" class="cmn-toggle cmn-toggle-round" type="checkbox" data-value="@(Model.IsCourseUser ? "1" : "0")" @(Model.IsCourseUser ? "checked='checked'" : "") />
+                                <label for="cmn-toggle-1"></label>
+                                @Html.HiddenFor(x => x.IsCourseUser)
+                            </span>
+                        </span>
+                    </p>
+                    <p id="divType">
+                        @Html.LabelFor(x => x.Type)
+                        @Html.DropDownListFor(x => x.Type, (SelectList)(ViewBag.Typlist), "Select", new { @id = "Type", @class = "red-border" })
+                        @Html.ValidationMessageFor(x => x.Type)
+                    </p>
+                    <p id="divReceiveResolutionMails">
+                        <label>Receive Resolution Mails?</label>
+                        <span class="selected-row">
+                            <span class="switch">
+                                <input id="cmn-toggle-3" data-result-id="ReceiveResolutionMails" class="cmn-toggle cmn-toggle-round" type="checkbox" data-value="@(Model.ID > 0 ? (Model.ReceiveResolutionMails ?? false ? "1" : (Model.ReceiveResolutionMails ?? false ? "1" : "0")) : "0")" @(Model.ID > 0 ? (Model.ReceiveResolutionMails ?? false ? "checked='checked'" : "") : "checked='checked'") />
+                                <label for="cmn-toggle-3"></label>
+                                @Html.HiddenFor(x => x.ReceiveResolutionMails, new { Value = (Model.ReceiveResolutionMails ?? false ? "True" : "False") })
+                            </span>
+                        </span>
+                    </p>
+                    <p id="p_RoleID">
+                        @Html.LabelFor(x => x.RoleId)
+                        @Html.DropDownList("RoleId")
+                        @Html.ValidationMessageFor(x => x.RoleId)
+                    </p>
+                </div>
+                <div class="organization_left">
+                    <p>
+                        @*@Html.LabelFor(x => x.Active)*@
+                        <label>Active</label>
+                        @*@Html.CheckBoxFor(x => x.Active, new { @class = "noleft_space" })*@
+                        <span class="selected-row">
+                            <span class="switch">
+                                <input id="cmn-toggle-2" data-result-id="Active" class="cmn-toggle cmn-toggle-round" type="checkbox" data-value="@(Model.Active ? "1" : (Model.ID == 0 ? "1" : "0"))" @(Model.ID > 0 ? (Model.Active ? "checked='checked'" : "") : "checked='checked'") />
+                                <label for="cmn-toggle-2"></label>
+                                @Html.HiddenFor(x => x.Active, new { Value = (Model.ID == 0 ? true : Model.Active) })
+                            </span>
+                        </span>
+                    </p>
+                </div>
+                <div class="clr">
+                </div>
+                <div align="center" class="center-button">
+                    @Html.HiddenFor(x => x.Type)
+                    <a href="#myModal" id="btnConfirm" class="submit-btn update-btn" style="display: none;">Submit</a>
+                    <input type="submit" id="btnSubmit" class="submit-btn update-btn" name="btnSubmit" value="Submit" />
+                    <input type="button" id="btnCancel" class="submit-btn cancel-btn" value="Cancel" />
+                    <input type="button" id="btnPartial" class="submit-btn update-btn" name="btnPartial" value="Submit" style="display: none;" />
+                </div>
+                @Html.Hidden("hdnCourseUser", @Golfler.Models.UserType.CourseAdmin)
+            }
+        </div>
+    </td>
+</tr>
+<input type="hidden" id="hdnConfirm" />
+<div id="myModal" class="reveal-modal" style="display: none; top: 100px;">
+    <div class="pop_detail">
+        <h1>Confirm Details</h1>
+        <div class="page-wrap">
+            <table class="voucher-details-table">
+                <tr>
+                    <td class="align-left" colspan="2">
+                        <p>
+                            <strong>Dear @Golfler.Models.LoginInfo.FirstName @Golfler.Models.LoginInfo.LastName,</strong><br />
+                            @String.Format("Please confirm User details to save.")<br />
+                            <strong>Thanks</strong>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>Username</strong>
+                    </td>
+                    <td class="align-left" id="lblUserName"></td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>First Name</strong>
+                    </td>
+                    <td class="align-left" id="lblFirstName"></td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>Last Name</strong>
+                    </td>
+                    <td class="align-left" id="lblLastname"></td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>Email</strong>
+                    </td>
+                    <td class="align-left" id="lblEmail"></td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>Phone Number</strong>
+                    </td>
+                    <td class="align-left" id="lblPhone"></td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>User Type</strong>
+                    </td>
+                    <td class="align-left" id="lblUserType"></td>
+                </tr>
+                <tr>
+                    <td class="align-left" id="divrole">
+                        <strong>Role</strong>
+                    </td>
+                    <td class="align-left" id="lblRole"></td>
+                </tr>
+                <tr>
+                    <td class="align-left">
+                        <strong>Status</strong>
+                    </td>
+                    <td class="align-left" id="lblStatus"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="clr">
+    </div>
+    <div class="margin-top15">
+    </div>
+    <div class="clr">
+    </div>
+    <div align="center" class="center-button">
+        <input type="button" id="close" value="Edit" class="submit-btn cancel-btn" onclick="$.fancybox.close();" />
+        <input type="button" id="btnSave" onclick="javascript: showAfterPopup(); $('#hdnConfirm').val('1'); $('#btnSubmit').click(); $('#divProgress').show();"
+            value="Confirm" class="submit-btn update-btn" />
+    </div>
+    <div class="clear">
+    </div>
+</div>
+<script language="javascript" type="text/javascript">
+    function showAfterPopup() {
+        $("#fancybox-overlay").css("z-index", "99999999");
+    }
+</script>

@@ -1,0 +1,184 @@
+﻿
+
+@{
+    ViewBag.Module = "Membership ID Numbers";
+    ViewBag.Title = "Manage Membership";
+    ViewBag.pageTitle = "Manage Membership";
+    Layout = "~/Views/Shared/_LayoutCourseArea.cshtml";
+}
+@Html.Partial("_jqGrid")
+<style>
+    .tempwidth
+    {
+        width: 40% !important;
+    }
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".choose_inner_department").addClass("tempwidth");
+        bindJqGridMin('list', 'pager', 'GetMembershipList',
+                ['ID', 'Name', 'Email', 'Membership Id', 'Created Date'],
+                [   { name: 'ID', index: 'ID', width: 10, hidden: true },
+                     { name: 'Name', index: 'Name', width: 50, sortable: false, formatter: SetEditLink },
+                     { name: 'Email', index: 'Email', width: 50, sortable: true },
+                     { name: 'MemberShipId', index: 'MemberShipId', width: 50, sortable: true },
+                     { name: 'CreatedDate', index: 'CreatedDate', width: 50, formatter: 'date', formatoptions: { srcformat: 'U', newformat: 'm/d/Y' } }
+                     
+                ], 'ID', 'desc',
+                {
+                    "searchText": (function () {
+                        return $("#txtSearch").val();
+                    })
+                    
+
+                }, '');
+    });
+
+    function DeleteMemberShip() {
+        try {
+            DeleteMultiple('list', '@Url.Action("DeleteMemberShip")');
+        }
+        catch (ex) { alert(ex.message); }
+    }
+    function AddNewMemberShip() {
+        window.location = '@Url.Action("MemberShipAddEdit")'
+    }
+    function SetEditLink(cellvalue, options, rowObject) {
+
+        try {
+            var Eid = rowObject["EID"];
+         
+            return "<a href='MemberShipAddEdit/" + Eid + "' >" + cellvalue + "</a>";
+        }
+        catch (ex) { alert(ex.message); }
+    }
+    function ExcelUpload()
+    {
+        $("#divUpload").slideToggle();
+    }
+   
+    </script>
+<script src="../../Scripts/ajaxfileupload.js" type="text/javascript"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#btnUpload").click(function () {
+            //debugger;
+            var imgVal = $('#fileExcel').val();
+            if (!imgVal || 0 === imgVal.length)
+            {
+                showStickMessage("Please select the file first.");
+                return;
+            }
+
+            var ext = imgVal.split('.').pop().toLowerCase();
+
+            if ($.trim(imgVal) == '')
+            {
+                $("#spnError").text('Please select a file')
+                return false;
+            }
+            else if ($.inArray(ext, ['xls', 'xlsx']) == -1) {
+                showStickMessage("Please select an excel file.");
+                return false;
+            }
+            else {
+
+                var courseID = $("#hdnCourseId").val();
+                var courseAdminID = $("#hdnId").val();
+
+                var HandlerUrl = '/Handlers/ExcelFileUpload.ashx';
+               
+
+                $.ajaxFileUpload({
+                    url: HandlerUrl,
+                    data: { courseID: courseID, courseAdminID: courseAdminID },
+                    fileElementId: 'fileExcel',
+                    dataType: 'json',
+                    success: function (data, status)
+                    {
+                        console.log(data);
+                        if ($.trim(data.error) == "")
+                        {
+                            showMessage('Memberships Created Successfully');
+                            $("#list").trigger("reloadGrid", [{ current: true }]);
+                            return true;
+                        }
+                        else
+                        {
+
+                            showStickMessage(data.error);
+                            return false;
+                        }
+                    },
+                    error: function ()
+                    {
+                          showStickMessage("There is some error. Please try later!");
+                    }
+                });
+                return false;
+
+            }
+
+        });
+
+        $('#btnExcelSample').click(function () {
+            window.location = $('#sampleExcelFile').attr('href');
+        });
+    });
+
+</script>
+<tr>
+    <td class="id_pathway" valign="middle">
+        <div class="breadcrumb">
+            <ul>
+                <li><a href='@Url.Action("Dashboard")'>Dashboard</a><img src="/Content/Images/arrow.png"
+                    class="arrow_position" /></li>
+                <li>Manage @ViewBag.Module</li>
+            </ul>
+            <div class="clr">
+            </div>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td id="content_center_td2" valign="top" align="center">
+        <div class="form_box">
+            <div class="search-advertiser">
+                <label>
+                    Search</label>
+                <input type="text" placeholder="Email / MembershipId" name="searchText" id="txtSearch"
+                    class="searchfeild jqGrid_refreshKey adname" value="" style="margin-bottom: 2px;"
+                    size="30" />
+                
+                <img src="/Content/Images/search_icon.png" border="0" alt="search" class="go-btn floatleft jqGrid_refresh"
+                    id="fbox_jqgAdminUser_search" />
+           
+                @*<div class="clr">
+                </div>*@
+                       <input type="button" id="addNew" value="Add New Membership" class="blu-btn leftmargin_3" onclick="javascript: AddNewMemberShip();" action="add" />
+                       <input type="button" id="btnDelete" value="Delete" class="blk-btn noleft_margin" onclick="javascript: DeleteMemberShip();" action="delete" />
+                       <input type="button" id="btnExcelUpload" value="Excel Upload" class="blk-btn noleft_margin" onclick="javascript: ExcelUpload();"/>
+                       <input type="button" id="btnExcelSample" value="Download Sample Excel File" class="blk-btn noleft_margin"/>
+                       <a href="~/Uploads/SampleMembership.xls" id="sampleExcelFile"></a>
+            </div>
+            <div class="clr">
+            </div>
+            <div id="divUpload" style="display:none; padding:2%;">
+               
+                     <input type="file" name="fileExcel" id="fileExcel" accept="application/vnd.ms-excel" style="border:solid 1px #eaeaea; padding:0.5% 2.8% 0.5% 0.5%;"  />
+                <input type="button" id="btnUpload" value="Upload" class="blk-btn noleft_margin"  />
+            </div>
+        </div>
+        <div id="page-wrap">
+            <table id="list" cellpadding="0" cellspacing="0" style="width: 100%;" class="jqgridTable">
+            </table>
+            <div id="pager" style="width: 100%;">
+            </div>
+            <input type="hidden" id="hdnId" value='@Golfler.Models.LoginInfo.UserId' />
+             <input type="hidden" id="hdnCourseId" value='@Golfler.Models.LoginInfo.CourseId' />
+        </div>
+    </td>
+</tr>
+

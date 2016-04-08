@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Module = "Static Pages";
+    ViewBag.Title = "Manage Static Pages";
+    ViewBag.pageTitle = "Manage Static Pages";
+}
+
+<script language="javascript">
+    function UpdateRowStatus(id, status) {
+        try {
+            UpdateStatus('UpdateStaticPageStatus', 'Golfler/Admin', id, status, 'list');
+        }
+        catch (ex) { alert(ex.message); }
+    };
+</script>
+
+@Html.Partial("~/Views/Shared/_StaticPageListScreen.cshtml")
